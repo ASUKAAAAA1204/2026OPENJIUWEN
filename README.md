@@ -1,8 +1,5 @@
 # 保证账本（Assurance Ledger）
 
-> 给 Agent Skill 算「审计就绪度」，并把提升路径算成价格。
->
-> **不审结论对错，只审结论能不能被独立检验。**
 
 本仓库是 openJiuwen 智能体创新大赛参赛项目。主载体为 openJiuwen Agent Framework（Rail）与 Agent Studio。
 
