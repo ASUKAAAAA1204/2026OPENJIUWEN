@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "assurance-ledger"
+version = "0.1.0"
+description = "审计就绪度账本：给 Agent Skill 算 ARS 并把提升路径算成价格"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [{name = "openJiuwen Team"}]
+dependencies = [
+    "pydantic>=2.6,<3",
+]
+
+[project.urls]
+Repository = "https://github.com/ASUKAAAAA1204/2026OPENJIUWEN"
+
+[project.optional-dependencies]
+dev = [
+    "cyclonedx-python-lib>=5.0",
+    "pytest>=8.0",
+    "mypy>=1.8",
+]
+semgrep_cli = [
+    "semgrep>=1.80",   # LGPL-2.1, used as subprocess only
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false   # 初版不强制

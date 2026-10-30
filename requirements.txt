@@ -1,0 +1,31 @@
+# Assurance Ledger —— 核心依赖（PRD §9 + 开源选型文档）
+#
+# 纪律：
+#   - 只用 MIT / Apache-2.0 / BSD-3-Clause
+#   - LGPL 只作为独立进程 CLI 调用（semgrep）
+#   - 不 vendor，不复制源码
+#   - SBOM 用 CycloneDX，W1 前生成第一次
+
+# ========== 必需 ==========
+# 数据校验：所有核心模型（claim / evidence / ars / ledger 等）的基类
+pydantic>=2.6,<3         # MIT —— PRD 必需
+
+# ========== 可选 ==========
+# 代码类检查：CLI 调用（独立进程，满足 LGPL-2.1 要求）
+# semgrep 的 Python 包用于规则发现，但实际执行走子进程
+semgrep>=1.80            # LGPL-2.1 —— PRD 可选（CLI 模式）
+
+# JCS 规范化：RFC 8785 完整实现（可选，初版用 json.dumps 近似）
+# rfc8785-py>=1.0         # Apache-2.0 —— 可选，完整 JCS 支持
+
+# OpenTelemetry：导出到外部可观测平台（可选）
+# opentelemetry-api>=1.24   # Apache-2.0 —— PRD 可选（导出格式）
+# opentelemetry-sdk>=1.24   # Apache-2.0
+
+# ========== 开发 ==========
+# SBOM 生成
+cyclonedx-python-lib>=5.0   # Apache-2.0
+# 测试
+pytest>=8.0                 # MIT
+# 类型检查
+mypy>=1.8                   # MIT
