@@ -1,0 +1,497 @@
+{
+  "repository": "ASUKAAAAA1204/2026OPENJIUWEN",
+  "branch": "A-bc-r1-20261102-1",
+  "base_commit": "659263f126aebd8c96a812320eae9578aaa88f01",
+  "scope": "all A work relative to GitHub main; not merely the six-file B-R1 increment",
+  "changes": [
+    {
+      "path": "fixtures/a_acceptance/resolver_cases.json",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "8091d95240192e4cb3ffd303462fd40d281562c5",
+      "sha256": "9c5c34fea6416adbff8b0baa03f410eb5fbb9895cb3d09cdd77b32730f2c0296",
+      "bytes": 5441
+    },
+    {
+      "path": "fixtures/a_acceptance/test_capture_acceptance.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "6a96c7c48c3b59c996c355a862c34740a1d8180a",
+      "sha256": "859b558eebc31b6cc8af58caf0d860c2b5992b244928a33e320196bd913cf917",
+      "bytes": 12457
+    },
+    {
+      "path": "fixtures/a_acceptance/test_contract_boundaries.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "6c53f96d463aef950df1883327d56f24cdc3ea09",
+      "sha256": "3309f687c28da9aa2bd30dd734a902797b0722c389ede18aba4893121e7c1a8f",
+      "bytes": 2172
+    },
+    {
+      "path": "fixtures/a_acceptance/test_metric_standards.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "55df9a3452aaf8e17c52b1e05606ce83f71f6adc",
+      "sha256": "897dfd359bb8cb294e1d84c957d4fe2dd483e420f691a2c576e2971b0f88abe3",
+      "bytes": 12060
+    },
+    {
+      "path": "fixtures/a_acceptance/test_resolver_corpus.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "4bd25261e8bbece5b2d07165917b786c7534b424",
+      "sha256": "af95e0117397a26ae24b497b1f049b09adb9336c876575aea796b3502f79f3fc",
+      "bytes": 944
+    },
+    {
+      "path": "fixtures/a_capture/README.txt",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "b0cd0fb48a931de291b005ef5f48a522e0f0477f",
+      "sha256": "46b9bd16654ebda0d09f2a2a325daa80e987a38f17a4824c4c8488205e1c11b7",
+      "bytes": 166
+    },
+    {
+      "path": "fixtures/a_capture/test_claim_capture.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "e643048e4a9b704b2d9acda0ab20a4f2fc5830ac",
+      "sha256": "eef3389593a225934055d543a50be01e8b2f53d19ca450e764cc6af0c8762c11",
+      "bytes": 8032
+    },
+    {
+      "path": "fixtures/a_capture/test_locator_resolver.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "9846bb79a6e2b06adcacb97448a1804010556201",
+      "sha256": "dbde877a8ce44d6af9695c2218171502f57297bf18bf081d69fa13c4076c65fc",
+      "bytes": 4983
+    },
+    {
+      "path": "fixtures/a_capture/test_model_setup.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "34eac25cba27710dea47fda3c7bbe7c75fea3bc5",
+      "sha256": "213935ad6fba1369951d424e2b75a59298810e510c177a3cc4f259b92e0a2148",
+      "bytes": 7120
+    },
+    {
+      "path": "fixtures/a_capture/test_rail_spike.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "f38e29292e294d8ffb65abec1932301a4410f05e",
+      "sha256": "321e3140d2ea7735c63a58d49abfd9e62688ddecc90872e5273df450c11f8e55",
+      "bytes": 5623
+    },
+    {
+      "path": "fixtures/a_handoff/20261102/A_R1_20261102.zip",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "92e1cf1beda21b3549c897177d1ded295137b685",
+      "sha256": "5ca10edf3d7a27fa14e5d3502106c3a905c1af7d3b35649c9b714c7730e6181d",
+      "bytes": 1094461
+    },
+    {
+      "path": "fixtures/a_handoff/20261102/B_C_NEXT_INPUTS.txt",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "2e5f58a47ea7ed05e16803b68e8f0a2813e0bb57",
+      "sha256": "eeeb6ca17a3159d3875f1062a22c88bdb3f7498702da70d392b813b1b15cf75f",
+      "bytes": 2082
+    },
+    {
+      "path": "fixtures/a_handoff/20261102/DELIVERY_VERIFICATION.json",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "9536b3d35a78ff1721a6653da94cc1bc702dcb53",
+      "sha256": "b68a6b52ec195c0b0ce17441942cb8704c7e617003384244087b421ab314b5fa",
+      "bytes": 1328
+    },
+    {
+      "path": "fixtures/a_handoff/20261102/README.txt",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "4899949003eb8abe50bcc5f8145bd55b1fa5a08a",
+      "sha256": "d5cf04ccd62c17e91ba5d90b371ac13b90b22bb13957bb2e22fe5d9be7f067f8",
+      "bytes": 4161
+    },
+    {
+      "path": "fixtures/a_handoff/20261102/RECEIVING_CHECKLIST.txt",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "4d703b8b92ad5ca362d4ddb225663724f44f8bc0",
+      "sha256": "468abe4aee2623c183ffc91630b9216417d7ee5bba6520b36e1854a0597701a1",
+      "bytes": 3010
+    },
+    {
+      "path": "fixtures/a_handoff/20261102/RETURN_COST_FIELDS.txt",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "14c83c5d567b85bdc0bf80ea02c0d46d790dd314",
+      "sha256": "e3afc3bbc3a5dc37d005bb2a8f4cb90bb73591979a003e9aec33e48fd76807ad",
+      "bytes": 5046
+    },
+    {
+      "path": "fixtures/a_handoff/20261102/RETURN_MANIFEST.json",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "1f5d70012a4dfeb7578bc48565aa7436f7eb22c0",
+      "sha256": "50d3824807ca8d13d3e5d795d856d0c585ddfea5d79ee3e5b858f0a57b2dc443",
+      "bytes": 3663
+    },
+    {
+      "path": "fixtures/a_handoff/20261102/RETURN_NOTE.txt",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "f84e7d6476b7d08e231f612cd78ce8d02d759379",
+      "sha256": "e7168d0a8f0c8063f86ab38d23b8f63b4221219e23e1ecfc548f587bc430abad",
+      "bytes": 2537
+    },
+    {
+      "path": "fixtures/a_handoff/20261102/RETURN_REQUIREMENTS.txt",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "43fb5c76588a06dff3572b2eb605c6f23af3dd83",
+      "sha256": "ca4c688cedbf4207138c0292f31644a66df617ea15f8f4f2a749146fcd50107c",
+      "bytes": 11147
+    },
+    {
+      "path": "fixtures/a_handoff/20261102/validation/B_return_tests.xml",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "cc382d5848ea9410430bd24e868b610412f2dc46",
+      "sha256": "7b08098e02154664bedb4eb2f57d9d82540ff87a8dcd641d5a5ee12719bc29ca",
+      "bytes": 40543
+    },
+    {
+      "path": "fixtures/a_handoff/20261102/validation/portable_verification.json",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "edfaefbb86e66b0e512c9c1e3360f0fc91598027",
+      "sha256": "77ffd424e199bc79c218ff73195240055b1eee64321bdffbcf13076584305944",
+      "bytes": 388
+    },
+    {
+      "path": "fixtures/a_s3/example_package.json",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "40a2a42fbca5ad4f53462d70cbb323b194c5d021",
+      "sha256": "c70e53fe86d93334798b4e20765efcd06d7b3691b07ae18a8453175e6e7c2abc",
+      "bytes": 6311
+    },
+    {
+      "path": "fixtures/a_s3/pe_rule.json",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "dfb465a99e669d0a03a83297cd677514ae117703",
+      "sha256": "fb1309a64ef9dbf6f1a931102d9bc24b000aac91597507a7b7254b48b3bd9942",
+      "bytes": 184
+    },
+    {
+      "path": "fixtures/a_s3/replay_fixture.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "14c5ee525930c4569c538f9e805dae8f609324c5",
+      "sha256": "77bf0a927a9ba8dde17842ed470efcd820542e015c2b28e6a61971cddcb924c2",
+      "bytes": 3177
+    },
+    {
+      "path": "fixtures/a_s3/test_b_rule_integration.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "84bee9d575b898aa9462f198641db98127c4e39d",
+      "sha256": "8ae0d47debddcc9f6d0b9083ff4e7672c2d284bd48b5e47beac97769936df321",
+      "bytes": 11929
+    },
+    {
+      "path": "fixtures/a_s3/test_evidence_package.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "b982de39a0cad644361c325826254ad5b593700a",
+      "sha256": "e151fac7b72c3352cb48dfdf95d7d05fa68967dea6f641c53ac4712475a32b35",
+      "bytes": 12826
+    },
+    {
+      "path": "fixtures/rail_spike/market.csv",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "4882e02df856ba6d1ff61a736a168fdcd5e6383f",
+      "sha256": "f27ed8b69d560000a3e0f0b84be325c7276faed62cb6c55dc536c0af09d3e1bf",
+      "bytes": 48
+    },
+    {
+      "path": "fixtures/rail_spike/market_multi.csv",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "fda5e48fc0d280b5ddbc60bb9b11d0259ca304be",
+      "sha256": "6edcbb541cbe3906467e1ef594f1bf6f6964dcde34c43f753ed0f40c49e0f885",
+      "bytes": 86
+    },
+    {
+      "path": "fixtures/rail_spike/model.env.example",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "2ef6f100416815cde941d0ac4141955971e3dd85",
+      "sha256": "7d70ebafb226f2309ae944cd902a0e27d71bc9bd83bc37b1d34ad6554eb29e07",
+      "bytes": 206
+    },
+    {
+      "path": "scripts/run_daily_agent.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "724c3d3740c28b2d073a5d418eddacae38150fd5",
+      "sha256": "0c3374906d4f9d8d3eae2d17b4cb32bef71ca62d73b4642cde7a3dde5d3b076d",
+      "bytes": 8245
+    },
+    {
+      "path": "src/assurance_ledger/ledger/packer.py",
+      "change": "modified",
+      "owner": "A",
+      "base_git_blob": "3d99ae10f49c0ce1ff0eb44c24b9faaa5eb36af1",
+      "git_blob": "4e3ab9e24f0e71ff3e1dad5d8780960f4741b412",
+      "sha256": "5dd6c7946707c5ebb7eed11b048f147012e3cc1bbf04039b381d74275701d699",
+      "bytes": 11375
+    },
+    {
+      "path": "src/assurance_ledger/ledger/resolver.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "cab685f8c08ca2e91de533f01bc180f55a789481",
+      "sha256": "ca1743c82dec9ca1a3d89a1b439d723fafec013f1f85c59b63428bd6199e4ded",
+      "bytes": 6382
+    },
+    {
+      "path": "src/assurance_ledger/rail/acceptance.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "bdbb4cce6981275975cab02da3fb2f27c24dc3b9",
+      "sha256": "409fda20626e7c61828add923ab8090a4afe458d280a7a1f89798ea4d1b39cb9",
+      "bytes": 10003
+    },
+    {
+      "path": "src/assurance_ledger/rail/acceptance_rules.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "95451627ae5f8c5cc61a96e9b4d7b0c278d1769d",
+      "sha256": "7fa26c45923694f1767217496756f617a75a256f76a5e7296f239b421cea21c3",
+      "bytes": 12030
+    },
+    {
+      "path": "src/assurance_ledger/rail/acceptance_sources.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "c73735d424c9e15ff038316b9fd271f2f90948fc",
+      "sha256": "12f5d97674e2b24bf0d63a92e8c127b6d4d96ca34a4e4d043745ed5036f056d7",
+      "bytes": 6852
+    },
+    {
+      "path": "src/assurance_ledger/rail/async_writer.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "84fa5ca8956d71614ae042fbe8c34eed00e72053",
+      "sha256": "1141aa2e0a9f9ad23a9b4d72ea2642d092163f9bb8ebc3ae61db2f75743dc552",
+      "bytes": 3095
+    },
+    {
+      "path": "src/assurance_ledger/rail/cache.py",
+      "change": "modified",
+      "owner": "A",
+      "base_git_blob": "ab78b0c22915b9362926715f99cbeb1c1efd56b4",
+      "git_blob": "bf74aed448136ac43f4940c8bb655d116d94a1c5",
+      "sha256": "dca9d93f1aabc96ee6fc243853c3ec8eaa87270d6f2a44385d327b73d59d3451",
+      "bytes": 1451
+    },
+    {
+      "path": "src/assurance_ledger/rail/calibration.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "cc2614f651745216b15ed0e161e0feacf1ecacde",
+      "sha256": "dbf64328d24df172d5fde77938b9826119a35e03b216e590d2a5b465655586a8",
+      "bytes": 3665
+    },
+    {
+      "path": "src/assurance_ledger/rail/call_budget.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "2d9380b28a05b385e1a8fe103c84b237641ef6e3",
+      "sha256": "429bf801d1edbdd902b999a53751d44acc133f03bc831c1737b0ecbe345913bf",
+      "bytes": 2286
+    },
+    {
+      "path": "src/assurance_ledger/rail/claim_context.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "1f9f9b24adefe7f3b4597177e3b042b20c6746d3",
+      "sha256": "41e00d954e0d18ad58d4655af8357e7b558c0a3303cf030e3efc1d91989b082a",
+      "bytes": 1037
+    },
+    {
+      "path": "src/assurance_ledger/rail/collector.py",
+      "change": "modified",
+      "owner": "A",
+      "base_git_blob": "92b73f0b2de6a1c93ac562298c157db67d2f74b1",
+      "git_blob": "d21e0edb5569f682b7005026e98a7f1cc4937122",
+      "sha256": "bd7d0ca497d3d7524570705e00e8ae465616792805e1bd999d25ff40077c7445",
+      "bytes": 1968
+    },
+    {
+      "path": "src/assurance_ledger/rail/cost.py",
+      "change": "modified",
+      "owner": "A",
+      "base_git_blob": "2d94e543c68b16261c23a8a29ce2de057696f831",
+      "git_blob": "b894b1619c1ed6ad4e4f98044db9a5bb79fa76b0",
+      "sha256": "0a1d509a4e6f3e29f2cad831424baa5b4075c4b65ac45d0da196e30c5802bcea",
+      "bytes": 7051
+    },
+    {
+      "path": "src/assurance_ledger/rail/deepseek_model.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "dc50111a51638d5ef683e12a0176081f2da13f35",
+      "sha256": "19b0fa50ac5982db3b03f9d48544ff329eec0ea85d48cd6ab91fc59d738e4b46",
+      "bytes": 3421
+    },
+    {
+      "path": "src/assurance_ledger/rail/evidence_capture.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "d93dc7d59af05ab855059de9bd60a174ce130f05",
+      "sha256": "d9576b45fd215173b7ad553198b26e98a0f72329723473924b6d7a4e59122372",
+      "bytes": 13638
+    },
+    {
+      "path": "src/assurance_ledger/rail/evidence_io.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "d4f8d27f4e0d885c398eccf85027cb159839bcfe",
+      "sha256": "05b8e3cc2bbee46ddb25d7cc193d3c39eb735a4a66b1d9397dd69748b9447283",
+      "bytes": 1457
+    },
+    {
+      "path": "src/assurance_ledger/rail/jiuwen_adapter.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "46456bbce68ca4f4ae48ce265e156b289a252980",
+      "sha256": "60e458abf78b5bb8555b36409be58264f546dceff2048c55f72a16954c2bb555",
+      "bytes": 6079
+    },
+    {
+      "path": "src/assurance_ledger/rail/local_spike.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "7f881ba2976cf8fcb0a6cb4068547aab9f760b58",
+      "sha256": "5a89768933ae69fce71d838a6aa0aa390a27516d183913fc0d7051e967e2b335",
+      "bytes": 19824
+    },
+    {
+      "path": "src/assurance_ledger/rail/model_config.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "240c75455832a4b7a720d8c24025c1cf7d610f33",
+      "sha256": "3d2e520dd054afc440c169a5f4653b9cba50c354d961d78c224bfdceecc7ae92",
+      "bytes": 3122
+    },
+    {
+      "path": "src/assurance_ledger/rail/requirements-demo.txt",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "ea3fd760683d58bf37f280e2577e3c23d6e6ca88",
+      "sha256": "33cb10a7a8a66ad3a561ee7d14c8c2d57fb7cbc62d49ded6af8fd0f8c013828f",
+      "bytes": 127
+    },
+    {
+      "path": "src/assurance_ledger/rail/requirements-evidence.txt",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "16b93e51abc0c63a1ea68c897849d2bda1431855",
+      "sha256": "027c7f70b3938fdd1a585430b8c1dfcf8bd2b1849a6381ff4dcdbbae7e968911",
+      "bytes": 149
+    },
+    {
+      "path": "src/assurance_ledger/rail/resolver_acceptance.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "d5cf8a6f3e9a11ff41187ef7002df26be5fc1baa",
+      "sha256": "6219d0d0fdedddc3beec4915ffa04dc0e6c214eff924e70d101edcb3b244b7c0",
+      "bytes": 2612
+    },
+    {
+      "path": "src/assurance_ledger/rail/rule_binding.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "927431fbc8c977334b45c3ab6a00d7a1c4a64ffb",
+      "sha256": "9be8bb23b5b6c45464aebc9fd158139679f479ba53ea3acc73ee40878677bead",
+      "bytes": 10329
+    },
+    {
+      "path": "src/assurance_ledger/rail/s3_measurements.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "01a822f0759eee3298c45aa552491c33f8b54780",
+      "sha256": "cdee67902b8718dffc0f53ff5232a48c63ff955fa6730f3ce3d206cdd4c5ba0d",
+      "bytes": 8394
+    },
+    {
+      "path": "src/assurance_ledger/rail/source_checks.py",
+      "change": "added",
+      "owner": "A",
+      "base_git_blob": null,
+      "git_blob": "60f20f5ebd9474e9b867e51c29ad59ec9fc6c86f",
+      "sha256": "aac1d4f1566d6be5b21c540bcfadf5c529df1c38ec4896e524bce98928d724e8",
+      "bytes": 2612
+    }
+  ],
+  "core_contracts_B_C_D_root_configs_unchanged": true,
+  "secret_matches": 0,
+  "note": "This list precedes its own generation and branch test/ownership receipts."
+}

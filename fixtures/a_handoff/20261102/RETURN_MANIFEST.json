@@ -1,0 +1,122 @@
+{
+  "format": "a-b-r1-followup-v1",
+  "return_version": "A-B-R1-20261102-v1",
+  "status": "partial_ready_for_C_alignment",
+  "received_B_version": "B-R1-20261102-v1",
+  "accepted_rule_version": "b-pe-v1",
+  "accepted_ir_version": "b-cmp-v1",
+  "rule_semantic_alignment": "pending_C",
+  "production_ready": false,
+  "formal_minimality": "not_run",
+  "new_model_calls": 0,
+  "evidence_packages": 100,
+  "source_changes": [
+    {
+      "path": "src/assurance_ledger/rail/evidence_capture.py",
+      "owner": "A",
+      "base_sha256": "b68197789d6b2c889007cfcdfd7d7b02fde628c7cf2b6e0771499b38b18f9c3d",
+      "returned_sha256": "d9576b45fd215173b7ad553198b26e98a0f72329723473924b6d7a4e59122372"
+    },
+    {
+      "path": "src/assurance_ledger/rail/rule_binding.py",
+      "owner": "A",
+      "base_sha256": null,
+      "returned_sha256": "9be8bb23b5b6c45464aebc9fd158139679f479ba53ea3acc73ee40878677bead"
+    },
+    {
+      "path": "src/assurance_ledger/rail/s3_measurements.py",
+      "owner": "A",
+      "base_sha256": null,
+      "returned_sha256": "cdee67902b8718dffc0f53ff5232a48c63ff955fa6730f3ce3d206cdd4c5ba0d"
+    },
+    {
+      "path": "scripts/run_daily_agent.py",
+      "owner": "A",
+      "base_sha256": "9630c00a44f8ad0f18d2d5a61e22b197360370f4f136857836144fddd1182e11",
+      "returned_sha256": "0c3374906d4f9d8d3eae2d17b4cb32bef71ca62d73b4642cde7a3dde5d3b076d"
+    },
+    {
+      "path": "src/assurance_ledger/ledger/packer.py",
+      "owner": "A",
+      "base_sha256": "3bf3a73ee02a02a52ef52a26aa6ef43726efb89c3a3c2843263afd0da76a2824",
+      "returned_sha256": "ce255dbe986f4451fb5f98ce69193e433c35f20fa53b17b79410c9aa92a27bcc"
+    },
+    {
+      "path": "fixtures/a_s3/test_b_rule_integration.py",
+      "owner": "A",
+      "base_sha256": null,
+      "returned_sha256": "8ae0d47debddcc9f6d0b9083ff4e7672c2d284bd48b5e47beac97769936df321"
+    }
+  ],
+  "A_tests": {
+    "tests": 219,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "passed": 218
+  },
+  "B_tests": {
+    "tests": 240,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 240
+  },
+  "M5": {
+    "status": "passed",
+    "complete": 300,
+    "denominator": 300
+  },
+  "M15": {
+    "status": "passed",
+    "resolved": 100,
+    "denominator": 100
+  },
+  "M10": {
+    "status": "not_verified"
+  },
+  "S3_export_measurement": {
+    "records": 103,
+    "chargeable": 102,
+    "summary_only": 1,
+    "known_total_cu": 1.1671903000000001,
+    "human_minutes": 0,
+    "scope": "automatic A candidate export only; formal minimization and C stages excluded"
+  },
+  "A_known_costs": {
+    "max_per_claim_cu": 4.397718218997737,
+    "min_remaining_upper_bound_cu": 1.6022817810022632
+  },
+  "B_costs": {
+    "included_in_A_subtotal": false,
+    "status": "incomplete",
+    "pending": [
+      "human time",
+      "allocation confirmation",
+      "remaining B stages"
+    ]
+  },
+  "next_input": "B_C_NEXT_INPUTS.txt",
+  "next_feedback_time": "after B/C confirmation and executable C callback are received; no calendar deadline agreed",
+  "ownership": {
+    "protected_existing_files_unchanged": 628,
+    "protected_violations": [],
+    "original_B_return_files_unchanged": 99,
+    "frozen_core_and_contracts_unchanged": true,
+    "B_C_D_source_unchanged": true,
+    "original_20261101_handoff_unchanged": true
+  },
+  "environment": {
+    "python": "3.12.14",
+    "pydantic": "2.14.2",
+    "rfc8785": "0.1.4",
+    "pytest": "8.4.2",
+    "openjiuwen": "0.1.18"
+  },
+  "artifact_paths": {
+    "evidence": "data/evidence",
+    "measurements": "data/evidence/measurements",
+    "A_metrics": "verification/a_metrics.json",
+    "known_costs": "verification/a_known_costs.json"
+  }
+}

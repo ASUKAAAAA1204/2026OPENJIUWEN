@@ -7,7 +7,7 @@ Rail 事件采集器 —— S2 运行期
 
 from __future__ import annotations
 from typing import Callable, List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 from ..core.event import AgentEvent, EventStream
 
@@ -18,7 +18,7 @@ class RailCollector:
 
     用法（W0 spike 之后具体实现）：
       collector = RailCollector()
-      collector.on_call = my_handler
+      collector.on_event = my_handler
       # 注册到 openJiuwen Rail 的 hooks
     """
 
@@ -47,7 +47,7 @@ class RailCollector:
         self._next_seq += 1
         event = AgentEvent(
             seq=self._next_seq,
-            ts=datetime.utcnow(),
+            ts=datetime.now(timezone.utc),
             agent=agent,
             kind=kind,
             tool=tool,
