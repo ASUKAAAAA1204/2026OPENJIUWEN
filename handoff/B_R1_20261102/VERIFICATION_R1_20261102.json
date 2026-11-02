@@ -1,0 +1,23 @@
+{
+  "return_package": "B_return_R1_20261102_v1.zip",
+  "sha256": "f3cbbe13916ec237dd3d4df1b9d63dc46242ce1fb958318c0331ffda71250b6b",
+  "relocated_integrity_files": 98,
+  "relocated_tests": {
+    "passed": 240,
+    "failed": 0,
+    "known_warnings": 1
+  },
+  "relocated_A_input": {
+    "requested_claims": 100,
+    "L": "100/100",
+    "R": "MISSING",
+    "D": "MISSING",
+    "F": "MISSING",
+    "doc_status": "PARTIAL",
+    "score": null
+  },
+  "new_model_calls": 0,
+  "shared_model_migration": "pending interface owner",
+  "C_alignment": "pending",
+  "full_project_acceptance": "partial"
+}

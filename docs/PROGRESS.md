@@ -138,3 +138,24 @@ docs/design/design_cheatsheet.md → 一页速查
 4. 历史时间线里的 W1 ~11-5、提交 ~11-15 作废，以官网 11-10 / 11-25 / 12-27 为准。
 
 **下一步**：① 按 `docs/plan/整改计划_v2.2_2026-10-30.md` §6 做 2–3 天口径增量（删 `is_deterministic=True`、F 改 claim 级、加 PARTIAL/DESIGN_ONLY、接 resolver 入口）；② 补 `Makefile` 的 `demo` / `curve`，让 `demo_numbers.py` 读 `fixtures/demo_case.json`；③ 把 47→79 的计数固化为 `fixtures/demo_case.json` 并加测试。
+
+
+---
+
+### 2026-11-01（约 20 分钟，DSH 交付复核）
+
+**内容**：核对四模块分工，确认 DSH 主要交付 B 模块；直接修复来源/布尔/fixture/编译边界、精确取整、NA 与 MISSING、预算与逐条规划、债务和豁免校验。增加仓库内回归、合成报告及独立算术复算脚本，修正自检和兼容性说明。
+
+**产出**：`docs/review/DSH_B_review_2026-11-01.md`；pytest 187 passed（含 10,000 组独立有理数核查），原自检修正后 51/51；`scripts/b_demo.py` 与 `scripts/verify_b_report.py` 可复现 47→预测 79、报价 34 CU。
+
+**阻塞/边界**：无真实改造后的 M3/M4 数据，无独立 M14 评测；A/C/D 尚未完成，API/Studio 未接通。冻结 core/schema 未在本轮修改；DSH 既有兼容性变化待调用方迁移。
+
+**下一步**：A/C 产出真实 resolver、复算和双跑记录，接闸门与账本后再进行真实改造及 Studio 联调验收。
+
+
+### 2026-11-02（A → B R0/R1 联调）
+
+接收 A 修订 return-v2：517 文件完整、200 包离线复查、300 删除检查、100 篡改检查通过，无模型调用。B 新增 b-cmp-v1 数值解释器及真实 fixture、A 完整分母/定位绑定适配，修复未知 R/D/F 的 MISSING 判定；生成规则/IR/映射/失败语料、PARTIAL 报告和成本记录。
+产出：`docs/review/A_to_B_integration_2026-11-02.md`、`scripts/receive_a_handoff.py`、`scripts/package_b_return.py`，以及工作区 `BtoA/B_return_R1_20261102_v1.zip`。
+验证：240 pytest passed；新目录解包再跑同样 240 passed，真实 A 输入 L=100/100、总分 null、PARTIAL。
+后续：C 确认协议并返回独立核验/双跑/新鲜度；共享接口负责人统一模型；M3/M4/独立 M14 与全流程 M10/M11 未验收。

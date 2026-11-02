@@ -9,8 +9,8 @@
 |---|---|
 | 规格 | 已冻结：主 PRD v2.2 / ARS v1.2 / 链路 v1.2 |
 | 数字链 | 47 → 79（34 CU，0.95 分/CU），全部可由整数计数复算 |
-| 代码 | 仅有骨架与接口占位，**尚不可用于演示** |
-| 测试 | `tests/` 为空，尚无测试 |
+| 代码 | ②编译与评分模块可独立运行；①③仍有骨架，④未实现，**尚未完成端到端演示** |
+| 测试 | `tests/` 已加入 B 模块回归；详见 [核查记录](docs/review/DSH_B_review_2026-11-01.md) |
 | UI | 仅有 `ui/package.json`，`ui/src` 为空 |
 | 时间线 | 创意提交 11-10 / DEMO 11-25 → 12-27 24:00 / 评审 12-28 |
 
@@ -18,9 +18,15 @@
 
 ```bash
 python -m pip install -e ".[dev]"
-pytest            # 目前无测试用例
+python -m pytest -q
+python scripts/b_demo.py --output outputs/b_review/report.json
+python scripts/verify_b_report.py outputs/b_review/report.json
 python scripts/generate_sbom.py
 ```
+
+`b_demo.py` 使用仓库内的合成信号，只验证评分与方案投影；输出明确标记未执行真实改造。
+`verify_b_report.py` 仅用 Python 标准库独立复算，不能验证回源证据或真实成本。
+Windows 沙箱若无法创建系统临时目录，可加 `--basetemp outputs/pytest-b-review` 运行 pytest。
 
 ## 目录结构
 
@@ -38,7 +44,7 @@ src/assurance_ledger/
   engine/       # S0 规则编译、ARS 打分、改造方案
   ledger/       # S3 证据包、S4 检查、S5 账本与 verify
 scripts/        # SBOM 等工具
-tests/          # 测试（待补）
+tests/          # B 模块回归与合成输入
 ui/             # Studio 面板（待补）
 ```
 

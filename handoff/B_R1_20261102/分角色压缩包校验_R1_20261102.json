@@ -1,0 +1,27 @@
+{
+  "original_return_sha256": "f3cbbe13916ec237dd3d4df1b9d63dc46242ce1fb958318c0331ffda71250b6b",
+  "packages": [
+    {
+      "recipient": "A",
+      "file": "B发给A_R1_20261102_v1.zip",
+      "bytes": 231771,
+      "sha256": "622a7de5fe0a4ebfdd826a4c986b11f1cbc3579e00aac4aa103c973dede0539d",
+      "archive_crc": "passed",
+      "original_payload_byte_comparison": "passed",
+      "original_manifest_files_verified": 98,
+      "files": 102,
+      "handoff_note": "发给A的交接说明_R1_20261102.txt"
+    },
+    {
+      "recipient": "C",
+      "file": "B发给C_R1_20261102_v1.zip",
+      "bytes": 232395,
+      "sha256": "bdefe30ab990a66e18477213eb95262d5bed3e903fbed615f6747b62298ee78b",
+      "archive_crc": "passed",
+      "original_payload_byte_comparison": "passed",
+      "original_manifest_files_verified": 98,
+      "files": 102,
+      "handoff_note": "发给C的交接说明_R1_20261102.txt"
+    }
+  ]
+}

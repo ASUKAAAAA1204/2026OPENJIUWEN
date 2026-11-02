@@ -1,0 +1,52 @@
+C 好，B 的 R0/R1 首批回传包已经整理好了：
+B_return_R1_20261102_v1.zip
+版本：B-R1-20261102-v1；基于 A 的 2026-11-01-return-v2 交接包。
+
+这批交付了什么
+
+包含可执行数值比较规则和 IR、正例/反例/边界实际测试结果、四类编译失败样例、字段及 claim 映射、A 数据接入代码、评分报告和本地成本记录。
+B 完整回归 240 条通过，解包换目录后也已复跑通过。A 原包离线复查符合其披露状态，未新增模型调用。
+
+怎么使用
+
+1. 解压到独立目录，先看 RETURN_NOTE.txt、RETURN_MANIFEST.json、verification/RUN.txt。
+2. 优先审查 interfaces/C_alignment_request.json，再看以下材料：
+   interfaces/rules.json：规则快照，规则版本 b-pe-v1。
+   interfaces/compiled_rules.json：编译结果，IR 版本 b-cmp-v1。
+   interfaces/field_mapping.json：pe、industry_pe 的字段和来源映射。
+   interfaces/claim_rule_mapping.json：待 C 确认的逐 claim 候选关联。
+   cases/fixtures.json：正例、反例、边界输入、预期及 B 实际执行结果。
+   cases/failures.json：四类编译失败样例。
+3. 在自己的 Python 环境安装依赖。本轮已在 Python 3.14 验证：
+   python -m pip install "pydantic>=2.6,<3" "pytest>=8" "python-dotenv>=1,<2" "rfc8785==0.1.4"
+4. 在解压根目录执行，替换路径占位符：
+   python runtime/scripts/receive_a_handoff.py --handoff "<A原交接包目录>" --output "<新的结果目录>"
+   python -m pytest runtime/tests -q --basetemp outputs/pytest
+   --handoff 指向包含 MANIFEST.json 和 data/ 的 A 原包根目录；--output 必须是尚不存在、位于 A 原包之外的新目录。此流程不需要 API Key。
+
+runtime/ 是独立复现的候选快照。正式合并时按 changed_files/ 和文件摘要逐项审查；根测试和验证脚本也请 C 审查后纳入统一入口。
+共享模型差异见 interfaces/shared_interface_requests.json，需由接口负责人定版，不要直接覆盖冻结的 core/schema。
+
+C 接下来优先补什么
+
+1. 确认规则和 IR 协议。
+   规则 ID：b-pe-less-than-industry@1；表达式：pe < industry_pe；IR：b-cmp-v1。
+   当前窄范围是显式字段/数值操作数及比较算子；数值必须有限，不使用 eval，不隐式读取外部数据。
+   B 参考解释器输出 status=EVALUATED/INDETERMINATE、value=bool/null、reason_code=字符串/null。请确认接受版本及异常处理；协议目前尚未由 C 签收。
+2. 返回正式 replay 可运行实现。
+   沿用 A 提议的 replay(bundle_json, payloads_json) -> dict | None 边界，只读取传入且保留的证据。至少提供结论成立、结论被反驳、证据不足三例，以及各自必要的 evidence.ref、规则版本、预期与实际输出。
+   数值谓词为 false 不等于证据不足；返回业务结果应稳定，耗时、时间戳等执行元数据另存。
+3. 返回供 B 评分的真实观测。
+   逐 claim 的核验状态、原因、证据引用、规则/检查版本和独立 verifier 结果及版本；逐 check 的同输入两次业务输出与一致性记录；新鲜度规则/版本及逐 claim 结果；claim/check 关联、完整请求分母与实际核验覆盖范围。
+   B 的解释器可作主检查接口参考；独立 verifier 应采用另一套核验实现，不能只调用同一个解释器两遍或复制 checker 状态。
+   请同时确认候选 claim→rule 关联与自然语言结论的语义范围，不能仅因 pe < industry_pe 成立就将整句结论标为 verified。
+4. 将正式 replay 同版交给 A，供 A 重新最小化证据；将评分观测交 B，并给 A 一份同版结果供证据联调。
+5. 补齐实际复算、双跑、独立核验、入账、失败重试及人工处理成本，注明 run/operation/claim ID、版本、计时边界与去重关系。未知值填 null 并写原因；B 本批 measurements/ 可作交换格式参考。
+6. 后续继续完成 C 负责的账本、发布决策、契约和对外接口联调；先交可运行 replay，无需等待整个 C 模块全部完成。
+
+当前结果与验收边界
+
+A 的 100 条请求已完整接入，L=100/100。R/D/F 因缺上述 C 观测标为 MISSING，报告为 PARTIAL，总分和方案为空。
+待 C 结果和共享接口定版后，B 再计算完整评分与方案。M3/M4、独立 M14、全流程 M10/M11 尚未验收；现有测试通过不能替代这些真实执行记录。
+
+收到后请回一份简短回执：已接收版本、接受的 IR/接口版本、已通过样例、失败复现、需要 B/A 补的字段，以及首批 replay/观测记录的预计反馈时间。请明确标注已确认和 pending 项。

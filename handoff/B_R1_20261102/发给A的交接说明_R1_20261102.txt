@@ -1,0 +1,40 @@
+A 好，B 的 R0/R1 首批回传包已经整理好了：
+B_return_R1_20261102_v1.zip
+版本：B-R1-20261102-v1；基于你的 2026-11-01-return-v2 交接包。
+
+这批交付了什么
+
+包含 B 的正式候选规则、可执行 IR、正例/反例/边界实际测试结果、四类编译失败样例及语料、字段映射、claim 与规则的候选关联、A 数据接入代码、评分报告和本地成本记录。
+原 A 包 517 个文件完整性校验通过；离线复查重现 M5/M15 passed、M10 not_verified。B 完整回归 240 条通过，回传包解到新目录后也已复跑通过，无新增模型调用。
+
+怎么使用
+
+1. 解压到一个独立目录，保留你的原交接包不动。
+2. 先读 RETURN_NOTE.txt、RETURN_MANIFEST.json 和 verification/RUN.txt。
+3. 在自己的 Python 环境安装依赖。本轮已在 Python 3.14 验证：
+   python -m pip install "pydantic>=2.6,<3" "pytest>=8" "python-dotenv>=1,<2" "rfc8785==0.1.4"
+4. 在回传包解压根目录执行，替换下面的路径占位符：
+   python runtime/scripts/receive_a_handoff.py --handoff "<A原交接包目录>" --output "<新的结果目录>"
+   python -m pytest runtime/tests -q --basetemp outputs/pytest
+   注意：--handoff 指向包含 MANIFEST.json 和 data/ 的 A 原包根目录；--output 必须是尚不存在、位于 A 原包之外的新目录。
+5. 查看新结果目录下的 results/report.json、results/ars.json，以及文件校验和离线复查记录。
+
+runtime/ 用于独立复现；正式合并时，请按 changed_files/ 的仓库相对路径及 RETURN_MANIFEST.json 的前后 SHA-256 逐项审查。
+共享 core 模型与 A 旧快照有差异，详见 interfaces/shared_interface_requests.json，需接口负责人统一定版。不要整包覆盖，也不要直接从 runtime/ 覆盖冻结的 core/schema。
+
+A 接下来需要补什么
+
+1. 审查 interfaces/rules.json、interfaces/compiled_rules.json、interfaces/field_mapping.json 和 interfaces/claim_rule_mapping.json。
+   本次规则版本为 b-pe-v1，规则 ID 为 b-pe-less-than-industry@1，表达式为 pe < industry_pe，IR 版本为 b-cmp-v1。
+   claim 与规则的关联仍待 C 确认；数值关系成立不直接证明整句自然语言结论正确。
+2. 与 B/C 确认同版规则后，由 A 在自己的证据打包流程中替换原 pe_rule 算法样例，再重新生成证据包。保留旧包及原摘要，不手改已有证据 JSON 来冒充新结果。
+3. 回传规则接入、字段绑定和证据生成的联调结果；有问题请附 claim ID、固定输入、期望/实际输出和版本，B 处理自己的代码。
+4. 补齐 A 的 S3 回源、打包等阶段实测成本，并与后续 B/C 成本去重汇总。不能将 S2 小计当成全流程 M10。
+5. B 本批的本地成本记录见 measurements/operations.json、timing.json 和 README.txt。模型调用为 0，本地耗时有实测；人工时间未测，等额分摊方案待确认，状态为 incomplete。请先核对计费边界，暂不用于宣称 M4 或全流程 M10 已通过。
+
+当前结果与后续依赖
+
+100 条 A 数据已接通，L=100/100。C 尚未提供独立核验、双跑和新鲜度观测，R/D/F=MISSING，因此报告保持 PARTIAL，总分和方案为空。
+待 C 的真实结果与共享接口定版后，B 再接完整评分和方案。M3/M4、独立 M14、全流程 M10/M11 仍待后续验收。
+
+收到后请回一份简短回执：已接收版本、复现通过项、失败复现信息、待补事项及预计反馈时间。当前回传方式为本地文件，不要求上传 GitHub。
