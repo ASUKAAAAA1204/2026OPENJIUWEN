@@ -1,4 +1,2 @@
-* text=auto eol=lf
-*.png binary
-*.jpg binary
-*.pdf binary
+# A 的证据源文件按原始字节保存，行尾转换会破坏 raw_sha256
+fixtures/a_100/source.csv -text
