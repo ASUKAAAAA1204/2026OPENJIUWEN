@@ -150,7 +150,7 @@ docs/design/design_cheatsheet.md → 一页速查
 - 脚本：`scripts/assurance.py`（run/replay/check/verify-ledger/gate/export/serve，退出码 0/2/3/4/5）、`serve_api.py`、`verify_ledger.py`
 - 映射：`fixtures/a_100/claim-map-v1.json`，100 条，`<` 48 / `>` 46 / `==` 6，与方案 §4.1 一致
 - 契约：`docs/api/API_CONTRACT-v1.md`、`docs/api/schemas/`（5 个 draft 2020-12 schema）、`docs/api/examples/`
-- 测试：C 新增 10 个测试文件、106 项；B 的 240 条全过
+- 测试：C 新增 11 个测试文件、108 项（107 通过 + 1 待 D 端源码）；B 的 240 条全过
 - 100 条端到端：verified 100 / refuted 0 / indeterminate 0；ARS COMPLETE 100 分 A 档；闸门 release；账本 102 条 PASS；M6 100/100；M13 20/20
 - SBOM：`sbom.json`（CycloneDX 1.6，11 个组件）；`Makefile` 补齐 install/test/mypy/sbom/run/verify/api/curve
 
