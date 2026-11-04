@@ -1,0 +1,15 @@
+{
+  "base_commit": "659263f126aebd8c96a812320eae9578aaa88f01",
+  "branch": "A-bc-r1-20261102-1",
+  "owner": "A",
+  "protected_files": 46,
+  "violations": [],
+  "A_tests": {
+    "passed": 218,
+    "skipped": 1,
+    "warnings": 35
+  },
+  "secret_matches": 0,
+  "frozen_core_contracts_unchanged": true,
+  "main_B_branch_not_modified": true
+}

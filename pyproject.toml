@@ -12,16 +12,24 @@ license = {text = "Apache-2.0"}
 authors = [{name = "openJiuwen Team"}]
 dependencies = [
     "pydantic>=2.6,<3",
+    "rfc8785==0.1.4",
 ]
 
 [project.urls]
 Repository = "https://github.com/ASUKAAAAA1204/2026OPENJIUWEN"
 
 [project.optional-dependencies]
+api = [
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
+]
 dev = [
     "cyclonedx-python-lib>=5.0",
-    "pytest>=8.0",
+    "httpx>=0.27",
+    "jsonschema>=4.22",
     "mypy>=1.8",
+    "pytest>=8.0",
+    "python-dotenv>=1.0",   # A 的 rail.model_config 需要
 ]
 semgrep_cli = [
     "semgrep>=1.80",   # LGPL-2.1, used as subprocess only
@@ -31,7 +39,7 @@ semgrep_cli = [
 where = ["src"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "fixtures/a_s3", "fixtures/a_acceptance"]
 
 [tool.mypy]
 python_version = "3.10"

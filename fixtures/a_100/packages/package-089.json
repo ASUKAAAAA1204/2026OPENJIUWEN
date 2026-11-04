@@ -1,0 +1,346 @@
+{
+  "format": "assurance-evidence-v1",
+  "bundle": {
+    "id": "evb-rail-d4a9a4ee079647f39c1ce7e4a433fd2d-c-089",
+    "skill": "daily-csv-spike",
+    "version": "0.1.0",
+    "claim": {
+      "id": "c-089",
+      "statement": "C089 的 PE 为 15，行业 PE 为 20；PE 低于行业均值，估值相对偏低。",
+      "locator": {
+        "file": "source.csv",
+        "row": 89,
+        "field": "pe",
+        "line": null,
+        "section": null,
+        "free_text": null
+      },
+      "skill_version": "daily-csv-spike@0.1.0"
+    },
+    "evidence": [
+      {
+        "kind": "model_call",
+        "ref": "event-000260",
+        "locator": null,
+        "digest": "sha256:ab4eb0123130fe0a1acf3412a709f76e1b79da73157d3b1e7c6830fabca75613",
+        "captured_at": "2026-11-01T10:17:38.179801Z",
+        "freshness": "unknown"
+      },
+      {
+        "kind": "tool_call",
+        "ref": "event-000261",
+        "locator": null,
+        "digest": "sha256:5ed39cbc5524a127edbb302ac580b37a2610436c12ef4802edabc6249d93ec2b",
+        "captured_at": "2026-11-01T10:17:38.182309Z",
+        "freshness": "unknown"
+      },
+      {
+        "kind": "model_call",
+        "ref": "event-000265",
+        "locator": null,
+        "digest": "sha256:c0f040eecd003b1b73ba91a89f1fcdc0ee2c5959b15a755f6594f0a0630ff9af",
+        "captured_at": "2026-11-01T10:17:39.336843Z",
+        "freshness": "unknown"
+      },
+      {
+        "kind": "input_snapshot",
+        "ref": "source-snapshot",
+        "locator": "{\"field\":\"pe\",\"file\":\"source.csv\",\"free_text\":null,\"line\":null,\"row\":89,\"section\":null}",
+        "digest": "sha256:9cc2900204f49813adec914fb6e549a868b47d0b75357aace9ac8881aa86292b",
+        "captured_at": "2026-11-01T10:17:38.182309Z",
+        "freshness": "unknown"
+      },
+      {
+        "kind": "claim_inputs",
+        "ref": "claim-inputs",
+        "locator": null,
+        "digest": "sha256:0b25163d606967e1fe5f359a897c393c7282ffbe3ab45969e1be9df8852ef18d",
+        "captured_at": "2026-11-01T10:17:38.182309Z",
+        "freshness": "unknown"
+      },
+      {
+        "kind": "rule",
+        "ref": "rule",
+        "locator": null,
+        "digest": "sha256:156b59afa2ea2ed29edb4699fc83f477e8c6d19b98a11472528fb98aded4318e",
+        "captured_at": "2026-11-01T10:17:38.182309Z",
+        "freshness": "unknown"
+      }
+    ],
+    "checks": [],
+    "adjudication": null,
+    "prev_hash": null,
+    "record_hash": "sha256:84e31b71c48fa62e95e11e35188374582de95212c466ce3f6f1cfd932165e4a6"
+  },
+  "payloads": {
+    "event-000260": {
+      "seq": 260,
+      "ts": "2026-11-01T10:17:38.179801Z",
+      "agent": "rail-d4a9a4ee079647f39c1ce7e4a433fd2d-c-089",
+      "kind": "model",
+      "tool": null,
+      "tokens_in": 451,
+      "tokens_out": 40,
+      "latency_ms": 777.3124000013922,
+      "claim_id": "c-089",
+      "extra": {
+        "run_id": "rail-d4a9a4ee079647f39c1ce7e4a433fd2d",
+        "task_id": "rail-d4a9a4ee079647f39c1ce7e4a433fd2d/c-089",
+        "attribution": "task_context",
+        "status": "ok",
+        "timing_status": "measured",
+        "token_status": "reported",
+        "cost_complete": true,
+        "mode": "live",
+        "response": {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "call_00_bnKpN5L14CqEG7YOURhv1990",
+              "type": "function",
+              "function": {
+                "name": "read_market_csv",
+                "arguments": "{\"company\": \"C089\"}"
+              }
+            }
+          ],
+          "usage_metadata": {
+            "code": 0,
+            "err_msg": "",
+            "prompt": "",
+            "task_id": "",
+            "model_name": "deepseek-flash",
+            "total_latency": 0.0,
+            "first_token_time": "",
+            "request_start_time": "",
+            "input_tokens": 451,
+            "output_tokens": 40,
+            "total_tokens": 491,
+            "cache_tokens": 0,
+            "cache_read_tokens": 0,
+            "cache_miss_tokens": 451,
+            "cache_write_tokens": null,
+            "cache_status": "observed",
+            "cache_source": "provider_usage",
+            "cache_authoritative": true,
+            "cache_creation_input_tokens": null,
+            "reasoning_tokens": 0,
+            "input_cost": 0.0,
+            "output_cost": 0.0,
+            "total_cost": 0.0
+          },
+          "finish_reason": "tool_calls",
+          "response_id": "286f5977-d90b-4897-adf4-39262f133407",
+          "response_model": "deepseek-flash",
+          "provider_metadata": {
+            "system_fingerprint": "bc19ba97cbe016479903222bb1578db6"
+          }
+        }
+      }
+    },
+    "event-000261": {
+      "seq": 261,
+      "ts": "2026-11-01T10:17:38.182309Z",
+      "agent": "rail-d4a9a4ee079647f39c1ce7e4a433fd2d-c-089",
+      "kind": "tool",
+      "tool": "read_market_csv",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "latency_ms": 1.9050999981118366,
+      "claim_id": "c-089",
+      "extra": {
+        "run_id": "rail-d4a9a4ee079647f39c1ce7e4a433fd2d",
+        "task_id": "rail-d4a9a4ee079647f39c1ce7e4a433fd2d/c-089",
+        "attribution": "task_context",
+        "status": "ok",
+        "timing_status": "measured",
+        "token_status": "not_applicable_tool",
+        "cost_complete": true,
+        "mode": "live",
+        "tool_call_id": "call_00_bnKpN5L14CqEG7YOURhv1990",
+        "arguments": "{\"company\": \"C089\"}",
+        "result": {
+          "company": "C089",
+          "values": {
+            "company": "C089",
+            "pe": "15",
+            "industry_pe": "20",
+            "as_of": "2026-11-01"
+          },
+          "locators": {
+            "pe": {
+              "file": "source.csv",
+              "row": 89,
+              "field": "pe"
+            },
+            "industry_pe": {
+              "file": "source.csv",
+              "row": 89,
+              "field": "industry_pe"
+            }
+          },
+          "row_convention": "1-based data record, header excluded",
+          "as_of": "2026-11-01"
+        }
+      }
+    },
+    "event-000265": {
+      "seq": 265,
+      "ts": "2026-11-01T10:17:39.336843Z",
+      "agent": "rail-d4a9a4ee079647f39c1ce7e4a433fd2d-c-089",
+      "kind": "model",
+      "tool": null,
+      "tokens_in": 625,
+      "tokens_out": 69,
+      "latency_ms": 1154.2420999976457,
+      "claim_id": "c-089",
+      "extra": {
+        "run_id": "rail-d4a9a4ee079647f39c1ce7e4a433fd2d",
+        "task_id": "rail-d4a9a4ee079647f39c1ce7e4a433fd2d/c-089",
+        "attribution": "task_context",
+        "status": "ok",
+        "timing_status": "measured",
+        "token_status": "reported",
+        "cost_complete": true,
+        "mode": "live",
+        "response": {
+          "role": "assistant",
+          "content": "{\"id\":\"c-089\",\"statement\":\"C089 的 PE 为 15，行业 PE 为 20；PE 低于行业均值，估值相对偏低。\",\"locator\":{\"file\":\"source.csv\",\"row\":89,\"field\":\"pe\"},\"skill_version\":\"daily-csv-spike@0.1.0\"}",
+          "usage_metadata": {
+            "code": 0,
+            "err_msg": "",
+            "prompt": "",
+            "task_id": "",
+            "model_name": "deepseek-flash",
+            "total_latency": 0.0,
+            "first_token_time": "",
+            "request_start_time": "",
+            "input_tokens": 625,
+            "output_tokens": 69,
+            "total_tokens": 694,
+            "cache_tokens": 384,
+            "cache_read_tokens": 384,
+            "cache_miss_tokens": 241,
+            "cache_write_tokens": null,
+            "cache_status": "observed",
+            "cache_source": "provider_usage",
+            "cache_authoritative": true,
+            "cache_creation_input_tokens": null,
+            "reasoning_tokens": 0,
+            "input_cost": 0.0,
+            "output_cost": 0.0,
+            "total_cost": 0.0
+          },
+          "finish_reason": "stop",
+          "response_id": "5bac3205-e905-4ec1-a15a-61937f6cb5a3",
+          "response_model": "deepseek-flash",
+          "provider_metadata": {
+            "system_fingerprint": "bc19ba97cbe016479903222bb1578db6"
+          }
+        }
+      }
+    },
+    "source-snapshot": {
+      "file": "source.csv",
+      "media_type": "text/csv; charset=utf-8",
+      "encoding": "base64",
+      "content": "Y29tcGFueSxwZSxpbmR1c3RyeV9wZSxhc19vZg0KQzAwMSwxMiwyMCwyMDI2LTExLTAxDQpDMDAyLDEzLDIwLDIwMjYtMTEtMDENCkMwMDMsMTQsMjAsMjAyNi0xMS0wMQ0KQzAwNCwxNSwyMCwyMDI2LTExLTAxDQpDMDA1LDE2LDIwLDIwMjYtMTEtMDENCkMwMDYsMTcsMjAsMjAyNi0xMS0wMQ0KQzAwNywxOCwyMCwyMDI2LTExLTAxDQpDMDA4LDE5LDIwLDIwMjYtMTEtMDENCkMwMDksMjAsMjAsMjAyNi0xMS0wMQ0KQzAxMCwyMSwyMCwyMDI2LTExLTAxDQpDMDExLDIyLDIwLDIwMjYtMTEtMDENCkMwMTIsMjMsMjAsMjAyNi0xMS0wMQ0KQzAxMywyNCwyMCwyMDI2LTExLTAxDQpDMDE0LDI1LDIwLDIwMjYtMTEtMDENCkMwMTUsMjYsMjAsMjAyNi0xMS0wMQ0KQzAxNiwyNywyMCwyMDI2LTExLTAxDQpDMDE3LDI4LDIwLDIwMjYtMTEtMDENCkMwMTgsMTIsMjAsMjAyNi0xMS0wMQ0KQzAxOSwxMywyMCwyMDI2LTExLTAxDQpDMDIwLDE0LDIwLDIwMjYtMTEtMDENCkMwMjEsMTUsMjAsMjAyNi0xMS0wMQ0KQzAyMiwxNiwyMCwyMDI2LTExLTAxDQpDMDIzLDE3LDIwLDIwMjYtMTEtMDENCkMwMjQsMTgsMjAsMjAyNi0xMS0wMQ0KQzAyNSwxOSwyMCwyMDI2LTExLTAxDQpDMDI2LDIwLDIwLDIwMjYtMTEtMDENCkMwMjcsMjEsMjAsMjAyNi0xMS0wMQ0KQzAyOCwyMiwyMCwyMDI2LTExLTAxDQpDMDI5LDIzLDIwLDIwMjYtMTEtMDENCkMwMzAsMjQsMjAsMjAyNi0xMS0wMQ0KQzAzMSwyNSwyMCwyMDI2LTExLTAxDQpDMDMyLDI2LDIwLDIwMjYtMTEtMDENCkMwMzMsMjcsMjAsMjAyNi0xMS0wMQ0KQzAzNCwyOCwyMCwyMDI2LTExLTAxDQpDMDM1LDEyLDIwLDIwMjYtMTEtMDENCkMwMzYsMTMsMjAsMjAyNi0xMS0wMQ0KQzAzNywxNCwyMCwyMDI2LTExLTAxDQpDMDM4LDE1LDIwLDIwMjYtMTEtMDENCkMwMzksMTYsMjAsMjAyNi0xMS0wMQ0KQzA0MCwxNywyMCwyMDI2LTExLTAxDQpDMDQxLDE4LDIwLDIwMjYtMTEtMDENCkMwNDIsMTksMjAsMjAyNi0xMS0wMQ0KQzA0MywyMCwyMCwyMDI2LTExLTAxDQpDMDQ0LDIxLDIwLDIwMjYtMTEtMDENCkMwNDUsMjIsMjAsMjAyNi0xMS0wMQ0KQzA0NiwyMywyMCwyMDI2LTExLTAxDQpDMDQ3LDI0LDIwLDIwMjYtMTEtMDENCkMwNDgsMjUsMjAsMjAyNi0xMS0wMQ0KQzA0OSwyNiwyMCwyMDI2LTExLTAxDQpDMDUwLDI3LDIwLDIwMjYtMTEtMDENCkMwNTEsMjgsMjAsMjAyNi0xMS0wMQ0KQzA1MiwxMiwyMCwyMDI2LTExLTAxDQpDMDUzLDEzLDIwLDIwMjYtMTEtMDENCkMwNTQsMTQsMjAsMjAyNi0xMS0wMQ0KQzA1NSwxNSwyMCwyMDI2LTExLTAxDQpDMDU2LDE2LDIwLDIwMjYtMTEtMDENCkMwNTcsMTcsMjAsMjAyNi0xMS0wMQ0KQzA1OCwxOCwyMCwyMDI2LTExLTAxDQpDMDU5LDE5LDIwLDIwMjYtMTEtMDENCkMwNjAsMjAsMjAsMjAyNi0xMS0wMQ0KQzA2MSwyMSwyMCwyMDI2LTExLTAxDQpDMDYyLDIyLDIwLDIwMjYtMTEtMDENCkMwNjMsMjMsMjAsMjAyNi0xMS0wMQ0KQzA2NCwyNCwyMCwyMDI2LTExLTAxDQpDMDY1LDI1LDIwLDIwMjYtMTEtMDENCkMwNjYsMjYsMjAsMjAyNi0xMS0wMQ0KQzA2NywyNywyMCwyMDI2LTExLTAxDQpDMDY4LDI4LDIwLDIwMjYtMTEtMDENCkMwNjksMTIsMjAsMjAyNi0xMS0wMQ0KQzA3MCwxMywyMCwyMDI2LTExLTAxDQpDMDcxLDE0LDIwLDIwMjYtMTEtMDENCkMwNzIsMTUsMjAsMjAyNi0xMS0wMQ0KQzA3MywxNiwyMCwyMDI2LTExLTAxDQpDMDc0LDE3LDIwLDIwMjYtMTEtMDENCkMwNzUsMTgsMjAsMjAyNi0xMS0wMQ0KQzA3NiwxOSwyMCwyMDI2LTExLTAxDQpDMDc3LDIwLDIwLDIwMjYtMTEtMDENCkMwNzgsMjEsMjAsMjAyNi0xMS0wMQ0KQzA3OSwyMiwyMCwyMDI2LTExLTAxDQpDMDgwLDIzLDIwLDIwMjYtMTEtMDENCkMwODEsMjQsMjAsMjAyNi0xMS0wMQ0KQzA4MiwyNSwyMCwyMDI2LTExLTAxDQpDMDgzLDI2LDIwLDIwMjYtMTEtMDENCkMwODQsMjcsMjAsMjAyNi0xMS0wMQ0KQzA4NSwyOCwyMCwyMDI2LTExLTAxDQpDMDg2LDEyLDIwLDIwMjYtMTEtMDENCkMwODcsMTMsMjAsMjAyNi0xMS0wMQ0KQzA4OCwxNCwyMCwyMDI2LTExLTAxDQpDMDg5LDE1LDIwLDIwMjYtMTEtMDENCkMwOTAsMTYsMjAsMjAyNi0xMS0wMQ0KQzA5MSwxNywyMCwyMDI2LTExLTAxDQpDMDkyLDE4LDIwLDIwMjYtMTEtMDENCkMwOTMsMTksMjAsMjAyNi0xMS0wMQ0KQzA5NCwyMCwyMCwyMDI2LTExLTAxDQpDMDk1LDIxLDIwLDIwMjYtMTEtMDENCkMwOTYsMjIsMjAsMjAyNi0xMS0wMQ0KQzA5NywyMywyMCwyMDI2LTExLTAxDQpDMDk4LDI0LDIwLDIwMjYtMTEtMDENCkMwOTksMjUsMjAsMjAyNi0xMS0wMQ0KQzEwMCwyNiwyMCwyMDI2LTExLTAxDQo=",
+      "raw_sha256": "0f11c02b5bc29ec1323c43ba7ccebbc0ab39885f3e6758e7653d98bceff9b3b3"
+    },
+    "claim-inputs": {
+      "claim_id": "c-089",
+      "company": "C089",
+      "locators": {
+        "pe": {
+          "file": "source.csv",
+          "row": 89,
+          "field": "pe"
+        },
+        "industry_pe": {
+          "file": "source.csv",
+          "row": 89,
+          "field": "industry_pe"
+        }
+      },
+      "expected_values": {
+        "pe": "15",
+        "industry_pe": "20"
+      },
+      "captured_at": "2026-11-01T10:17:38.182309+00:00",
+      "source_sha256": "0f11c02b5bc29ec1323c43ba7ccebbc0ab39885f3e6758e7653d98bceff9b3b3"
+    },
+    "rule": {
+      "id": "csv-pe-compare-fixture@1",
+      "operation": "numeric_compare",
+      "operands": [
+        "pe",
+        "industry_pe"
+      ],
+      "scope": "A packing fixture only; not B compiler output or C verifier"
+    }
+  },
+  "diagnostics": {
+    "claim_id": "c-089",
+    "run_id": "rail-d4a9a4ee079647f39c1ce7e4a433fd2d",
+    "reason_codes": [],
+    "contracts": {
+      "C1": "passed",
+      "C2": "C2: locator level=precise"
+    },
+    "locator_resolution": "RESOLVED",
+    "semantic_claim_verified": false,
+    "independent_verifier_run": false,
+    "source_resolution": {
+      "primary": {
+        "status": "RESOLVED",
+        "reason_code": null,
+        "detail_code": null,
+        "locator": {
+          "file": "source.csv",
+          "row": 89,
+          "field": "pe",
+          "line": null,
+          "section": null,
+          "free_text": null
+        },
+        "expected_value": "15",
+        "actual_value": "15",
+        "source_sha256": "0f11c02b5bc29ec1323c43ba7ccebbc0ab39885f3e6758e7653d98bceff9b3b3",
+        "comparison": "numeric_relative_1e-6"
+      },
+      "industry_pe": {
+        "status": "RESOLVED",
+        "reason_code": null,
+        "detail_code": null,
+        "locator": {
+          "file": "source.csv",
+          "row": 89,
+          "field": "industry_pe",
+          "line": null,
+          "section": null,
+          "free_text": null
+        },
+        "expected_value": "20",
+        "actual_value": "20",
+        "source_sha256": "0f11c02b5bc29ec1323c43ba7ccebbc0ab39885f3e6758e7653d98bceff9b3b3",
+        "comparison": "numeric_relative_1e-6"
+      }
+    },
+    "source_digest_matches_capture": true,
+    "capture_report_digest": "sha256:c4f37a633f44accdab43a84491864a0c83142a31963aee459ec74686e1bca9cc",
+    "rule_snapshot_provided": true
+  },
+  "minimality": {
+    "status": "not_run",
+    "reason_code": "REPLAYER_NOT_CONFIGURED"
+  },
+  "hash_policy": {
+    "canonicalization": "RFC8785",
+    "algorithm": "SHA-256",
+    "evidence_digest": "JCS(payloads[ref])",
+    "record_hash": "JCS(bundle excluding record_hash; prev_hash included)",
+    "package_hash": "JCS(document excluding package_hash)"
+  },
+  "package_hash": "sha256:870e620e65a946fea0cc8fd61dfd7b496ad8e9731a67498b3ff3d7c4cdbfc107"
+}

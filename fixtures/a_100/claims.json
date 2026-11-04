@@ -1,0 +1,1302 @@
+[
+  {
+    "id": "c-001",
+    "statement": "C001 的 PE 为 12，低于行业 PE 20，估值相对行业偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 1,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-002",
+    "statement": "C002 的市盈率（PE）为 13，低于行业市盈率均值 20，估值相对行业偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 2,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-003",
+    "statement": "C003 的 PE 为 14，低于行业均值 20，估值相对行业偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 3,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-004",
+    "statement": "C004 的市盈率（PE）为 15，低于行业市盈率均值 20。",
+    "locator": {
+      "file": "source.csv",
+      "row": 4,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-005",
+    "statement": "C005 的市盈率（PE）为 16，低于行业平均市盈率 20。",
+    "locator": {
+      "file": "source.csv",
+      "row": 5,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-006",
+    "statement": "C006 的市盈率（PE）为 17，行业平均市盈率为 20，因此 C006 的 PE 低于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 6,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-007",
+    "statement": "C007 的市盈率（PE）为 18，低于其所属行业平均市盈率 20，估值相对行业偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 7,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-008",
+    "statement": "C008 的 PE 为 19，行业 PE 为 20，PE 低于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 8,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-009",
+    "statement": "C009 的 PE 为 20，行业 PE 均值也为 20，二者相等，估值与行业持平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 9,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-010",
+    "statement": "C010 的 PE 为 21，高于其行业 PE 20，估值相对行业均值略高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 10,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-011",
+    "statement": "C011 的市盈率（PE）为 22，行业市盈率为 20，PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 11,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-012",
+    "statement": "C012 的 PE 为 23，行业平均 PE 为 20，公司 PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 12,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-013",
+    "statement": "C013 的 PE 为 24，高于行业 PE 20，说明其估值高于行业平均水平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 13,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-014",
+    "statement": "C014 的 PE 为 25，行业平均 PE 为 20，PE 高于行业均值，估值相对偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 14,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-015",
+    "statement": "C015 的 PE 为 26，高于行业均值 20。",
+    "locator": {
+      "file": "source.csv",
+      "row": 15,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-016",
+    "statement": "C016 的 PE 为 27，高于行业 PE 均值 20，估值相对行业偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 16,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-017",
+    "statement": "C017 的 PE 为 28，高于行业平均 PE 20，估值相对行业偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 17,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-018",
+    "statement": "C018 的 PE 为 12，低于行业 PE 20，当前估值低于行业平均水平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 18,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-019",
+    "statement": "C019 的 PE 为 13，低于行业 PE 20，估值相对行业均值偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 19,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-020",
+    "statement": "C020 的 PE 为 14，低于行业 PE 20，估值相对行业偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 20,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-021",
+    "statement": "C021 的 PE 为 15，行业 PE 为 20，PE 低于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 21,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-022",
+    "statement": "C022 的 PE 为 16，行业 PE 为 20，PE 低于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 22,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-023",
+    "statement": "C023 的 PE 为 17，行业 PE 为 20，公司 PE 低于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 23,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-024",
+    "statement": "C024 的市盈率（PE）为 18，低于行业平均市盈率 20。",
+    "locator": {
+      "file": "source.csv",
+      "row": 24,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-025",
+    "statement": "C025 的市盈率（PE）为 19，行业平均市盈率为 20，公司 PE 低于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 25,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-026",
+    "statement": "C026 的市盈率（PE）为 20，行业平均市盈率为 20，两者相等，说明估值与行业平均水平持平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 26,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-027",
+    "statement": "C027 的 PE 为 21，行业 PE 为 20，PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 27,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-028",
+    "statement": "C028 的 PE 为 22，行业市盈率为 20，C028 的市盈率高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 28,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-029",
+    "statement": "C029 的市盈率（PE）为 23，高于行业市盈率均值 20，估值相对行业偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 29,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-030",
+    "statement": "C030 的 PE 为 24，高于行业平均 PE 20。",
+    "locator": {
+      "file": "source.csv",
+      "row": 30,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-031",
+    "statement": "C031 的市盈率（PE）为 25，高于行业平均 PE 20，估值相对行业偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 31,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-032",
+    "statement": "公司 C032 的 PE 为 26，高于行业 PE 20，估值相对行业偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 32,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-033",
+    "statement": "C033 的市盈率（PE）为 27，高于行业平均市盈率 20，说明其估值相对行业偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 33,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-034",
+    "statement": "C034 的 PE 为 28，行业平均 PE 为 20，公司 PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 34,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-035",
+    "statement": "C035 的 PE 为 12，行业平均 PE 为 20，公司 PE 低于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 35,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-036",
+    "statement": "C036 的市盈率（PE）为 13，低于行业平均市盈率 20，表明其估值相对行业平均水平偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 36,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-037",
+    "statement": "C037 的市盈率（PE）为 14，低于行业市盈率 20，估值相对行业偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 37,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-038",
+    "statement": "C038 的 PE 为 15，行业 PE 为 20，PE 低于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 38,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-039",
+    "statement": "C039 的市盈率 PE 为 16，低于行业市盈率 20，估值相对行业偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 39,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-040",
+    "statement": "C040 的 PE 为 17，低于行业 PE 20，估值相对行业偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 40,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-041",
+    "statement": "C041 的 PE 为 18，低于行业平均 PE 20，估值相对行业偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 41,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-042",
+    "statement": "C042 的 PE 为 19，低于行业 PE 20。",
+    "locator": {
+      "file": "source.csv",
+      "row": 42,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-043",
+    "statement": "C043 的 PE 为 20，行业 PE 为 20，两者相等，因此 C043 的估值与行业均值持平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 43,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-044",
+    "statement": "C044 的市盈率（PE）为 21，高于行业平均市盈率 20，估值相对行业均值偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 44,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-045",
+    "statement": "C045 的市盈率（PE）为 22，高于行业平均市盈率 20。",
+    "locator": {
+      "file": "source.csv",
+      "row": 45,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-046",
+    "statement": "C046 的 PE 为 23，高于行业均值 20（行业 PE 为 20），估值相对行业偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 46,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-047",
+    "statement": "C047 的 PE 为 24，高于行业平均 PE 20，估值高于行业水平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 47,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-048",
+    "statement": "C048 的市盈率（PE）为 25，高于行业平均市盈率 20，表明其估值相对行业偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 48,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-049",
+    "statement": "C049 的 PE 为 26，行业平均 PE 为 20，公司 PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 49,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-050",
+    "statement": "C050 的市盈率（PE）为 27，高于行业平均市盈率 20，估值相对行业偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 50,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-051",
+    "statement": "公司 C051 的 PE 为 28，行业 PE 为 20；PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 51,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-052",
+    "statement": "C052 的市盈率（PE）为 12，低于行业市盈率 20。",
+    "locator": {
+      "file": "source.csv",
+      "row": 52,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-053",
+    "statement": "C053 的市盈率（PE）为 13，低于行业平均市盈率 20，估值相对行业偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 53,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-054",
+    "statement": "公司 C054 的 PE 为 14，低于行业均值 20，估值相对行业偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 54,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-055",
+    "statement": "C055 的 PE 为 15，低于行业 PE 20，估值相对行业偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 55,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-056",
+    "statement": "C056 的市盈率（PE）为 16，低于行业平均市盈率 20，估值相对行业均值偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 56,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-057",
+    "statement": "C057 的市盈率（PE）为 17，行业平均市盈率为 20，公司 PE 低于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 57,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-058",
+    "statement": "C058 的 PE 为 18，低于行业 PE 20，估值相对行业偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 58,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-059",
+    "statement": "C059 的 PE 为 19，低于行业均值 20。",
+    "locator": {
+      "file": "source.csv",
+      "row": 59,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-060",
+    "statement": "C060 的 PE 为 20，行业 PE 为 20，两者相等，估值与行业均值持平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 60,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-061",
+    "statement": "C061 的市盈率（PE）为 21，行业平均市盈率为 20，PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 61,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-062",
+    "statement": "C062 的 PE 为 22，行业 PE 为 20，PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 62,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-063",
+    "statement": "C063 的 PE 为 23，行业 PE 为 20，公司 PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 63,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-064",
+    "statement": "C064 的市盈率（PE）为 24，高于行业平均市盈率 20。",
+    "locator": {
+      "file": "source.csv",
+      "row": 64,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-065",
+    "statement": "C065 的市盈率（PE）为 25，高于行业平均市盈率 20，说明其估值高于行业平均水平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 65,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-066",
+    "statement": "公司C066的PE为26，高于行业PE均值20，估值相对行业偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 66,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-067",
+    "statement": "公司 C067 的 PE 为 27，行业 PE 为 20；其 PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 67,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-068",
+    "statement": "C068 的市盈率（PE）为 28，高于行业市盈率 20，估值高于行业平均水平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 68,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-069",
+    "statement": "C069 的 PE 为 12，行业平均 PE 为 20，PE 低于行业平均。",
+    "locator": {
+      "file": "source.csv",
+      "row": 69,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-070",
+    "statement": "公司 C070 的 PE 为 13，低于行业 PE 20，估值低于行业平均水平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 70,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-071",
+    "statement": "C071 的市盈率（PE）为 14，低于行业平均市盈率 20。",
+    "locator": {
+      "file": "source.csv",
+      "row": 71,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-072",
+    "statement": "C072 的 PE 为 15，低于行业 PE 20，估值相对行业均值偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 72,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-073",
+    "statement": "C073 的市盈率（PE）为 16，低于行业市盈率 20，估值低于行业平均水平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 73,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-074",
+    "statement": "C074 的 PE 为 17，低于行业 PE 20，估值相对行业均值偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 74,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-075",
+    "statement": "C075 的市盈率（PE）为 18，低于行业平均市盈率 20，估值相对行业均值偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 75,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-076",
+    "statement": "公司 C076 的 PE 为 19，行业市盈率均值为 20，公司 PE 低于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 76,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-077",
+    "statement": "C077 的 PE 为 20，行业 PE 为 20，两者相等，估值与行业持平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 77,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-078",
+    "statement": "C078 的市盈率（PE）为 21，行业市盈率（industry_pe）为 20，略高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 78,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-079",
+    "statement": "C079 的 PE 为 22，行业均值为 20，PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 79,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-080",
+    "statement": "C080 的 PE 为 23，行业 PE 为 20，公司 PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 80,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-081",
+    "statement": "C081 的市盈率（PE）为 24，高于行业市盈率均值 20，估值相对行业偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 81,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-082",
+    "statement": "C082 的 PE 为 25，高于其行业 PE 20，估值相对行业偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 82,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-083",
+    "statement": "C083 的 PE 为 26，高于行业 PE 均值 20，估值高于行业平均水平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 83,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-084",
+    "statement": "C084 的 PE 为 27，高于行业 PE 20，估值相对行业偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 84,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-085",
+    "statement": "C085 的 PE 为 28，行业 PE 为 20，公司 PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 85,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-086",
+    "statement": "公司 C086 的 PE 为 12，行业 PE 为 20，PE 低于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 86,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-087",
+    "statement": "C087 的 PE 为 13，低于行业 PE 20，估值低于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 87,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-088",
+    "statement": "C088 的 PE 为 14，低于行业市盈率 20，估值低于行业平均水平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 88,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-089",
+    "statement": "C089 的 PE 为 15，行业 PE 为 20；PE 低于行业均值，估值相对偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 89,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-090",
+    "statement": "C090 的 PE 为 16，行业 PE 为 20，PE 低于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 90,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-091",
+    "statement": "C091 的 PE 为 17，低于行业 PE 20，估值相对行业均值偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 91,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-092",
+    "statement": "C092 的 PE 为 18，低于行业 PE 20，估值低于行业平均水平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 92,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-093",
+    "statement": "C093 的 PE 为 19，低于行业平均 PE 20，估值相对行业偏低。",
+    "locator": {
+      "file": "source.csv",
+      "row": 93,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-094",
+    "statement": "C094 的 PE 为 20，行业 PE 为 20，两者相等，说明其估值与行业平均水平持平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 94,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-095",
+    "statement": "C095 的 PE 为 21，行业 PE 为 20，PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 95,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-096",
+    "statement": "C096 的市盈率（PE）为 22，高于其所属行业平均市盈率 20。",
+    "locator": {
+      "file": "source.csv",
+      "row": 96,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-097",
+    "statement": "C097 的 PE 为 23，高于行业 PE 20，估值高于行业平均水平。",
+    "locator": {
+      "file": "source.csv",
+      "row": 97,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-098",
+    "statement": "C098 的市盈率（PE）为 24，行业平均市盈率为 20，公司 PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 98,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-099",
+    "statement": "C099 的 PE 为 25，行业 PE 均值为 20，PE 高于行业均值。",
+    "locator": {
+      "file": "source.csv",
+      "row": 99,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  },
+  {
+    "id": "c-100",
+    "statement": "C100 的 PE 为 26，高于行业 PE 均值 20，估值相对行业偏高。",
+    "locator": {
+      "file": "source.csv",
+      "row": 100,
+      "field": "pe",
+      "line": null,
+      "section": null,
+      "free_text": null
+    },
+    "skill_version": "daily-csv-spike@0.1.0"
+  }
+]

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assurance-ledger.local/schemas/report-v1.schema.json",
+  "title": "report.json v1（自包含展示摘要）",
+  "type": "object",
+  "required": ["format", "api_version", "run_id", "generated_at", "coord", "headline", "dims", "segments", "claims_summary", "plan", "ledger", "cost", "metrics", "artifacts", "warnings"],
+  "properties": {
+    "format": { "const": "assurance-report-v1" },
+    "api_version": { "const": "1.0" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "coord": {
+      "type": "object",
+      "required": ["skill_version", "model", "data_profile"],
+      "properties": {
+        "skill_version": { "type": "string" },
+        "model": { "type": "string" },
+        "data_profile": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "headline": {
+      "type": "object",
+      "required": ["doc_status", "score", "band", "can_gate", "action", "reason_code"],
+      "properties": {
+        "doc_status": { "enum": ["DESIGN_ONLY", "PARTIAL", "COMPLETE"] },
+        "score": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 },
+        "band": { "enum": ["A", "B", "C", "D", null] },
+        "can_gate": { "type": "boolean" },
+        "action": { "enum": ["release", "block", "accept_with_grade"] },
+        "reason_code": { "type": ["string", "null"] },
+        "label": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "dims": {
+      "type": "object",
+      "required": ["C", "L", "R", "D", "F"],
+      "additionalProperties": { "type": "object" }
+    },
+    "segments": {
+      "type": "object",
+      "required": ["design", "runtime"],
+      "additionalProperties": { "type": "object" }
+    },
+    "claims_summary": {
+      "type": "object",
+      "required": ["verified", "refuted", "indeterminate"],
+      "properties": {
+        "verified": { "type": "integer", "minimum": 0 },
+        "refuted": { "type": "integer", "minimum": 0 },
+        "indeterminate": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "plan": {
+      "type": ["object", "null"],
+      "properties": {
+        "current": { "type": ["integer", "null"] },
+        "quoted_cu": { "type": ["integer", "null"] },
+        "predicted": { "type": ["integer", "null"] },
+        "predicted_band": { "enum": ["A", "B", "C", "D", null] },
+        "reaches_target": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "ledger": {
+      "type": "object",
+      "required": ["verified", "status", "entries"],
+      "properties": {
+        "entries": { "type": "integer", "minimum": 0 },
+        "verified": { "type": "boolean" },
+        "status": { "enum": ["PASS", "FAIL"] },
+        "head_hash": { "type": ["string", "null"] },
+        "first_bad_seq": { "type": ["integer", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "cost": {
+      "type": "object",
+      "required": ["total_cu", "unknown"],
+      "properties": {
+        "total_cu": { "type": ["number", "null"] },
+        "unknown": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "metrics": { "type": "object" },
+    "artifacts": { "type": "object", "additionalProperties": { "type": "string" } },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

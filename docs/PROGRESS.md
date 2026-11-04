@@ -138,3 +138,27 @@ docs/design/design_cheatsheet.md → 一页速查
 4. 历史时间线里的 W1 ~11-5、提交 ~11-15 作废，以官网 11-10 / 11-25 / 12-27 为准。
 
 **下一步**：① 按 `docs/plan/整改计划_v2.2_2026-10-30.md` §6 做 2–3 天口径增量（删 `is_deterministic=True`、F 改 claim 级、加 PARTIAL/DESIGN_ONLY、接 resolver 入口）；② 补 `Makefile` 的 `demo` / `curve`，让 `demo_numbers.py` 读 `fixtures/demo_case.json`；③ 把 47→79 的计数固化为 `fixtures/demo_case.json` 并加测试。
+
+---
+
+### 2026-11-04 C 端 R1 （按《C 端技术方案 v1.0》）
+
+**内容**：打通 S1 装配、S4 判定、S5 账本、S6 决策、S7 治理，用 A 的 100 条真实证据跑通 replay、主 checker、独立 verifier、账本、闸门和只读 API，冻结 D 端消费的 JSON 契约。
+
+**产出**：
+- C 模块：`ledger/evaluator.py`、`checker.py`、`verifier.py`、`replay.py`、`ledger.py`、`debt_tracker.py`、`observation.py`、`contracts_c7.py`、`report.py`、`claim_map.py`、`canonical.py`、`integrity.py`、`pipeline.py`
+- 脚本：`scripts/assurance.py`（run/replay/check/verify-ledger/gate/export/serve，退出码 0/2/3/4/5）、`serve_api.py`、`verify_ledger.py`
+- 映射：`fixtures/a_100/claim-map-v1.json`，100 条，`<` 48 / `>` 46 / `==` 6，与方案 §4.1 一致
+- 契约：`docs/api/API_CONTRACT-v1.md`、`docs/api/schemas/`（5 个 draft 2020-12 schema）、`docs/api/examples/`
+- 测试：C 新增 11 个测试文件、108 项（107 通过 + 1 待 D 端源码）；B 的 240 条全过
+- 100 条端到端：verified 100 / refuted 0 / indeterminate 0；ARS COMPLETE 100 分 A 档；闸门 release；账本 102 条 PASS；M6 100/100；M13 20/20
+- SBOM：`sbom.json`（CycloneDX 1.6，11 个组件）；`Makefile` 补齐 install/test/mypy/sbom/run/verify/api/curve
+
+**阻塞 / 边界**：
+- A 的 `fixtures/a_acceptance` 中 2 failed + 14 error 全部因 `openjiuwen` 需要 Python < 3.14，本机 3.14 无法安装；其余 A 测试 133 项通过
+- `ledger/resolver.py` 与 `ledger/packer.py` 的 mypy 告警属 A 文件，未改；C 模块 mypy 干净
+- core v0.2 与 C7 补丁待接口负责人批准；`schemas/contracts.py` 未改
+- 不宣称 M9 全链路达标；哈希链无签名/锚点，链尾截断不可检测
+- 47→79 只属于 B 的 20 条合成基准，与 100 条真实证据不共用分母
+
+**下一步**：B 用 C 的 `signals.json` 重算 ARS 与 PARTIAL 状态；A 用 C replay 重做最小集删除测试（CH-M4）；D 按 `API_CONTRACT-v1` 接三接口。

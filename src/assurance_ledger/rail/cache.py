@@ -20,19 +20,26 @@ class EventCache:
     """
 
     def __init__(self, max_size: int = 1000):
+        if max_size < 1:
+            raise ValueError("缓存容量必须为正数")
         self._events: List[AgentEvent] = []
         self._by_claim: Dict[str, List[AgentEvent]] = {}
         self.max_size = max_size
 
     def put(self, event: AgentEvent):
         self._events.append(event)
-        if len(self._events) > self.max_size:
-            self._events = self._events[-self.max_size:]
         if event.claim_id:
             self._by_claim.setdefault(event.claim_id, []).append(event)
+        while len(self._events) > self.max_size:
+            removed = self._events.pop(0)
+            if removed.claim_id:
+                group = self._by_claim[removed.claim_id]
+                group.pop(0)
+                if not group:
+                    del self._by_claim[removed.claim_id]
 
     def for_claim(self, claim_id: str) -> List[AgentEvent]:
-        return self._by_claim.get(claim_id, [])
+        return list(self._by_claim.get(claim_id, []))
 
     def clear(self):
         self._events.clear()

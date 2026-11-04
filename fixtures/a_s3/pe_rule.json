@@ -1,0 +1,6 @@
+{
+  "id": "csv-pe-compare-fixture@1",
+  "operation": "numeric_compare",
+  "operands": ["pe", "industry_pe"],
+  "scope": "A packing fixture only; not B compiler output or C verifier"
+}

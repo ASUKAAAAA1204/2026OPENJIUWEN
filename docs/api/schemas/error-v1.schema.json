@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assurance-ledger.local/schemas/error-v1.schema.json",
+  "title": "只读 API 错误信封 v1",
+  "type": "object",
+  "required": ["api_version", "error"],
+  "properties": {
+    "api_version": { "const": "1.0" },
+    "error": {
+      "type": "object",
+      "required": ["code", "message"],
+      "properties": {
+        "code": {
+          "enum": [
+            "INVALID_RUN_ID",
+            "RUN_NOT_FOUND",
+            "ARTIFACT_INCOMPLETE",
+            "ARTIFACT_UNREADABLE",
+            "LEDGER_INVALID",
+            "LATEST_UNREADABLE",
+            "LATEST_INVALID",
+            "INTERNAL_ERROR"
+          ]
+        },
+        "message": { "type": "string" },
+        "detail": { "type": ["object", "string", "array", "null"] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

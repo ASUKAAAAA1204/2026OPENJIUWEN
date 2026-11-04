@@ -1,0 +1,41 @@
+{
+  "api_version": "1.0",
+  "endpoint": "/api/plan",
+  "generated_at": "2026-11-04T12:32:19Z",
+  "run_id": "selftest",
+  "data": {
+    "current": 100,
+    "target_band": "B",
+    "policy": "full",
+    "actions": [],
+    "direct_cu": 0.0,
+    "buffer_rate": 0.05,
+    "buffer_cu": 0.0,
+    "total_cu": 0.0,
+    "quoted_cu": 0,
+    "predicted": 100,
+    "predicted_band": "A",
+    "gain": 0.0,
+    "margin_per_cu": null,
+    "reaches_target": true,
+    "marginal_exhausted": false,
+    "stopped_reason": "ALL_ACTIONS_TAKEN",
+    "projected_counts": {
+      "n_claims": 100,
+      "n_rules": 3,
+      "n_checks": 200,
+      "L": 100,
+      "C": 3,
+      "R": 100,
+      "D": 200,
+      "F": 100,
+      "missing": [],
+      "r_run": true
+    },
+    "skipped": [],
+    "notes": [
+      "没有购买动作，预测分保持当前分。"
+    ],
+    "available": true
+  }
+}
