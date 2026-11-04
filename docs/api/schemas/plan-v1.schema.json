@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assurance-ledger.local/schemas/plan-v1.schema.json",
+  "title": "提升计划载荷 v1（/api/plan 的 data）",
+  "type": "object",
+  "required": ["available", "quoted_cu", "actions"],
+  "properties": {
+    "available": { "type": "boolean" },
+    "reason": { "type": "string" },
+    "current": { "type": ["integer", "null"] },
+    "target_band": { "enum": ["A", "B", "C", "D"] },
+    "policy": { "type": "string" },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["action", "claim_id", "gain", "cu"],
+        "properties": {
+          "action": { "type": "string" },
+          "claim_id": { "type": ["string", "null"] },
+          "from_state": { "type": ["string", "null"] },
+          "to_state": { "type": ["string", "null"] },
+          "gain": { "type": ["number", "null"] },
+          "cu": { "type": ["number", "null"] },
+          "reason_code": { "type": ["string", "null"] }
+        },
+        "additionalProperties": true
+      }
+    },
+    "direct_cu": { "type": ["number", "null"] },
+    "buffer_rate": { "type": ["number", "null"] },
+    "buffer_cu": { "type": ["number", "null"] },
+    "total_cu": { "type": ["number", "null"] },
+    "quoted_cu": { "type": ["integer", "null"], "minimum": 0 },
+    "predicted": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 },
+    "predicted_band": { "enum": ["A", "B", "C", "D", null] },
+    "gain": { "type": ["number", "null"] },
+    "margin_per_cu": { "type": ["number", "null"] },
+    "reaches_target": { "type": "boolean" },
+    "stopped_reason": { "type": ["string", "null"] },
+    "projected_counts": { "type": "object" },
+    "skipped": { "type": "array" },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}
