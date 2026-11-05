@@ -29,7 +29,9 @@ from assurance_ledger.engine.plan import PlanGenerator  # noqa: E402
 from assurance_ledger.engine.signals import CheckSignal, ClaimSignal  # noqa: E402
 
 VERSION = "b-recompute-v1"
-DEFAULT_CLAIM_MAP = ROOT / "fixtures/a_100/claim-map-v1.json"
+# C 默认使用 v2 正式规则 ID，B 默认与之对齐
+# 显式传入 v1 时只按 v1 原文校验 digest，不回退到 v2
+DEFAULT_CLAIM_MAP = ROOT / "fixtures/a_100/claim-map-v2.json"
 DEFAULT_OUTPUT = ROOT / "outputs/b-recompute.json"
 
 EXIT_OK = 0
