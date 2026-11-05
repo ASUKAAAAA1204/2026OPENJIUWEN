@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import math
 import re
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -55,7 +56,7 @@ from .verifier import verify
 RUN_VERSION = "c-run-v1"
 DEFAULT_PACKAGES = Path("fixtures/a_100/packages")
 DEFAULT_CLAIMS = Path("fixtures/a_100/claims.json")
-DEFAULT_CLAIM_MAP = Path("fixtures/a_100/claim-map-v1.json")
+DEFAULT_CLAIM_MAP = Path("fixtures/a_100/claim-map-v2.json")
 DEFAULT_OUTPUTS = Path("outputs")
 M13_SAMPLE = 20
 
@@ -114,6 +115,7 @@ def _measurements(
     checks: Sequence[Mapping[str, Any]],
     *,
     human_minutes: Mapping[str, float],
+    claim_records: Sequence[Mapping[str, Any]] = (),
 ) -> dict[str, Any]:
     entries: list[dict[str, Any]] = []
     for check in checks:
@@ -132,6 +134,31 @@ def _measurements(
                     "human_minutes": None,
                     "measurement_status": record.get("measurement_status"),
                     "cost_cu": record.get("cost_cu"),
+                    "dedupe_group": f"{claim_id}:{kind}",
+                }
+            )
+    for record in claim_records:
+        claim_id = str(record.get("claim_id"))
+        for kind, stage, key in (
+            ("replay", "S3", "replay_latency_ms"),
+            ("verifier", "S4", "verifier_latency_ms"),
+        ):
+            latency = record.get(key)
+            measured = isinstance(latency, (int, float)) and not isinstance(latency, bool)
+            latency_ms = round(float(latency), 6) if isinstance(latency, (int, float)) else None
+            cost_cu = round(float(latency) / 1000.0, 9) if isinstance(latency, (int, float)) else None
+            entries.append(
+                {
+                    "run_version": RUN_VERSION,
+                    "stage": stage,
+                    "kind": kind,
+                    "claim_id": claim_id,
+                    "tokens_in": 0 if measured else None,
+                    "tokens_out": 0 if measured else None,
+                    "latency_ms": latency_ms,
+                    "human_minutes": None,
+                    "measurement_status": "measured" if measured else "unknown",
+                    "cost_cu": cost_cu,
                     "dedupe_group": f"{claim_id}:{kind}",
                 }
             )
@@ -222,9 +249,13 @@ def run(
         ir = ir_for_claim(binding, by_op)
 
         check = check_package(document, binding=binding, ir=ir)
+        started = time.perf_counter()
         verifier_result = verify(document, rule_ir=ir)
+        verifier_ms = (time.perf_counter() - started) * 1000.0
         freshness = freshness_for_claim(document, verified_at=verified_at)
+        started = time.perf_counter()
         replay_result = replay(bundle, document.get("payloads") or {})
+        replay_ms = (time.perf_counter() - started) * 1000.0
         signal = build_claim_signal(
             claim_id=claim_id,
             check=check,
@@ -278,6 +309,8 @@ def run(
                 "m13": comparison,
                 "replay": replay_rows[-1],
                 "cost": check.get("cost"),
+                "replay_latency_ms": round(replay_ms, 6),
+                "verifier_latency_ms": round(verifier_ms, 6),
                 "evidence_digest": check.get("evidence_digest"),
             }
         )
@@ -403,7 +436,7 @@ def run(
     ledger_doc["path"] = f"outputs/{run_id}/ledger.json"
     gate["ledger"] = ledger_summary(ledger_doc, verify_result)
 
-    measurements = _measurements(checks, human_minutes=human)
+    measurements = _measurements(checks, human_minutes=human, claim_records=claim_records)
     m6_total = len(replay_rows)
     m6_hits = sum(1 for row in replay_rows if row["ok"])
     m13_sample = m13_rows[:M13_SAMPLE]
