@@ -109,4 +109,5 @@ def test_claim_map_rejects_bad_format():
 def test_map_claim_records_statement_digest():
     row = map_claim({"id": "c-001", "statement": "PE 低于行业 PE"})
     assert row["statement_sha256"].startswith("sha256:")
-    assert row["rule_id"] == "c-cmp-lt-v1"
+    assert row["rule_id"] == "b-pe-less-than-industry@1"
+    assert row["legacy_rule_id"] == "c-cmp-lt-v1"

@@ -53,6 +53,16 @@ def _statement_op(statement: str) -> str | None:
 def _ir_from_rule(rule: Mapping[str, Any], statement: str) -> dict[str, Any] | None:
     if rule.get("type") == "cmp" and rule.get("op") in _OPS:
         return dict(rule)
+    if rule.get("format") == "assurance-rule-binding-v1":
+        if rule.get("ir_version") not in (None, "b-cmp-v1"):
+            return None
+        compiled = rule.get("compiled_result")
+        if not isinstance(compiled, Mapping) or compiled.get("compilable") is not True:
+            return None
+        ir = compiled.get("ir")
+        if not isinstance(ir, Mapping) or ir.get("type") != "cmp" or ir.get("op") not in _OPS:
+            return None
+        return dict(ir)
     if rule.get("operation") == "numeric_compare":
         operands = rule.get("operands")
         if not isinstance(operands, list) or len(operands) != 2:

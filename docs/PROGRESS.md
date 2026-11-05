@@ -162,3 +162,29 @@ docs/design/design_cheatsheet.md → 一页速查
 - 47→79 只属于 B 的 20 条合成基准，与 100 条真实证据不共用分母
 
 **下一步**：B 用 C 的 `signals.json` 重算 ARS 与 PARTIAL 状态；A 用 C replay 重做最小集删除测试（CH-M4）；D 按 `API_CONTRACT-v1` 接三接口。
+
+---
+
+### 2026-11-05 C 端 R2（接 A 的 CH-L / CH-M4 与 B 的规则定版）
+
+**内容**：接入 A 的读回值匹配、支持 A 的 `assurance-rule-binding-v1` 封装、把 C 的临时规则模板迁移到 B 的正式规则 ID，并并入 B 的 R2 交付文件。
+
+**产出**：
+- CH-L：`evaluator.resolve_all` 先做 C 的结构/公司/字段/主位置检查，再调用 A 的 `resolver.resolve_bytes` 核对读回值；只有两步都过才计 L 成功
+- CH-M4：`rule_from_payload` 和独立 `verifier` 识别 `assurance-rule-binding-v1`，只取已编译的 `b-cmp-v1` IR；最小证据为 source-snapshot、claim-inputs、rule
+- 映射：新增 `fixtures/a_100/claim-map-v2.json`，rule_id 改为 `b-pe-*-industry@1`，保留 `legacy_rule_id` 和 `migrated_from.digest`；v1 只读兼容，不静默改写
+- 规则对齐：`tests/test_c_b_alignment.py` 验证 9 条 fixture、六算子、字段/常量、非数值/非有限值
+- B 文件：按文件并入 `fixtures/b_rules/`、`scripts/b_recompute.py`、4 个 B 测试和 2 份 B 交接文档；`b_recompute.py` 只加一行 v2 格式兼容
+- 成本：`measurements.json` 增加 replay 和 verifier 两项，400 条全部 measured、unknown = 0
+- 删除测试：`scripts/deletion_test.py` 代 A 跑 CH-M4，100 个 full 包 + 1 个 binding 包全过；B 的 v1/v2 映射各自复算均 PASS 且计数一致
+- 文档：`docs/handoff/C_R2_接入回传_2026-11-05.md`
+
+**验证**：`tests/` 429 passed 1 skipped；全仓 604 passed 1 skipped；B 的 R2 测试 34 passed；100 条端到端 verified 100，ARS 100 分 A 档，L/R/D/F 全满，M6 100/100，M13 20/20，闸门 release，账本 102 条 PASS；B 用 v1/v2 映射各自复算均 `PASS`；CH-M4 删除测试 100/100 + binding 1/1
+
+**阻塞 / 边界**：
+- A 的 `fixtures/a_acceptance` 仍 2 failed + 14 error，全部因本机 Python 3.14 无法安装 `openjiuwen`，需在 3.10–3.13 复跑
+- `core/` v0.2 与 C7 补丁仍待接口负责人批准；`schemas/contracts.py` 未改
+- 独立 verifier 用 `Fraction` 精确比较，与 A 的 `1e-6` 相对容差是两套口径，边界数值不宣称等价
+- CH-M4 正式删除测试结论仍等 A 重跑；哈希链仍无签名/锚点
+
+**下一步**：A 用本回传版本复跑 CH-M4 并签收（C 已代跑 100/100）；B 确认 v1/v2 复算结果（C 已跑均 PASS）；接口负责人审批 core v0.2 与 C7；D 继续按 `API_CONTRACT-v1` 接三接口

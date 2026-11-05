@@ -1,0 +1,112 @@
+{
+  "format": "b-compiled-v1",
+  "rule_version": "b-pe-v1",
+  "ir_version": "b-cmp-v1",
+  "skill_version": "b-pe-canonical@1",
+  "results": [
+    {
+      "rule_id": "b-pe-less-than-industry@1",
+      "original_text": "pe < industry_pe",
+      "compilable": true,
+      "ir": {
+        "type": "cmp",
+        "op": "<",
+        "left": {
+          "field": "pe"
+        },
+        "right": {
+          "field": "industry_pe"
+        },
+        "source_text": "pe < industry_pe"
+      },
+      "fail_code": null,
+      "fail_snippet": null,
+      "fixtures": [
+        {
+          "kind": "positive",
+          "passed": true
+        },
+        {
+          "kind": "negative",
+          "passed": true
+        },
+        {
+          "kind": "boundary",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "rule_id": "b-pe-greater-than-industry@1",
+      "original_text": "pe > industry_pe",
+      "compilable": true,
+      "ir": {
+        "type": "cmp",
+        "op": ">",
+        "left": {
+          "field": "pe"
+        },
+        "right": {
+          "field": "industry_pe"
+        },
+        "source_text": "pe > industry_pe"
+      },
+      "fail_code": null,
+      "fail_snippet": null,
+      "fixtures": [
+        {
+          "kind": "positive",
+          "passed": true
+        },
+        {
+          "kind": "negative",
+          "passed": true
+        },
+        {
+          "kind": "boundary",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "rule_id": "b-pe-equal-industry@1",
+      "original_text": "pe == industry_pe",
+      "compilable": true,
+      "ir": {
+        "type": "cmp",
+        "op": "==",
+        "left": {
+          "field": "pe"
+        },
+        "right": {
+          "field": "industry_pe"
+        },
+        "source_text": "pe == industry_pe"
+      },
+      "fail_code": null,
+      "fail_snippet": null,
+      "fixtures": [
+        {
+          "kind": "positive",
+          "passed": true
+        },
+        {
+          "kind": "negative",
+          "passed": true
+        },
+        {
+          "kind": "boundary",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total": 3,
+    "compilable": 3,
+    "fixture_green": 3,
+    "c_numerator": 3,
+    "c_rate": 1.0,
+    "by_fail_code": {}
+  }
+}
