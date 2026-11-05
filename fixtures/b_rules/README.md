@@ -2,7 +2,7 @@
 
 本目录是 B 的三条规范数值比较规则及其固定 fixture
 规则版本 `b-pe-v1`，IR 版本 `b-cmp-v1`
-状态：B 本地编译与 fixture 执行为绿；C 对齐、A 接收和端到端验收均未完成，本交付不声明任何验收通过
+状态：B 本地编译与 fixture 已验证；C PR #5 已接入正式规则及 v2 映射，相关样例由 B 复跑通过；A 正式签收和项目整体验收仍未完成
 
 ## 文件
 
@@ -79,12 +79,11 @@ C 运行时只读这张静态映射，不再假设单一 `<`
 
 ## 与 C 临时模板的关系
 
-C 的 `ledger/claim_map.py` 目前使用 `c-cmp-lt-v1`、`c-cmp-gt-v1`、`c-cmp-eq-v1` 三条临时模板
-模板文本和 op 与本目录三条规则一致，IR 也采用同一个 `b-cmp-v1` 形状
-模板 provenance 明确写着 `c-temporary-from-claim-map-v1; pending B canonical rules`
-本目录提供的是 B 规范 rule_id 和对应 fixture
-C 是否替换临时 rule_id、如何迁移映射和证据，仍待 C 负责人确认
-在 C 给出确认和复跑证据之前，不得把本目录内容写成 C 已对齐或已验收
+C PR #5 将 `ledger/claim_map.py` 当前规则 ID 切换为本目录的三条正式 ID
+`claim-map-v2.json` 使用正式 ID，每行保留 legacy_rule_id，顶层记录原 v1 映射摘要
+`claim-map-v1.json` 仍保留三条临时 ID 及原 provenance，作为历史复核输入，只读兼容
+B 复算默认使用 v2；复算历史 v1 run 时显式指定 `--claim-map fixtures/a_100/claim-map-v1.json`
+摘要不匹配会拒绝复算，不自动迁移历史 run；样例对齐不表示全部数值边界或整体验收通过
 
 ## 验证
 
@@ -102,7 +101,7 @@ C 是否替换临时 rule_id、如何迁移映射和证据，仍待 C 负责人�
 
 ## 未声明事项
 
-- 未声明 C 已接收、已对齐或已用本规则替换临时模板
+- C 已接入正式规则，验证范围见 `docs/handoff/B_C_R2_复核_2026-11-05.md`
 - 未声明 A 的证据包已通过本规则重跑
 - 未声明自然语言 claim 语义已验证，本目录只覆盖数值谓词
 - 未声明 100 条真实数据、删除测试、M10 或完整 ARS 验收通过

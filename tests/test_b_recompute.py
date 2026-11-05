@@ -17,7 +17,8 @@ from scripts import b_recompute
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts/b_recompute.py"
-CLAIM_MAP = ROOT / "fixtures/a_100/claim-map-v1.json"
+CLAIM_MAP = ROOT / "fixtures/a_100/claim-map-v2.json"
+V1_CLAIM_MAP = ROOT / "fixtures/a_100/claim-map-v1.json"
 PACKAGES = ROOT / "fixtures/a_100/packages"
 CLAIMS = ROOT / "fixtures/a_100/claims.json"
 
@@ -65,14 +66,16 @@ def _check_claim_id(check_id: str) -> str:
 @pytest.fixture(scope="module")
 def complete_run(tmp_path_factory):
     outputs = tmp_path_factory.mktemp("b3-complete")
-    result = run(
-        packages_dir=PACKAGES,
-        claims_path=CLAIMS,
-        claim_map_path=CLAIM_MAP,
-        outputs_dir=outputs,
-        run_id="b3-complete",
-        write=True,
-    )
+    # 不传 claim_map_path，走 C 默认 v2 映射
+    with pytest.MonkeyPatch.context() as patch:
+        patch.chdir(ROOT)
+        result = run(
+            packages_dir=PACKAGES,
+            claims_path=CLAIMS,
+            outputs_dir=outputs,
+            run_id="b3-complete",
+            write=True,
+        )
     return Path(result["output_dir"])
 
 
@@ -96,6 +99,20 @@ def partial_run(tmp_path_factory):
     return Path(result["output_dir"])
 
 
+@pytest.fixture(scope="module")
+def v1_run(tmp_path_factory):
+    outputs = tmp_path_factory.mktemp("b3-v1")
+    result = run(
+        packages_dir=PACKAGES,
+        claims_path=CLAIMS,
+        claim_map_path=V1_CLAIM_MAP,
+        outputs_dir=outputs,
+        run_id="b3-v1",
+        write=True,
+    )
+    return Path(result["output_dir"])
+
+
 # ============================================================
 # 正常复算
 # ============================================================
@@ -108,6 +125,8 @@ def test_recompute_complete_run_passes(complete_run, tmp_path):
     assert body["status"] == "PASS"
     assert body["ok"] is True
     assert body["differences"] == []
+    # 默认 C 管线与默认 B 复算都使用 v2
+    assert body["claim_map"]["path"] == str(CLAIM_MAP)
     assert body["claim_map"]["matched"] is True
     assert body["claim_map"]["signals_digest"] == body["claim_map"]["expected_digest"]
 
@@ -128,6 +147,53 @@ def test_recompute_complete_run_passes(complete_run, tmp_path):
     assert body["b"]["plan"]["actions"] == body["c"]["plan"]["actions"] == []
 
 
+def test_explicit_v1_run_and_explicit_v1_map_pass(v1_run, tmp_path):
+    out = tmp_path / "v1.json"
+    result = _invoke(v1_run, out, "--claim-map", str(V1_CLAIM_MAP))
+    assert result.returncode == 0, result.stdout + result.stderr
+    body = _read(out)
+    assert body["status"] == "PASS"
+    assert body["differences"] == []
+    assert body["claim_map"]["path"] == str(V1_CLAIM_MAP)
+    assert body["claim_map"]["matched"] is True
+    assert body["claim_map"]["signals_digest"] == body["claim_map"]["expected_digest"]
+
+
+def test_v1_map_with_v2_run_is_invalid(complete_run, tmp_path):
+    out = tmp_path / "v1-map-v2-run.json"
+    result = _invoke(complete_run, out, "--claim-map", str(V1_CLAIM_MAP))
+    assert result.returncode == b_recompute.EXIT_INVALID
+    body = _read(out)
+    assert body["status"] == "INVALID"
+    # 显式 v1 只按 v1 原文计算 digest，不回退到默认 v2
+    assert body["claim_map"]["path"] == str(V1_CLAIM_MAP)
+    assert body["claim_map"]["matched"] is False
+    assert body["claim_map"]["expected_digest"] == b_recompute._digest_json(
+        b_recompute.load_claim_map(V1_CLAIM_MAP)
+    )
+    assert body["claim_map"]["signals_digest"] == b_recompute._digest_json(
+        b_recompute.load_claim_map(CLAIM_MAP)
+    )
+    assert body["claim_map"]["expected_digest"] != body["claim_map"]["signals_digest"]
+
+
+def test_v2_map_with_v1_run_is_invalid(v1_run, tmp_path):
+    out = tmp_path / "v2-map-v1-run.json"
+    result = _invoke(v1_run, out)
+    assert result.returncode == b_recompute.EXIT_INVALID
+    body = _read(out)
+    assert body["status"] == "INVALID"
+    assert body["claim_map"]["path"] == str(CLAIM_MAP)
+    assert body["claim_map"]["matched"] is False
+    assert body["claim_map"]["expected_digest"] == b_recompute._digest_json(
+        b_recompute.load_claim_map(CLAIM_MAP)
+    )
+    assert body["claim_map"]["signals_digest"] == b_recompute._digest_json(
+        b_recompute.load_claim_map(V1_CLAIM_MAP)
+    )
+    assert body["claim_map"]["expected_digest"] != body["claim_map"]["signals_digest"]
+
+
 def test_recompute_is_read_only(complete_run, tmp_path):
     run_dir = _minimal_run(complete_run, tmp_path / "run")
     before = {name: (run_dir / name).read_bytes() for name in ("signals.json", "ars.json", "plan.json")}
@@ -143,6 +209,11 @@ def test_default_output_path():
     args = b_recompute.build_parser().parse_args(["outputs/r1"])
     assert args.out == ROOT / "outputs" / "b-recompute.json"
     assert args.claim_map == CLAIM_MAP
+    assert args.claim_map.name == "claim-map-v2.json"
+    explicit = b_recompute.build_parser().parse_args(
+        ["outputs/r1", "--claim-map", str(V1_CLAIM_MAP)]
+    )
+    assert explicit.claim_map == V1_CLAIM_MAP
 
 
 def test_missing_field_is_not_equal_to_null():
