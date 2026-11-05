@@ -176,9 +176,10 @@ docs/design/design_cheatsheet.md → 一页速查
 - 规则对齐：`tests/test_c_b_alignment.py` 验证 9 条 fixture、六算子、字段/常量、非数值/非有限值
 - B 文件：按文件并入 `fixtures/b_rules/`、`scripts/b_recompute.py`、4 个 B 测试和 2 份 B 交接文档；`b_recompute.py` 只加一行 v2 格式兼容
 - 成本：`measurements.json` 增加 replay 和 verifier 两项，400 条全部 measured、unknown = 0
+- 删除测试：`scripts/deletion_test.py` 代 A 跑 CH-M4，100 个 full 包 + 1 个 binding 包全过；B 的 v1/v2 映射各自复算均 PASS 且计数一致
 - 文档：`docs/handoff/C_R2_接入回传_2026-11-05.md`
 
-**验证**：`tests/` 427 passed 1 skipped；全仓 602 passed 1 skipped；B 的 R2 测试 34 passed；100 条端到端 verified 100，ARS 100 分 A 档，L/R/D/F 全满，M6 100/100，M13 20/20，闸门 release，账本 102 条 PASS；B 用 v2 映射复算 `status = PASS`，差异为空
+**验证**：`tests/` 429 passed 1 skipped；全仓 604 passed 1 skipped；B 的 R2 测试 34 passed；100 条端到端 verified 100，ARS 100 分 A 档，L/R/D/F 全满，M6 100/100，M13 20/20，闸门 release，账本 102 条 PASS；B 用 v1/v2 映射各自复算均 `PASS`；CH-M4 删除测试 100/100 + binding 1/1
 
 **阻塞 / 边界**：
 - A 的 `fixtures/a_acceptance` 仍 2 failed + 14 error，全部因本机 Python 3.14 无法安装 `openjiuwen`，需在 3.10–3.13 复跑
@@ -186,4 +187,4 @@ docs/design/design_cheatsheet.md → 一页速查
 - 独立 verifier 用 `Fraction` 精确比较，与 A 的 `1e-6` 相对容差是两套口径，边界数值不宣称等价
 - CH-M4 正式删除测试结论仍等 A 重跑；哈希链仍无签名/锚点
 
-**下一步**：A 用本回传版本重跑 CH-M4 删除测试；B 确认 v2 映射与 `b_recompute.py` 的一行兼容；接口负责人审批 core v0.2 与 C7；D 继续按 `API_CONTRACT-v1` 接三接口
+**下一步**：A 用本回传版本复跑 CH-M4 并签收（C 已代跑 100/100）；B 确认 v1/v2 复算结果（C 已跑均 PASS）；接口负责人审批 core v0.2 与 C7；D 继续按 `API_CONTRACT-v1` 接三接口
