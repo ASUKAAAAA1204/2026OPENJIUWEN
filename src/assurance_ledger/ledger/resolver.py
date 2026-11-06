@@ -66,7 +66,7 @@ def _compare(actual: str, expected: str) -> tuple[bool, str]:
     return matched, "numeric_relative_1e-6"
 
 
-def resolve_bytes(locator: Locator | None, expected_value=None, *,
+def resolve_bytes(locator: Locator | None, expected_value: object = None, *,
                   source_bytes: bytes | None, source_file: str) -> ResolveResult:
     """对调用方已校验摘要的来源字节回源；不读文件、不联网、不依赖缓存
 
@@ -75,12 +75,12 @@ def resolve_bytes(locator: Locator | None, expected_value=None, *,
     loc = locator.model_dump(mode="json") if locator is not None else None
     expected = str(expected_value) if expected_value is not None else None
 
-    def missing(detail: str):
+    def missing(detail: str) -> ResolveResult:
         return ResolveResult(ResolveStatus.NOT_FOUND, "NOT_FOUND", detail, loc, expected)
 
     if locator is None or not locator.file:
         return missing("NO_LOCATOR")
-    if expected_value is None:
+    if expected is None:
         return missing("EXPECTED_VALUE_MISSING")
     if not isinstance(expected_value, (str, int, float, Decimal, bool)):
         return missing("EXPECTED_SCALAR_REQUIRED")
@@ -105,7 +105,7 @@ def _resolve_content(locator: Locator, expected: str, raw: bytes, suffix: str) -
     loc = locator.model_dump(mode="json")
     digest = hashlib.sha256(raw).hexdigest()
 
-    def missing(detail: str):
+    def missing(detail: str) -> ResolveResult:
         return ResolveResult(ResolveStatus.NOT_FOUND, "NOT_FOUND", detail, loc, expected,
                              source_sha256=digest)
 
@@ -157,17 +157,16 @@ class LocatorResolver:
         self.source_root = source_root.resolve()
         self.allowed_files = frozenset(_relative_name(name) for name in allowed_files)
 
-    def resolve(self, locator: Locator | None, expected_value=None) -> ResolveResult:
+    def resolve(self, locator: Locator | None, expected_value: object = None) -> ResolveResult:
         loc = locator.model_dump(mode="json") if locator is not None else None
         expected = str(expected_value) if expected_value is not None else None
 
-        def missing(detail: str, digest: str | None = None):
-            return ResolveResult(ResolveStatus.NOT_FOUND, "NOT_FOUND", detail, loc, expected,
-                                 source_sha256=digest)
+        def missing(detail: str) -> ResolveResult:
+            return ResolveResult(ResolveStatus.NOT_FOUND, "NOT_FOUND", detail, loc, expected)
 
         if locator is None or not locator.file:
             return missing("NO_LOCATOR")
-        if expected_value is None:
+        if expected is None:
             return missing("EXPECTED_VALUE_MISSING")
         if not isinstance(expected_value, (str, int, float, Decimal, bool)):
             return missing("EXPECTED_SCALAR_REQUIRED")
