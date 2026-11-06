@@ -1,0 +1,51 @@
+{
+  "format": "a-c-r2-receipt-v1",
+  "scope": "v2.2 technical acceptance of this corpus",
+  "replay_id": "c-replay-v1",
+  "status": "accepted",
+  "checks": {
+    "formal_map": true,
+    "CH_M4_full": true,
+    "CH_M4_binding_c001": true,
+    "CH_L_original": true,
+    "CH_L_probes": true,
+    "CH_L_company_guard": true
+  },
+  "full_passed": 100,
+  "binding_passed": 1,
+  "resolved_claims": 100,
+  "locations": 300,
+  "l_probes": [
+    {
+      "case": "wrong_expected_value",
+      "L_signal": "VALUE_MISMATCH",
+      "reason_code": "VALUE_MISMATCH",
+      "passed": true
+    },
+    {
+      "case": "missing_expected_value",
+      "L_signal": "NOT_FOUND",
+      "reason_code": "MISSING_FIELD",
+      "passed": true
+    },
+    {
+      "case": "non_finite_expected_value",
+      "L_signal": "VALUE_MISMATCH",
+      "reason_code": "VALUE_MISMATCH",
+      "passed": true
+    }
+  ],
+  "rule_counts": {
+    "<": 48,
+    "==": 6,
+    ">": 46
+  },
+  "claim_map_digest": "sha256:4b59366234ab528b1d3fcfc0196c71ba849d52f8f6a88a5a0ec11ec66e6d3c49",
+  "source_sha256": "0f11c02b5bc29ec1323c43ba7ccebbc0ab39885f3e6758e7653d98bceff9b3b3",
+  "binding_member_sha256": "4209f7a4830e8709c8314b02f8dc2d6336adcb2e13f60a411d651b72326b6660",
+  "retained_full_refs": 300,
+  "candidate_full_refs": 600,
+  "M10": "not_verified",
+  "c_claims_sha256": "46b01e6a4849bf5c074afabc396babf6b956bd2f0bc1d81460dd4cbd8be650c5",
+  "known_scope": "100 full + one separately encoded c-001"
+}

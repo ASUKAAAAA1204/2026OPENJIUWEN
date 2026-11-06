@@ -195,7 +195,7 @@ class EvidencePacker:
 
 def check_package_integrity(document: dict) -> dict:
     """仅检查 A 包内一致性，不是 C 的独立事实 verifier 或账本 verify。"""
-    def failure(reason, location):
+    def failure(reason: str, location: str) -> dict[str, str | bool]:
         return {"status": "failed", "reason_code": reason, "location": location,
                 "semantic_claim_verified": False}
     try:
