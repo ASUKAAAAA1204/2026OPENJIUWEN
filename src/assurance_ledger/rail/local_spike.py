@@ -29,6 +29,12 @@ from .async_writer import AsyncEventWriter
 from .call_budget import ModelCallBudget, ObservedModel
 
 
+def _check_capture_sdk() -> None:
+    installed = version("openjiuwen")
+    if installed not in {"0.1.18", "0.1.20.post1"}:
+        raise RuntimeError(f"A 采集已验证 openjiuwen 0.1.18 和 0.1.20.post1，当前为 {installed}")
+
+
 def read_market_csv(path: Path, company: str) -> dict:
     """row 从 1 起数数据记录，不含表头；读取与摘要基于同一份字节快照。"""
     raw = path.read_bytes()
@@ -117,8 +123,7 @@ def _parse_claim(output: str, snapshots: list[dict], claim_id: str = "c-001") ->
 async def _run_spike(source: Path, output_root: Path, *, company: str,
                      settings: DeepSeekSettings | None) -> dict:
     """一次运行一个目录；失败也导出已采集事件，且不会覆盖上次结果。"""
-    if version("openjiuwen") != "0.1.18":
-        raise RuntimeError("此 spike 仅验证 openjiuwen==0.1.18，请使用项目 spike 依赖")
+    _check_capture_sdk()
     run_id = "rail-" + uuid4().hex
     run_dir = output_root.resolve() / run_id
     run_dir.mkdir(parents=True, exist_ok=False)
@@ -294,8 +299,7 @@ async def run_claim_batch(source: Path, output_root: Path, *, companies: list[st
         raise ValueError("公司列表必须非空且不能重复")
     if not 1 <= concurrency <= 4:
         raise ValueError("并行任务数必须在 1–4 之间")
-    if version("openjiuwen") != "0.1.18":
-        raise RuntimeError("此验证仅支持 openjiuwen==0.1.18")
+    _check_capture_sdk()
     run_id = "rail-" + uuid4().hex
     run_dir = output_root.resolve() / run_id
     run_dir.mkdir(parents=True, exist_ok=False)

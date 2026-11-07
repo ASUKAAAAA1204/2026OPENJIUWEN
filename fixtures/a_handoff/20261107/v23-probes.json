@@ -1,0 +1,231 @@
+{
+  "format": "a-v23-probes-v1",
+  "runtime": {
+    "python": "3.12.14",
+    "openjiuwen": "0.1.20.post1",
+    "mcp": "1.30.0"
+  },
+  "status": "observations_complete",
+  "N4": {
+    "provider": "native_v2",
+    "mode": "warm resume",
+    "turns": [
+      {
+        "host_task_id": "work-order-17",
+        "turn_id": "turn-0f5ca72549ed4ee790fa133fccdf653c",
+        "events": [
+          {
+            "sequence": 3,
+            "kind": "started",
+            "provider_session_id": "n4-session:a-n4",
+            "turn_id": "turn-0f5ca72549ed4ee790fa133fccdf653c",
+            "segment": 0
+          },
+          {
+            "sequence": 6,
+            "kind": "paused",
+            "provider_session_id": "n4-session:a-n4",
+            "turn_id": "turn-0f5ca72549ed4ee790fa133fccdf653c",
+            "segment": 0
+          },
+          {
+            "sequence": 8,
+            "kind": "resumed",
+            "provider_session_id": "n4-session:a-n4",
+            "turn_id": "turn-0f5ca72549ed4ee790fa133fccdf653c",
+            "segment": 1
+          },
+          {
+            "sequence": 12,
+            "kind": "finished",
+            "provider_session_id": "n4-session:a-n4",
+            "turn_id": "turn-0f5ca72549ed4ee790fa133fccdf653c",
+            "segment": 1
+          }
+        ],
+        "final_output": "probe completed"
+      },
+      {
+        "host_task_id": "work-order-17",
+        "turn_id": "turn-c31da5e35b0444faa22877f16c3218ca",
+        "events": [
+          {
+            "sequence": 15,
+            "kind": "started",
+            "provider_session_id": "n4-session:a-n4",
+            "turn_id": "turn-c31da5e35b0444faa22877f16c3218ca",
+            "segment": 1
+          },
+          {
+            "sequence": 18,
+            "kind": "paused",
+            "provider_session_id": "n4-session:a-n4",
+            "turn_id": "turn-c31da5e35b0444faa22877f16c3218ca",
+            "segment": 1
+          },
+          {
+            "sequence": 20,
+            "kind": "resumed",
+            "provider_session_id": "n4-session:a-n4",
+            "turn_id": "turn-c31da5e35b0444faa22877f16c3218ca",
+            "segment": 2
+          },
+          {
+            "sequence": 24,
+            "kind": "finished",
+            "provider_session_id": "n4-session:a-n4",
+            "turn_id": "turn-c31da5e35b0444faa22877f16c3218ca",
+            "segment": 2
+          }
+        ],
+        "final_output": "probe completed"
+      },
+      {
+        "host_task_id": "work-order-17",
+        "turn_id": "turn-d9e556f698f74c02ab1a4f2b579212a5",
+        "events": [
+          {
+            "sequence": 27,
+            "kind": "started",
+            "provider_session_id": "n4-session:a-n4",
+            "turn_id": "turn-d9e556f698f74c02ab1a4f2b579212a5",
+            "segment": 2
+          },
+          {
+            "sequence": 31,
+            "kind": "finished",
+            "provider_session_id": "n4-session:a-n4",
+            "turn_id": "turn-d9e556f698f74c02ab1a4f2b579212a5",
+            "segment": 2
+          }
+        ],
+        "final_output": "probe completed"
+      }
+    ],
+    "host_offers_hooks": true,
+    "provider_advertises_hooks": false,
+    "before_prompt_calls": [],
+    "resume_cycles": 2,
+    "lifecycle_verified": true
+  },
+  "tools": {
+    "transport": "stdio",
+    "cases": [
+      {
+        "ticket": "approved-17",
+        "tool": "update_ticket",
+        "request_id": "intr_e9bf19fa230742f68e38d1a42d20b364",
+        "call_id": "call-approved-17",
+        "decision": "approved",
+        "waiting_writes": 0,
+        "waiting_hooks": [
+          "after_tool_call"
+        ],
+        "unanswered_observation": null,
+        "final_writes": 1,
+        "write_ids": [
+          "6c85c6b404604bb4bd0a21d99ad6b1ad"
+        ],
+        "result": "completed",
+        "rail_events": [
+          {
+            "tool": "update_ticket",
+            "call_id": "call-approved-17"
+          },
+          {
+            "tool": "update_ticket",
+            "call_id": "call-approved-17"
+          }
+        ],
+        "rail_hooks": [
+          "after_tool_call",
+          "before_tool_call",
+          "after_tool_call"
+        ],
+        "internal_write_ids_seen": []
+      },
+      {
+        "ticket": "rejected-17",
+        "tool": "update_ticket",
+        "request_id": "intr_6d10ff585cae45ab9574cdeec2174363",
+        "call_id": "call-rejected-17",
+        "decision": "rejected",
+        "waiting_writes": 0,
+        "waiting_hooks": [
+          "after_tool_call"
+        ],
+        "unanswered_observation": {
+          "elapsed_seconds": 31.0,
+          "writes": 0
+        },
+        "final_writes": 0,
+        "write_ids": [],
+        "result": "completed",
+        "rail_events": [
+          {
+            "tool": "update_ticket",
+            "call_id": "call-rejected-17"
+          },
+          {
+            "tool": "update_ticket",
+            "call_id": "call-rejected-17"
+          }
+        ],
+        "rail_hooks": [
+          "after_tool_call",
+          "before_tool_call",
+          "after_tool_call"
+        ],
+        "internal_write_ids_seen": []
+      },
+      {
+        "ticket": "direct-17",
+        "tool": "append_note",
+        "request_id": null,
+        "call_id": "call-direct-17",
+        "decision": "direct",
+        "waiting_writes": null,
+        "waiting_hooks": [],
+        "unanswered_observation": null,
+        "final_writes": 1,
+        "write_ids": [
+          "90553149360d479e9c800965172d89f7"
+        ],
+        "result": "completed",
+        "rail_events": [
+          {
+            "tool": "append_note",
+            "call_id": "call-direct-17"
+          }
+        ],
+        "rail_hooks": [
+          "before_tool_call",
+          "after_tool_call"
+        ],
+        "internal_write_ids_seen": []
+      }
+    ],
+    "writes_read_back": {
+      "update_ticket": [
+        {
+          "ticket": "approved-17",
+          "write_id": "6c85c6b404604bb4bd0a21d99ad6b1ad"
+        }
+      ],
+      "append_note": [
+        {
+          "ticket": "direct-17",
+          "write_id": "90553149360d479e9c800965172d89f7"
+        }
+      ]
+    },
+    "outer_tools_seen": [
+      "update_ticket",
+      "append_note"
+    ],
+    "additional_rail_tool_names": [],
+    "unanswered_window_measured": true,
+    "approval_verified": true,
+    "mcp_writes_verified": true
+  }
+}

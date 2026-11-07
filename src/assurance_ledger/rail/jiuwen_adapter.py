@@ -1,4 +1,4 @@
-"""A 的第一步：openJiuwen 0.1.18 的非流式 Rail 采集适配。
+"""A 的非流式 Rail 采集适配，已验证 openJiuwen 0.1.18 和 0.1.20.post1。
 
 归属来自调用者的任务上下文，兼容显式单结论 claim_id；不会从模型回复猜测。
 共享 core/schema 不修改，任务标识等扩展信息放 extra。
