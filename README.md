@@ -1,75 +1,183 @@
-# 保证账本（Assurance Ledger）
+# 天序明衡 TemisGuard
 
+> 让每一次运行都有据可查。
 
-本仓库是 openJiuwen 智能体创新大赛参赛项目。主载体为 openJiuwen Agent Framework（Rail）与 Agent Studio。
+给智能体（Agent）的执行过程留下可被第三方独立复算的账，并在账本事实上标出证据缺口。
 
-## 当前状态
+2026 华为云 openJiuwen 创新大赛参赛项目 · 规格版本 v2.7
+
+---
+
+## 1. 它解决什么问题
+
+AI 编程智能体已经能自主改代码、跑命令、提交仓库。但一次运行结束后，有两类信息仍然说不清：
+
+- **做过什么，凭什么做的**：依据散落在日志里，日志可被改写、可被清理，第三方无法确认记录是否被动过。
+- **结论够不够扎实**：结论背后的证据缺了哪一环、缺了几处、累计欠了多少，没有计量口径。
+
+TemisGuard 在智能体执行的关键节点采集事实，把事实固化成账，再在账上计算缺口。
+
+## 2. 核心能力
+
+| 能力 | 输入 | 输出 | 回答的问题 |
+|---|---|---|---|
+| Agent 行为可审计 | 工具调用前的意图、执行后的结果 | 只可追加的账本、内容指纹链、可独立复算的证据包 | 做了什么、依据是什么、结果是什么、有没有被改动过 |
+| 决策不确定性标记 | 账本内事实、策略表声明 | 三类标记、传播结果、不确定债务 | 证据是否足够、缺口在哪里、累计欠了多少 |
+
+两者互为依据：可审计提供事实，标记在事实之上计算缺口。缺少事实，标记没有挂载对象；缺少标记，事实无法判断是否足够。
+
+判定与执行策略（决策门）是接入手段，作用是决定账本「依据」一栏写入什么内容，不构成独立能力。
+
+## 3. 设计要点
+
+**意图先于动作。** 工具调用前写入意图记录（依据、参数摘要、白名单版本），执行后追加结果记录。两条记录以内容指纹首尾相连。
+
+**账本自包含。** append-only、逐行内容哈希、首尾成链、写入前脱敏。OpenTelemetry 只作 trace 弱引用；删掉链路日志后，账本仍可逐条复算。
+
+**三类标记。**
+
+| 标记 | 含义 |
+|---|---|
+| `NO_EVIDENCE` | 决策缺少支撑证据 |
+| `SOURCE_CONFLICT` | 多个来源给出不一致的事实 |
+| `SPEC_MISMATCH` | 实际参数与策略表声明不一致 |
+
+标记按 high / mid / low 标注，沿依赖边向下游传播。原始等级不因跳数降低，衰减只作用于下游影响呈现。
+
+**不确定债务。** 未消解的标记计入债务，权重取等级值：high 3、mid 2、low 1。每条债务关联一个决策、一种标记类型、一个权重、一个状态，以及消解时引用的证据。补证、统一来源、修正参数并重新过闸分别消解三类标记；消解只追加状态，原始条目保留。单次运行债务值达到策略表阈值时进入复核队列。
+
+**决策门。** `ALLOW` / `ASK` / `DENY` / `REWRITE` 四种判定，ASK 超时对高危动作拒绝并标 `TIMEOUT`，低危可按配置放行。判定纯规则、不联网、不调用模型，P95 低于 50ms。
+
+## 4. 运行链路
+
+```mermaid
+flowchart LR
+    H[工具调用钩子] --> I[意图记录]
+    I --> G{决策门}
+    G -->|ALLOW / REWRITE| E[执行]
+    G -->|ASK| M[人工确认]
+    G -->|DENY| X[拒绝入账]
+    M --> E
+    E --> R[结果记录]
+    I --> L[(账本)]
+    R --> L
+    X --> L
+    L --> K[标记引擎]
+    K --> D[不确定债务]
+    D --> S[8 项读数]
+    S --> P[发布闸 / 复核队列]
+```
+
+## 5. 仓库现状
 
 | 项 | 状态 |
 |---|---|
-| 规格 | 已冻结：主 PRD v2.2 / ARS v1.2 / 链路 v1.2 |
-| 数字链 | 47 → 79（34 CU，0.95 分/CU），全部可由整数计数复算 |
-| 代码 | 仅有骨架与接口占位，**尚不可用于演示** |
-| 测试 | `tests/` 为空，尚无测试 |
-| UI | 仅有 `ui/package.json`，`ui/src` 为空 |
-| 时间线 | 创意提交 11-10 / DEMO 11-25 → 12-27 24:00 / 评审 12-28 |
+| 产品规格 | v2.7 已冻结，16 页 PDF |
+| 后端代码 | `src/assurance_ledger/` 骨架与核心模型可用，运行在早期 ARS 口径 |
+| 债务模块 | `ledger/debt_tracker.py` 为旧的「未兑现验证义务」分类，尚未切到 v2.7 的三类标记加权 |
+| Studio UI | Vue 3 + Vite，含评分面板、闸门对话、证据抽屉、成本曲线；当前对接 ARS 口径 |
+| 测试 | `tests/` 为空目录，用例待补 |
+| 文档构建 | PRD PDF 与架构图均可由脚本重复生成 |
 
-## 快速开始
+## 6. 口径迁移
+
+仓库名与包名沿用早期名称 `assurance-ledger`，产品现名「天序明衡 TemisGuard」。规格与代码的差异集中在一处：
+
+| 项 | v2.7 规格 | 当前代码 |
+|---|---|---|
+| 审计对象 | 每个关键决策的意图与结果 | 每条 claim 与证据包 |
+| 核心读数 | 运行读数 8 项，含不确定债务 | ARS 五维评分（C/L/R/D/F） |
+| 债务定义 | 三类标记按 high 3 / mid 2 / low 1 加权 | unverified / stale / structural，按 CU 计量 |
+| 门禁依据 | 策略表 + 三类标记 | 规则编译 + ARS 阈值 |
+
+迁移按 PRD §10 验收项推进，逐项把代码对齐到 v2.7。README、PRD、架构图、PPT 四份材料使用同一套口径。
+
+## 7. 快速开始
+
+### 后端
 
 ```bash
 python -m pip install -e ".[dev]"
-pytest            # 目前无测试用例
-python scripts/generate_sbom.py
 ```
 
-## 目录结构
+跑一次真实运行（调用 DeepSeek，温度 0，读取 `fixtures/source/` 的行情快照，产出编译判定、日报、claim 与用量）：
 
-```
-docs/
-  prd/          # 三份现役 PRD（主 / ARS / 链路）+ ICT 赛题特调
-  design/       # 设计与评审文档、应用实例清单、设计速查
-  plan/         # 整改计划、调整方案、增强清单
-  reference/    # 大赛 FAQ
-  archive/      # 旧版 PRD 草稿
-src/assurance_ledger/
-  core/         # pydantic 数据模型（claim / evidence / check / ars / cost / ledger）
-  schemas/      # 接口契约 C1–C7 校验
-  rail/         # S2 采集与成本
-  engine/       # S0 规则编译、ARS 打分、改造方案
-  ledger/       # S3 证据包、S4 检查、S5 账本与 verify
-scripts/        # SBOM 等工具
-tests/          # 测试（待补）
-ui/             # Studio 面板（待补）
+```bash
+# 需要 pandas 与 openai
+pip install pandas openai
+set DEEPSEEK_API_KEY=你的密钥
+python scripts/run_daily_agent.py
 ```
 
-## 核心口径（一页版）
+输出写入 `fixtures/runs/`：`s0_compile.json`、`report.md`、`claims.json`、`meta.json`。
 
-| 段 | 何时 | 算哪几项 | 作用 |
-|---|---|---|---|
-| ARS_d 设计态 | S0/S1 之后，跑之前 | C 可编译率 | 设计预警（`C < 0.5` 提示，不阻断） |
-| ARS_r 运行态 | S4/S5 之后 | L 可定位 / R 可复算 / D 确定性 / F 新鲜度 | 发布闸（ARS < 70 阻断） |
-| ARS_g 治理态 | 改造后重测 | 全部 | 提升曲线 |
+### 文档构建
+
+```bash
+# 重新生成 PRD v2.7 PDF（需 markdown、pypdf、reportlab，脚本内指定 Chrome 路径）
+python build/prd/build_pdf.py
+
+# 重新生成架构图 SVG 与 PNG
+python build/design/gen_arch.py
+```
+
+### Studio UI
+
+```bash
+cd ui
+npm install
+npm run dev        # 本地开发
+npm run build      # 产出 dist/
+npm run test       # vitest
+npm run test:e2e   # Playwright
+```
+
+## 8. 目录结构
 
 ```text
-ARS（总）= 0.25C + 0.25L + 0.20R + 0.15D + 0.15F
-
-改造前：L 9/20  C 3/10   R 8/20   D 6/10   F 15/20 → 47（D 档）
-改造后：L 18/20 C 7/10   R 16/20  D 10/14  F 17/20 → 79（B 档）
-报价：34 CU（含 5% 缓冲），增益 32.46 分，0.95 分/CU
+docs/
+  prd/          PRD v2.7（Markdown + PDF）
+  design/       架构图 SVG / PNG
+  ppt/          创意提交 PPT
+  plan/         整改计划
+  reviews/      评审记录
+  reference/    大赛资料
+  PROGRESS.md   进展记录（追加式）
+src/assurance_ledger/
+  core/         数据模型：claim / evidence / rule / ledger_entry / ars / cost
+  schemas/      接口契约 C1–C13 校验
+  rail/         S2 采集与成本
+  engine/       规则编译、评分、改造方案
+  ledger/       证据包、检查、账本、债务台账
+scripts/        run_daily_agent / measure_ars / fetch_source / generate_sbom
+tests/          测试（待补）
+ui/             Vue 3 Studio（src / e2e / dist）
+build/
+  prd/          PRD PDF 构建
+  design/       架构图构建
+fixtures/       行情快照与真实运行产物
 ```
 
-评分坐标必须写全：`skill@version · model · data_profile`，否则分数不可比。
+## 9. 文档入口
 
-## 文档入口
-
-- [主 PRD](docs/prd/PRD_主_保证账本-v2.2.md) — 产品对象、两段 ARS、闸门、指标、人日
-- [ARS 子 PRD](docs/prd/PRD_审计就绪度ARS-v1.2.md) — 五维定义、归一化、抗博弈、复算示例
-- [链路子 PRD](docs/prd/PRD_可信可审计链路-v1.2.md) — S0–S7、契约 C1–C7
-- [应用实例清单](docs/design/应用实例清单_2026-10-30.md) — U1–U7 场景走查
-- [设计速查](docs/design/design_cheatsheet.md) — 队友上手用
-- [整改计划](docs/plan/整改计划_v2.2_2026-10-30.md) — 当前口径的来由与代码迁移清单
+- [PRD v2.7](docs/prd/PRD-v2.7.md) — 定位、目标、功能、契约、指标、验收
+- [PRD PDF](docs/prd/TemisGuard-PRD-v2.7.pdf)
+- [架构图](docs/design/temisguard-architecture-v3.svg)
+- [创意提交 PPT](docs/ppt/ThemisGuard_创意提交_v0.2.pptx)
 - [进展记录](docs/PROGRESS.md)
 
-## 许可证
+## 10. 技术依赖
+
+| 依赖 | 性质 |
+|---|---|
+| openJiuwen 0.1.20.post1 | 载体，唯一指定版本的硬依赖 |
+| 工具调用前钩子 / Hook 分发器 | 接入点，决定能采集到的字段 |
+| 追加写入数据库 | 账本介质，永久保留、不允许丢失 |
+| OpenTelemetry | 弱引用，链路数据默认保留 7 天，可丢弃 |
+| Python 3.10+ / Vue 3 | 运行环境 |
+
+判定路径不依赖 OTel 导出器、不依赖网络、不依赖模型推理。
+
+## 11. 许可证
 
 Apache-2.0，见 [LICENSE](LICENSE)。
