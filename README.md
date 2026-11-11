@@ -73,10 +73,10 @@ flowchart LR
 | 项 | 状态 |
 |---|---|
 | 产品规格 | v2.7 已冻结，16 页 PDF |
-| 后端代码 | `src/assurance_ledger/` 骨架与核心模型可用，运行在早期 ARS 口径 |
-| 债务模块 | `ledger/debt_tracker.py` 为旧的「未兑现验证义务」分类，尚未切到 v2.7 的三类标记加权 |
-| Studio UI | Vue 3 + Vite，含评分面板、闸门对话、证据抽屉、成本曲线；当前对接 ARS 口径 |
-| 测试 | `tests/` 为空目录，用例待补 |
+| 后端代码 | 现有流水线沿用 ARS；B 已新增 `engine/v27/` 离线计算入口，输出标记、债务、8 项读数与 Skill 聚合 |
+| 债务模块 | B 的 v2.7 投影按 high/mid/low 加权、消解只追加；C 的 `ledger/debt_tracker.py` 仍为旧 CU 模型，持久化接线待联调 |
+| Studio UI | 当前 checkout 缺少 `ui/src`，v2.7 展示与接口接线待 D 实现 |
+| 测试 | `tests/` 已覆盖旧 ARS 与 v2.7 计算；SDK 采集集成需另配环境验证 |
 | 文档构建 | PRD PDF 与架构图均可由脚本重复生成 |
 
 ## 6. 口径迁移
@@ -86,8 +86,8 @@ flowchart LR
 | 项 | v2.7 规格 | 当前代码 |
 |---|---|---|
 | 审计对象 | 每个关键决策的意图与结果 | 每条 claim 与证据包 |
-| 核心读数 | 运行读数 8 项，含不确定债务 | ARS 五维评分（C/L/R/D/F） |
-| 债务定义 | 三类标记按 high 3 / mid 2 / low 1 加权 | unverified / stale / structural，按 CU 计量 |
+| 核心读数 | 运行读数 8 项，含不确定债务 | B 离线入口已实现；现有流水线与 HTTP 接口仍为 ARS 五维评分 |
+| 债务定义 | 三类标记按 high 3 / mid 2 / low 1 加权 | B 投影已实现；C 的持久化债务接口仍按 CU 计量 |
 | 门禁依据 | 策略表 + 三类标记 | 规则编译 + ARS 阈值 |
 
 迁移按 PRD §10 验收项推进，逐项把代码对齐到 v2.7。README、PRD、架构图、PPT 四份材料使用同一套口径。
@@ -95,6 +95,14 @@ flowchart LR
 ## 7. 快速开始
 
 ### 后端
+
+本地运行 B 的 v2.7 合成样例（无模型密钥、无网络调用）：
+
+```bash
+python scripts/b_v27_demo.py --output outputs/b_v27_demo/report.json
+```
+
+债务初始 6 条、权重 11；消解 3 条后剩余 3 条、权重 5，原始事件保留。接口和接入边界见 [B v2.7 契约](docs/api/B_V27_CONTRACT.md) 与 [本轮交接](docs/handoff/B_v27_R1_2026-11-11.md)。
 
 ```bash
 python -m pip install -e ".[dev]"
@@ -123,13 +131,13 @@ python build/design/gen_arch.py
 
 ### Studio UI
 
+当前只有依赖清单，待 D 补齐 `ui/src` 后使用以下入口：
+
 ```bash
 cd ui
 npm install
 npm run dev        # 本地开发
 npm run build      # 产出 dist/
-npm run test       # vitest
-npm run test:e2e   # Playwright
 ```
 
 ## 8. 目录结构
@@ -150,8 +158,8 @@ src/assurance_ledger/
   engine/       规则编译、评分、改造方案
   ledger/       证据包、检查、账本、债务台账
 scripts/        run_daily_agent / measure_ars / fetch_source / generate_sbom
-tests/          测试（待补）
-ui/             Vue 3 Studio（src / e2e / dist）
+tests/          旧 ARS 与 v2.7 计算回归
+ui/             Studio 依赖清单，源码与 v2.7 展示待 D 接入
 build/
   prd/          PRD PDF 构建
   design/       架构图构建

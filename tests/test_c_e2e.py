@@ -1,4 +1,5 @@
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -13,7 +14,11 @@ ROOT = Path(__file__).resolve().parents[1]
 @pytest.fixture(scope="module")
 def result(tmp_path_factory):
     outputs = tmp_path_factory.mktemp("e2e")
-    return run(outputs_dir=outputs, run_id="e2e-run", write=True)
+    # 固定证据的评估时点，避免 7 天后自动改变本集成样例的预期。
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr("assurance_ledger.ledger.pipeline._now",
+                      lambda: datetime(2026, 11, 5, tzinfo=timezone.utc))
+        return run(outputs_dir=outputs, run_id="e2e-run", write=True)
 
 
 def test_e2e_runs_all_100_claims(result):
