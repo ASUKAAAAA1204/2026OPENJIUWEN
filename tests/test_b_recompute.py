@@ -2,6 +2,7 @@ import json
 import shutil
 import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -21,6 +22,16 @@ CLAIM_MAP = ROOT / "fixtures/a_100/claim-map-v2.json"
 V1_CLAIM_MAP = ROOT / "fixtures/a_100/claim-map-v1.json"
 PACKAGES = ROOT / "fixtures/a_100/packages"
 CLAIMS = ROOT / "fixtures/a_100/claims.json"
+
+
+@pytest.fixture(scope="module", autouse=True)
+def fixture_evidence_clock():
+    # 这批证据固定在 11 月初；复算协议测试应使用相同的审计时点。
+    # 实时时钟下的过期行为由 test_c_freshness_debt.py 单独覆盖。
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr("assurance_ledger.ledger.pipeline._now",
+                      lambda: datetime(2026, 11, 5, tzinfo=timezone.utc))
+        yield
 
 
 def _save(path: Path, value) -> None:
