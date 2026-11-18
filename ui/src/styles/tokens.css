@@ -1,0 +1,64 @@
+/**
+ * Design tokens —— 唯一颜色 / 间距 / 字体来源。
+ * 规则：组件内禁止写十六进制色值，只能引用 var(--token)。
+ */
+:root {
+  /* ── 表面与线 ── */
+  --bg: #f4f6f9;
+  --surface: rgba(255, 255, 255, 0.72);
+  --scrim: rgba(20, 24, 29, 0.18);
+  --hairline: #d5dce5;
+  --grid: rgba(120, 144, 156, 0.14);
+
+  /* ── 文字 ── */
+  --ink: #14181d;
+  --ink-2: #5a6673;
+
+  /* 标注/刻度/次要信息：对 surface 4.84:1、对 bg 4.52:1，满足正文 4.5:1 */
+  --ink-3: #66717e;
+
+  /* 禁用态保持更浅的灰，与可用态区分（不作为正文信息色） */
+  --ink-disabled: #9aa3af;
+
+  /* ── 语义色（仅档位 / 阻断 / 状态徽标使用） ── */
+  --blue: #78909c;
+  --blue-wash: rgba(120, 144, 156, 0.08);
+  --gold: #c2a16a;
+  --danger: #b3261e;
+  --warning: #a35f00;
+  --success: #2e7d5b;
+
+  /* ── 8px 网格 ── */
+  --sp-1: 8px;
+  --sp-2: 16px;
+  --sp-3: 24px;
+  --sp-4: 32px;
+  --sp-6: 48px;
+  --sp-8: 64px;
+
+  /* ── 字体 ── */
+  --font-serif: "Cormorant Garamond", "Noto Serif SC", Georgia, "Songti SC", serif;
+  --font-sans: "IBM Plex Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+  /* ── 字号 ── */
+  --fs-label: 11px; /* 技术标注：中文按 .06em，纯拉丁按 .18em */
+  --fs-label-lg: 11px;
+  --fs-body: 13px;
+  --fs-sub: 12px;
+  --fs-title: 15px;
+  --fs-score: 72px;
+  --tracking-label: 0.06em;
+  --tracking-label-latin: 0.18em;
+
+  /* ── 层 ── */
+  --z-deco: 0;
+  --z-panel: 1;
+  --z-overlay: 40;
+  --z-dialog: 50;
+
+  /* ── 面板 ── */
+  --blur-panel: 12px;
+  --panel-pad: var(--sp-4);
+  --hairline-w: 1px;
+}

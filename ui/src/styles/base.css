@@ -1,0 +1,226 @@
+/* 基础层：重置、蓝图底层、面板与排版原语 */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* ── 装饰层：蓝图网格 + 左右刻度 + 竖排字母，不可交互 ── */
+.deco {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-deco);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-hero) var(--ease-out);
+}
+
+.deco.is-on {
+  opacity: 1;
+}
+
+.deco__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(to right, var(--grid) 0 1px, transparent 1px 32px),
+    repeating-linear-gradient(to bottom, var(--grid) 0 1px, transparent 1px 32px);
+}
+
+.deco__ticks {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(to bottom, var(--ink-3) 0 2px, transparent 2px 32px),
+    repeating-linear-gradient(to bottom, var(--ink-3) 0 2px, transparent 2px 32px);
+  background-size:
+    2px 100%,
+    2px 100%;
+  background-position:
+    left top,
+    right top;
+  background-repeat: no-repeat;
+  opacity: 0.35;
+}
+
+.deco__vtext {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--ink-3);
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+/* ── 面板：半透明 + 12px 模糊 + 左上/右下 L 形角标（无实心边框） ── */
+.panel {
+  position: relative;
+  z-index: var(--z-panel);
+  background: var(--surface);
+  backdrop-filter: blur(var(--blur-panel));
+  padding: var(--panel-pad);
+}
+
+.panel::before,
+.panel::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+}
+
+.panel::before {
+  top: 0;
+  left: 0;
+  border-top: var(--hairline-w) solid var(--hairline);
+  border-left: var(--hairline-w) solid var(--hairline);
+}
+
+.panel::after {
+  right: 0;
+  bottom: 0;
+  border-right: var(--hairline-w) solid var(--hairline);
+  border-bottom: var(--hairline-w) solid var(--hairline);
+}
+
+/* ── 排版原语 ── */
+.label {
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* 纯拉丁技术标注才用宽字距；中文标签沿用 .label 的窄字距，避免字间被拉散 */
+.label--latin {
+  letter-spacing: var(--tracking-label-latin);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+/* ── 按钮 ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1);
+  min-height: 32px;
+  padding: 0 12px;
+  border: var(--hairline-w) solid var(--hairline);
+  font-size: var(--fs-label-lg);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  background: var(--surface);
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-press) var(--ease-out);
+}
+
+.btn:hover {
+  color: var(--ink);
+  border-color: var(--blue);
+  background: var(--blue-wash);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn--primary {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  color: var(--ink-disabled);
+  border-color: var(--hairline);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── 滚动条 ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--hairline);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}

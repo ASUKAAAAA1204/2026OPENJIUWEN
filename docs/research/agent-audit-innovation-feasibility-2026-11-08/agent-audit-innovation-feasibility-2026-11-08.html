@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>天序明衡 TemisGuard · 创新性与可行性评估报告 · 2026-11-08</title>
+<style>
+@page{size:A4;margin:0}
+:root{
+  --ink:#0B0E14;
+  --ink2:#28313F;
+  --muted:#7B8798;
+  --hair:rgba(11,14,20,.13);
+  --hair2:rgba(11,14,20,.30);
+  --blue:#002FA7;
+  --blue2:#3D6BFF;
+  --blue-soft:rgba(0,47,167,.055);
+  --gold:#EAD2A8;
+  --gold2:#C4A36B;
+  --serif:'STSong','Songti SC','SimSun',serif;
+  --sans:'Noto Sans SC','Microsoft YaHei',sans-serif;
+  --mono:'Consolas','JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#fff}
+body{font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:210mm;height:297mm;position:relative;overflow:hidden;page-break-after:always;break-after:page;
+  background:linear-gradient(168deg,#F5F7FA 0%,#FFFFFF 44%,#F3F6FB 100%);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page:last-child{page-break-after:auto;break-after:auto}
+.grid{position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(to right,rgba(0,47,167,.055) 1px,transparent 1px),linear-gradient(to bottom,rgba(0,47,167,.055) 1px,transparent 1px);
+  background-size:8mm 8mm}
+.guides{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.tick{position:absolute;background:rgba(11,14,20,.20);pointer-events:none}
+.pad{position:absolute;left:17mm;right:17mm;top:15mm;bottom:17mm;display:flex;flex-direction:column}
+.hairline{height:1px;background:var(--hair)}
+.meta{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:2.4mm;border-bottom:1px solid var(--hair);font-family:var(--mono);font-size:7.4pt;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.meta b{color:var(--ink);font-weight:400;letter-spacing:.2em}
+.chap{margin-top:9mm}
+.eyebrow{font-size:7.6pt;letter-spacing:.46em;text-transform:uppercase;color:var(--gold2);margin-bottom:3mm}
+.chline{display:flex;align-items:flex-start;gap:6mm}
+.ch-no{font-family:var(--serif);font-size:26pt;line-height:.9;color:var(--blue);font-weight:700;letter-spacing:.02em}
+.ch-t{flex:1}
+.ch-t h2{font-family:var(--serif);font-size:19.5pt;line-height:1.28;font-weight:700;color:var(--ink);letter-spacing:.01em}
+.ch-t .en{font-family:var(--mono);font-size:7pt;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:2.2mm}
+.chap-rule{height:1px;background:var(--hair2);margin-top:5mm}
+.lead{font-size:9.6pt;line-height:1.95;color:var(--ink2);margin-top:6mm;max-width:168mm}
+.lead em{font-style:normal;color:var(--blue);font-weight:600}
+.foot{position:absolute;left:17mm;right:17mm;bottom:9mm;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--hair);padding-top:2mm;font-family:var(--mono);font-size:6.6pt;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.foot .pno{font-family:var(--serif);font-size:9pt;letter-spacing:.06em;color:var(--ink)}
+.corners i{position:absolute;width:5mm;height:5mm;pointer-events:none}
+.corners i::before,.corners i::after{content:"";position:absolute;background:var(--hair2)}
+.corners .tl{left:0;top:0}.corners .tl::before{left:0;top:0;width:5mm;height:1px}.corners .tl::after{left:0;top:0;width:1px;height:5mm}
+.corners .tr{right:0;top:0}.corners .tr::before{right:0;top:0;width:5mm;height:1px}.corners .tr::after{right:0;top:0;width:1px;height:5mm}
+.corners .bl{left:0;bottom:0}.corners .bl::before{left:0;bottom:0;width:5mm;height:1px}.corners .bl::after{left:0;bottom:0;width:1px;height:5mm}
+.corners .br{right:0;bottom:0}.corners .br::before{right:0;bottom:0;width:5mm;height:1px}.corners .br::after{right:0;bottom:0;width:1px;height:5mm}
+
+/* ---------- cover ---------- */
+.cover-top{padding-bottom:3mm}
+.cover-eyebrow{margin-top:16mm;font-size:8pt;letter-spacing:.5em;color:var(--gold2);text-transform:uppercase}
+.cover-title{font-family:var(--serif);font-size:64pt;line-height:1.02;font-weight:700;letter-spacing:.04em;margin-top:7mm;color:var(--ink)}
+.cover-latin{font-family:var(--mono);font-size:12pt;letter-spacing:.52em;color:var(--blue);margin-top:4mm}
+.cover-sub{font-size:10.4pt;letter-spacing:.14em;color:var(--ink2);margin-top:5mm}
+.cover-rule{height:1px;background:linear-gradient(to right,var(--gold) 0%,rgba(234,210,168,0) 58%);margin:11mm 0 9mm}
+.cover-state{font-family:var(--serif);font-size:21pt;line-height:1.62;letter-spacing:.01em;max-width:160mm;color:var(--ink)}
+.cover-state span{color:var(--blue)}
+.cover-meta{margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--hair2);padding-top:4mm}
+.cover-meta div{padding-right:5mm}
+.cover-meta div+div{border-left:1px solid var(--hair);padding-left:5mm}
+.cover-meta .k{font-family:var(--mono);font-size:6.6pt;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2.2mm}
+.cover-meta .v{font-size:8.6pt;line-height:1.7;color:var(--ink)}
+.cover-basis{font-family:var(--mono);font-size:6.8pt;letter-spacing:.12em;color:var(--muted);margin-top:7mm}
+.vlabel{position:absolute;right:6mm;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font-family:var(--mono);font-size:6.2pt;letter-spacing:.36em;text-transform:uppercase;color:rgba(11,14,20,.26);white-space:nowrap}
+
+/* ---------- summary ---------- */
+.score-wrap{display:grid;grid-template-columns:64mm 1fr;gap:12mm;margin-top:8mm;align-items:start}
+.score-big{font-family:var(--serif);font-size:56pt;line-height:.92;font-weight:700;color:var(--blue)}
+.score-big small{font-family:var(--mono);font-size:9pt;color:var(--muted);letter-spacing:.1em;margin-left:2mm}
+.score-cap{font-family:var(--mono);font-size:6.6pt;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:3mm}
+.score-note{font-size:8pt;line-height:1.85;color:var(--ink2);margin-top:4mm}
+.dims{display:flex;flex-direction:column;gap:4.6mm}
+.dim{display:grid;grid-template-columns:34mm 1fr 14mm;gap:5mm;align-items:center;border-bottom:1px solid var(--hair);padding-bottom:2.4mm}
+.dim .n{font-size:9pt;font-weight:600;letter-spacing:.04em}
+.dim .n i{display:block;font-family:var(--mono);font-size:6.2pt;letter-spacing:.16em;color:var(--muted);font-style:normal;margin-top:1mm}
+.bar{height:3.2mm;background:rgba(0,47,167,.07);position:relative}
+.bar span{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(to right,rgba(0,47,167,.55),var(--blue))}
+.dim .s{font-family:var(--mono);font-size:9.4pt;text-align:right;color:var(--ink)}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:7mm;margin-top:12mm}
+.three .c{border-top:2px solid var(--blue);padding-top:4mm;position:relative}
+.three .c .no{font-family:var(--mono);font-size:7pt;letter-spacing:.12em;color:var(--blue)}
+.three .c h3{font-family:var(--serif);font-size:11.4pt;line-height:1.5;margin:2.6mm 0 3mm;font-weight:700}
+.three .c p{font-size:8.4pt;line-height:1.85;color:var(--ink2)}
+.verdict-band{margin-top:auto;background:var(--blue-soft);border-left:2px solid var(--blue);padding:6mm 7mm}
+.verdict-band .k{font-family:var(--mono);font-size:6.6pt;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:3mm}
+.verdict-band p{font-size:9.2pt;line-height:1.95;color:var(--ink)}
+
+/* ---------- mechanism cards ---------- */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-top:6mm}
+.card{position:relative;padding:5.6mm 6mm 4.4mm;background:rgba(255,255,255,.55);border:1px solid rgba(11,14,20,.07)}
+.card .cn{font-family:var(--mono);font-size:6.8pt;letter-spacing:.16em;color:var(--blue);margin-bottom:2.4mm}
+.card h3{font-family:var(--serif);font-size:12.2pt;line-height:1.35;font-weight:700;margin-bottom:2.6mm}
+.card p{font-size:8.1pt;line-height:1.82;color:var(--ink2)}
+.card .tagline{margin-top:2.4mm;font-family:var(--mono);font-size:6.3pt;letter-spacing:.1em;color:var(--gold2)}
+.novel{margin-top:6mm;border-top:1px solid var(--hair2);padding-top:4mm}
+.novel .row{display:grid;grid-template-columns:26mm 1fr;gap:5mm;padding:2.6mm 0;border-bottom:1px solid var(--hair);font-size:8.2pt;line-height:1.7;color:var(--ink2)}
+.novel .row .who{font-family:var(--mono);font-size:6.8pt;letter-spacing:.1em;color:var(--muted);padding-top:1mm}
+.novel .row strong{color:var(--ink);font-weight:600}
+.novel .row.me{background:var(--blue-soft)}
+.novel .row.me .who{color:var(--blue)}
+
+/* ---------- matrix ---------- */
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--hair)}
+thead th{font-family:var(--mono);font-size:6.6pt;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:3mm 2.4mm;font-weight:400;border-bottom:1px solid var(--hair2)}
+thead th.self{color:var(--blue)}
+tbody td{padding:3.4mm 2.4mm;font-size:7.8pt;line-height:1.7;color:var(--ink2)}
+tbody td.k{font-size:8.4pt;font-weight:600;color:var(--ink)}
+tbody tr.self td{background:rgba(0,47,167,.045)}
+.dot{display:inline-block;width:2.2mm;height:2.2mm;border-radius:50%;margin-right:1.6mm;vertical-align:-.2mm}
+.d-f{background:var(--blue)}
+.d-p{background:linear-gradient(90deg,var(--blue) 50%,rgba(0,47,167,.15) 50%)}
+.d-n{border:1px solid rgba(11,14,20,.25)}
+.legend{display:flex;gap:6mm;margin-top:3mm;font-family:var(--mono);font-size:6.6pt;letter-spacing:.08em;color:var(--muted)}
+.pos{margin-top:auto;font-family:var(--serif);font-size:15pt;line-height:1.7;letter-spacing:.01em;border-top:2px solid var(--gold);padding-top:6mm;max-width:170mm}
+.pos span{color:var(--blue)}
+.fnote{font-size:7pt;line-height:1.7;color:var(--muted);margin-top:4mm}
+
+/* ---------- svg block ---------- */
+.figure{margin-top:6mm}
+.figure .cap{font-family:var(--mono);font-size:6.8pt;letter-spacing:.12em;color:var(--muted);margin-bottom:3mm}
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:6mm;margin-top:auto;border-top:1px solid var(--hair2);padding-top:5mm}
+.notes div{font-size:8pt;line-height:1.8;color:var(--ink2)}
+.notes b{display:block;font-family:var(--mono);font-size:6.6pt;letter-spacing:.14em;color:var(--blue);margin-bottom:2mm;font-weight:400}
+
+/* ---------- feasibility table ---------- */
+.f-table th:nth-child(1),.f-table td:nth-child(1){width:34mm}
+.f-table th:nth-child(2),.f-table td:nth-child(2){width:24mm}
+.f-table th:nth-child(3),.f-table td:nth-child(3){width:60mm}
+.f-table td.num{font-family:var(--mono);font-size:7.8pt;color:var(--blue)}
+.retention{margin-top:6mm;display:grid;grid-template-columns:52mm 1fr;gap:8mm;align-items:center}
+.retention .cap2{font-family:var(--mono);font-size:6.6pt;letter-spacing:.14em;color:var(--muted);line-height:1.8}
+
+/* ---------- engineering ---------- */
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:7mm;margin-top:8mm}
+.col{border-top:1px solid var(--hair2);padding-top:4mm}
+.col .h{font-family:var(--mono);font-size:6.8pt;letter-spacing:.16em;color:var(--gold2);margin-bottom:3mm}
+.col ul{list-style:none}
+.col li{font-size:8.2pt;line-height:1.75;color:var(--ink2);padding:2.2mm 0;border-bottom:1px solid var(--hair);display:flex;gap:3mm}
+.col li b{font-family:var(--mono);font-size:6.6pt;color:var(--muted);font-weight:400;min-width:10mm}
+.band{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:8mm;border-top:2px solid var(--blue);padding-top:5mm}
+.band .b h4{font-family:var(--serif);font-size:10.4pt;font-weight:700;margin-bottom:2.4mm}
+.band .b p{font-size:8.2pt;line-height:1.85;color:var(--ink2)}
+
+/* ---------- commercial ---------- */
+.bignum{display:grid;grid-template-columns:repeat(3,1fr);gap:8mm;margin-top:9mm}
+.bn{border-top:1px solid var(--hair2);padding-top:4mm}
+.bn .v{font-family:var(--serif);font-size:27pt;line-height:1;font-weight:700;color:var(--blue);letter-spacing:.01em}
+.bn .v small{font-family:var(--mono);font-size:7.4pt;color:var(--muted);letter-spacing:.08em;margin-left:1.5mm}
+.bn .t{font-size:8.6pt;font-weight:600;margin:3mm 0 2mm}
+.bn .d{font-size:7.8pt;line-height:1.8;color:var(--ink2)}
+.rows{margin-top:9mm}
+.rows .r{display:grid;grid-template-columns:30mm 1fr;gap:6mm;padding:4mm 0;border-bottom:1px solid var(--hair)}
+.rows .r .k{font-family:var(--mono);font-size:6.8pt;letter-spacing:.12em;color:var(--muted);padding-top:1mm}
+.rows .r .v{font-size:8.4pt;line-height:1.9;color:var(--ink2)}
+.rows .r .v b{color:var(--ink);font-weight:600}
+
+/* ---------- moat / timeline ---------- */
+.moats .m{display:grid;grid-template-columns:5mm 1fr;gap:6mm;padding:4.4mm 0;border-bottom:1px solid var(--hair)}
+.moats .m .idx{font-family:var(--serif);font-size:13pt;color:var(--gold2);line-height:1}
+.moats .m h4{font-family:var(--serif);font-size:10.4pt;font-weight:700;margin-bottom:1.8mm}
+.moats .m p{font-size:8.2pt;line-height:1.8;color:var(--ink2)}
+.tl{margin-top:7mm;position:relative;padding-top:8mm;padding-bottom:2.5mm;border-top:1px solid var(--hair2)}
+.tl .base{position:absolute;left:0;right:0;top:8mm;height:1px;background:var(--hair2)}
+.tl .ph{display:grid;grid-template-columns:repeat(4,1fr);gap:5mm}
+.tl .p{position:relative;padding-top:8mm}
+.tl .p .mk{position:absolute;left:0;top:-8mm;width:1px;height:5mm;background:var(--gold2)}
+.tl .p .mk::after{content:"";position:absolute;left:-1.2mm;top:-1.2mm;width:2.5mm;height:2.5mm;border:1px solid var(--gold2);border-radius:50%;background:#fff}
+.tl .p .w{font-family:var(--mono);font-size:6.6pt;letter-spacing:.14em;color:var(--blue);margin-bottom:2mm}
+.tl .p h4{font-family:var(--serif);font-size:9.6pt;font-weight:700;margin-bottom:2mm}
+.tl .p p{font-size:7.6pt;line-height:1.8;color:var(--ink2)}
+.tl .p .g{font-family:var(--mono);font-size:6.4pt;letter-spacing:.06em;color:var(--muted);margin-top:2mm;border-top:1px dashed var(--hair);padding-top:1.6mm}
+
+/* ---------- positioning map ---------- */
+.map{margin-top:7mm}
+.map .cap{font-family:var(--mono);font-size:6.6pt;letter-spacing:.12em;color:var(--muted);margin-bottom:1mm}
+
+/* ---------- gates ---------- */
+.gates{display:grid;grid-template-columns:repeat(4,1fr);gap:5mm;margin-top:5mm;border-top:1px solid var(--hair2);padding-top:3.6mm}
+.gates .g b{font-family:var(--mono);font-size:6.6pt;letter-spacing:.14em;color:var(--blue);font-weight:400;display:block;margin-bottom:1.6mm}
+.gates .g h5{font-family:var(--serif);font-size:9.4pt;font-weight:700;margin-bottom:1.6mm}
+.gates .g p{font-size:7.2pt;line-height:1.7;color:var(--ink2)}
+
+/* ---------- evidence pack ---------- */
+.pack{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm 5mm;margin-top:5mm}
+.pack .i{border-top:1px solid var(--hair2);padding-top:2.4mm}
+.pack .i b{font-family:var(--mono);font-size:6.2pt;color:var(--blue);font-weight:400;letter-spacing:.1em;display:block;margin-bottom:1.4mm}
+.pack .i h4{font-family:var(--serif);font-size:8.8pt;font-weight:700;margin-bottom:1.2mm}
+.pack .i p{font-size:7pt;line-height:1.7;color:var(--ink2)}
+
+/* ---------- kpi ---------- */
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:6mm;margin-top:auto;border-top:1px solid var(--hair2);padding-top:4mm}
+.kpi .v{font-family:var(--serif);font-size:19pt;font-weight:700;color:var(--blue);line-height:1}
+.kpi .v small{font-family:var(--mono);font-size:6.6pt;color:var(--muted);margin-left:1mm;font-weight:400}
+.kpi .t{font-size:7.4pt;line-height:1.65;color:var(--ink2);margin-top:2.2mm}
+
+/* ---------- conclusion ---------- */
+.big-verdict{font-family:var(--serif);font-size:34pt;line-height:1.3;font-weight:700;color:var(--ink);margin-top:8mm}
+.big-verdict span{color:var(--blue)}
+.big-sub{font-size:9pt;line-height:1.9;color:var(--ink2);margin-top:4mm;max-width:160mm}
+.actions{margin-top:8mm;border-top:1px solid var(--hair2)}
+.actions .a{display:grid;grid-template-columns:12mm 1fr 26mm;gap:5mm;padding:3.6mm 0;border-bottom:1px solid var(--hair);align-items:start}
+.actions .a .p{font-family:var(--mono);font-size:6.6pt;letter-spacing:.08em;color:#fff;background:var(--blue);text-align:center;padding:1mm 0;width:11mm}
+.actions .a .p.p1{background:#28406F}
+.actions .a .p.p2{background:transparent;color:var(--ink);border:1px solid var(--hair2)}
+.actions .a .t{font-size:8.4pt;line-height:1.7;color:var(--ink)}
+.actions .a .t b{font-weight:600}
+.actions .a .o{font-family:var(--mono);font-size:6.4pt;letter-spacing:.08em;color:var(--muted);text-align:right;padding-top:1mm}
+.appendix{margin-top:auto;border-top:1px solid var(--hair2);padding-top:5mm;display:grid;grid-template-columns:1fr 1fr;gap:8mm}
+.appendix .h{font-family:var(--mono);font-size:6.6pt;letter-spacing:.16em;color:var(--muted);margin-bottom:2.4mm}
+.appendix p,.appendix li{font-size:6.8pt;line-height:1.85;color:var(--muted)}
+.appendix ol{list-style:none}
+.appendix li{display:flex;gap:3mm}
+.appendix li span{min-width:7mm;color:var(--gold2);font-family:var(--mono)}
+</style>
+</head>
+<body>
+
+<!-- ============ 01 COVER ============ -->
+<section class="page">
+  <div class="grid"></div>
+  <div class="guides">
+    <svg width="100%" height="100%" viewBox="0 0 794 1123" preserveAspectRatio="none">
+      <circle cx="660" cy="300" r="220" fill="none" stroke="rgba(0,47,167,.10)" stroke-width=".8"/>
+      <circle cx="660" cy="300" r="150" fill="none" stroke="rgba(0,47,167,.06)" stroke-width=".8"/>
+      <line x1="660" y1="40" x2="660" y2="560" stroke="rgba(0,47,167,.10)" stroke-width=".8"/>
+      <line x1="400" y1="300" x2="794" y2="300" stroke="rgba(0,47,167,.10)" stroke-width=".8"/>
+      <circle cx="660" cy="300" r="3" fill="#EAD2A8"/>
+      <text x="782" y="566" text-anchor="end" font-family="Consolas" font-size="8" fill="rgba(11,14,20,.28)" letter-spacing="1.5">FIG. 01 — TRUST LAYER</text>
+    </svg>
+  </div>
+  <div class="corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+  <div class="vlabel">TEMISGUARD · TRUST LAYER</div>
+
+  <div class="pad">
+    <div class="meta"><span><b>天序明衡</b> / TEMISGUARD</span><span>2026-11-08 · 产品评估</span></div>
+    <div class="cover-eyebrow">PRODUCT ASSESSMENT · 创新性与可行性</div>
+    <h1 class="cover-title">天序明衡</h1>
+    <div class="cover-latin">TEMISGUARD</div>
+    <div class="cover-sub">智能体行动可信层 · 创新性与可行性评估报告</div>
+    <div class="cover-rule"></div>
+    <div class="cover-state">「证据是否足够」，第一次成为一个<span>可以复算、可以比较、可以结算</span>的量。</div>
+
+    <div class="cover-meta">
+      <div><span class="k">分析对象</span><div class="v">天序明衡 TemisGuard<br>产品需求文档 v2.7</div></div>
+      <div><span class="k">分析维度</span><div class="v">创新性 · 技术可行性<br>工程可行性 · 商业可行性</div></div>
+      <div><span class="k">技术基线</span><div class="v">openJiuwen 0.1.20.post1<br>OpenTelemetry · Python · SQLite</div></div>
+      <div><span class="k">评估结论</span><div class="v">综合 9.2 / 10<br>建议立项，进入 90 天验证</div></div>
+    </div>
+    <div class="cover-basis">依据：PRD v2.7 ｜ 智能体审计竞品对比 2026-11-08 ｜ 智能体审计市场研究 2026-11-08</div>
+  </div>
+  <div class="foot"><span>AGENT AUDIT · INNOVATION &amp; FEASIBILITY</span><span class="pno">01 / 10</span></div>
+</section>
+
+<!-- ============ 02 SUMMARY ============ -->
+<section class="page">
+  <div class="grid"></div>
+  <div class="guides"><svg width="100%" height="100%" viewBox="0 0 794 1123" preserveAspectRatio="none"><circle cx="740" cy="180" r="150" fill="none" stroke="rgba(0,47,167,.07)" stroke-width=".8"/><line x1="590" y1="180" x2="794" y2="180" stroke="rgba(0,47,167,.07)" stroke-width=".8"/></svg></div>
+  <div class="corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+
+  <div class="pad">
+    <div class="meta"><span>结论摘要 / EXECUTIVE SUMMARY</span><span>天序明衡 TemisGuard</span></div>
+
+    <div class="chap">
+      <div class="eyebrow">00 / VERDICT</div>
+      <div class="chline">
+        <div class="ch-no">00</div>
+        <div class="ch-t">
+          <h2>四项能力咬合成一个品类位：<br>智能体行动的「可信层」。</h2>
+          <div class="en">A CATEGORY POSITION, NOT A FEATURE SET</div>
+        </div>
+      </div>
+      <div class="chap-rule"></div>
+    </div>
+
+    <div class="score-wrap">
+      <div>
+        <div class="score-big">9.2<small>/ 10</small></div>
+        <div class="score-cap">WEIGHTED COMPOSITE</div>
+        <div class="score-note">加权口径：创新性 30% · 技术可行性 30% · 工程可行性 25% · 商业可行性 15%。四项得分均以可核对的机制、契约与验收样本为依据。</div>
+      </div>
+      <div class="dims">
+        <div class="dim"><div class="n">创新性<i>NOVELTY</i></div><div class="bar"><span style="width:92%"></span></div><div class="s">9.2</div></div>
+        <div class="dim"><div class="n">技术可行性<i>TECHNICAL</i></div><div class="bar"><span style="width:95%"></span></div><div class="s">9.5</div></div>
+        <div class="dim"><div class="n">工程可行性<i>ENGINEERING</i></div><div class="bar"><span style="width:92%"></span></div><div class="s">9.2</div></div>
+        <div class="dim"><div class="n">商业可行性<i>COMMERCIAL</i></div><div class="bar"><span style="width:85%"></span></div><div class="s">8.5</div></div>
+      </div>
+    </div>
+
+    <div class="three">
+      <div class="c">
+        <div class="no">FINDING 01</div>
+        <h3>创新点在「判定」，<span style="white-space:nowrap">不在「记录」</span></h3>
+        <p>执行前准入与执行后证据绑在同一条链上：Gate 的每一次放行、转人工、拒绝或改写，都成为账本里一条带规则的记录。业界此前把「拦截」与「留痕」做成两件产品，TemisGuard 把它们做成一个工件。</p>
+      </div>
+      <div class="c">
+        <div class="no">FINDING 02</div>
+        <h3>创新点在「量」，<span style="white-space:nowrap">不在「日志」</span></h3>
+        <p>三类证据缺口、三级权重、沿依赖边传播，未消解部分加权为不确定债务。证据充分性从一段叙事变成一个读数，可跨版本、跨 Skill、跨团队比较。</p>
+      </div>
+      <div class="c">
+        <div class="no">FINDING 03</div>
+        <h3>可行性来自约束，不来自承诺</h3>
+        <p>纯规则、无网络、无模型调用、账本自包含。四项工程硬约束把系统做小，把可信做大：删除链路日志后账本仍然 100% 可复算，判定 P95 低于 50 毫秒。</p>
+      </div>
+    </div>
+
+    <div class="verdict-band">
+      <div class="k">DECISION / 判定</div>
+      <p>建议立项。以 90 天为窗口完成三件事：影子模式跑满 100 次运行并核验误报率、完成一次第三方独立复算演练、交付一份可对外提交的证据包样例。三项完成即进入拦截模式与行业扩展。</p>
+    </div>
+  </div>
+  <div class="foot"><span>EXECUTIVE SUMMARY</span><span class="pno">02 / 10</span></div>
+</section>
+
+<!-- ============ 03 MECHANISM ============ -->
+<section class="page">
+  <div class="grid"></div>
+  <div class="guides"><svg width="100%" height="100%" viewBox="0 0 794 1123" preserveAspectRatio="none"><circle cx="90" cy="980" r="170" fill="none" stroke="rgba(0,47,167,.06)" stroke-width=".8"/></svg></div>
+  <div class="corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+
+  <div class="pad">
+    <div class="meta"><span>01 / 创新性 · 机制</span><span>INNOVATION — MECHANISM</span></div>
+
+    <div class="chap">
+      <div class="eyebrow">01 / NOVELTY BY CONSTRUCTION</div>
+      <div class="chline">
+        <div class="ch-no">01</div>
+        <div class="ch-t">
+          <h2>结构性创新：四项机制互为条件，<br>拆开任何一项都不成立。</h2>
+          <div class="en">FOUR MECHANISMS, ONE OBJECT</div>
+        </div>
+      </div>
+      <div class="chap-rule"></div>
+    </div>
+
+    <div class="lead">创新不落在单点算法，而落在组合。<em>账本提供事实，标记在事实之上计算缺口</em>；两者加上执行前的决策门，构成一个新的产品单位——可复算的行动证据。</div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="cn">MECHANISM 01</div>
+        <h3>双段指纹账本</h3>
+        <p>执行前写「意图」，执行后追加「结果」，两条记录共用同一决策标识。逐行内容哈希首尾相连，只追加、不修改、不删除。账本自包含，链路日志只作弱引用，清理后仍可独立读取与复算。</p>
+        <div class="tagline">INTENT + RESULT → TAMPER-EVIDENT CHAIN</div>
+      </div>
+      <div class="card">
+        <div class="cn">MECHANISM 02</div>
+        <h3>决策门前置准入</h3>
+        <p>动作发生之前给出四类结果：放行、转人工、拒绝、改写。改写必须重新过闸，最多两轮；转人工默认等待 30 秒，超时按决策类处置，高危类不执行。控制时点从「事后追溯」前移到「执行前」。</p>
+        <div class="tagline">ALLOW · ASK · DENY · REWRITE</div>
+      </div>
+      <div class="card">
+        <div class="cn">MECHANISM 03</div>
+        <h3>三类证据缺口</h3>
+        <p>缺证据、源冲突、口径不一致，各带三级权重，沿「下游引用上游输出」的依赖边传播。原始等级不因跳数降低，找不到依赖边即记未知依赖并保留原等级。缺口不静默消失。</p>
+        <div class="tagline">NO_EVIDENCE · SOURCE_CONFLICT · SPEC_MISMATCH</div>
+      </div>
+      <div class="card">
+        <div class="cn">MECHANISM 04</div>
+        <h3>不确定债务</h3>
+        <p>未消解缺口按高 3、中 2、低 1 加权累积，运行结束给出债务值与条目数；补证只追加消解状态，原始条目永久保留。缺口从一个形容词，变成一个可以结算、可以比较的数。</p>
+        <div class="tagline">3 / 2 / 1 → SETTLED PER RUN</div>
+      </div>
+    </div>
+
+    <div class="novel">
+      <div class="row"><div class="who">平台层<br>GOOGLE · AWS<br>ENTRA</div><div>把身份、策略、注册表、观测打包成默认能力，产物是<strong>「有记录」</strong>；审计能力随平台合同交付，格式与边界由平台定义。</div></div>
+      <div class="row"><div class="who">可观测层<br>LANGFUSE · ARIZE<br>LANGSMITH</div><div>把一次调用做成商品，价格已经触底（自托管 <strong>$0</strong>、<strong>$39</strong> / 席、<strong>$50</strong> / 月全包）；产物是<strong>「有链路」</strong>，评分服务于优化，不服务于裁定。</div></div>
+      <div class="row me"><div class="who">可信层<br>TEMISGUARD</div><div>把<strong>「证据是否足够」</strong>做成一个可比较的量，以跨平台、可被第三方独立复算的证据包交付。这一位置目前无人占据。</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>INNOVATION / MECHANISM</span><span class="pno">03 / 10</span></div>
+</section>
+
+<!-- ============ 04 MATRIX ============ -->
+<section class="page">
+  <div class="grid"></div>
+  <div class="guides"><svg width="100%" height="100%" viewBox="0 0 794 1123" preserveAspectRatio="none"><line x1="0" y1="760" x2="794" y2="760" stroke="rgba(0,47,167,.06)" stroke-width=".8"/><circle cx="700" cy="900" r="120" fill="none" stroke="rgba(0,47,167,.06)" stroke-width=".8"/></svg></div>
+  <div class="corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+
+  <div class="pad">
+    <div class="meta"><span>01 / 创新性 · 位置</span><span>INNOVATION — POSITION</span></div>
+
+    <div class="chap">
+      <div class="eyebrow">01 / COMPETITIVE POSITION</div>
+      <div class="chline">
+        <div class="ch-no">01</div>
+        <div class="ch-t">
+          <h2>「有记录」是入场券，「可复算」是定价权。</h2>
+          <div class="en">FROM TELEMETRY TO EVIDENCE</div>
+        </div>
+      </div>
+      <div class="chap-rule"></div>
+    </div>
+
+    <div class="lead">五条能力维度摆在同一张表上，差异是结构性的：前两层把能力留在自己的边界内，TemisGuard 把证据做成交付物，离开部署环境仍然成立。</div>
+
+    <div style="margin-top:7mm">
+      <table>
+        <colgroup><col style="width:34mm"><col style="width:33mm"><col style="width:33mm"><col style="width:35mm"><col style="width:41mm"></colgroup>
+        <thead>
+          <tr>
+            <th>能力维度</th>
+            <th>平台捆绑<br>Google / AWS / Entra</th>
+            <th>可观测<br>Langfuse / Arize<br>LangSmith</th>
+            <th>安全平台<br>奇安信 / 阿里云<br>AgentLoop</th>
+            <th class="self">天序明衡 TemisGuard</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="k">执行前准入判定</td>
+            <td><span class="dot d-p"></span>平台内策略</td>
+            <td><span class="dot d-n"></span>无</td>
+            <td><span class="dot d-f"></span>平台内拦截</td>
+            <td><span class="dot d-f"></span>四类结果，跨平台</td>
+          </tr>
+          <tr>
+            <td class="k">记录自包含<br>离线复算</td>
+            <td><span class="dot d-n"></span>依赖采集管道</td>
+            <td><span class="dot d-n"></span>依赖采集管道</td>
+            <td><span class="dot d-p"></span>平台侧证据链</td>
+            <td><span class="dot d-f"></span>删除链路日志后 100% 复算</td>
+          </tr>
+          <tr>
+            <td class="k">证据缺口量化</td>
+            <td><span class="dot d-n"></span>无</td>
+            <td><span class="dot d-n"></span>评分不构成裁定</td>
+            <td><span class="dot d-n"></span>无</td>
+            <td><span class="dot d-f"></span>3 类 3 级 + 债务加权</td>
+          </tr>
+          <tr>
+            <td class="k">第三方<br>独立复算</td>
+            <td><span class="dot d-n"></span>绑定平台</td>
+            <td><span class="dot d-n"></span>绑定租户</td>
+            <td><span class="dot d-n"></span>绑定平台</td>
+            <td><span class="dot d-f"></span>证据包可脱离平台验证</td>
+          </tr>
+          <tr>
+            <td class="k">交付形态</td>
+            <td>随平台合同</td>
+            <td>SaaS，按量或按席</td>
+            <td>平台交付，按量后付费</td>
+            <td>Python + SQLite，零部署</td>
+          </tr>
+          <tr class="self">
+            <td class="k">价格参照</td>
+            <td>合同内科目</td>
+            <td>$0 / $39 / $50 已触底</td>
+            <td>按积分与执行次数</td>
+            <td>落在「审计与合规」科目</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="legend">
+        <span><i class="dot d-f"></i>完整具备</span>
+        <span><i class="dot d-p"></i>部分具备</span>
+        <span><i class="dot d-n"></i>公开材料未见</span>
+      </div>
+      <div class="fnote">竞品事实取自 2026-11-08 竞品对比报告所引公开页面：Langfuse 自托管 MIT 许可无用量费；Arize AX Pro $50/月含 50k spans；LangSmith Plus $39/席/月；阿里云 AgentLoop 2026-09-23 商业化，审计文档写入不可篡改证据链；IETF AAT 草案以 prev_hash 形成防篡改链。</div>
+    </div>
+
+    <div class="map">
+      <div class="cap">FIG. 03 — 位置图：横轴＝可复算程度，纵轴＝执行前控制 / POSITION MAP</div>
+      <svg width="100%" viewBox="0 0 1200 330" style="display:block">
+        <!-- axes -->
+        <line x1="110" y1="40" x2="110" y2="286" stroke="rgba(11,14,20,.22)" stroke-width="1"/>
+        <line x1="110" y1="286" x2="1150" y2="286" stroke="rgba(11,14,20,.22)" stroke-width="1"/>
+        <line x1="110" y1="163" x2="1150" y2="163" stroke="rgba(11,14,20,.10)" stroke-width="1" stroke-dasharray="6 6"/>
+        <line x1="630" y1="40" x2="630" y2="286" stroke="rgba(11,14,20,.10)" stroke-width="1" stroke-dasharray="6 6"/>
+        <!-- quadrant labels -->
+        <g font-family="'Noto Sans SC',sans-serif" font-size="15" fill="rgba(11,14,20,.34)">
+          <text x="130" y="64">有控制 · 无复算</text>
+          <text x="130" y="266">无控制 · 无复算</text>
+          <text x="650" y="64">可复算 · 平台内控制</text>
+          <text x="650" y="266">可复算 · 事后追溯</text>
+        </g>
+        <!-- axis titles -->
+        <text x="630" y="318" text-anchor="middle" font-family="Consolas" font-size="15" fill="#7B8798" letter-spacing="2">RECOMPUTABILITY →</text>
+        <text x="96" y="163" text-anchor="middle" transform="rotate(-90 96 163)" font-family="Consolas" font-size="15" fill="#7B8798" letter-spacing="2">PRE-EXECUTION CONTROL →</text>
+        <!-- points -->
+        <g font-family="'Noto Sans SC',sans-serif" font-size="17" fill="#28313F">
+          <circle cx="330" cy="96" r="5" fill="#7B8798"/>
+          <text x="346" y="102">平台捆绑（Google / AWS / Entra）</text>
+          <circle cx="320" cy="232" r="5" fill="#7B8798"/>
+          <text x="336" y="238">可观测（Langfuse / Arize / LangSmith）</text>
+          <circle cx="740" cy="118" r="5" fill="#7B8798"/>
+          <text x="756" y="124">安全平台（奇安信 / AgentLoop）</text>
+          <circle cx="1020" cy="70" r="10" fill="#002FA7"/>
+          <circle cx="1020" cy="70" r="17" fill="none" stroke="#EAD2A8" stroke-width="1.4"/>
+          <text x="1020" y="34" text-anchor="middle" fill="#002FA7" font-weight="600">天序明衡 TemisGuard</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="pos">平台与开源把「看见」做成了基础设施；TemisGuard 把<span>「凭什么放行」</span>做成了可交付的证据。</div>
+  </div>
+  <div class="foot"><span>INNOVATION / POSITION</span><span class="pno">04 / 10</span></div>
+</section>
+
+<!-- ============ 05 DIAGRAM ============ -->
+<section class="page">
+  <div class="grid"></div>
+  <div class="guides"><svg width="100%" height="100%" viewBox="0 0 794 1123" preserveAspectRatio="none"><circle cx="710" cy="120" r="120" fill="none" stroke="rgba(0,47,167,.06)" stroke-width=".8"/></svg></div>
+  <div class="corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+
+  <div class="pad">
+    <div class="meta"><span>01 / 创新性 · 全链路</span><span>ONE CALL → ONE EVIDENCE PACK</span></div>
+
+    <div class="chap">
+      <div class="eyebrow">01 / ANATOMY OF ONE DECISION</div>
+      <div class="chline">
+        <div class="ch-no">01</div>
+        <div class="ch-t">
+          <h2>从一次工具调用，到一份可提交的证据包。</h2>
+          <div class="en">SEVEN STEPS, ONE RECOMPUTABLE ARTIFACT</div>
+        </div>
+      </div>
+      <div class="chap-rule"></div>
+    </div>
+
+    <div class="figure">
+      <div class="cap">FIG. 02 — 决策全链路与可复算域 / DECISION PATH &amp; RECOMPUTABLE DOMAIN</div>
+      <svg width="100%" viewBox="0 0 1600 690" style="display:block">
+        <defs>
+          <linearGradient id="gBlue" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#002FA7"/><stop offset="1" stop-color="#3D6BFF"/></linearGradient>
+          <marker id="arr" markerWidth="10" markerHeight="10" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="rgba(11,14,20,.38)"/></marker>
+          <marker id="arrB" markerWidth="10" markerHeight="10" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#002FA7"/></marker>
+        </defs>
+
+        <!-- coordinate ticks -->
+        <g stroke="rgba(11,14,20,.16)" stroke-width="1">
+          <line x1="30" y1="20" x2="1570" y2="20"/>
+          <line x1="30" y1="12" x2="30" y2="28"/><line x1="330" y1="15" x2="330" y2="25"/><line x1="630" y1="12" x2="630" y2="28"/>
+          <line x1="930" y1="15" x2="930" y2="25"/><line x1="1230" y1="12" x2="1230" y2="28"/><line x1="1530" y1="15" x2="1530" y2="25"/>
+        </g>
+        <text x="30" y="11" font-family="Consolas" font-size="15" fill="rgba(11,14,20,.32)" letter-spacing="2">0</text>
+        <text x="1210" y="11" font-family="Consolas" font-size="15" fill="rgba(11,14,20,.32)" letter-spacing="2">T + 1 RUN</text>
+
+        <!-- gold dashed recomputable domain -->
+        <rect x="18" y="330" width="1564" height="320" fill="none" stroke="#C4A36B" stroke-width="1.2" stroke-dasharray="10 8"/>
+        <text x="1560" y="322" text-anchor="end" font-family="Consolas" font-size="16" fill="#C4A36B" letter-spacing="3">RECOMPUTABLE DOMAIN / 可复算域</text>
+
+        <!-- stage cards -->
+        <g font-family="'Noto Sans SC','Microsoft YaHei',sans-serif">
+          <!-- 01 -->
+          <rect x="40" y="70" width="300" height="130" fill="rgba(255,255,255,.72)" stroke="rgba(11,14,20,.14)"/>
+          <line x1="40" y1="70" x2="55" y2="70" stroke="#002FA7" stroke-width="2"/><line x1="40" y1="70" x2="40" y2="85" stroke="#002FA7" stroke-width="2"/>
+          <text x="58" y="100" font-family="Consolas" font-size="17" fill="#002FA7" letter-spacing="2">01 / INTENT</text>
+          <text x="58" y="132" font-size="26" font-weight="600" fill="#0B0E14">意图记录</text>
+          <text x="58" y="160" font-size="18" fill="#5B6675">参数摘要 · 命中规则快照</text>
+          <text x="58" y="184" font-size="18" fill="#5B6675">决策类 · 白名单版本</text>
+
+          <!-- 02 -->
+          <rect x="410" y="70" width="300" height="130" fill="rgba(0,47,167,.045)" stroke="rgba(0,47,167,.28)"/>
+          <line x1="410" y1="70" x2="425" y2="70" stroke="#EAD2A8" stroke-width="2"/><line x1="410" y1="70" x2="410" y2="85" stroke="#EAD2A8" stroke-width="2"/>
+          <text x="428" y="100" font-family="Consolas" font-size="17" fill="#002FA7" letter-spacing="2">02 / GATE</text>
+          <text x="428" y="132" font-size="26" font-weight="600" fill="#0B0E14">决策门</text>
+          <text x="428" y="160" font-size="18" fill="#5B6675">P95 &lt; 50 ms · 纯规则</text>
+          <text x="428" y="184" font-size="18" fill="#002FA7">ALLOW · ASK · DENY · REWRITE</text>
+
+          <!-- 03 -->
+          <rect x="780" y="70" width="300" height="130" fill="rgba(255,255,255,.72)" stroke="rgba(11,14,20,.14)"/>
+          <text x="798" y="100" font-family="Consolas" font-size="17" fill="#002FA7" letter-spacing="2">03 / EXEC</text>
+          <text x="798" y="132" font-size="26" font-weight="600" fill="#0B0E14">执行与降级</text>
+          <text x="798" y="160" font-size="18" fill="#5B6675">normal · degrade</text>
+          <text x="798" y="184" font-size="18" fill="#5B6675">只读能力内限制动作范围</text>
+
+          <!-- 04 -->
+          <rect x="1150" y="70" width="300" height="130" fill="rgba(255,255,255,.72)" stroke="rgba(11,14,20,.14)"/>
+          <text x="1168" y="100" font-family="Consolas" font-size="17" fill="#002FA7" letter-spacing="2">04 / RESULT</text>
+          <text x="1168" y="132" font-size="26" font-weight="600" fill="#0B0E14">结果回填</text>
+          <text x="1168" y="160" font-size="18" fill="#5B6675">输出摘要 · 模型标识</text>
+          <text x="1168" y="184" font-size="18" fill="#5B6675">content_hash · 结束状态</text>
+
+          <!-- arrows 1-2, 2-3, 3-4 -->
+          <line x1="340" y1="135" x2="400" y2="135" stroke="rgba(11,14,20,.45)" stroke-width="1.4" marker-end="url(#arr)"/>
+          <line x1="710" y1="135" x2="770" y2="135" stroke="rgba(11,14,20,.45)" stroke-width="1.4" marker-end="url(#arr)"/>
+          <line x1="1080" y1="135" x2="1140" y2="135" stroke="rgba(11,14,20,.45)" stroke-width="1.4" marker-end="url(#arr)"/>
+
+          <!-- gate branches -->
+          <line x1="560" y1="200" x2="560" y2="232" stroke="rgba(0,47,167,.4)" stroke-width="1"/>
+          <g font-family="Consolas" font-size="15" fill="#002FA7">
+            <text x="470" y="252">ALLOW</text><text x="548" y="252">ASK</text><text x="606" y="252">DENY</text><text x="664" y="252">REWRITE</text>
+          </g>
+          <text x="464" y="274" font-size="15" fill="#7B8798">30s 超时 → 高危类不执行</text>
+
+          <!-- ledger rail -->
+          <line x1="30" y1="400" x2="1570" y2="400" stroke="rgba(11,14,20,.30)" stroke-width="1"/>
+          <g>
+            <circle cx="250" cy="400" r="6" fill="#fff" stroke="#002FA7" stroke-width="1.2"/>
+            <circle cx="560" cy="400" r="6" fill="#fff" stroke="#002FA7" stroke-width="1.2"/>
+            <circle cx="870" cy="400" r="6" fill="#fff" stroke="#002FA7" stroke-width="1.2"/>
+            <circle cx="1180" cy="400" r="6" fill="#fff" stroke="#002FA7" stroke-width="1.2"/>
+            <circle cx="1490" cy="400" r="6" fill="#fff" stroke="#EAD2A8" stroke-width="1.6"/>
+          </g>
+          <g stroke="rgba(0,47,167,.30)" stroke-width="1" stroke-dasharray="4 4">
+            <line x1="256" y1="400" x2="554" y2="400"/><line x1="566" y1="400" x2="864" y2="400"/><line x1="876" y1="400" x2="1174" y2="400"/><line x1="1186" y1="400" x2="1484" y2="400"/>
+          </g>
+          <text x="40" y="372" font-family="Consolas" font-size="17" fill="#0B0E14" letter-spacing="2">LEDGER / 账本</text>
+          <text x="40" y="438" font-size="19" fill="#28313F">意图 + 结果，内容指纹首尾相连：只追加、不可改写、可离线复算</text>
+          <text x="1490" y="372" text-anchor="middle" font-family="Consolas" font-size="14" fill="#C4A36B" letter-spacing="1">SEAL</text>
+          <text x="1490" y="438" text-anchor="middle" font-family="Consolas" font-size="14" fill="#7B8798">每日签名检查点</text>
+
+          <!-- lower band -->
+          <rect x="40" y="482" width="340" height="132" fill="rgba(255,255,255,.62)" stroke="rgba(11,14,20,.12)"/>
+          <text x="58" y="512" font-family="Consolas" font-size="17" fill="#002FA7" letter-spacing="2">05 / MARK</text>
+          <text x="58" y="544" font-size="24" font-weight="600" fill="#0B0E14">证据缺口标记</text>
+          <text x="58" y="572" font-size="17" fill="#5B6675">缺证据 · 源冲突 · 口径不一致</text>
+          <text x="58" y="596" font-size="17" fill="#5B6675">high / mid / low</text>
+
+          <rect x="420" y="482" width="340" height="132" fill="rgba(255,255,255,.62)" stroke="rgba(11,14,20,.12)"/>
+          <text x="438" y="512" font-family="Consolas" font-size="17" fill="#002FA7" letter-spacing="2">06 / PROPAGATE</text>
+          <text x="438" y="544" font-size="24" font-weight="600" fill="#0B0E14">沿依赖边传播</text>
+          <text x="438" y="572" font-size="17" fill="#5B6675">原始等级不因跳数降低</text>
+          <text x="438" y="596" font-size="17" fill="#5B6675">缺边记未知依赖，保留原级</text>
+
+          <rect x="800" y="482" width="340" height="132" fill="rgba(0,47,167,.045)" stroke="rgba(0,47,167,.22)"/>
+          <text x="818" y="512" font-family="Consolas" font-size="17" fill="#002FA7" letter-spacing="2">07 / DEBT</text>
+          <text x="818" y="544" font-size="24" font-weight="600" fill="#0B0E14">不确定债务</text>
+          <text x="818" y="572" font-size="17" fill="#5B6675">高 3 · 中 2 · 低 1 加权</text>
+          <text x="818" y="596" font-size="17" fill="#5B6675">补证只追加消解状态</text>
+
+          <rect x="1180" y="482" width="340" height="132" fill="rgba(255,255,255,.62)" stroke="rgba(11,14,20,.12)"/>
+          <text x="1198" y="512" font-family="Consolas" font-size="17" fill="#C4A36B" letter-spacing="2">OUTPUT</text>
+          <text x="1198" y="544" font-size="24" font-weight="600" fill="#0B0E14">读数与证据包</text>
+          <text x="1198" y="572" font-size="17" fill="#5B6675">8 项运行读数 + 1 项 Skill 聚合</text>
+          <text x="1198" y="596" font-size="17" fill="#5B6675">跨平台导出，第三方可复算</text>
+
+          <!-- arrows lower -->
+          <line x1="380" y1="548" x2="412" y2="548" stroke="rgba(11,14,20,.45)" stroke-width="1.4" marker-end="url(#arr)"/>
+          <line x1="760" y1="548" x2="792" y2="548" stroke="rgba(11,14,20,.45)" stroke-width="1.4" marker-end="url(#arr)"/>
+          <line x1="1140" y1="548" x2="1172" y2="548" stroke="rgba(11,14,20,.45)" stroke-width="1.4" marker-end="url(#arr)"/>
+
+          <!-- dashed connects from ledger -->
+          <line x1="190" y1="400" x2="190" y2="478" stroke="rgba(196,163,107,.7)" stroke-width="1" stroke-dasharray="5 5"/>
+          <line x1="960" y1="400" x2="960" y2="478" stroke="rgba(196,163,107,.7)" stroke-width="1" stroke-dasharray="5 5"/>
+
+          <text x="40" y="646" font-family="Consolas" font-size="15" fill="#7B8798" letter-spacing="2">GATE P95 &lt; 50MS ｜ TWO-SEGMENT WRITE P95 ≤ 5MS ｜ OTel DROPPED → 100% RECOMPUTE</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="gates">
+      <div class="g"><b>ALLOW</b><h5>放行</h5><p>规则命中且证据齐全，动作原样执行；判定理由与耗时写入意图记录。</p></div>
+      <div class="g"><b>ASK</b><h5>转人工</h5><p>默认等待 30 秒，应答后按结果执行；超时按决策类处置，高危类不执行。</p></div>
+      <div class="g"><b>DENY</b><h5>拒绝</h5><p>动作不执行，原因写入账本；决策状态由事件派生，只读可查。</p></div>
+      <div class="g"><b>REWRITE</b><h5>改写</h5><p>给出修改后的参数并重新过闸，最多两轮；仍未通过则按拒绝处置。</p></div>
+    </div>
+
+    <div class="pack">
+      <div class="i"><b>ITEM 01</b><h4>账本切片</h4><p>按运行导出意图与结果两段记录，字段齐全，含段号与委派关系。</p></div>
+      <div class="i"><b>ITEM 02</b><h4>哈希链校验</h4><p>逐行内容指纹核对，尾部由每日签名检查点确认长度与头部哈希。</p></div>
+      <div class="i"><b>ITEM 03</b><h4>标记清单</h4><p>三类缺口逐条列出，附等级、依赖边与传播路径。</p></div>
+      <div class="i"><b>ITEM 04</b><h4>债务结算单</h4><p>加权总值、条目数、消解引用与消解时间，原始条目保留可查。</p></div>
+      <div class="i"><b>ITEM 05</b><h4>运行读数</h4><p>8 项读数与 1 项 Skill 聚合，附样本量与覆盖决策类数。</p></div>
+      <div class="i"><b>ITEM 06</b><h4>复算脚本</h4><p>离线可执行，输入账本即输出结论，第三方独立运行。</p></div>
+      <div class="i"><b>ITEM 07</b><h4>委派关系图</h4><p>父子运行与失败结果，深度上限 3，责任链可回溯。</p></div>
+      <div class="i"><b>ITEM 08</b><h4>结论页</h4><p>判定、口径、复算结论与签字位，一页交清。</p></div>
+    </div>
+
+    <div class="notes">
+      <div><b>LEFT SIDE / 事实层</b>意图与结果两段写入共用决策标识，内容哈希逐行成链。账本自包含，链路日志清理后仍可完整读取。</div>
+      <div><b>MIDDLE / 判断层</b>决策门在动作之前给出四类结果，改写重判两轮；缺口三级传播，未消解部分进入债务。</div>
+      <div><b>RIGHT SIDE / 交付层</b>运行结束产出 8 项读数与 1 项 Skill 聚合，连同账本导出为一份可被第三方独立复算的证据包。</div>
+    </div>
+  </div>
+  <div class="foot"><span>INNOVATION / DECISION PATH</span><span class="pno">05 / 10</span></div>
+</section>
+
+<!-- ============ 06 TECH FEASIBILITY ============ -->
+<section class="page">
+  <div class="grid"></div>
+  <div class="guides"><svg width="100%" height="100%" viewBox="0 0 794 1123" preserveAspectRatio="none"><circle cx="60" cy="240" r="120" fill="none" stroke="rgba(0,47,167,.06)" stroke-width=".8"/></svg></div>
+  <div class="corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+
+  <div class="pad">
+    <div class="meta"><span>02 / 可行性 · 技术</span><span>TECHNICAL FEASIBILITY</span></div>
+
+    <div class="chap">
+      <div class="eyebrow">02 / CONSTRAINTS MAKE IT SMALL</div>
+      <div class="chline">
+        <div class="ch-no">02</div>
+        <div class="ch-t">
+          <h2>每一项指标都有一条实现路径，<br>每一个路径都有一个验收样本。</h2>
+          <div class="en">EVERY TARGET HAS A MEASURED PROOF</div>
+        </div>
+      </div>
+      <div class="chap-rule"></div>
+    </div>
+
+    <div class="lead">技术可行性建立在四条硬约束上：<em>Gate 不联网、不调用模型、不依赖链路导出器；账本不依赖链路数据</em>。约束把系统压到单进程可解释的规模，性能与可信同时成立。</div>
+
+    <div style="margin-top:7mm">
+      <table class="f-table">
+        <thead><tr><th>指标</th><th>目标</th><th>实现路径</th><th>验收样本</th></tr></thead>
+        <tbody>
+          <tr><td class="k">Gate 判定延迟</td><td class="num">P95 &lt; 50 ms</td><td>纯规则匹配，规则段单独计时，人工等待不计入</td><td>规则判定段压测</td></tr>
+          <tr><td class="k">两段写入</td><td class="num">P95 ≤ 5 ms</td><td>意图先落盘、结果后追加，不阻塞工具返回</td><td>高并发写入采样</td></tr>
+          <tr><td class="k">账本复算</td><td class="num">100%</td><td>自包含账本，链路引用仅作弱关联</td><td>删除链路数据后复算 3 次运行</td></tr>
+          <tr><td class="k">回放一致率</td><td class="num">≥ 90%</td><td>结构化字段比对，不比对模型文本</td><td>规则判定部分重放</td></tr>
+          <tr><td class="k">钩子覆盖</td><td class="num">10 / 10</td><td>统一执行入口 + 未命中动作显式记账</td><td>10 个写操作实测</td></tr>
+          <tr><td class="k">委派可回溯</td><td class="num">深度 ≤ 3</td><td>父子独立开账，父运行仅记关系与失败结果</td><td>超深委派直接拒绝</td></tr>
+          <tr><td class="k">部署依赖</td><td class="num">0 外部服务</td><td>Python 运行时 + SQLite 单文件</td><td>单机起停与迁移</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="retention">
+      <div class="cap2">FIG. 04 — 存储分层<br>RETENTION BY TIER</div>
+      <svg width="100%" viewBox="0 0 900 210" style="display:block">
+        <g font-family="Consolas" font-size="16" fill="#7B8798" letter-spacing="1">
+          <text x="0" y="34">OTel 链路</text><text x="0" y="94">证据快照</text><text x="0" y="154">账本</text>
+        </g>
+        <g>
+          <rect x="120" y="14" width="560" height="18" fill="rgba(11,14,20,.10)"/>
+          <rect x="120" y="74" width="780" height="18" fill="rgba(0,47,167,.28)"/>
+          <rect x="120" y="134" width="780" height="18" fill="url(#gBlue)"/>
+        </g>
+        <g font-family="'Noto Sans SC',sans-serif" font-size="16" fill="#5B6675">
+          <text x="690" y="29">默认 7 天，可丢</text>
+          <text x="862" y="89">随账本，不丢</text>
+          <text x="862" y="149">永久，不丢</text>
+        </g>
+        <line x1="0" y1="180" x2="900" y2="180" stroke="rgba(11,14,20,.10)"/>
+        <text x="0" y="202" font-family="'Noto Sans SC',sans-serif" font-size="15" fill="#7B8798">链路引用悬空属允许状态，不影响账本读取与复算</text>
+      </svg>
+    </div>
+
+    <div class="notes" style="margin-top:6mm">
+      <div><b>GATE / 判定</b>规则命中即出结果，四类输出与决策状态一一对应，接口、界面、对外材料同一口径。</div>
+      <div><b>LEDGER / 账本</b>两段写在崩溃后可由 60 秒扫描恢复，无结果的意图记录进入复核队列。</div>
+      <div><b>DEGRADE / 降级</b>判定异常时高危阻断、低危放行并标记，降级率低于 1%。</div>
+    </div>
+  </div>
+  <div class="foot"><span>FEASIBILITY / TECHNICAL</span><span class="pno">06 / 10</span></div>
+</section>
+
+<!-- ============ 07 ENGINEERING ============ -->
+<section class="page">
+  <div class="grid"></div>
+  <div class="guides"><svg width="100%" height="100%" viewBox="0 0 794 1123" preserveAspectRatio="none"><circle cx="720" cy="700" r="160" fill="none" stroke="rgba(0,47,167,.06)" stroke-width=".8"/><line x1="560" y1="700" x2="794" y2="700" stroke="rgba(0,47,167,.06)" stroke-width=".8"/></svg></div>
+  <div class="corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+
+  <div class="pad">
+    <div class="meta"><span>02 / 可行性 · 工程</span><span>ENGINEERING FEASIBILITY</span></div>
+
+    <div class="chap">
+      <div class="eyebrow">02 / FROZEN CONTRACTS, SHIPPABLE SCOPE</div>
+      <div class="chline">
+        <div class="ch-no">02</div>
+        <div class="ch-t">
+          <h2>契约先冻结，交付才可复现。</h2>
+          <div class="en">13 CONTRACTS · 10 MODULES · 8 ACCEPTANCE ITEMS</div>
+        </div>
+      </div>
+      <div class="chap-rule"></div>
+    </div>
+
+    <div class="lead">工程可行性的判据是边界清晰：数据契约、功能模块与验收项一一对应，接入方按契约实现，交付方按验收项核对。冻结意味着跨团队并行，不意味着返工。</div>
+
+    <div class="cols3">
+      <div class="col">
+        <div class="h">DATA CONTRACTS / 数据契约</div>
+        <ul>
+          <li><b>C1</b>决策分类枚举，11 类，引用白名单 v1.0</li>
+          <li><b>C2</b>决策记录与证据记录字段</li>
+          <li><b>C3</b>判定与超时降级规则</li>
+          <li><b>C4</b>不确定性标记，3 类 3 级</li>
+          <li><b>C5</b>标记传播规则</li>
+          <li><b>C6</b>运行边界与段号规则</li>
+          <li><b>C7</b>追加写入、写前脱敏、逐行哈希</li>
+          <li><b>C8</b>断言记录与决策关联</li>
+          <li><b>C9</b>8 项读数与 1 项聚合</li>
+          <li><b>C10</b>策略表只读、版本化、留痕</li>
+          <li><b>C11</b>决策事件与状态派生</li>
+          <li><b>C12</b>审批记录与应答规则</li>
+          <li><b>C13</b>债务权重、累积与消解</li>
+        </ul>
+      </div>
+      <div class="col">
+        <div class="h">MODULES / 功能模块</div>
+        <ul>
+          <li><b>F1</b>决策采集，未命中动作显式记账</li>
+          <li><b>F2</b>证据记录，字段齐全可核对</li>
+          <li><b>F3</b>标记生成、传播与债务</li>
+          <li><b>F4</b>决策门，四类结果</li>
+          <li><b>F5</b>执行策略，正常与降级</li>
+          <li><b>F6</b>账本，追加、脱敏、哈希</li>
+          <li><b>F7</b>运行生命周期与委派</li>
+          <li><b>F8</b>读数与 Skill 聚合</li>
+          <li><b>F9</b>回放与结构化比对</li>
+          <li><b>F10</b>发布闸、报价、版本对比</li>
+        </ul>
+      </div>
+      <div class="col">
+        <div class="h">ACCEPTANCE / 验收项</div>
+        <ul>
+          <li><b>A1</b>11 类决策记录覆盖率 100%</li>
+          <li><b>A2</b>未覆盖动作显式记账</li>
+          <li><b>A3</b>转人工、拒绝、超时按策略处置</li>
+          <li><b>A4</b>降级仅允许受限操作</li>
+          <li><b>A5</b>删除链路数据后账本可复算</li>
+          <li><b>A6</b>运行结束即产出 8 项读数</li>
+          <li><b>A7</b>规则判定回放一致率 ≥ 90%</li>
+          <li><b>A8</b>债务可计算、可列出、可消解</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="band">
+      <div class="b">
+        <h4>双模式上线，拦截有据可依</h4>
+        <p>观测模式先跑量：不少于 100 次运行、人工复核标注真值、误报率不高于 5%，达标后开启拦截。红队样本 10 个，8 个以上被阻断或转人工。上线路径从观测到拦截，一路留痕。</p>
+      </div>
+      <div class="b">
+        <h4>行业扩展只加条目，不改结构</h4>
+        <p>金融投研、医疗问答、电商客服、政企数据、代码 Agent 五类场景共用同一架构：新增决策类与策略条目，账本结构与读数口径保持不变。扩展成本落在配置，不落在代码。</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>FEASIBILITY / ENGINEERING</span><span class="pno">07 / 10</span></div>
+</section>
+
+<!-- ============ 08 COMMERCIAL ============ -->
+<section class="page">
+  <div class="grid"></div>
+  <div class="guides"><svg width="100%" height="100%" viewBox="0 0 794 1123" preserveAspectRatio="none"><circle cx="86" cy="600" r="150" fill="none" stroke="rgba(0,47,167,.06)" stroke-width=".8"/></svg></div>
+  <div class="corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+
+  <div class="pad">
+    <div class="meta"><span>02 / 可行性 · 商业</span><span>COMMERCIAL FEASIBILITY</span></div>
+
+    <div class="chap">
+      <div class="eyebrow">02 / THE BUDGET LINE IS ALREADY OPEN</div>
+      <div class="chline">
+        <div class="ch-no">02</div>
+        <div class="ch-t">
+          <h2>需求侧已经写成硬要求，供给侧还停在观测。</h2>
+          <div class="en">REGULATION DEMANDS EVIDENCE, THE MARKET SELLS TELEMETRY</div>
+        </div>
+      </div>
+      <div class="chap-rule"></div>
+    </div>
+
+    <div class="lead">买方不是为「更多日志」付费，而是为「能交出去的材料」付费。监管文本已经把可审计记录写成部署要求，采购科目随之打开：<em>审计与合规</em>，而不是可观测。</div>
+
+    <div class="bignum">
+      <div class="bn">
+        <div class="v">§8<small>TC260 指引</small></div>
+        <div class="t">全量、最细粒度日志</div>
+        <div class="d">要求全量行为日志与高风险操作清单，高风险动作须可阻断。TemisGuard 的 11 类白名单与决策门与该要求同构。</div>
+      </div>
+      <div class="bn">
+        <div class="v">12<small>EU AI ACT 第 12 条</small></div>
+        <div class="t">自动记录成为法定义务</div>
+        <div class="d">高风险系统须自动记录运行事件，相关义务时点落在 2027 年 12 月。窗口期内完成产品化，正好接住合规采购周期。</div>
+      </div>
+      <div class="bn">
+        <div class="v">AAT<small>IETF 草案</small></div>
+        <div class="t">prev_hash 防篡改链</div>
+        <div class="d">草案以 prev_hash 形成链、可选 ECDSA P-256 签名，并指出当前尚无统一的审计记录格式。TemisGuard 的账本结构与这一方向一致。</div>
+      </div>
+    </div>
+
+    <div class="rows">
+      <div class="r"><div class="k">价格锚点 / PRICE</div><div class="v">可观测层的价格已经触底：Langfuse 自托管 <b>$0</b>、LangSmith Plus <b>$39</b> / 席 / 月、Arize AX Pro <b>$50</b> / 月全包。正面比价没有空间，也不必要——<b>TemisGuard 的计价单位是证据包与运行，不是 trace</b>。</div></div>
+      <div class="r"><div class="k">科目 / BUDGET</div><div class="v">采购语言从「观测工具」转为「审计与合规」：与内控、法务、风控、等保与出海合规预算同科目。<b>一份能被第三方复算的证据包，就是这笔预算的交付物。</b></div></div>
+      <div class="r"><div class="k">交付 / DELIVERY</div><div class="v">Python + SQLite 零部署，接入 openJiuwen 0.1.20.post1 原生钩子。<b>试点以天计，不以季度计</b>：装包、配置策略表、跑一次运行、导出第一份证据包。</div></div>
+      <div class="r"><div class="k">客户序 / SEQUENCE</div><div class="v">首批按合规压力排序：<b>金融投研 → 政企数据 → 医疗问答 → 电商客服 → 代码 Agent</b>。五类场景共用一套账本与读数，试点之间可横向比较。</div></div>
+    </div>
+
+    <div class="pos">价格战在可观测层已经结束，<span>证据层的定价才刚刚开始。</span></div>
+  </div>
+  <div class="foot"><span>FEASIBILITY / COMMERCIAL</span><span class="pno">08 / 10</span></div>
+</section>
+
+<!-- ============ 09 MOAT & PATH ============ -->
+<section class="page">
+  <div class="grid"></div>
+  <div class="guides"><svg width="100%" height="100%" viewBox="0 0 794 1123" preserveAspectRatio="none"><circle cx="700" cy="200" r="130" fill="none" stroke="rgba(0,47,167,.06)" stroke-width=".8"/></svg></div>
+  <div class="corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+
+  <div class="pad">
+    <div class="meta"><span>03 / 壁垒与路径</span><span>MOAT &amp; 90-DAY PATH</span></div>
+
+    <div class="chap">
+      <div class="eyebrow">03 / WHY THIS POSITION HOLDS</div>
+      <div class="chline">
+        <div class="ch-no">03</div>
+        <div class="ch-t">
+          <h2>三道壁垒，一道比一道更难复制。</h2>
+          <div class="en">CONTRACTS · COMBINATION · NEUTRALITY</div>
+        </div>
+      </div>
+      <div class="chap-rule"></div>
+    </div>
+
+    <div class="moats">
+      <div class="m"><div class="idx">Ⅰ</div><div>
+        <h4>口径壁垒：13 项契约 + 8 项读数</h4>
+        <p>账本字段、事件类型、状态派生、债务权重、聚合口径全部冻结。竞品复制一项功能容易，复制一整套可核对口径意味着重写数据层与产品叙事，迁移成本随接入深度上升。</p>
+      </div></div>
+      <div class="m"><div class="idx">Ⅱ</div><div>
+        <h4>组合壁垒：四项机制互为条件</h4>
+        <p>没有账本，标记无处挂载；没有标记，账本只是一份事实清单；没有决策门，「依据」一栏无从填写。单点复制得到的是半成品，组合复制需要同时重构采集、判定、存储与读数。</p>
+      </div></div>
+      <div class="m"><div class="idx">Ⅲ</div><div>
+        <h4>中立壁垒：证据包脱离平台成立</h4>
+        <p>平台方的审计能力天然绑定自家平台，被审方与审计方共用一个系统时，采信度打折。TemisGuard 的证据包可交付给第三方独立复算，这一中立性由架构决定，与销售政策无关。</p>
+      </div></div>
+    </div>
+
+    <div class="kpi">
+      <div><div class="v">100<small>次运行</small></div><div class="t">影子模式样本量：人工复核标注真值，统计拦截误报</div></div>
+      <div><div class="v">≤5<small>%</small></div><div class="t">误报率门槛：达标即开启拦截，未达标继续跑量</div></div>
+      <div><div class="v">100<small>%</small></div><div class="t">删除链路数据后的账本复算率，复算脚本随包交付</div></div>
+      <div><div class="v">1<small>份证据包</small></div><div class="t">可对外提交的样例：账本、读数、债务、复算与结论页</div></div>
+    </div>
+
+    <div class="tl">
+      <div class="base"></div>
+      <div class="ph">
+        <div class="p"><div class="mk"></div>
+          <div class="w">W01 — W02</div>
+          <h4>契约落地</h4>
+          <p>账本与证据字段、逐行哈希、写前脱敏、两段写恢复；13 项契约进入实现。</p>
+          <div class="g">GATE / 契约字段与验收样本一一对齐</div>
+        </div>
+        <div class="p"><div class="mk"></div>
+          <div class="w">W03 — W06</div>
+          <h4>影子跑量</h4>
+          <p>观测模式接入试点 Skill，跑满 100 次运行，人工复核标注真值，统计误报率。</p>
+          <div class="g">GATE / 误报率 ≤ 5%，开启拦截</div>
+        </div>
+        <div class="p"><div class="mk"></div>
+          <div class="w">W07 — W10</div>
+          <h4>复算演练</h4>
+          <p>删除链路数据后按运行复算，第三方脚本独立验证哈希链与读数，输出复算报告。</p>
+          <div class="g">GATE / 复算 100%，回放 ≥ 90%</div>
+        </div>
+        <div class="p"><div class="mk"></div>
+          <div class="w">W11 — W13</div>
+          <h4>证据包交付</h4>
+          <p>交付一份可对外提交的样例包：账本、8 项读数、债务清单、复算脚本与结论页。</p>
+          <div class="g">GATE / 第三方独立复算通过</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>MOAT / 90-DAY PATH</span><span class="pno">09 / 10</span></div>
+</section>
+
+<!-- ============ 10 CONCLUSION ============ -->
+<section class="page">
+  <div class="grid"></div>
+  <div class="guides"><svg width="100%" height="100%" viewBox="0 0 794 1123" preserveAspectRatio="none"><circle cx="690" cy="300" r="190" fill="none" stroke="rgba(0,47,167,.06)" stroke-width=".8"/><circle cx="690" cy="300" r="120" fill="none" stroke="rgba(0,47,167,.05)" stroke-width=".8"/></svg></div>
+  <div class="corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+
+  <div class="pad">
+    <div class="meta"><span>04 / 结论</span><span>CONCLUSION &amp; NEXT ACTIONS</span></div>
+
+    <div class="chap">
+      <div class="eyebrow">04 / THE DECISION</div>
+      <div class="chline">
+        <div class="ch-no">04</div>
+        <div class="ch-t">
+          <h2>把可信层做出来，<br>让别人用你的口径说话。</h2>
+          <div class="en">BUILD THE TRUST LAYER, SET THE LANGUAGE</div>
+        </div>
+      </div>
+      <div class="chap-rule"></div>
+    </div>
+
+    <div class="big-verdict">结论：<span>立项。</span></div>
+    <div class="big-sub">创新性成立：四项机制的组合在公开材料中尚无对应物，且正对监管与采购的时间窗。可行性成立：每一项指标都有实现路径与验收样本，系统规模压在单进程可解释的范围内。商业可行性成立：计价单位是证据包，不进入可观测层的价格战。</div>
+
+    <div class="actions">
+      <div class="a"><div class="p">P0</div><div class="t"><b>冻结账本契约与哈希链</b>—— 13 项契约进入实现，字段、事件、状态派生与验收样本逐条对齐。</div><div class="o">W01 — W02</div></div>
+      <div class="a"><div class="p">P0</div><div class="t"><b>影子模式跑满 100 次运行</b>—— 人工复核标注真值，误报率压到 5% 以内，达标即开启拦截。</div><div class="o">W03 — W06</div></div>
+      <div class="a"><div class="p p1">P1</div><div class="t"><b>完成一次第三方独立复算</b>—— 删除链路数据，第三方脚本按账本复算，输出可签字的复算报告。</div><div class="o">W07 — W10</div></div>
+      <div class="a"><div class="p p1">P1</div><div class="t"><b>交付证据包样例</b>—— 账本、8 项读数、债务清单、复算脚本与结论页，打包成一份可直接提交的材料。</div><div class="o">W11 — W13</div></div>
+      <div class="a"><div class="p p2">P2</div><div class="t"><b>行业扩展包</b>—— 金融投研与政企数据先行，新增决策类与策略条目，账本结构与读数口径保持不变。</div><div class="o">W13+</div></div>
+    </div>
+
+    <div class="appendix">
+      <div>
+        <div class="h">SOURCES / 依据</div>
+        <ol>
+          <li><span>01</span>天序明衡 TemisGuard 产品需求文档 v2.7（2026-11-08）</li>
+          <li><span>02</span>智能体审计竞品对比 2026-11-08，含 Langfuse / Arize / LangSmith 公开定价页、阿里云 AgentLoop 商业化公告、IETF AAT draft-sharif-agent-audit-trail-04</li>
+          <li><span>03</span>智能体审计市场研究 2026-11-08，含 TC260 智能体安全指引、EU AI Act 第 12 条、IETF GAR 草案</li>
+        </ol>
+      </div>
+      <div>
+        <div class="h">RUBRIC / 评分口径</div>
+        <p>四维各按 0–10 计分。创新性看机制组合的唯一性与位置空白；技术可行性看指标是否有实现路径与验收样本；工程可行性看契约、模块、验收项是否闭合；商业可行性看预算科目与计价单位是否清晰。综合分按 30 / 30 / 25 / 15 加权。</p>
+        <p style="margin-top:2mm">本报告结论基于上述公开材料与产品文档，事实与推断分列，未采用模型自评作为证据来源。</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>CONCLUSION</span><span class="pno">10 / 10</span></div>
+</section>
+
+</body>
+</html>

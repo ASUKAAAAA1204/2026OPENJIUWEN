@@ -1,0 +1,214 @@
+{
+  "format": "assurance-evidence-v1",
+  "bundle": {
+    "id": "evb-rail-ddc0c8d65c6d4e569e86cff453b9751b-c-001",
+    "skill": "daily-csv-spike",
+    "version": "0.1.0",
+    "claim": {
+      "id": "c-001",
+      "statement": "公司 A 的 PE 为 12，低于行业 PE 均值 20，估值相对行业偏低。",
+      "locator": {
+        "file": "source.csv",
+        "row": 1,
+        "field": "pe",
+        "line": null,
+        "section": null,
+        "free_text": null
+      },
+      "skill_version": "daily-csv-spike@0.1.0"
+    },
+    "evidence": [
+      {
+        "kind": "input_snapshot",
+        "ref": "source-snapshot",
+        "locator": "{\"field\":\"pe\",\"file\":\"source.csv\",\"free_text\":null,\"line\":null,\"row\":1,\"section\":null}",
+        "digest": "sha256:ef94dbed36d778bb86abb33e81d25726aa3f5b0655add7fd4dcbd4cda33e986c",
+        "captured_at": "2026-11-01T07:46:51.333595Z",
+        "freshness": "unknown"
+      },
+      {
+        "kind": "claim_inputs",
+        "ref": "claim-inputs",
+        "locator": null,
+        "digest": "sha256:d90b44e739e529c2fe292df351e219e2effdc1a3357d5e25acd30e0e031ec182",
+        "captured_at": "2026-11-01T07:46:51.333595Z",
+        "freshness": "unknown"
+      },
+      {
+        "kind": "rule",
+        "ref": "rule",
+        "locator": null,
+        "digest": "sha256:156b59afa2ea2ed29edb4699fc83f477e8c6d19b98a11472528fb98aded4318e",
+        "captured_at": "2026-11-01T07:46:51.333595Z",
+        "freshness": "unknown"
+      }
+    ],
+    "checks": [],
+    "adjudication": null,
+    "prev_hash": null,
+    "record_hash": "sha256:3c15f3da955068a5d2149bdad552be2bd2d98c5cbba337b2ba862842eae57fed"
+  },
+  "payloads": {
+    "source-snapshot": {
+      "file": "source.csv",
+      "media_type": "text/csv; charset=utf-8",
+      "encoding": "base64",
+      "content": "Y29tcGFueSxwZSxpbmR1c3RyeV9wZSxhc19vZgpBLDEyLDIwLDIwMjYtMTEtMDEKQiwzMCwyMCwyMDI2LTExLTAxCkMsMjAsMjAsMjAyNi0xMS0wMQo=",
+      "raw_sha256": "6edcbb541cbe3906467e1ef594f1bf6f6964dcde34c43f753ed0f40c49e0f885"
+    },
+    "claim-inputs": {
+      "claim_id": "c-001",
+      "company": "A",
+      "locators": {
+        "pe": {
+          "file": "source.csv",
+          "row": 1,
+          "field": "pe"
+        },
+        "industry_pe": {
+          "file": "source.csv",
+          "row": 1,
+          "field": "industry_pe"
+        }
+      },
+      "expected_values": {
+        "pe": "12",
+        "industry_pe": "20"
+      },
+      "captured_at": "2026-11-01T07:46:51.333595+00:00",
+      "source_sha256": "6edcbb541cbe3906467e1ef594f1bf6f6964dcde34c43f753ed0f40c49e0f885"
+    },
+    "rule": {
+      "id": "csv-pe-compare-fixture@1",
+      "operation": "numeric_compare",
+      "operands": [
+        "pe",
+        "industry_pe"
+      ],
+      "scope": "A packing fixture only; not B compiler output or C verifier"
+    }
+  },
+  "diagnostics": {
+    "claim_id": "c-001",
+    "run_id": "rail-ddc0c8d65c6d4e569e86cff453b9751b",
+    "reason_codes": [],
+    "contracts": {
+      "C1": "passed",
+      "C2": "C2: locator level=precise"
+    },
+    "locator_resolution": "RESOLVED",
+    "semantic_claim_verified": false,
+    "independent_verifier_run": false,
+    "source_resolution": {
+      "primary": {
+        "status": "RESOLVED",
+        "reason_code": null,
+        "detail_code": null,
+        "locator": {
+          "file": "source.csv",
+          "row": 1,
+          "field": "pe",
+          "line": null,
+          "section": null,
+          "free_text": null
+        },
+        "expected_value": "12",
+        "actual_value": "12",
+        "source_sha256": "6edcbb541cbe3906467e1ef594f1bf6f6964dcde34c43f753ed0f40c49e0f885",
+        "comparison": "numeric_relative_1e-6"
+      },
+      "industry_pe": {
+        "status": "RESOLVED",
+        "reason_code": null,
+        "detail_code": null,
+        "locator": {
+          "file": "source.csv",
+          "row": 1,
+          "field": "industry_pe",
+          "line": null,
+          "section": null,
+          "free_text": null
+        },
+        "expected_value": "20",
+        "actual_value": "20",
+        "source_sha256": "6edcbb541cbe3906467e1ef594f1bf6f6964dcde34c43f753ed0f40c49e0f885",
+        "comparison": "numeric_relative_1e-6"
+      }
+    },
+    "source_digest_matches_capture": true,
+    "capture_report_digest": "sha256:8c74626409a3a7a9b9325c909191a4a0228166f693f2897374b7a9ee4e5518f1",
+    "rule_snapshot_provided": true
+  },
+  "minimality": {
+    "status": "passed",
+    "algorithm": "deletion_inclusion_minimal",
+    "replay_id": "a-fixture-csv-operands@1",
+    "replay_calls": 22,
+    "candidate_count": 6,
+    "retained_count": 3,
+    "candidate_record_hash": "sha256:3fbebfadecf0b0882dccb267b16df43d081dfd684a2edc6b59e32a44a0b75352",
+    "removed_refs": [
+      "event-000001",
+      "event-000002",
+      "event-000006"
+    ],
+    "baseline_output": {
+      "claim_id": "c-001",
+      "company": "A",
+      "pe": "12",
+      "industry_pe": "20",
+      "comparison": "lt",
+      "rule_id": "csv-pe-compare-fixture@1",
+      "scope": "fixture_operands_only"
+    },
+    "attempts": [
+      {
+        "removed_ref": "event-000001",
+        "result_preserved": true
+      },
+      {
+        "removed_ref": "event-000002",
+        "result_preserved": true
+      },
+      {
+        "removed_ref": "event-000006",
+        "result_preserved": true
+      },
+      {
+        "removed_ref": "source-snapshot",
+        "result_preserved": false
+      },
+      {
+        "removed_ref": "claim-inputs",
+        "result_preserved": false
+      },
+      {
+        "removed_ref": "rule",
+        "result_preserved": false
+      }
+    ],
+    "deletion_checks": [
+      {
+        "removed_ref": "source-snapshot",
+        "result_preserved": false
+      },
+      {
+        "removed_ref": "claim-inputs",
+        "result_preserved": false
+      },
+      {
+        "removed_ref": "rule",
+        "result_preserved": false
+      }
+    ],
+    "independent_verifier_run": false
+  },
+  "hash_policy": {
+    "canonicalization": "RFC8785",
+    "algorithm": "SHA-256",
+    "evidence_digest": "JCS(payloads[ref])",
+    "record_hash": "JCS(bundle excluding record_hash; prev_hash included)",
+    "package_hash": "JCS(document excluding package_hash)"
+  },
+  "package_hash": "sha256:e74208a1b4ec392fe54057e86d00d55b958136a09e677bb1b16b280a3333e589"
+}

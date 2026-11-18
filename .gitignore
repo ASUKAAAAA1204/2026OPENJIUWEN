@@ -16,6 +16,8 @@ htmlcov/
 # Node
 node_modules/
 ui/dist/
+ui/test-results/
+ui/playwright-report/
 npm-debug.log*
 
 # 本地运行产物
@@ -36,3 +38,10 @@ ledger.json
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Local archived snapshots and runtime data
+/archive/
+/data/*
+!/data/.gitkeep
+/outputs/*
+!/outputs/.gitkeep

@@ -1,0 +1,75 @@
+{
+  "coord": {
+    "skill_version": "assurance-skill@2.2.0",
+    "model": "deepseek-v4.1-flash",
+    "data_profile": "retail-ops@2026-10",
+    "data_digest": "sha256:9f3ac1d4"
+  },
+  "doc_state": "COMPLETE",
+  "score": 47,
+  "band": "D",
+  "counts": { "claims": 20, "rules": 10, "checks": 10, "rules_compilable": 3 },
+  "dims": [
+    { "key": "L", "label": "可定位", "weight": 25, "num": 9, "den": 20, "state": "VALUE" },
+    { "key": "C", "label": "可编译", "weight": 25, "num": 3, "den": 10, "state": "VALUE" },
+    { "key": "R", "label": "可复算", "weight": 20, "num": 8, "den": 20, "state": "VALUE" },
+    { "key": "D", "label": "确定性", "weight": 15, "num": 6, "den": 10, "state": "VALUE" },
+    { "key": "F", "label": "新鲜度", "weight": 15, "num": 15, "den": 20, "state": "VALUE" }
+  ],
+  "deductions": [
+    {
+      "dim": "L",
+      "text": "11 条结论只写了文件名、没有行号",
+      "action": "补定位 9 条",
+      "n": 9,
+      "price_cu": 6.3
+    },
+    {
+      "dim": "C",
+      "text": "7 条规则无法编译，依赖字段缺失",
+      "action": "原地改写 4 条",
+      "n": 4,
+      "price_cu": 12
+    },
+    {
+      "dim": "R",
+      "text": "12 条结论无法在本机复算",
+      "action": "重跑验证 4 条",
+      "n": 4,
+      "price_cu": 4
+    }
+  ],
+  "plan": {
+    "current": 47,
+    "target_band": "B",
+    "actions": [
+      { "act": "add_locator", "label": "补定位", "n": 9, "cu": 6.3, "gain": 11.25 },
+      { "act": "rerun_check", "label": "重跑验证", "n": 4, "cu": 4, "gain": 4 },
+      { "act": "rewrite_rule", "label": "原地改写", "n": 4, "cu": 12, "gain": 11.71 },
+      { "act": "rerun_stale", "label": "重验过期", "n": 2, "cu": 2, "gain": 1.5 },
+      { "act": "add_field", "label": "补字段", "n": 4, "cu": 8, "gain": 4 }
+    ],
+    "total_cu": 32.3,
+    "budget_cu": 34,
+    "cu_buffer_pct": 5,
+    "predicted": 79,
+    "tiers": [
+      { "cu": 0, "predicted": 47 },
+      { "cu": 8, "predicted": 60 },
+      { "cu": 16, "predicted": 68 },
+      { "cu": 24, "predicted": 75 },
+      { "cu": 34, "predicted": 79 }
+    ]
+  },
+  "trend": [
+    { "cu": 0, "score": 47 },
+    { "cu": 6.3, "score": 58 },
+    { "cu": 10.3, "score": 62 },
+    { "cu": 22.3, "score": 74 },
+    { "cu": 24.3, "score": 75 },
+    { "cu": 34, "score": 79 }
+  ],
+  "marginal_exhausted_from": 24.3,
+  "gate": { "threshold": 70, "decision": "BLOCK", "reason_code": "ARS_BELOW_THRESHOLD" },
+  "warnings": ["可定位率 0.45 · 11 条结论缺少行号", "可编译率 0.30 · 7 条规则无法编译"]
+}

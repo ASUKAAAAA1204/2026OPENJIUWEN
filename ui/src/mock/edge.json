@@ -1,0 +1,42 @@
+{
+  "coord": {
+    "skill_version": "assurance-skill@2.2.0",
+    "model": "",
+    "data_profile": "retail-ops@2026-10",
+    "data_digest": "sha256:9f3ac1d4"
+  },
+  "doc_state": "PARTIAL",
+  "score": null,
+  "band": null,
+  "counts": { "claims": 4, "rules": 10, "checks": 2 },
+  "dims": [
+    { "key": "L", "label": "可定位", "weight": 25, "num": 20, "den": 20, "state": "VALUE" },
+    { "key": "C", "label": "可编译", "weight": 25, "num": 0, "den": 10, "state": "VALUE" },
+    { "key": "R", "label": "可复算", "weight": 20, "num": 0, "den": 0, "state": "NA" },
+    { "key": "D", "label": "确定性", "weight": 15, "num": 0, "den": 0, "state": "MISSING" },
+    { "key": "F", "label": "新鲜度", "weight": 15, "num": 5, "den": 20, "state": "VALUE" }
+  ],
+  "deductions": [
+    {
+      "dim": "F",
+      "text": "结论只写了文件名，既无行号也无字段路径，无法在本机复现判定过程",
+      "action": "补定位 15 条",
+      "n": 15,
+      "price_cu": 999
+    }
+  ],
+  "plan": {
+    "current": 0,
+    "target_band": "B",
+    "actions": [{ "act": "rewrite_rule", "label": "原地改写", "n": 10, "cu": 0, "gain": -4.5 }],
+    "total_cu": 0,
+    "budget_cu": 0,
+    "cu_buffer_pct": 5,
+    "predicted": null,
+    "tiers": []
+  },
+  "trend": [],
+  "marginal_exhausted_from": null,
+  "gate": { "threshold": 70, "decision": "BLOCK", "reason_code": "SAMPLE_INSUFFICIENT" },
+  "warnings": []
+}

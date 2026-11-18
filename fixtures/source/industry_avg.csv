@@ -1,0 +1,4 @@
+﻿industry,n_samples,pe_median,pb_median,method
+电池,5,15.21,1.94,median
+酿酒行业,5,21.37,2.37,median
+银行,5,8.64,0.88,median

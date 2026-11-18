@@ -1,0 +1,37 @@
+{
+  "archive": "A回B_R1联调结果_20261102.zip",
+  "sha256": "5ca10edf3d7a27fa14e5d3502106c3a905c1af7d3b35649c9b714c7730e6181d",
+  "bytes": 1094461,
+  "manifest_files": 397,
+  "secret_matches": 0,
+  "source_protection": {
+    "protected_existing_files_unchanged": 628,
+    "protected_violations": [],
+    "original_B_return_files_unchanged": 99,
+    "frozen_core_and_contracts_unchanged": true,
+    "B_C_D_source_unchanged": true,
+    "original_20261101_handoff_unchanged": true
+  },
+  "portable_reproduction": {
+    "status": "passed",
+    "files_verified": 397,
+    "new_model_calls": 0,
+    "packages_verified_and_reproduced": 100,
+    "package_hashes_reproducible": true,
+    "rule_status": "candidate_pending_C",
+    "formal_M10": "not_verified",
+    "S3_model_calls": 0,
+    "new_output": "E:\\phanes\\A_R1_recheck_20261102\\exports\\evidence-e73c1dcd0d594ce982834fb726401aad",
+    "offline_S3_tests": "passed"
+  },
+  "portable_tests": {
+    "passed": 57,
+    "failures": 0,
+    "errors": 0
+  },
+  "final_zip_hashes_verified": 397,
+  "recommended_extraction_root": "E:\\phanes\\A_R1",
+  "path_note": "Use a short extraction directory on Windows; nested B history files exceeded the path limit under the deep project outputs directory.",
+  "final_original_capture_unchanged": true,
+  "final_ownership_check": "passed"
+}

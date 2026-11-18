@@ -1,0 +1,62 @@
+[
+  {
+    "rule_id": "R01",
+    "compilable": true,
+    "fail_code": null,
+    "reason": "可用 pe_ttm 与 industry_avg.pe_median 计算阈值比较，判定确定。"
+  },
+  {
+    "rule_id": "R02",
+    "compilable": true,
+    "fail_code": null,
+    "reason": "可用 pe_ttm 与 industry_avg.pe_median 计算阈值比较，判定确定。"
+  },
+  {
+    "rule_id": "R03",
+    "compilable": true,
+    "fail_code": null,
+    "reason": "可按 change_pct 排序取前 3 并输出涨幅，逻辑确定。"
+  },
+  {
+    "rule_id": "R04",
+    "compilable": false,
+    "fail_code": "SUBJECTIVE_RULE",
+    "reason": "“合理区间”与“建议持有”均为主观判断，无法客观判定。"
+  },
+  {
+    "rule_id": "R05",
+    "compilable": true,
+    "fail_code": null,
+    "reason": "可用 last_price 与 ma30.last_close 计算 5% 阈值比较，判定确定。"
+  },
+  {
+    "rule_id": "R06",
+    "compilable": false,
+    "fail_code": "MISSING_FIELD",
+    "reason": "缺少行业平均成交额字段，无法与 turnover 比较。"
+  },
+  {
+    "rule_id": "R07",
+    "compilable": true,
+    "fail_code": null,
+    "reason": "可要求输出数据表名与 pe_date/pb_date 等取数日期字段，属可执行格式约束。"
+  },
+  {
+    "rule_id": "R08",
+    "compilable": false,
+    "fail_code": "MISSING_FIELD",
+    "reason": "当前数据无净息差走势字段，无法进行判断。"
+  },
+  {
+    "rule_id": "R09",
+    "compilable": false,
+    "fail_code": "SUBJECTIVE_RULE",
+    "reason": "“市场情绪”与“仓位建议”均为主观判断，无法客观判定。"
+  },
+  {
+    "rule_id": "R10",
+    "compilable": true,
+    "fail_code": null,
+    "reason": "可用 pb 字段与 1 比较，判定确定。"
+  }
+]

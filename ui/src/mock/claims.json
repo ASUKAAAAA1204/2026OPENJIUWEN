@@ -1,0 +1,29 @@
+[
+  { "id": "C-001", "dim": "L", "text": "退货原因为「尺寸不符」的判定从未记录行号", "status": "UNLOCATED", "locator": null, "digest": "9f3ac1d4", "fail_code": "NO_LOCATOR" },
+  { "id": "C-002", "dim": "L", "text": "会员等级升级规则只在文件名里出现，无字段路径", "status": "UNLOCATED", "locator": null, "digest": "2b7f0e61", "fail_code": "NO_LOCATOR" },
+  { "id": "C-003", "dim": "L", "text": "门店库存低于安全线的判定缺少定位", "status": "UNLOCATED", "locator": null, "digest": "c41d88aa", "fail_code": "NO_LOCATOR" },
+  { "id": "C-004", "dim": "L", "text": "促销叠加顺序的结论无法回到具体行", "status": "UNLOCATED", "locator": null, "digest": "77e2b390", "fail_code": "NO_LOCATOR" },
+  { "id": "C-005", "dim": "L", "text": "优惠券失效判定只给了表名", "status": "UNLOCATED", "locator": null, "digest": "31a0c6f2", "fail_code": "NO_LOCATOR" },
+  { "id": "C-006", "dim": "L", "text": "跨店结算口径的注释行未被记录", "status": "UNLOCATED", "locator": null, "digest": "5d9b4e18", "fail_code": "NO_LOCATOR" },
+  { "id": "C-007", "dim": "L", "text": "退款时效承诺缺少对应的规则行号", "status": "UNLOCATED", "locator": null, "digest": "a8c7f150", "fail_code": "NO_LOCATOR" },
+  { "id": "C-008", "dim": "L", "text": "会员积分抵扣上限只引用了文档标题", "status": "UNLOCATED", "locator": null, "digest": "e2b19d43", "fail_code": "NO_LOCATOR" },
+  { "id": "C-009", "dim": "L", "text": "缺货替代品的优先级判断未定位", "status": "UNLOCATED", "locator": null, "digest": "6f4a2c77", "fail_code": "NO_LOCATOR" },
+  { "id": "C-010", "dim": "L", "text": "生鲜损耗率的统计范围缺少行级引用", "status": "UNLOCATED", "locator": null, "digest": "b0d5e829", "fail_code": "NO_LOCATOR" },
+  { "id": "C-011", "dim": "L", "text": "门店间调拨规则没有落到具体字段", "status": "UNLOCATED", "locator": null, "digest": "48c9ab01", "fail_code": "NO_LOCATOR" },
+  { "id": "C-012", "dim": "L", "text": "订单状态机允许「已取消」回收", "status": "LOCATED", "locator": "rules/order.md:42:status", "digest": "d1f7a2b6" },
+  { "id": "C-013", "dim": "L", "text": "支付超时判定为 15 分钟", "status": "LOCATED", "locator": "rules/payment.md:18:timeout", "digest": "8a61c3e4" },
+  { "id": "C-014", "dim": "L", "text": "退货窗口为签收后 7 天", "status": "LOCATED", "locator": "rules/refund.md:26:window", "digest": "5e0b9f72" },
+  { "id": "C-015", "dim": "L", "text": "满减门槛按实付金额计算", "status": "LOCATED", "locator": "rules/promo.md:31:threshold", "digest": "a9c3d5b0" },
+  { "id": "C-016", "dim": "L", "text": "会员积分按 1 元 1 分", "status": "LOCATED", "locator": "rules/member.md:12:points", "digest": "c2e4f807" },
+  { "id": "C-017", "dim": "L", "text": "库存锁定在支付成功后释放", "status": "LOCATED", "locator": "rules/inventory.md:9:lock", "digest": "7b2a9c16" },
+  { "id": "C-018", "dim": "L", "text": "缺货订单自动转预售", "status": "LOCATED", "locator": "rules/stock.md:44:fallback", "digest": "93d6e1a2" },
+  { "id": "C-019", "dim": "L", "text": "跨店优惠按店铺维度分摊", "status": "LOCATED", "locator": "rules/promo.md:67:split", "digest": "f0c8b743" },
+  { "id": "C-020", "dim": "L", "text": "生鲜不可退货，仅支持折价", "status": "LOCATED", "locator": "rules/fresh.md:21:policy", "digest": "1d5e9a38" },
+
+  { "id": "C-101", "dim": "C", "text": "分单规则引用了未定义的 region_code", "status": "UNLOCATED", "locator": null, "digest": "6a2f8c11", "fail_code": "UNDEFINED_FIELD" },
+  { "id": "C-102", "dim": "C", "text": "价格保护规则中的变量名拼写不一致", "status": "UNLOCATED", "locator": null, "digest": "b4d1e970", "fail_code": "UNDEFINED_FIELD" },
+  { "id": "C-103", "dim": "C", "text": "优惠券互斥表可以编译", "status": "LOCATED", "locator": "rules/coupon.md:15:exclusive", "digest": "0e7f5d26" },
+
+  { "id": "C-201", "dim": "R", "text": "缺货替代优先级无法在本地复算", "status": "UNVERIFIABLE", "locator": "rules/stock.md:44:fallback", "digest": "93d6e1a2", "fail_code": "MISSING_INPUT" },
+  { "id": "C-202", "dim": "R", "text": "生鲜损耗率依赖外部口径，无法复算", "status": "UNVERIFIABLE", "locator": "rules/fresh.md:33:loss", "digest": "3c9a70f5", "fail_code": "MISSING_INPUT" }
+]

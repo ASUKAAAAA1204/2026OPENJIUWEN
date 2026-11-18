@@ -1,0 +1,358 @@
+{
+  "skill_version": "inv-daily@v1.2.0",
+  "rules": [
+    {
+      "rule_id": "r-01",
+      "text": "PE < 行业均值1",
+      "has_locator": true,
+      "declared_fields": [
+        "PE",
+        "行业均值1"
+      ],
+      "uses_llm": false,
+      "fixtures": [
+        {
+          "kind": "positive",
+          "passed": true
+        },
+        {
+          "kind": "negative",
+          "passed": true
+        },
+        {
+          "kind": "boundary",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "rule_id": "r-02",
+      "text": "PE < 行业均值2",
+      "has_locator": true,
+      "declared_fields": [
+        "PE",
+        "行业均值2"
+      ],
+      "uses_llm": false,
+      "fixtures": [
+        {
+          "kind": "positive",
+          "passed": true
+        },
+        {
+          "kind": "negative",
+          "passed": true
+        },
+        {
+          "kind": "boundary",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "rule_id": "r-03",
+      "text": "PE < 行业均值3",
+      "has_locator": true,
+      "declared_fields": [
+        "PE",
+        "行业均值3"
+      ],
+      "uses_llm": false,
+      "fixtures": [
+        {
+          "kind": "positive",
+          "passed": true
+        },
+        {
+          "kind": "negative",
+          "passed": true
+        },
+        {
+          "kind": "boundary",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "rule_id": "r-04",
+      "text": "合理地比较 PE 倍数",
+      "has_locator": true,
+      "declared_fields": [
+        "PE"
+      ]
+    },
+    {
+      "rule_id": "r-05",
+      "text": "合理地比较 PE 倍数",
+      "has_locator": true,
+      "declared_fields": [
+        "PE"
+      ]
+    },
+    {
+      "rule_id": "r-06",
+      "text": "合理地比较 PE 倍数",
+      "has_locator": true,
+      "declared_fields": [
+        "PE"
+      ]
+    },
+    {
+      "rule_id": "r-07",
+      "text": "合理地比较 PE 倍数",
+      "has_locator": true,
+      "declared_fields": [
+        "PE"
+      ]
+    },
+    {
+      "rule_id": "r-08",
+      "text": "PB < 1.5",
+      "has_locator": true,
+      "declared_fields": []
+    },
+    {
+      "rule_id": "r-09",
+      "text": "PB < 1.5",
+      "has_locator": true,
+      "declared_fields": []
+    },
+    {
+      "rule_id": "r-10",
+      "text": "由模型判断估值是否偏低",
+      "has_locator": true,
+      "declared_fields": [
+        "PE"
+      ],
+      "uses_llm": true
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "c-001",
+      "locator": "RESOLVED",
+      "locator_source": "resolver",
+      "recompute": "CONSISTENT",
+      "recompute_by": "verifier",
+      "reason_code": null,
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-002",
+      "locator": "RESOLVED",
+      "locator_source": "resolver",
+      "recompute": "CONSISTENT",
+      "recompute_by": "verifier",
+      "reason_code": null,
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-003",
+      "locator": "RESOLVED",
+      "locator_source": "resolver",
+      "recompute": "CONSISTENT",
+      "recompute_by": "verifier",
+      "reason_code": null,
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-004",
+      "locator": "RESOLVED",
+      "locator_source": "resolver",
+      "recompute": "CONSISTENT",
+      "recompute_by": "verifier",
+      "reason_code": null,
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-005",
+      "locator": "RESOLVED",
+      "locator_source": "resolver",
+      "recompute": "CONSISTENT",
+      "recompute_by": "verifier",
+      "reason_code": null,
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-006",
+      "locator": "RESOLVED",
+      "locator_source": "resolver",
+      "recompute": "CONSISTENT",
+      "recompute_by": "verifier",
+      "reason_code": null,
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-007",
+      "locator": "RESOLVED",
+      "locator_source": "resolver",
+      "recompute": "CONSISTENT",
+      "recompute_by": "verifier",
+      "reason_code": "STALE_INPUT",
+      "evidence_fresh": false
+    },
+    {
+      "claim_id": "c-008",
+      "locator": "RESOLVED",
+      "locator_source": "resolver",
+      "recompute": "CONSISTENT",
+      "recompute_by": "verifier",
+      "reason_code": "STALE_INPUT",
+      "evidence_fresh": false
+    },
+    {
+      "claim_id": "c-009",
+      "locator": "RESOLVED",
+      "locator_source": "resolver",
+      "recompute": "INCONSISTENT",
+      "recompute_by": "verifier",
+      "reason_code": "REFUTED",
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-010",
+      "locator": "NOT_FOUND",
+      "locator_source": "resolver",
+      "recompute": "INCONSISTENT",
+      "recompute_by": "verifier",
+      "reason_code": "REFUTED",
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-011",
+      "locator": "NOT_FOUND",
+      "locator_source": "resolver",
+      "recompute": "INCONSISTENT",
+      "recompute_by": "verifier",
+      "reason_code": "REFUTED",
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-012",
+      "locator": "NOT_FOUND",
+      "locator_source": "resolver",
+      "recompute": "INDETERMINATE",
+      "recompute_by": "verifier",
+      "reason_code": "MISSING_FIELD",
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-013",
+      "locator": "NOT_FOUND",
+      "locator_source": "resolver",
+      "recompute": "INDETERMINATE",
+      "recompute_by": "verifier",
+      "reason_code": "MISSING_FIELD",
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-014",
+      "locator": "NOT_FOUND",
+      "locator_source": "resolver",
+      "recompute": "INDETERMINATE",
+      "recompute_by": "verifier",
+      "reason_code": "MISSING_FIELD",
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-015",
+      "locator": "NOT_FOUND",
+      "locator_source": "resolver",
+      "recompute": "INDETERMINATE",
+      "recompute_by": "verifier",
+      "reason_code": "MISSING_FIELD",
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-016",
+      "locator": "NOT_FOUND",
+      "locator_source": "resolver",
+      "recompute": "INDETERMINATE",
+      "recompute_by": "verifier",
+      "reason_code": "NO_EXPR",
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-017",
+      "locator": "NOT_FOUND",
+      "locator_source": "resolver",
+      "recompute": "INDETERMINATE",
+      "recompute_by": "verifier",
+      "reason_code": "NO_EXPR",
+      "evidence_fresh": true
+    },
+    {
+      "claim_id": "c-018",
+      "locator": "NOT_FOUND",
+      "locator_source": "resolver",
+      "recompute": "INDETERMINATE",
+      "recompute_by": "verifier",
+      "reason_code": "NO_EXPR",
+      "evidence_fresh": false
+    },
+    {
+      "claim_id": "c-019",
+      "locator": "NO_LOCATOR",
+      "locator_source": "resolver",
+      "recompute": "INDETERMINATE",
+      "recompute_by": "verifier",
+      "reason_code": "NO_EXPR",
+      "evidence_fresh": false
+    },
+    {
+      "claim_id": "c-020",
+      "locator": "NO_LOCATOR",
+      "locator_source": "resolver",
+      "recompute": "INDETERMINATE",
+      "recompute_by": "verifier",
+      "reason_code": "INSUFFICIENT_EVIDENCE",
+      "evidence_fresh": false
+    }
+  ],
+  "checks": [
+    {
+      "check_id": "chk-01",
+      "double_run_consistent": true
+    },
+    {
+      "check_id": "chk-02",
+      "double_run_consistent": true
+    },
+    {
+      "check_id": "chk-03",
+      "double_run_consistent": true
+    },
+    {
+      "check_id": "chk-04",
+      "double_run_consistent": true
+    },
+    {
+      "check_id": "chk-05",
+      "double_run_consistent": true
+    },
+    {
+      "check_id": "chk-06",
+      "double_run_consistent": true
+    },
+    {
+      "check_id": "chk-07",
+      "double_run_consistent": false
+    },
+    {
+      "check_id": "chk-08",
+      "double_run_consistent": false
+    },
+    {
+      "check_id": "chk-09",
+      "double_run_consistent": false
+    },
+    {
+      "check_id": "chk-10",
+      "double_run_consistent": false
+    }
+  ],
+  "meta": {
+    "synthetic": true,
+    "purpose": "B module formula and projection regression; not observed post-remediation evidence"
+  }
+}

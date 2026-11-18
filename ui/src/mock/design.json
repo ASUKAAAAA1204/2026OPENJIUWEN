@@ -1,0 +1,42 @@
+{
+  "coord": {
+    "skill_version": "assurance-skill@2.2.0",
+    "model": "deepseek-v4.1-flash",
+    "data_profile": "retail-ops@2026-10",
+    "data_digest": "sha256:9f3ac1d4"
+  },
+  "doc_state": "DESIGN_ONLY",
+  "score": null,
+  "band": null,
+  "counts": { "claims": 0, "rules": 10, "checks": 0 },
+  "dims": [
+    { "key": "L", "label": "可定位", "weight": 25, "num": 0, "den": 0, "state": "NA" },
+    { "key": "C", "label": "可编译", "weight": 25, "num": 3, "den": 10, "state": "VALUE" },
+    { "key": "R", "label": "可复算", "weight": 20, "num": 0, "den": 0, "state": "MISSING" },
+    { "key": "D", "label": "确定性", "weight": 15, "num": 0, "den": 0, "state": "MISSING" },
+    { "key": "F", "label": "新鲜度", "weight": 15, "num": 0, "den": 0, "state": "MISSING" }
+  ],
+  "deductions": [
+    {
+      "dim": "C",
+      "text": "3 条规则无法编译，依赖字段缺失",
+      "action": "原地改写 3 条",
+      "n": 3,
+      "price_cu": 9
+    }
+  ],
+  "plan": {
+    "current": 0,
+    "target_band": "C",
+    "actions": [{ "act": "rewrite_rule", "label": "原地改写", "n": 3, "cu": 9, "gain": 6 }],
+    "total_cu": 9,
+    "budget_cu": 9.5,
+    "cu_buffer_pct": 5,
+    "predicted": null,
+    "tiers": []
+  },
+  "trend": [],
+  "marginal_exhausted_from": null,
+  "gate": { "threshold": 70, "decision": "PASS", "reason_code": "DESIGN_ACK_REQUIRED" },
+  "warnings": ["仅设计态 · 可编译率 0.30，建议先改规则再进入运行态评估"]
+}

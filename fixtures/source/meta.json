@@ -1,0 +1,28 @@
+{
+  "captured_at": "2026-10-30T08:39:11+00:00",
+  "sources": {
+    "quotes": "akshare.stock_zh_a_spot (新浪)",
+    "valuation": "akshare.stock_zh_valuation_baidu (百度股市通)",
+    "history": "akshare.stock_zh_a_hist_tx (腾讯)"
+  },
+  "excluded": "东财 push2 系列在本次网络下被限流，未使用",
+  "industry_method": "同行业 5 只样本的 PE(TTM)/PB 中位数",
+  "files": {
+    "stocks.csv": {
+      "sha256": "sha256:b3c935a57ef039fb6aebc353ab75c1f249a4498788abd997cb38f50ddb3d7623",
+      "rows": 15
+    },
+    "prices_30d.csv": {
+      "sha256": "sha256:537bd7ed266581b128e5ede7596666d75819880303a83204268e30510a4b5727",
+      "rows": 150
+    },
+    "industry_avg.csv": {
+      "sha256": "sha256:2d70c73f1fe598490eaaeca31fd939e6380556baa64fa47ef31b72f89f6430e5",
+      "rows": 3
+    },
+    "ma30.csv": {
+      "sha256": "sha256:621ead15d9488fc392cca55e668c83988aa965bc475537a62ba19cc2b27778da",
+      "rows": 5
+    }
+  }
+}

@@ -1,0 +1,32 @@
+name: ui-verify
+
+# 计划书 §4 质量门 G1/G3：本地与 CI 跑同一条 `npm run verify`。
+# 固定 windows-latest：视觉基线在本机 Windows 上生成，换平台字体会产生像素差异。
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ui
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ui/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install chromium
+
+      - name: Verify
+        run: npm run verify

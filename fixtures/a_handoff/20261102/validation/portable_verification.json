@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "files_verified": 397,
+  "new_model_calls": 0,
+  "packages_verified_and_reproduced": 100,
+  "package_hashes_reproducible": true,
+  "rule_status": "candidate_pending_C",
+  "formal_M10": "not_verified",
+  "S3_model_calls": 0,
+  "new_output": "E:\\phanes\\A_R1_recheck_20261102\\exports\\evidence-e73c1dcd0d594ce982834fb726401aad",
+  "offline_S3_tests": "passed"
+}

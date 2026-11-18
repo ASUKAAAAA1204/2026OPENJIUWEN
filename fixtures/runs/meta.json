@@ -1,0 +1,20 @@
+{
+  "model": "deepseek-chat",
+  "temperature": 0,
+  "captured_at": "2026-10-30T08:44:13+00:00",
+  "usage": {
+    "s0": {
+      "prompt_tokens": 394,
+      "completion_tokens": 543
+    },
+    "s2": {
+      "prompt_tokens": 3637,
+      "completion_tokens": 1571
+    },
+    "s3": {
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    }
+  },
+  "latency_ms": null
+}

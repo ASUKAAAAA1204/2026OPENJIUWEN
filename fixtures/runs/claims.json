@@ -1,0 +1,142 @@
+[
+  {
+    "id": "c-001",
+    "statement": "贵州茅台PE_TTM为21.37倍",
+    "file": "stocks.csv",
+    "row": 1,
+    "field": "pe_ttm"
+  },
+  {
+    "id": "c-002",
+    "statement": "五粮液PE_TTM为23.02倍",
+    "file": "stocks.csv",
+    "row": 2,
+    "field": "pe_ttm"
+  },
+  {
+    "id": "c-003",
+    "statement": "泸州老窖PE_TTM为13.74倍",
+    "file": "stocks.csv",
+    "row": 3,
+    "field": "pe_ttm"
+  },
+  {
+    "id": "c-004",
+    "statement": "山西汾酒PE_TTM为15.57倍",
+    "file": "stocks.csv",
+    "row": 4,
+    "field": "pe_ttm"
+  },
+  {
+    "id": "c-005",
+    "statement": "洋河股份PE_TTM为902.02倍",
+    "file": "stocks.csv",
+    "row": 5,
+    "field": "pe_ttm"
+  },
+  {
+    "id": "c-006",
+    "statement": "酿酒行业PE中位数为21.37倍",
+    "file": "industry_avg.csv",
+    "row": 2,
+    "field": "pe_median"
+  },
+  {
+    "id": "c-007",
+    "statement": "贵州茅台PB为6.74倍",
+    "file": "stocks.csv",
+    "row": 1,
+    "field": "pb"
+  },
+  {
+    "id": "c-008",
+    "statement": "酿酒行业PB中位数为2.37倍",
+    "file": "industry_avg.csv",
+    "row": 2,
+    "field": "pb_median"
+  },
+  {
+    "id": "c-009",
+    "statement": "兴业银行PE_TTM为5.44倍，为银行板块最低",
+    "file": "stocks.csv",
+    "row": 10,
+    "field": "pe_ttm"
+  },
+  {
+    "id": "c-010",
+    "statement": "银行行业PE中位数为8.64倍",
+    "file": "industry_avg.csv",
+    "row": 3,
+    "field": "pe_median"
+  },
+  {
+    "id": "c-011",
+    "statement": "兴业银行PB为0.49倍",
+    "file": "stocks.csv",
+    "row": 10,
+    "field": "pb"
+  },
+  {
+    "id": "c-012",
+    "statement": "银行行业PB中位数为0.88倍",
+    "file": "industry_avg.csv",
+    "row": 3,
+    "field": "pb_median"
+  },
+  {
+    "id": "c-013",
+    "statement": "宁德时代PE_TTM为12.09倍",
+    "file": "stocks.csv",
+    "row": 11,
+    "field": "pe_ttm"
+  },
+  {
+    "id": "c-014",
+    "statement": "电池行业PE中位数为15.21倍",
+    "file": "industry_avg.csv",
+    "row": 1,
+    "field": "pe_median"
+  },
+  {
+    "id": "c-015",
+    "statement": "泸州老窖涨幅10.006%居首",
+    "file": "stocks.csv",
+    "row": 3,
+    "field": "change_pct"
+  },
+  {
+    "id": "c-016",
+    "statement": "欣旺达跌幅4.005%为最大",
+    "file": "stocks.csv",
+    "row": 15,
+    "field": "change_pct"
+  },
+  {
+    "id": "c-017",
+    "statement": "贵州茅台收盘1392.05高于MA30的1291.7673",
+    "file": "ma30.csv",
+    "row": 5,
+    "field": "ma30"
+  },
+  {
+    "id": "c-018",
+    "statement": "五粮液收盘74.7高于MA30的71.2103",
+    "file": "ma30.csv",
+    "row": 1,
+    "field": "ma30"
+  },
+  {
+    "id": "c-019",
+    "statement": "亿纬锂能收盘46.8低于MA30的47.7307",
+    "file": "ma30.csv",
+    "row": 2,
+    "field": "ma30"
+  },
+  {
+    "id": "c-020",
+    "statement": "宁德时代收盘229.07低于MA30的281.624",
+    "file": "ma30.csv",
+    "row": 3,
+    "field": "ma30"
+  }
+]

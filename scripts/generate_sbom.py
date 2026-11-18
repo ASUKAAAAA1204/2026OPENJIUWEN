@@ -10,6 +10,7 @@ PRD §9 纪律：SBOM 用 CycloneDX，W1 前生成第一次。
     → 输出 sbom.json（CycloneDX JSON 格式）
 """
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -20,17 +21,17 @@ def main():
     output = root / "sbom.json"
 
     try:
-        # 方式 1：用 cyclonedx-python-lib 从 requirements.txt 生成
-        # （需要 pip install cyclonedx-python-lib）
+        # 方式 1：用 cyclonedx-py 从 requirements.txt 生成
+        # （需要 pip install cyclonedx-bom）
+        env = dict(os.environ, PYTHONUTF8="1")
         result = subprocess.run(
             [
                 sys.executable, "-m", "cyclonedx_py",
-                "pip",
-                "--requirements", str(root / "requirements.txt"),
-                "--out", str(output),
+                "requirements", str(root / "requirements.txt"),
+                "-o", str(output),
                 "--output-format", "json",
             ],
-            capture_output=True, text=True, cwd=str(root),
+            capture_output=True, text=True, cwd=str(root), env=env,
         )
         if result.returncode == 0:
             print(f"[SBOM] Generated → {output}")
@@ -89,7 +90,7 @@ def main():
     with open(output, "w", encoding="utf-8") as f:
         json.dump(sbom, f, indent=2, ensure_ascii=False)
     print(f"[SBOM] Manual fallback → {output}")
-    print("[SBOM] Warning: manual SBOM — run 'pip install cyclonedx-python-lib' for auto-gen")
+    print("[SBOM] Warning: manual SBOM — run 'pip install cyclonedx-bom' for auto-gen")
 
 
 if __name__ == "__main__":

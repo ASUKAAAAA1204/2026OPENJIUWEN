@@ -1,0 +1,30 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "ignoreFiles": ["dist/**", "node_modules/**"],
+  "rules": {
+    "color-no-hex": true,
+    "custom-property-pattern": null,
+    "selector-class-pattern": null,
+    "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["deep", "slotted"] }],
+    "rule-empty-line-before": null,
+    "custom-property-empty-line-before": null,
+    "media-feature-range-notation": null,
+    "value-keyword-case": null,
+    "color-function-notation": null,
+    "color-function-alias-notation": null,
+    "alpha-value-notation": null,
+    "declaration-property-value-keyword-no-deprecated": null
+  },
+  "overrides": [
+    {
+      "files": ["src/styles/tokens.css"],
+      "rules": {
+        "color-no-hex": null
+      }
+    },
+    {
+      "files": ["**/*.vue"],
+      "customSyntax": "postcss-html"
+    }
+  ]
+}

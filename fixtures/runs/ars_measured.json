@@ -1,0 +1,239 @@
+{
+  "measured_at": "2026-10-30T16:45:18",
+  "counts": {
+    "n_claims": 20,
+    "n_rules": 10,
+    "n_compilable": 6,
+    "L_resolved": 19,
+    "R_verified": 19,
+    "R_refuted": 1,
+    "R_indeterminate": 0,
+    "D_consistent": 20,
+    "F_fresh": 15,
+    "locator_not_found": 0,
+    "locator_mismatch": 1
+  },
+  "ratios": {
+    "C": 0.6,
+    "L": 0.95,
+    "R": 0.95,
+    "D": 1.0,
+    "F": 0.75
+  },
+  "dims": {
+    "C": 15.0,
+    "L": 23.75,
+    "R": 19.0,
+    "D": 15.0,
+    "F": 11.25
+  },
+  "ARS": 84.0,
+  "band": "B",
+  "caveats": [
+    "C 只按编译口径统计；fixture 尚未落地，按 PRD 全口径时 C 会更低",
+    "D 的分母暂用 claim 数（20），PRD 要求用 n_checks（14），口径待对齐",
+    "F 仅用数据日期与抓取日之差判定，未接入证据级 freshness 字段"
+  ],
+  "rows": [
+    {
+      "id": "c-001",
+      "statement": "贵州茅台PE_TTM为21.37倍",
+      "locator": "stocks.csv:1:pe_ttm",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": true,
+      "note": "pe_ttm=21.37"
+    },
+    {
+      "id": "c-002",
+      "statement": "五粮液PE_TTM为23.02倍",
+      "locator": "stocks.csv:2:pe_ttm",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": true,
+      "note": "pe_ttm=23.02"
+    },
+    {
+      "id": "c-003",
+      "statement": "泸州老窖PE_TTM为13.74倍",
+      "locator": "stocks.csv:3:pe_ttm",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": true,
+      "note": "pe_ttm=13.74"
+    },
+    {
+      "id": "c-004",
+      "statement": "山西汾酒PE_TTM为15.57倍",
+      "locator": "stocks.csv:4:pe_ttm",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": true,
+      "note": "pe_ttm=15.57"
+    },
+    {
+      "id": "c-005",
+      "statement": "洋河股份PE_TTM为902.02倍",
+      "locator": "stocks.csv:5:pe_ttm",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": true,
+      "note": "pe_ttm=902.02"
+    },
+    {
+      "id": "c-006",
+      "statement": "酿酒行业PE中位数为21.37倍",
+      "locator": "industry_avg.csv:2:pe_median",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": false,
+      "note": "pe_median=21.37"
+    },
+    {
+      "id": "c-007",
+      "statement": "贵州茅台PB为6.74倍",
+      "locator": "stocks.csv:1:pb",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": true,
+      "note": "pb=6.74"
+    },
+    {
+      "id": "c-008",
+      "statement": "酿酒行业PB中位数为2.37倍",
+      "locator": "industry_avg.csv:2:pb_median",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": false,
+      "note": "pb_median=2.37"
+    },
+    {
+      "id": "c-009",
+      "statement": "兴业银行PE_TTM为5.44倍，为银行板块最低",
+      "locator": "stocks.csv:10:pe_ttm",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": true,
+      "note": "pe_ttm=5.44"
+    },
+    {
+      "id": "c-010",
+      "statement": "银行行业PE中位数为8.64倍",
+      "locator": "industry_avg.csv:3:pe_median",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": false,
+      "note": "pe_median=8.64"
+    },
+    {
+      "id": "c-011",
+      "statement": "兴业银行PB为0.49倍",
+      "locator": "stocks.csv:10:pb",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": true,
+      "note": "pb=0.49"
+    },
+    {
+      "id": "c-012",
+      "statement": "银行行业PB中位数为0.88倍",
+      "locator": "industry_avg.csv:3:pb_median",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": false,
+      "note": "pb_median=0.88"
+    },
+    {
+      "id": "c-013",
+      "statement": "宁德时代PE_TTM为12.09倍",
+      "locator": "stocks.csv:11:pe_ttm",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": true,
+      "note": "pe_ttm=12.09"
+    },
+    {
+      "id": "c-014",
+      "statement": "电池行业PE中位数为15.21倍",
+      "locator": "industry_avg.csv:1:pe_median",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": false,
+      "note": "pe_median=15.21"
+    },
+    {
+      "id": "c-015",
+      "statement": "泸州老窖涨幅10.006%居首",
+      "locator": "stocks.csv:3:change_pct",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": true,
+      "note": "change_pct=10.006"
+    },
+    {
+      "id": "c-016",
+      "statement": "欣旺达跌幅4.005%为最大",
+      "locator": "stocks.csv:15:change_pct",
+      "L": "VALUE_MISMATCH",
+      "R": "refuted",
+      "D": true,
+      "F": true,
+      "note": "声明 [4.005] 与源值 -4.005 不符"
+    },
+    {
+      "id": "c-017",
+      "statement": "贵州茅台收盘1392.05高于MA30的1291.7673",
+      "locator": "ma30.csv:5:ma30",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": true,
+      "note": "ma30=1291.7673"
+    },
+    {
+      "id": "c-018",
+      "statement": "五粮液收盘74.7高于MA30的71.2103",
+      "locator": "ma30.csv:1:ma30",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": true,
+      "note": "ma30=71.2103"
+    },
+    {
+      "id": "c-019",
+      "statement": "亿纬锂能收盘46.8低于MA30的47.7307",
+      "locator": "ma30.csv:2:ma30",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": true,
+      "note": "ma30=47.7307"
+    },
+    {
+      "id": "c-020",
+      "statement": "宁德时代收盘229.07低于MA30的281.624",
+      "locator": "ma30.csv:3:ma30",
+      "L": "RESOLVED",
+      "R": "verified",
+      "D": true,
+      "F": true,
+      "note": "ma30=281.624"
+    }
+  ]
+}

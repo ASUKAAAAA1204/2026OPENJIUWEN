@@ -1,0 +1,68 @@
+{
+  "coord": {
+    "skill_version": "assurance-skill@2.2.0",
+    "model": "deepseek-v4.1-flash",
+    "data_profile": "retail-ops@2026-10",
+    "data_digest": "sha256:9f3ac1d4"
+  },
+  "doc_state": "COMPLETE",
+  "score": 79,
+  "band": "B",
+  "counts": { "claims": 20, "rules": 10, "checks": 14, "rules_compilable": 7 },
+  "dims": [
+    { "key": "L", "label": "可定位", "weight": 25, "num": 18, "den": 20, "state": "VALUE" },
+    { "key": "C", "label": "可编译", "weight": 25, "num": 7, "den": 10, "state": "VALUE" },
+    { "key": "R", "label": "可复算", "weight": 20, "num": 16, "den": 20, "state": "VALUE" },
+    { "key": "D", "label": "确定性", "weight": 15, "num": 10, "den": 14, "state": "VALUE" },
+    { "key": "F", "label": "新鲜度", "weight": 15, "num": 17, "den": 20, "state": "VALUE" }
+  ],
+  "deductions": [
+    {
+      "dim": "L",
+      "text": "2 条结论仍只有文件名",
+      "action": "补定位 2 条",
+      "n": 2,
+      "price_cu": 1.4
+    },
+    {
+      "dim": "F",
+      "text": "3 条结论引用的数据快照已过期",
+      "action": "重验过期 3 条",
+      "n": 3,
+      "price_cu": 1.5
+    }
+  ],
+  "plan": {
+    "current": 47,
+    "target_band": "B",
+    "actions": [
+      { "act": "add_locator", "label": "补定位", "n": 9, "cu": 6.3, "gain": 11.25 },
+      { "act": "rerun_check", "label": "重跑验证", "n": 4, "cu": 4, "gain": 4 },
+      { "act": "rewrite_rule", "label": "原地改写", "n": 4, "cu": 12, "gain": 11.71 },
+      { "act": "rerun_stale", "label": "重验过期", "n": 2, "cu": 2, "gain": 1.5 },
+      { "act": "add_field", "label": "补字段", "n": 4, "cu": 8, "gain": 4 }
+    ],
+    "total_cu": 32.3,
+    "budget_cu": 34,
+    "cu_buffer_pct": 5,
+    "predicted": 79,
+    "tiers": [
+      { "cu": 0, "predicted": 47 },
+      { "cu": 8, "predicted": 60 },
+      { "cu": 16, "predicted": 68 },
+      { "cu": 24, "predicted": 75 },
+      { "cu": 34, "predicted": 79 }
+    ]
+  },
+  "trend": [
+    { "cu": 0, "score": 47 },
+    { "cu": 6.3, "score": 58 },
+    { "cu": 10.3, "score": 62 },
+    { "cu": 22.3, "score": 74 },
+    { "cu": 24.3, "score": 75 },
+    { "cu": 34, "score": 79 }
+  ],
+  "marginal_exhausted_from": 24.3,
+  "gate": { "threshold": 70, "decision": "PASS" },
+  "warnings": []
+}
