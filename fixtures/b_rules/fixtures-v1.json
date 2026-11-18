@@ -1,0 +1,134 @@
+{
+  "format": "b-fixtures-v1",
+  "rule_version": "b-pe-v1",
+  "ir_version": "b-cmp-v1",
+  "fixture_count": 9,
+  "fixtures": [
+    {
+      "rule_id": "b-pe-less-than-industry@1",
+      "kind": "positive",
+      "operands": {
+        "pe": 10,
+        "industry_pe": 20
+      },
+      "expected": true,
+      "actual": {
+        "status": "EVALUATED",
+        "reason_code": null,
+        "value": true
+      }
+    },
+    {
+      "rule_id": "b-pe-less-than-industry@1",
+      "kind": "negative",
+      "operands": {
+        "pe": 30,
+        "industry_pe": 20
+      },
+      "expected": false,
+      "actual": {
+        "status": "EVALUATED",
+        "reason_code": null,
+        "value": false
+      }
+    },
+    {
+      "rule_id": "b-pe-less-than-industry@1",
+      "kind": "boundary",
+      "operands": {
+        "pe": 20,
+        "industry_pe": 20
+      },
+      "expected": false,
+      "actual": {
+        "status": "EVALUATED",
+        "reason_code": null,
+        "value": false
+      }
+    },
+    {
+      "rule_id": "b-pe-greater-than-industry@1",
+      "kind": "positive",
+      "operands": {
+        "pe": 30,
+        "industry_pe": 20
+      },
+      "expected": true,
+      "actual": {
+        "status": "EVALUATED",
+        "reason_code": null,
+        "value": true
+      }
+    },
+    {
+      "rule_id": "b-pe-greater-than-industry@1",
+      "kind": "negative",
+      "operands": {
+        "pe": 10,
+        "industry_pe": 20
+      },
+      "expected": false,
+      "actual": {
+        "status": "EVALUATED",
+        "reason_code": null,
+        "value": false
+      }
+    },
+    {
+      "rule_id": "b-pe-greater-than-industry@1",
+      "kind": "boundary",
+      "operands": {
+        "pe": 20,
+        "industry_pe": 20
+      },
+      "expected": false,
+      "actual": {
+        "status": "EVALUATED",
+        "reason_code": null,
+        "value": false
+      }
+    },
+    {
+      "rule_id": "b-pe-equal-industry@1",
+      "kind": "positive",
+      "operands": {
+        "pe": 20,
+        "industry_pe": 20
+      },
+      "expected": true,
+      "actual": {
+        "status": "EVALUATED",
+        "reason_code": null,
+        "value": true
+      }
+    },
+    {
+      "rule_id": "b-pe-equal-industry@1",
+      "kind": "negative",
+      "operands": {
+        "pe": 19,
+        "industry_pe": 20
+      },
+      "expected": false,
+      "actual": {
+        "status": "EVALUATED",
+        "reason_code": null,
+        "value": false
+      }
+    },
+    {
+      "rule_id": "b-pe-equal-industry@1",
+      "kind": "boundary",
+      "operands": {
+        "pe": 1,
+        "industry_pe": 20
+      },
+      "expected": false,
+      "actual": {
+        "status": "EVALUATED",
+        "reason_code": null,
+        "value": false
+      }
+    }
+  ]
+}

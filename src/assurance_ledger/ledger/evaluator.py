@@ -17,7 +17,9 @@ from dataclasses import dataclass, field
 from decimal import Decimal, InvalidOperation
 from typing import Any, Mapping
 
+from ..core.claim import Locator
 from .canonical import canonical_bytes
+from .resolver import ResolveStatus, resolve_bytes
 
 EVALUATOR_VERSION = "c-evaluator-v1"
 
@@ -183,6 +185,61 @@ def _resolve_locator(
             COMPANY_MISMATCH, "COMPANY_MISMATCH", field, None, row_company, "行公司绑定不一致"
         )
     return LocatorResolution(RESOLVED, None, field, record[field], row_company)
+
+
+def _resolve_with_expected(
+    rows: list[dict[str, str]],
+    raw: bytes,
+    locator: Any,
+    *,
+    source_file: str,
+    company: str | None,
+    field_name: str,
+    expected_map: Mapping[str, Any],
+) -> LocatorResolution:
+    """C 做结构与绑定检查，A 的 resolve_bytes 做读回值匹配（CH-L）
+
+    只有两边都通过才算 RESOLVED；值匹配沿用 A 的相对容差 1e-6
+    """
+    resolution = _resolve_locator(
+        rows,
+        locator,
+        source_file=source_file,
+        company=company,
+        field_name=field_name,
+    )
+    if resolution.status != RESOLVED:
+        return resolution
+    if field_name not in expected_map:
+        return LocatorResolution(
+            NOT_FOUND, "MISSING_FIELD", field_name, resolution.value, resolution.row_company, "缺少断言值"
+        )
+    try:
+        parsed = Locator.model_validate(locator) if locator is not None else None
+    except (ValueError, TypeError) as exc:
+        return LocatorResolution(
+            NOT_FOUND, "NOT_FOUND", field_name, resolution.value, resolution.row_company, f"locator 无法校验：{exc}"
+        )
+    checked = resolve_bytes(
+        parsed,
+        expected_map[field_name],
+        source_bytes=raw,
+        source_file=source_file,
+    )
+    if checked.status == ResolveStatus.RESOLVED:
+        return resolution
+    detail = checked.comparison or checked.detail_code
+    if checked.status == ResolveStatus.VALUE_MISMATCH:
+        return LocatorResolution(
+            VALUE_MISMATCH, "VALUE_MISMATCH", field_name, checked.actual_value, resolution.row_company, detail
+        )
+    if detail == "EXPECTED_VALUE_MISSING":
+        return LocatorResolution(
+            NOT_FOUND, "MISSING_FIELD", field_name, resolution.value, resolution.row_company, detail
+        )
+    return LocatorResolution(
+        NOT_FOUND, "NOT_FOUND", field_name, resolution.value, resolution.row_company, detail
+    )
 
 
 def _decimal(value: Any) -> Decimal | None:
@@ -417,7 +474,8 @@ def resolve_all(
     if company is None:
         return {**empty, "reason_code": "COMPANY_MISMATCH", "source_sha256": digest}
     locator_map = claim_inputs.get("locators")
-    if not isinstance(locator_map, Mapping):
+    expected_map = claim_inputs.get("expected_values")
+    if not isinstance(locator_map, Mapping) or not isinstance(expected_map, Mapping):
         return {**empty, "reason_code": "MISSING_FIELD", "source_sha256": digest}
 
     try:
@@ -435,22 +493,26 @@ def resolve_all(
     resolutions: dict[str, LocatorResolution] = {}
     first_reason = None
     for field_name in field_names:
-        resolution = _resolve_locator(
+        resolution = _resolve_with_expected(
             rows,
+            raw,
             locator_map.get(field_name),
             source_file=source_file,
             company=company,
             field_name=field_name,
+            expected_map=expected_map,
         )
         resolutions[field_name] = resolution
         if resolution.status != RESOLVED and first_reason is None:
             first_reason = resolution.reason_code
-    primary = _resolve_locator(
+    primary = _resolve_with_expected(
         rows,
+        raw,
         claim_locator,
         source_file=source_file,
         company=company,
         field_name=left_field,
+        expected_map=expected_map,
     )
     if primary.status != RESOLVED and first_reason is None:
         first_reason = primary.reason_code
@@ -472,10 +534,31 @@ def derive_op_from_statement(statement: str) -> str | None:
     return next(iter(hits)) if len(hits) == 1 else None
 
 
+def _ir_from_rule_binding(rule: Mapping[str, Any]) -> dict[str, Any] | None:
+    """A 的 assurance-rule-binding-v1 封装：只取已编译的 b-cmp-v1 IR"""
+    if rule.get("ir_version") not in (None, "b-cmp-v1"):
+        return None
+    compiled = rule.get("compiled_result")
+    if not isinstance(compiled, Mapping) or compiled.get("compilable") is not True:
+        return None
+    ir = compiled.get("ir")
+    if not isinstance(ir, Mapping) or ir.get("type") != "cmp" or ir.get("op") not in _CMP_OPS:
+        return None
+    output = dict(ir)
+    output["rule_id"] = rule.get("rule_id") or compiled.get("rule_id")
+    definition = rule.get("definition")
+    if isinstance(definition, Mapping) and definition.get("text"):
+        output.setdefault("source_text", definition["text"])
+    output["provenance"] = "assurance-rule-binding-v1"
+    return output
+
+
 def rule_from_payload(rule: Any, statement: str) -> dict[str, Any] | None:
     """把包内规则快照归一成 cmp IR；A 的 fixture 规则靠 statement 关键词补算子"""
     if not isinstance(rule, Mapping):
         return None
+    if rule.get("format") == "assurance-rule-binding-v1":
+        return _ir_from_rule_binding(rule)
     if rule.get("type") == "cmp" and rule.get("op") in _CMP_OPS:
         return dict(rule)
     if rule.get("operation") == "numeric_compare":

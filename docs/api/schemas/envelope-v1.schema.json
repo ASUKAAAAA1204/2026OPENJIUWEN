@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assurance-ledger.local/schemas/envelope-v1.schema.json",
+  "title": "只读 API 统一信封 v1",
+  "type": "object",
+  "required": ["api_version", "endpoint", "generated_at", "run_id", "data"],
+  "properties": {
+    "api_version": { "const": "1.0" },
+    "endpoint": { "enum": ["/api/ars", "/api/plan", "/api/gate"] },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "run_id": { "type": "string", "minLength": 1, "maxLength": 81 },
+    "data": { "type": "object" }
+  },
+  "additionalProperties": false
+}

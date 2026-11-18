@@ -138,3 +138,81 @@ docs/design/design_cheatsheet.md → 一页速查
 4. 历史时间线里的 W1 ~11-5、提交 ~11-15 作废，以官网 11-10 / 11-25 / 12-27 为准。
 
 **下一步**：① 按 `docs/plan/整改计划_v2.2_2026-10-30.md` §6 做 2–3 天口径增量（删 `is_deterministic=True`、F 改 claim 级、加 PARTIAL/DESIGN_ONLY、接 resolver 入口）；② 补 `Makefile` 的 `demo` / `curve`，让 `demo_numbers.py` 读 `fixtures/demo_case.json`；③ 把 47→79 的计数固化为 `fixtures/demo_case.json` 并加测试。
+
+---
+
+### 2026-11-04 C 端 R1 （按《C 端技术方案 v1.0》）
+
+**内容**：打通 S1 装配、S4 判定、S5 账本、S6 决策、S7 治理，用 A 的 100 条真实证据跑通 replay、主 checker、独立 verifier、账本、闸门和只读 API，冻结 D 端消费的 JSON 契约。
+
+**产出**：
+- C 模块：`ledger/evaluator.py`、`checker.py`、`verifier.py`、`replay.py`、`ledger.py`、`debt_tracker.py`、`observation.py`、`contracts_c7.py`、`report.py`、`claim_map.py`、`canonical.py`、`integrity.py`、`pipeline.py`
+- 脚本：`scripts/assurance.py`（run/replay/check/verify-ledger/gate/export/serve，退出码 0/2/3/4/5）、`serve_api.py`、`verify_ledger.py`
+- 映射：`fixtures/a_100/claim-map-v1.json`，100 条，`<` 48 / `>` 46 / `==` 6，与方案 §4.1 一致
+- 契约：`docs/api/API_CONTRACT-v1.md`、`docs/api/schemas/`（5 个 draft 2020-12 schema）、`docs/api/examples/`
+- 测试：C 新增 11 个测试文件、108 项（107 通过 + 1 待 D 端源码）；B 的 240 条全过
+- 100 条端到端：verified 100 / refuted 0 / indeterminate 0；ARS COMPLETE 100 分 A 档；闸门 release；账本 102 条 PASS；M6 100/100；M13 20/20
+- SBOM：`sbom.json`（CycloneDX 1.6，11 个组件）；`Makefile` 补齐 install/test/mypy/sbom/run/verify/api/curve
+
+**阻塞 / 边界**：
+- A 的 `fixtures/a_acceptance` 中 2 failed + 14 error 全部因 `openjiuwen` 需要 Python < 3.14，本机 3.14 无法安装；其余 A 测试 133 项通过
+- `ledger/resolver.py` 与 `ledger/packer.py` 的 mypy 告警属 A 文件，未改；C 模块 mypy 干净
+- core v0.2 与 C7 补丁待接口负责人批准；`schemas/contracts.py` 未改
+- 不宣称 M9 全链路达标；哈希链无签名/锚点，链尾截断不可检测
+- 47→79 只属于 B 的 20 条合成基准，与 100 条真实证据不共用分母
+
+**下一步**：B 用 C 的 `signals.json` 重算 ARS 与 PARTIAL 状态；A 用 C replay 重做最小集删除测试（CH-M4）；D 按 `API_CONTRACT-v1` 接三接口。
+
+---
+
+### 2026-11-05 C 端 R2（接 A 的 CH-L / CH-M4 与 B 的规则定版）
+
+**内容**：接入 A 的读回值匹配、支持 A 的 `assurance-rule-binding-v1` 封装、把 C 的临时规则模板迁移到 B 的正式规则 ID，并并入 B 的 R2 交付文件。
+
+**产出**：
+- CH-L：`evaluator.resolve_all` 先做 C 的结构/公司/字段/主位置检查，再调用 A 的 `resolver.resolve_bytes` 核对读回值；只有两步都过才计 L 成功
+- CH-M4：`rule_from_payload` 和独立 `verifier` 识别 `assurance-rule-binding-v1`，只取已编译的 `b-cmp-v1` IR；最小证据为 source-snapshot、claim-inputs、rule
+- 映射：新增 `fixtures/a_100/claim-map-v2.json`，rule_id 改为 `b-pe-*-industry@1`，保留 `legacy_rule_id` 和 `migrated_from.digest`；v1 只读兼容，不静默改写
+- 规则对齐：`tests/test_c_b_alignment.py` 验证 9 条 fixture、六算子、字段/常量、非数值/非有限值
+- B 文件：按文件并入 `fixtures/b_rules/`、`scripts/b_recompute.py`、4 个 B 测试和 2 份 B 交接文档；`b_recompute.py` 只加一行 v2 格式兼容
+- 成本：`measurements.json` 增加 replay 和 verifier 两项，400 条全部 measured、unknown = 0
+- 删除测试：`scripts/deletion_test.py` 代 A 跑 CH-M4，100 个 full 包 + 1 个 binding 包全过；B 的 v1/v2 映射各自复算均 PASS 且计数一致
+- 文档：`docs/handoff/C_R2_接入回传_2026-11-05.md`
+
+**验证**：`tests/` 429 passed 1 skipped；全仓 604 passed 1 skipped；B 的 R2 测试 34 passed；100 条端到端 verified 100，ARS 100 分 A 档，L/R/D/F 全满，M6 100/100，M13 20/20，闸门 release，账本 102 条 PASS；B 用 v1/v2 映射各自复算均 `PASS`；CH-M4 删除测试 100/100 + binding 1/1
+
+**阻塞 / 边界**：
+- A 的 `fixtures/a_acceptance` 仍 2 failed + 14 error，全部因本机 Python 3.14 无法安装 `openjiuwen`，需在 3.10–3.13 复跑
+- `core/` v0.2 与 C7 补丁仍待接口负责人批准；`schemas/contracts.py` 未改
+- 独立 verifier 用 `Fraction` 精确比较，与 A 的 `1e-6` 相对容差是两套口径，边界数值不宣称等价
+- CH-M4 正式删除测试结论仍等 A 重跑；哈希链仍无签名/锚点
+
+**下一步**：A 用本回传版本复跑 CH-M4 并签收（C 已代跑 100/100）；B 确认 v1/v2 复算结果（C 已跑均 PASS）；接口负责人审批 core v0.2 与 C7；D 继续按 `API_CONTRACT-v1` 接三接口
+
+---
+
+### 2026-11-11 B v2.7 首轮计算层迁移（约 1.5h）
+
+**内容**：基于 `main@7c6bc88` 新增 v2.7 事实端口、三类标记及依赖传播、追加式加权债务、八项运行读数和 Skill 聚合；保留旧 ARS 接口。修复旧测试时钟依赖，未调整生产新鲜度判定。主审补齐错误证据绑定、孤儿债务、长链、部分缺证、事件恢复及父子冲突等边界。
+
+**产出**：`engine/v27/`、`scripts/b_v27_demo.py`、`fixtures/b_v27/`、五份新版回归测试；[接口契约](api/B_V27_CONTRACT.md)、[交接说明](handoff/B_v27_R1_2026-11-11.md)。
+
+**验证**：`tests/` 536 passed、1 skipped（其中新版 102 项）；主审独立离线核对 26 项 PASS。合成债务 6 条、权重 11，消解 3 条后剩余 3 条、权重 5，6 开立与 3 消解事件完整保留。
+
+**边界**：当前缺少 `ui/src`；SDK 采集环境缺少 `openjiuwen` / `openai`；未做真实 Gate 性能、100 次 shadow、完整钩子覆盖或签名账本验收。变更仅保留本地 `B-v27-20261111`，未提交或推送。
+
+**下一步**：A/C 按新版事实端口提供真实输入；C 接债务事件持久化、独立回放事实和运行结束结算；D 接八项读数与样本提示，再做跨模块联调。
+
+---
+
+### 2026-11-11 B v2.7 提交交付准备
+
+**内容**：整理首轮 v2.7 计算层实现、回归测试、接口契约及交接说明，21 个文件已暂存；准备了写明完成范围、本地验证证据与 A/C/D 待联调边界的 PR 正文，目标分支为 `main`。
+
+**产出**：提交与 PR 以 Git 记录为准；[接口契约](api/B_V27_CONTRACT.md)、[交接说明](handoff/B_v27_R1_2026-11-11.md)。
+
+**验证**：提交前确认源码哈希与上轮验证记录一致：`tests/` 536 passed、1 skipped；新版 102 项；补充独立核对 26 项 PASS。仅交付文档状态有更新，计算代码未再调整。
+
+**认证与署名**：准备阶段缺少 Git 作者及 GitHub 登录；现已由用户完成登录，确认使用 `dingdingdinglei` 账号及其 GitHub noreply 邮箱署名。提交与 PR 发布状态以 Git / PR 记录为准。
+
+**下一步**：完成提交、推送和 PR；A/C/D 按交接边界联调。本次交付不构成 SDK 采集、真实 Gate、shadow 误报或签名账本验收。

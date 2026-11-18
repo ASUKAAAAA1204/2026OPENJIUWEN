@@ -1,0 +1,194 @@
+{
+  "api_version": "1.0",
+  "endpoint": "/api/ars",
+  "generated_at": "2026-11-04T12:32:19Z",
+  "run_id": "selftest",
+  "data": {
+    "coord": {
+      "skill_version": "daily-csv-spike@0.1.0",
+      "model": "deepseek-chat",
+      "data_profile": "a-100:source.csv:100行",
+      "data_digest": null,
+      "label": "daily-csv-spike@0.1.0 · model=deepseek-chat · data=a-100:source.csv:100行"
+    },
+    "doc_status": "COMPLETE",
+    "score": 100,
+    "band": "A",
+    "can_gate": true,
+    "segments": {
+      "design": {
+        "points": 25.0,
+        "max": 25
+      },
+      "runtime": {
+        "points": 75.0,
+        "max": 75
+      }
+    },
+    "dims": {
+      "L": {
+        "key": "L",
+        "segment": "runtime",
+        "weight": 25,
+        "status": "VALUE",
+        "numerator": 100,
+        "denominator": 100,
+        "value": 1.0,
+        "points": 25.0,
+        "allocated_points": 25.0
+      },
+      "C": {
+        "key": "C",
+        "segment": "design",
+        "weight": 25,
+        "status": "VALUE",
+        "numerator": 3,
+        "denominator": 3,
+        "value": 1.0,
+        "points": 25.0,
+        "allocated_points": 25.0
+      },
+      "R": {
+        "key": "R",
+        "segment": "runtime",
+        "weight": 20,
+        "status": "VALUE",
+        "numerator": 100,
+        "denominator": 100,
+        "value": 1.0,
+        "points": 20.0,
+        "allocated_points": 20.0
+      },
+      "D": {
+        "key": "D",
+        "segment": "runtime",
+        "weight": 15,
+        "status": "VALUE",
+        "numerator": 200,
+        "denominator": 200,
+        "value": 1.0,
+        "points": 15.0,
+        "allocated_points": 15.0
+      },
+      "F": {
+        "key": "F",
+        "segment": "runtime",
+        "weight": 15,
+        "status": "VALUE",
+        "numerator": 100,
+        "denominator": 100,
+        "value": 1.0,
+        "points": 15.0,
+        "allocated_points": 15.0
+      }
+    },
+    "counts": {
+      "n_claims": 100,
+      "n_rules": 3,
+      "n_checks": 200
+    },
+    "fail_code_counts": {},
+    "actionable": {
+      "add_locator": 0,
+      "add_field": 0,
+      "rerun_check": 0,
+      "rerun_stale": 0,
+      "rewrite_rule": 0
+    },
+    "structural": {
+      "no_locator": 0,
+      "refuted": 0,
+      "insufficient_evidence": 0,
+      "unattributed": 0
+    },
+    "targets": {
+      "add_locator": [],
+      "add_field": [],
+      "rerun_check": [],
+      "rerun_stale": [],
+      "rewrite_rule": []
+    },
+    "c7_violations": {
+      "declared_locator": 0,
+      "self_verified": 0
+    },
+    "explains": [
+      {
+        "dim": "C",
+        "name": "可编译率",
+        "status": "VALUE",
+        "numerator": 3,
+        "denominator": 3,
+        "value": 1.0,
+        "weight": 25,
+        "points": 25.0,
+        "lost_points": 0.0,
+        "text": "3 条规则里 3 条编译通过且 fixture 三条全绿，0 条编不出来或 fixture 没跑绿",
+        "action": null,
+        "is_top3": false
+      },
+      {
+        "dim": "D",
+        "name": "确定性率",
+        "status": "VALUE",
+        "numerator": 200,
+        "denominator": 200,
+        "value": 1.0,
+        "weight": 15,
+        "points": 15.0,
+        "lost_points": 0.0,
+        "text": "200 个检查里 200 个同输入两次运行结果一致，0 个不一致或未双跑",
+        "action": null,
+        "is_top3": false
+      },
+      {
+        "dim": "F",
+        "name": "新鲜度",
+        "status": "VALUE",
+        "numerator": 100,
+        "denominator": 100,
+        "value": 1.0,
+        "weight": 15,
+        "points": 15.0,
+        "lost_points": 0.0,
+        "text": "100 条结论里 100 条的全部证据都是 fresh，0 条存在过期证据",
+        "action": null,
+        "is_top3": false
+      },
+      {
+        "dim": "L",
+        "name": "可定位率",
+        "status": "VALUE",
+        "numerator": 100,
+        "denominator": 100,
+        "value": 1.0,
+        "weight": 25,
+        "points": 25.0,
+        "lost_points": 0.0,
+        "text": "100 条结论里 100 条回源解析成功（定位到 file:row:field 且值与源一致），0 条未解析成功",
+        "action": null,
+        "is_top3": false
+      },
+      {
+        "dim": "R",
+        "name": "可复算率",
+        "status": "VALUE",
+        "numerator": 100,
+        "denominator": 100,
+        "value": 1.0,
+        "weight": 20,
+        "points": 20.0,
+        "lost_points": 0.0,
+        "text": "100 条结论里 100 条经独立 verifier 复算一致，0 条不一致或无法判定",
+        "action": null,
+        "is_top3": false
+      }
+    ],
+    "warnings": [],
+    "rubric": {
+      "version": "ars-1.2",
+      "hash": "sha256:465fb87c95e29916f0b91c892192fd2f57900c35a3f8fdd3254b5c3548deeb9d"
+    },
+    "calculated_at": "2026-11-04T12:32:19.404506+00:00"
+  }
+}

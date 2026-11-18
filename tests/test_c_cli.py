@@ -93,9 +93,14 @@ def test_cli_gate_and_export(tmp_path):
     assert result.returncode == 0, result.stdout + result.stderr
     summary = json.loads(result.stdout)
     assert summary["action"] == "release"
-    assert summary["score"] == 100
 
     run_dir = tmp_path / "outputs" / "cli-run"
+    # CLI 使用真实时间；固定证据可能已经过期。这里核对 CLI 与产物一致，
+    # 不把过期证据强行当成满分（固定时点满分由 e2e 测试覆盖）。
+    ars = json.loads((run_dir / "ars.json").read_text(encoding="utf-8"))
+    assert type(summary["score"]) is int
+    assert summary["score"] == ars["score"]
+    assert 0 <= summary["score"] <= 100
     gate = _run("gate", "--run", str(run_dir))
     assert gate.returncode == 0, gate.stdout + gate.stderr
     assert json.loads(gate.stdout)["consistent"] is True

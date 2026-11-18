@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assurance-ledger.local/schemas/ars-v1.schema.json",
+  "title": "ARS 载荷 v1（/api/ars 的 data）",
+  "type": "object",
+  "required": ["coord", "doc_status", "score", "band", "can_gate", "segments", "dims", "counts"],
+  "properties": {
+    "coord": {
+      "type": "object",
+      "required": ["skill_version", "model", "data_profile"],
+      "properties": {
+        "skill_version": { "type": "string" },
+        "model": { "type": "string" },
+        "data_profile": { "type": "string" },
+        "data_digest": { "type": ["string", "null"] },
+        "label": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "doc_status": { "enum": ["DESIGN_ONLY", "PARTIAL", "COMPLETE"] },
+    "score": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 },
+    "band": { "enum": ["A", "B", "C", "D", null] },
+    "can_gate": { "type": "boolean" },
+    "segments": {
+      "type": "object",
+      "required": ["design", "runtime"],
+      "properties": {
+        "design": { "$ref": "#/$defs/segment" },
+        "runtime": { "$ref": "#/$defs/segment" }
+      },
+      "additionalProperties": false
+    },
+    "dims": {
+      "type": "object",
+      "required": ["C", "L", "R", "D", "F"],
+      "properties": {
+        "C": { "$ref": "#/$defs/dim" },
+        "L": { "$ref": "#/$defs/dim" },
+        "R": { "$ref": "#/$defs/dim" },
+        "D": { "$ref": "#/$defs/dim" },
+        "F": { "$ref": "#/$defs/dim" }
+      },
+      "additionalProperties": false
+    },
+    "counts": {
+      "type": "object",
+      "required": ["n_claims", "n_rules", "n_checks"],
+      "properties": {
+        "n_claims": { "type": "integer", "minimum": 0 },
+        "n_rules": { "type": "integer", "minimum": 0 },
+        "n_checks": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "fail_code_counts": { "type": "object", "additionalProperties": { "type": "integer" } },
+    "actionable": { "type": "object", "additionalProperties": { "type": "integer" } },
+    "structural": { "type": "object", "additionalProperties": { "type": "integer" } },
+    "targets": { "type": "object" },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "doc_status": { "const": "PARTIAL" } }, "required": ["doc_status"] },
+      "then": {
+        "properties": {
+          "score": { "type": "null" },
+          "band": { "type": "null" },
+          "can_gate": { "const": false }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "segment": {
+      "type": "object",
+      "required": ["points", "max"],
+      "properties": {
+        "points": { "type": "number" },
+        "max": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "dim": {
+      "type": "object",
+      "required": ["key", "weight", "status", "numerator", "denominator", "value", "points"],
+      "properties": {
+        "key": { "enum": ["C", "L", "R", "D", "F"] },
+        "segment": { "enum": ["design", "runtime"] },
+        "weight": { "type": "integer" },
+        "status": { "enum": ["VALUE", "NA", "MISSING"] },
+        "numerator": { "type": ["integer", "null"], "minimum": 0 },
+        "denominator": { "type": ["integer", "null"], "minimum": 0 },
+        "value": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "points": { "type": ["number", "null"] },
+        "allocated_points": { "type": ["number", "null"] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}

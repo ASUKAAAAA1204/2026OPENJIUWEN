@@ -1,0 +1,65 @@
+{
+  "api_version": "1.0",
+  "endpoint": "/api/gate",
+  "generated_at": "2026-11-04T12:32:19Z",
+  "run_id": "selftest",
+  "data": {
+    "action": "release",
+    "reason_code": null,
+    "inputs": {
+      "doc_status": "COMPLETE",
+      "score": 100,
+      "band": "A",
+      "run_id": "selftest"
+    },
+    "budget_snapshot": {
+      "budget_cu": null,
+      "quoted_cu": 0,
+      "sufficient": null,
+      "cost_known": true,
+      "measured": true
+    },
+    "waiver": {
+      "granted": false,
+      "owner": null,
+      "reason": null,
+      "due": null
+    },
+    "debts": [],
+    "ledger": {
+      "path": "outputs/selftest/ledger.json",
+      "entries": 102,
+      "head_hash": "sha256:1d1cb0e4e7adf5286825eb4d37558042391c698bb3dea99c6f8f755b4f8df6e7",
+      "verified": true,
+      "status": "PASS",
+      "first_bad_seq": null,
+      "limitations": [
+        "哈希链只证明内容一致，不提供签名或可信锚点",
+        "链尾截断与全链重算无法仅靠哈希链检测，需要外部锚点"
+      ]
+    },
+    "claims_summary": {
+      "verified": 100,
+      "refuted": 0,
+      "indeterminate": 0
+    },
+    "policy": {
+      "version": "gate-v1",
+      "threshold": 70,
+      "min_sample": 10,
+      "bands": {
+        "A": 85,
+        "B": 70,
+        "C": 50,
+        "D": 0
+      },
+      "strict": [
+        "refuted -> block",
+        "doc_status != COMPLETE or score is null -> block",
+        "score < threshold -> block",
+        "budget insufficient / cost unknown / waiver -> accept_with_grade",
+        "otherwise -> release"
+      ]
+    }
+  }
+}

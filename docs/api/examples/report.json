@@ -1,0 +1,385 @@
+{
+  "format": "assurance-report-v1",
+  "api_version": "1.0",
+  "run_id": "selftest",
+  "generated_at": "2026-11-04T12:32:19.419504Z",
+  "coord": {
+    "skill_version": "daily-csv-spike@0.1.0",
+    "model": "deepseek-chat",
+    "data_profile": "a-100:source.csv:100行",
+    "data_digest": null,
+    "label": "daily-csv-spike@0.1.0 · model=deepseek-chat · data=a-100:source.csv:100行"
+  },
+  "headline": {
+    "doc_status": "COMPLETE",
+    "score": 100,
+    "band": "A",
+    "can_gate": true,
+    "action": "release",
+    "reason_code": null,
+    "label": "daily-csv-spike@0.1.0 · model=deepseek-chat · data=a-100:source.csv:100行"
+  },
+  "dims": {
+    "L": {
+      "key": "L",
+      "status": "VALUE",
+      "numerator": 100,
+      "denominator": 100,
+      "value": 1.0,
+      "points": 25.0,
+      "weight": 25
+    },
+    "C": {
+      "key": "C",
+      "status": "VALUE",
+      "numerator": 3,
+      "denominator": 3,
+      "value": 1.0,
+      "points": 25.0,
+      "weight": 25
+    },
+    "R": {
+      "key": "R",
+      "status": "VALUE",
+      "numerator": 100,
+      "denominator": 100,
+      "value": 1.0,
+      "points": 20.0,
+      "weight": 20
+    },
+    "D": {
+      "key": "D",
+      "status": "VALUE",
+      "numerator": 200,
+      "denominator": 200,
+      "value": 1.0,
+      "points": 15.0,
+      "weight": 15
+    },
+    "F": {
+      "key": "F",
+      "status": "VALUE",
+      "numerator": 100,
+      "denominator": 100,
+      "value": 1.0,
+      "points": 15.0,
+      "weight": 15
+    }
+  },
+  "segments": {
+    "design": {
+      "points": 25.0,
+      "max": 25
+    },
+    "runtime": {
+      "points": 75.0,
+      "max": 75
+    }
+  },
+  "claims_summary": {
+    "verified": 100,
+    "refuted": 0,
+    "indeterminate": 0
+  },
+  "plan": {
+    "current": 100,
+    "target_band": "B",
+    "policy": "full",
+    "quoted_cu": 0,
+    "predicted": 100,
+    "predicted_band": "A",
+    "gain": 0.0,
+    "reaches_target": true
+  },
+  "ledger": {
+    "path": "outputs/selftest/ledger.json",
+    "entries": 102,
+    "head_hash": "sha256:1d1cb0e4e7adf5286825eb4d37558042391c698bb3dea99c6f8f755b4f8df6e7",
+    "verified": true,
+    "status": "PASS",
+    "first_bad_seq": null,
+    "limitations": [
+      "哈希链只证明内容一致，不提供签名或可信锚点",
+      "链尾截断与全链重算无法仅靠哈希链检测，需要外部锚点"
+    ]
+  },
+  "cost": {
+    "total_cu": 0.0694452,
+    "unknown": 0
+  },
+  "metrics": {
+    "m6": {
+      "dataset_id": "a-100-evidence-2026-11-01",
+      "numerator": 100,
+      "denominator": 100,
+      "rate": 1.0
+    },
+    "m13": {
+      "dataset_id": "a-100-evidence-2026-11-01",
+      "sample": 20,
+      "agreed": 20,
+      "rate": 1.0,
+      "rows": [
+        {
+          "claim_id": "c-001",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-002",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-003",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-004",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-005",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-006",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-007",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-008",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-009",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-010",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-011",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-012",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-013",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-014",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-015",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-016",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-017",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-018",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-019",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        },
+        {
+          "claim_id": "c-020",
+          "checker": "verified",
+          "verifier": "verified",
+          "agreed": true,
+          "reason": null,
+          "reason_codes": {
+            "checker": null,
+            "verifier": null
+          },
+          "verifier_version": "c-verifier-v1"
+        }
+      ]
+    },
+    "verifier_coverage": {
+      "numerator": 100,
+      "denominator": 100
+    }
+  },
+  "artifacts": {
+    "report": "report.json",
+    "ars": "ars.json",
+    "plan": "plan.json",
+    "gate": "gate.json",
+    "ledger": "ledger.json",
+    "claims": "claims.json",
+    "signals": "signals.json",
+    "measurements": "measurements.json",
+    "debts": "debts.json",
+    "governance": "governance.json"
+  },
+  "warnings": [
+    "claim map 来源：fixtures\\a_100\\claim-map-v1.json"
+  ]
+}

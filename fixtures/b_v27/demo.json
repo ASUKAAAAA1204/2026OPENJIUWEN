@@ -1,0 +1,763 @@
+{
+  "synthetic": true,
+  "notice": "SYNTHETIC demo fixture for TemisGuard v2.7 engine (B). 本文件是纯合成演示数据：所有决策、证据、复算、处置均为手工构造，不代表任何真实运行，不构成任何生产验收结论。",
+  "schema_version": "temisguard-b-v2.7",
+  "run": {
+    "run_id": "run-demo-1",
+    "skill_id": "skill-demo",
+    "skill_version": "1.0.0",
+    "completed_at": "2026-11-01T10:10:00+00:00",
+    "extracted_claim_ids": [],
+    "whitelist_classes": [
+      "classifier",
+      "retriever",
+      "planner"
+    ],
+    "whitelist_version": "whitelist-demo-v1",
+    "policy_version": "policy-demo-v1",
+    "debt_events": [],
+    "debt_threshold": 10.0,
+    "decisions": [
+      {
+        "decision_id": "d-01",
+        "claim_id": "claim-01",
+        "run_id": "run-demo-1",
+        "skill_id": "skill-demo",
+        "skill_version": "1.0.0",
+        "decision_class": "classifier",
+        "disposition": "DENY",
+        "gate": "DENY",
+        "risk": "high",
+        "action_timestamp": "2026-11-01T10:00:00+00:00",
+        "rule_based": false,
+        "evidence_ids": null,
+        "upstream": []
+      },
+      {
+        "decision_id": "d-02",
+        "claim_id": "claim-02",
+        "run_id": "run-demo-1",
+        "skill_id": "skill-demo",
+        "skill_version": "1.0.0",
+        "decision_class": "classifier",
+        "disposition": "ALLOW",
+        "gate": "ALLOW",
+        "risk": "mid",
+        "action_timestamp": "2026-11-01T10:00:01+00:00",
+        "rule_based": true,
+        "evidence_ids": [],
+        "upstream": []
+      },
+      {
+        "decision_id": "d-03",
+        "claim_id": "claim-03",
+        "run_id": "run-demo-1",
+        "skill_id": "skill-demo",
+        "skill_version": "1.0.0",
+        "decision_class": "classifier",
+        "disposition": "ALLOW",
+        "gate": "ALLOW",
+        "risk": "mid",
+        "action_timestamp": "2026-11-01T10:00:02+00:00",
+        "rule_based": true,
+        "evidence_ids": [
+          "ev-03"
+        ],
+        "upstream": []
+      },
+      {
+        "decision_id": "d-04",
+        "claim_id": "claim-04",
+        "run_id": "run-demo-1",
+        "skill_id": "skill-demo",
+        "skill_version": "1.0.0",
+        "decision_class": "classifier",
+        "disposition": "ALLOW",
+        "gate": "ALLOW",
+        "risk": "low",
+        "action_timestamp": "2026-11-01T10:00:03+00:00",
+        "rule_based": false,
+        "evidence_ids": [
+          "ev-04"
+        ],
+        "upstream": []
+      },
+      {
+        "decision_id": "d-05",
+        "claim_id": "claim-05",
+        "run_id": "run-demo-1",
+        "skill_id": "skill-demo",
+        "skill_version": "1.0.0",
+        "decision_class": "retriever",
+        "disposition": "REWRITE",
+        "gate": "REWRITE",
+        "risk": "low",
+        "action_timestamp": "2026-11-01T10:00:04+00:00",
+        "rule_based": false,
+        "evidence_ids": [
+          "ev-05"
+        ],
+        "upstream": []
+      },
+      {
+        "decision_id": "d-06",
+        "claim_id": "claim-06",
+        "run_id": "run-demo-1",
+        "skill_id": "skill-demo",
+        "skill_version": "1.0.0",
+        "decision_class": "retriever",
+        "disposition": "ASK",
+        "gate": "ASK",
+        "risk": "low",
+        "action_timestamp": "2026-11-01T10:00:05+00:00",
+        "rule_based": false,
+        "evidence_ids": [
+          "ev-06"
+        ],
+        "upstream": []
+      },
+      {
+        "decision_id": "d-07",
+        "claim_id": "claim-07",
+        "run_id": "run-demo-1",
+        "skill_id": "skill-demo",
+        "skill_version": "1.0.0",
+        "decision_class": "retriever",
+        "disposition": "ALLOW",
+        "gate": "ALLOW",
+        "risk": "low",
+        "action_timestamp": "2026-11-01T10:00:06+00:00",
+        "rule_based": true,
+        "evidence_ids": [
+          "ev-07"
+        ],
+        "upstream": []
+      },
+      {
+        "decision_id": "d-08",
+        "claim_id": "claim-08",
+        "run_id": "run-demo-1",
+        "skill_id": "skill-demo",
+        "skill_version": "1.0.0",
+        "decision_class": "planner",
+        "disposition": "DENY",
+        "gate": "DENY",
+        "risk": "low",
+        "action_timestamp": "2026-11-01T10:00:07+00:00",
+        "rule_based": true,
+        "evidence_ids": [
+          "ev-08"
+        ],
+        "upstream": []
+      },
+      {
+        "decision_id": "d-09",
+        "claim_id": "claim-09",
+        "run_id": "run-demo-1",
+        "skill_id": "skill-demo",
+        "skill_version": "1.0.0",
+        "decision_class": "planner",
+        "disposition": "ASK",
+        "gate": "ASK",
+        "risk": "low",
+        "action_timestamp": "2026-11-01T10:00:08+00:00",
+        "rule_based": false,
+        "evidence_ids": [
+          "ev-09"
+        ],
+        "upstream": []
+      },
+      {
+        "decision_id": "d-10",
+        "claim_id": "claim-10",
+        "run_id": "run-demo-1",
+        "skill_id": "skill-demo",
+        "skill_version": "1.0.0",
+        "decision_class": "planner",
+        "disposition": "ALLOW",
+        "gate": "ALLOW",
+        "risk": "high",
+        "action_timestamp": "2026-11-01T10:00:09+00:00",
+        "rule_based": false,
+        "evidence_ids": [
+          "ev-10"
+        ],
+        "upstream": []
+      }
+    ],
+    "evidence": [
+      {
+        "evidence_id": "ev-03",
+        "decision_id": "d-03",
+        "assertion": "fact_check",
+        "source": "fact_source_1",
+        "reachable": true,
+        "outcome": true,
+        "input_digest": "in-03",
+        "output_digest": "out-03",
+        "model_id": "synthetic-model",
+        "model_params": "temperature=0",
+        "verdict": "allowed",
+        "ts": "2026-11-01T10:00:03+00:00",
+        "content_hash": "3a7113e301cc8ccc4ac632fd7896738e2f670abc7fab9a2316d4c616cd95ad9c",
+        "version": "synthetic-v1",
+        "owner": "synthetic-owner"
+      },
+      {
+        "evidence_id": "ev-04",
+        "decision_id": "d-04",
+        "assertion": "fact_check",
+        "source": "fact_source_2",
+        "reachable": true,
+        "outcome": false,
+        "input_digest": "in-04",
+        "output_digest": "out-04",
+        "model_id": "synthetic-model",
+        "model_params": "temperature=0",
+        "verdict": "denied",
+        "ts": "2026-11-01T10:00:04+00:00",
+        "content_hash": "b35a1685338eefc70b9e995abc80e0c149224c5b4e9e51157ce78f680d1304d0"
+      },
+      {
+        "evidence_id": "ev-05",
+        "decision_id": "d-05",
+        "assertion": "parameters",
+        "source": "policy_diff",
+        "reachable": true,
+        "outcome": true,
+        "input_digest": "in-05",
+        "output_digest": "out-05",
+        "model_id": "synthetic-model",
+        "model_params": "temperature=0",
+        "verdict": "rewrite",
+        "ts": "2026-11-01T10:00:05+00:00",
+        "content_hash": "b6d7131282f67fcbe71e30ba1ab3e3024bcd87f97338e483c39f7bffdb77a338"
+      },
+      {
+        "evidence_id": "ev-06",
+        "decision_id": "d-06",
+        "assertion": "parameters",
+        "source": "policy_diff",
+        "reachable": true,
+        "outcome": true,
+        "input_digest": "in-06",
+        "output_digest": "out-06",
+        "model_id": "synthetic-model",
+        "model_params": "temperature=0",
+        "verdict": "ask",
+        "ts": "2026-11-01T10:00:06+00:00",
+        "content_hash": "bbf50ad7483c49e48093c91a0ddfccd32aaace2a5c35f463f4e97b5329e67d93"
+      },
+      {
+        "evidence_id": "ev-07",
+        "decision_id": "d-07",
+        "assertion": "result_check",
+        "source": "fact_source_1",
+        "reachable": true,
+        "outcome": true,
+        "input_digest": "in-07",
+        "output_digest": "out-07",
+        "model_id": "synthetic-model",
+        "model_params": "temperature=0",
+        "verdict": "allowed",
+        "ts": "2026-11-01T10:00:07+00:00",
+        "content_hash": "90704291f282848665d4cc9ddd40675d7b51acd0eb7c34d47015b1216c3c95c5"
+      },
+      {
+        "evidence_id": "ev-08",
+        "decision_id": "d-08",
+        "assertion": "result_check",
+        "source": "fact_source_1",
+        "reachable": true,
+        "outcome": true,
+        "input_digest": "in-08",
+        "output_digest": "out-08",
+        "model_id": "synthetic-model",
+        "model_params": "temperature=0",
+        "verdict": "denied",
+        "ts": "2026-11-01T10:00:08+00:00",
+        "content_hash": "c5f413685fe59a83b959957499abdf1ed0d7c76cb4fafd933e108aa862866575"
+      },
+      {
+        "evidence_id": "ev-09",
+        "decision_id": "d-09",
+        "assertion": "result_check",
+        "source": "fact_source_1",
+        "reachable": true,
+        "outcome": true,
+        "input_digest": "in-09",
+        "output_digest": "out-09",
+        "model_id": "synthetic-model",
+        "model_params": "temperature=0",
+        "verdict": "ask",
+        "ts": "2026-11-01T10:00:09+00:00",
+        "content_hash": "81127db804b6508f2e2ad9629f1d50a2a70cca401cf762182763ca42739e875b"
+      },
+      {
+        "evidence_id": "ev-10",
+        "decision_id": "d-10",
+        "assertion": "result_check",
+        "source": "fact_source_1",
+        "reachable": true,
+        "outcome": true,
+        "input_digest": "in-10",
+        "output_digest": "out-10",
+        "model_id": "synthetic-model",
+        "model_params": "temperature=0",
+        "verdict": "allowed",
+        "ts": "2026-11-01T10:00:15+00:00",
+        "content_hash": "7b9b07211ea23d2225cda3b5035aa1e2b4c9d24111e3580ffcab6acace8b0e1d"
+      }
+    ],
+    "replays": [
+      {
+        "decision_id": "d-03",
+        "evidence_id": "ev-03",
+        "reproduced": true,
+        "rule_matched": true
+      },
+      {
+        "decision_id": "d-04",
+        "evidence_id": "ev-04",
+        "reproduced": true
+      },
+      {
+        "decision_id": "d-05",
+        "evidence_id": "ev-05",
+        "reproduced": true
+      },
+      {
+        "decision_id": "d-06",
+        "evidence_id": "ev-06",
+        "reproduced": true
+      },
+      {
+        "decision_id": "d-07",
+        "evidence_id": "ev-07",
+        "reproduced": true,
+        "rule_matched": true
+      },
+      {
+        "decision_id": "d-08",
+        "evidence_id": "ev-08",
+        "reproduced": true,
+        "rule_matched": true
+      },
+      {
+        "decision_id": "d-09",
+        "evidence_id": "ev-09",
+        "reproduced": true
+      },
+      {
+        "decision_id": "d-10",
+        "evidence_id": "ev-10",
+        "reproduced": true
+      }
+    ],
+    "observations": [
+      {
+        "decision_id": "d-03",
+        "declaration_available": true,
+        "parameters_match": true
+      },
+      {
+        "decision_id": "d-04",
+        "declaration_available": true,
+        "parameters_match": true
+      },
+      {
+        "decision_id": "d-05",
+        "declaration_available": true,
+        "parameters_match": false,
+        "convertible": true
+      },
+      {
+        "decision_id": "d-06",
+        "declaration_available": true,
+        "parameters_match": false,
+        "convertible": true
+      },
+      {
+        "decision_id": "d-07",
+        "declaration_available": true,
+        "parameters_match": true
+      },
+      {
+        "decision_id": "d-08",
+        "declaration_available": true,
+        "parameters_match": true
+      },
+      {
+        "decision_id": "d-09",
+        "declaration_available": true,
+        "parameters_match": true
+      },
+      {
+        "decision_id": "d-10",
+        "declaration_available": true,
+        "parameters_match": true
+      }
+    ],
+    "dispositions": [
+      {
+        "decision_id": "d-01",
+        "executed": false
+      },
+      {
+        "decision_id": "d-02",
+        "executed": true,
+        "completed": true
+      },
+      {
+        "decision_id": "d-03",
+        "executed": true,
+        "completed": true
+      },
+      {
+        "decision_id": "d-04",
+        "executed": true,
+        "completed": true
+      },
+      {
+        "decision_id": "d-05",
+        "regate_success": true,
+        "executed": true,
+        "completed": true
+      },
+      {
+        "decision_id": "d-06",
+        "answered": true,
+        "approved": true,
+        "executed": true,
+        "completed": true
+      },
+      {
+        "decision_id": "d-07",
+        "executed": true,
+        "completed": true
+      },
+      {
+        "decision_id": "d-08",
+        "executed": false
+      },
+      {
+        "decision_id": "d-09",
+        "answered": true,
+        "approved": false,
+        "executed": false
+      },
+      {
+        "decision_id": "d-10",
+        "executed": true,
+        "timed_out": true
+      }
+    ]
+  },
+  "resolutions": [
+    {
+      "decision_id": "d-01",
+      "mark_type": "NO_EVIDENCE",
+      "method": "supplement_evidence",
+      "evidence": {
+        "evidence_id": "ev-supp-01",
+        "kind": "supplement",
+        "input_digest": "supp-in-01",
+        "output_digest": "supp-out-01",
+        "model_id": "synthetic-model",
+        "model_params": "temperature=0",
+        "verdict": "allowed",
+        "ts": "2026-11-01T10:01:00+00:00"
+      }
+    },
+    {
+      "decision_id": "d-03",
+      "mark_type": "SOURCE_CONFLICT",
+      "method": "unify_sources",
+      "evidence": {
+        "evidence_id": "ev-unify-03",
+        "kind": "unified",
+        "sources": [
+          "fact_source_1",
+          "fact_source_2"
+        ],
+        "outcome": true,
+        "verdict": "unified",
+        "ts": "2026-11-01T10:02:00+00:00"
+      }
+    },
+    {
+      "decision_id": "d-05",
+      "mark_type": "SPEC_MISMATCH",
+      "method": "correct_params_and_regate",
+      "regate_success": true,
+      "evidence": {
+        "evidence_id": "ev-repair-05",
+        "kind": "corrected",
+        "parameters_match": true,
+        "verdict": "re-gated",
+        "ts": "2026-11-01T10:03:00+00:00"
+      }
+    }
+  ],
+  "expected": {
+    "initial_weighted_value": 11,
+    "initial_unresolved_count": 6,
+    "resolved_weighted_value": 6,
+    "remaining_weighted_value": 5,
+    "remaining_unresolved_count": 3,
+    "open_events": 6,
+    "resolve_events": 3
+  },
+  "insufficient_cohort": {
+    "runs": [
+      {
+        "run_id": "run-c1",
+        "skill_id": "skill-cohort-demo",
+        "skill_version": "2.0.0",
+        "completed_at": "2026-11-01T10:11:00+00:00",
+        "whitelist_classes": [
+          "classifier",
+          "planner"
+        ],
+        "whitelist_version": "whitelist-cohort-v1",
+        "decisions": [
+          {
+            "decision_id": "c1-1",
+            "claim_id": "cc1-1",
+            "run_id": "run-c1",
+            "skill_id": "skill-cohort-demo",
+            "skill_version": "2.0.0",
+            "decision_class": "classifier",
+            "disposition": "ALLOW",
+            "gate": "ALLOW",
+            "risk": "low",
+            "action_timestamp": "2026-11-01T10:00:00+00:00",
+            "rule_based": false,
+            "evidence_ids": [],
+            "upstream": []
+          },
+          {
+            "decision_id": "c1-2",
+            "claim_id": "cc1-2",
+            "run_id": "run-c1",
+            "skill_id": "skill-cohort-demo",
+            "skill_version": "2.0.0",
+            "decision_class": "classifier",
+            "disposition": "ALLOW",
+            "gate": "ALLOW",
+            "risk": "low",
+            "action_timestamp": "2026-11-01T10:00:01+00:00",
+            "rule_based": false,
+            "evidence_ids": [],
+            "upstream": []
+          },
+          {
+            "decision_id": "c1-3",
+            "claim_id": "cc1-3",
+            "run_id": "run-c1",
+            "skill_id": "skill-cohort-demo",
+            "skill_version": "2.0.0",
+            "decision_class": "planner",
+            "disposition": "ALLOW",
+            "gate": "ALLOW",
+            "risk": "low",
+            "action_timestamp": "2026-11-01T10:00:02+00:00",
+            "rule_based": false,
+            "evidence_ids": [],
+            "upstream": []
+          }
+        ],
+        "evidence": [],
+        "replays": [],
+        "observations": [],
+        "dispositions": []
+      },
+      {
+        "run_id": "run-c2",
+        "skill_id": "skill-cohort-demo",
+        "skill_version": "2.0.0",
+        "completed_at": "2026-11-01T10:12:00+00:00",
+        "whitelist_classes": [
+          "classifier",
+          "planner"
+        ],
+        "whitelist_version": "whitelist-cohort-v1",
+        "decisions": [
+          {
+            "decision_id": "c2-1",
+            "claim_id": "cc2-1",
+            "run_id": "run-c2",
+            "skill_id": "skill-cohort-demo",
+            "skill_version": "2.0.0",
+            "decision_class": "classifier",
+            "disposition": "ALLOW",
+            "gate": "ALLOW",
+            "risk": "low",
+            "action_timestamp": "2026-11-01T10:00:00+00:00",
+            "rule_based": false,
+            "evidence_ids": [],
+            "upstream": []
+          },
+          {
+            "decision_id": "c2-2",
+            "claim_id": "cc2-2",
+            "run_id": "run-c2",
+            "skill_id": "skill-cohort-demo",
+            "skill_version": "2.0.0",
+            "decision_class": "classifier",
+            "disposition": "ALLOW",
+            "gate": "ALLOW",
+            "risk": "low",
+            "action_timestamp": "2026-11-01T10:00:01+00:00",
+            "rule_based": false,
+            "evidence_ids": [],
+            "upstream": []
+          },
+          {
+            "decision_id": "c2-3",
+            "claim_id": "cc2-3",
+            "run_id": "run-c2",
+            "skill_id": "skill-cohort-demo",
+            "skill_version": "2.0.0",
+            "decision_class": "planner",
+            "disposition": "ALLOW",
+            "gate": "ALLOW",
+            "risk": "low",
+            "action_timestamp": "2026-11-01T10:00:02+00:00",
+            "rule_based": false,
+            "evidence_ids": [],
+            "upstream": []
+          }
+        ],
+        "evidence": [],
+        "replays": [],
+        "observations": [],
+        "dispositions": []
+      },
+      {
+        "run_id": "run-c3",
+        "skill_id": "skill-cohort-demo",
+        "skill_version": "2.0.0",
+        "completed_at": "2026-11-01T10:13:00+00:00",
+        "whitelist_classes": [
+          "classifier",
+          "planner"
+        ],
+        "whitelist_version": "whitelist-cohort-v1",
+        "decisions": [
+          {
+            "decision_id": "c3-1",
+            "claim_id": "cc3-1",
+            "run_id": "run-c3",
+            "skill_id": "skill-cohort-demo",
+            "skill_version": "2.0.0",
+            "decision_class": "classifier",
+            "disposition": "ALLOW",
+            "gate": "ALLOW",
+            "risk": "low",
+            "action_timestamp": "2026-11-01T10:00:00+00:00",
+            "rule_based": false,
+            "evidence_ids": [],
+            "upstream": []
+          },
+          {
+            "decision_id": "c3-2",
+            "claim_id": "cc3-2",
+            "run_id": "run-c3",
+            "skill_id": "skill-cohort-demo",
+            "skill_version": "2.0.0",
+            "decision_class": "classifier",
+            "disposition": "ALLOW",
+            "gate": "ALLOW",
+            "risk": "low",
+            "action_timestamp": "2026-11-01T10:00:01+00:00",
+            "rule_based": false,
+            "evidence_ids": [],
+            "upstream": []
+          },
+          {
+            "decision_id": "c3-3",
+            "claim_id": "cc3-3",
+            "run_id": "run-c3",
+            "skill_id": "skill-cohort-demo",
+            "skill_version": "2.0.0",
+            "decision_class": "planner",
+            "disposition": "ALLOW",
+            "gate": "ALLOW",
+            "risk": "low",
+            "action_timestamp": "2026-11-01T10:00:02+00:00",
+            "rule_based": false,
+            "evidence_ids": [],
+            "upstream": []
+          }
+        ],
+        "evidence": [],
+        "replays": [],
+        "observations": [],
+        "dispositions": []
+      },
+      {
+        "run_id": "run-c4",
+        "skill_id": "skill-cohort-demo",
+        "skill_version": "2.0.0",
+        "completed_at": "2026-11-01T10:14:00+00:00",
+        "whitelist_classes": [
+          "classifier",
+          "planner"
+        ],
+        "whitelist_version": "whitelist-cohort-v1",
+        "decisions": [
+          {
+            "decision_id": "c4-1",
+            "claim_id": "cc4-1",
+            "run_id": "run-c4",
+            "skill_id": "skill-cohort-demo",
+            "skill_version": "2.0.0",
+            "decision_class": "classifier",
+            "disposition": "ALLOW",
+            "gate": "ALLOW",
+            "risk": "low",
+            "action_timestamp": "2026-11-01T10:00:00+00:00",
+            "rule_based": false,
+            "evidence_ids": [],
+            "upstream": []
+          },
+          {
+            "decision_id": "c4-2",
+            "claim_id": "cc4-2",
+            "run_id": "run-c4",
+            "skill_id": "skill-cohort-demo",
+            "skill_version": "2.0.0",
+            "decision_class": "classifier",
+            "disposition": "ALLOW",
+            "gate": "ALLOW",
+            "risk": "low",
+            "action_timestamp": "2026-11-01T10:00:01+00:00",
+            "rule_based": false,
+            "evidence_ids": [],
+            "upstream": []
+          },
+          {
+            "decision_id": "c4-3",
+            "claim_id": "cc4-3",
+            "run_id": "run-c4",
+            "skill_id": "skill-cohort-demo",
+            "skill_version": "2.0.0",
+            "decision_class": "planner",
+            "disposition": "ALLOW",
+            "gate": "ALLOW",
+            "risk": "low",
+            "action_timestamp": "2026-11-01T10:00:02+00:00",
+            "rule_based": false,
+            "evidence_ids": [],
+            "upstream": []
+          }
+        ],
+        "evidence": [],
+        "replays": [],
+        "observations": [],
+        "dispositions": []
+      }
+    ]
+  }
+}

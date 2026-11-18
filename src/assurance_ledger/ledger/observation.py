@@ -163,7 +163,7 @@ def locator_signal(check: Mapping[str, Any]) -> tuple[str, str]:
         return LOC_NO_LOCATOR, ""
     if reason == "VALUE_MISMATCH":
         return LOC_VALUE_MISMATCH, ""
-    if reason in {"NOT_FOUND", "AMBIGUOUS_LOCATOR", "COMPANY_MISMATCH"}:
+    if reason in {"NOT_FOUND", "MISSING_FIELD", "AMBIGUOUS_LOCATOR", "COMPANY_MISMATCH"}:
         return LOC_NOT_FOUND, ""
     return LOC_NOT_RUN, ""
 

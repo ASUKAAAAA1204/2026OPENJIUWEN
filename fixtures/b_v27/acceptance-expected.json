@@ -1,0 +1,22 @@
+{
+  "fixture_kind": "synthetic",
+  "description": "PRD v2.7 §10.2 债务结算独立期望值；不代表真实运行验收",
+  "debts": [
+    {"decision_id": "d-ne-high", "mark_type": "NO_EVIDENCE", "severity": "high", "weight": 3},
+    {"decision_id": "d-ne-mid", "mark_type": "NO_EVIDENCE", "severity": "mid", "weight": 2},
+    {"decision_id": "d-sc-one", "mark_type": "SOURCE_CONFLICT", "severity": "mid", "weight": 2},
+    {"decision_id": "d-sc-two", "mark_type": "SOURCE_CONFLICT", "severity": "mid", "weight": 2},
+    {"decision_id": "d-sm-one", "mark_type": "SPEC_MISMATCH", "severity": "low", "weight": 1},
+    {"decision_id": "d-sm-two", "mark_type": "SPEC_MISMATCH", "severity": "low", "weight": 1}
+  ],
+  "resolved_decision_ids": ["d-ne-high", "d-sc-one", "d-sm-one"],
+  "expected": {
+    "initial_weighted_value": 11,
+    "initial_unresolved_count": 6,
+    "final_weighted_value": 5,
+    "final_unresolved_count": 3,
+    "open_event_count": 6,
+    "resolve_event_count": 3,
+    "retained_original_count": 6
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assurance-ledger.local/schemas/gate-v1.schema.json",
+  "title": "发布闸载荷 v1（/api/gate 的 data）",
+  "type": "object",
+  "required": ["action", "reason_code", "inputs", "budget_snapshot", "waiver", "debts", "ledger", "claims_summary", "policy"],
+  "properties": {
+    "action": { "enum": ["release", "block", "accept_with_grade"] },
+    "reason_code": { "type": ["string", "null"] },
+    "inputs": {
+      "type": "object",
+      "required": ["doc_status", "score", "band", "run_id"],
+      "properties": {
+        "doc_status": { "enum": ["DESIGN_ONLY", "PARTIAL", "COMPLETE", null] },
+        "score": { "type": ["integer", "null"] },
+        "band": { "enum": ["A", "B", "C", "D", null] },
+        "run_id": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "budget_snapshot": {
+      "type": "object",
+      "required": ["budget_cu", "quoted_cu", "sufficient", "cost_known"],
+      "properties": {
+        "budget_cu": { "type": ["number", "null"] },
+        "quoted_cu": { "type": ["integer", "null"] },
+        "sufficient": { "type": ["boolean", "null"] },
+        "cost_known": { "type": "boolean" },
+        "measured": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "waiver": {
+      "type": "object",
+      "required": ["granted"],
+      "properties": {
+        "granted": { "type": "boolean" },
+        "owner": { "type": ["string", "null"] },
+        "reason": { "type": ["string", "null"] },
+        "due": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "debts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim_id", "type", "reason_code"],
+        "properties": {
+          "claim_id": { "type": "string" },
+          "type": { "enum": ["unverified", "stale", "structural"] },
+          "reason_code": { "type": "string" },
+          "amount_cu": { "type": ["number", "null"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "ledger": {
+      "type": "object",
+      "required": ["verified", "status", "entries"],
+      "properties": {
+        "path": { "type": ["string", "null"] },
+        "entries": { "type": "integer", "minimum": 0 },
+        "head_hash": { "type": ["string", "null"] },
+        "verified": { "type": "boolean" },
+        "status": { "enum": ["PASS", "FAIL"] },
+        "first_bad_seq": { "type": ["integer", "null"] },
+        "limitations": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "claims_summary": {
+      "type": "object",
+      "required": ["verified", "refuted", "indeterminate"],
+      "properties": {
+        "verified": { "type": "integer", "minimum": 0 },
+        "refuted": { "type": "integer", "minimum": 0 },
+        "indeterminate": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "policy": {
+      "type": "object",
+      "required": ["version", "threshold", "min_sample"],
+      "properties": {
+        "version": { "const": "gate-v1" },
+        "threshold": { "const": 70 },
+        "min_sample": { "const": 10 },
+        "bands": { "type": "object" },
+        "strict": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "action": { "const": "block" } }, "required": ["action"] },
+      "then": { "properties": { "reason_code": { "type": "string" } } }
+    },
+    {
+      "if": { "properties": { "action": { "const": "accept_with_grade" } }, "required": ["action"] },
+      "then": { "properties": { "reason_code": { "type": "string" } } }
+    },
+    {
+      "if": { "properties": { "action": { "const": "release" } }, "required": ["action"] },
+      "then": { "properties": { "reason_code": { "type": "null" } } }
+    },
+    {
+      "if": { "properties": { "claims_summary": { "properties": { "refuted": { "minimum": 1 } }, "required": ["refuted"] } }, "required": ["claims_summary"] },
+      "then": { "properties": { "action": { "const": "block" }, "reason_code": { "const": "REFUTED_CLAIMS" } } }
+    }
+  ],
+  "additionalProperties": true
+}

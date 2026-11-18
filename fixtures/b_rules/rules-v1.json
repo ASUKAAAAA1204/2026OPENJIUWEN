@@ -1,0 +1,39 @@
+{
+  "format": "b-rules-v1",
+  "rule_version": "b-pe-v1",
+  "ir_version": "b-cmp-v1",
+  "skill_version": "b-pe-canonical@1",
+  "scope": "numeric comparison predicates only; claim semantics and C alignment remain pending",
+  "rules": [
+    {
+      "rule_id": "b-pe-less-than-industry@1",
+      "text": "pe < industry_pe",
+      "has_locator": true,
+      "declared_fields": [
+        "pe",
+        "industry_pe"
+      ],
+      "uses_llm": false
+    },
+    {
+      "rule_id": "b-pe-greater-than-industry@1",
+      "text": "pe > industry_pe",
+      "has_locator": true,
+      "declared_fields": [
+        "pe",
+        "industry_pe"
+      ],
+      "uses_llm": false
+    },
+    {
+      "rule_id": "b-pe-equal-industry@1",
+      "text": "pe == industry_pe",
+      "has_locator": true,
+      "declared_fields": [
+        "pe",
+        "industry_pe"
+      ],
+      "uses_llm": false
+    }
+  ]
+}
