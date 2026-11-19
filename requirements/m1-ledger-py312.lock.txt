@@ -1,0 +1,5 @@
+# M1 standalone signed ledger profile; M0 lock remains unchanged.
+-r m0-core-py312.lock.txt
+cffi==2.1.1
+cryptography==50.0.2
+pycparser==3.12

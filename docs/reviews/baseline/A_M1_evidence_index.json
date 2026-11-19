@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-19",
+  "scope": "A M1 local verification; team acceptance partial",
+  "evidence": [
+    {
+      "path": "outputs/baseline/m1-clean-contracts.xml",
+      "sha256": "006e093b5271748568c29009b9b23e8167d36a6c39633bc75de5c3f17c8d08cd"
+    },
+    {
+      "path": "outputs/baseline/m1-regression-final.xml",
+      "sha256": "5727e5b0b57d8bf48afe1e006cc12c9dd0bbd6fd4588fde8f5551e611cbcdbc7"
+    },
+    {
+      "path": "outputs/baseline/m1-intent-latency.json",
+      "sha256": "708dabb7d19428844a82bad22aef2725ed1a7f7e8b5607acd724b6ec896adc69"
+    },
+    {
+      "path": "outputs/baseline/m1-result-latency.json",
+      "sha256": "3fa80ff998c11badd7f9e88fd6e3b35a4276b272dcd5aa223837c8878dd659e9"
+    },
+    {
+      "path": "outputs/baseline/m1-durable-latency.json",
+      "sha256": "859eb81c0eb155dd7609efea053dd0c97c1634459bc580db463ec72fbb528ad6"
+    },
+    {
+      "path": "outputs/baseline/m1-durable-session-latency.json",
+      "sha256": "97715f2ca2fb8e4bddf956c37e6cd7c6bc4bdb3efbb5e241ec95e5122f8a26af"
+    },
+    {
+      "path": "outputs/baseline/m1-durable-reused-latency.json",
+      "sha256": "aa8420b8ab77bdf2791f3bbc10b9a7612d79fd63f6de2284abd6ad569eb29735"
+    }
+  ]
+}

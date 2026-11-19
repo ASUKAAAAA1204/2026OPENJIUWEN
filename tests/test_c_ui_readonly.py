@@ -9,6 +9,12 @@ UI_SRC = ROOT / "ui" / "src"
 FORBIDDEN_METHOD = re.compile(r"""\b(POST|PUT|PATCH|DELETE)\b""")
 LEDGER_WRITE = re.compile(r"""writeFile|writeText|appendFile|open\([^)]*['"]w""")
 SOURCE_SUFFIXES = (".js", ".ts", ".vue", ".jsx", ".tsx")
+# v2.7 explicitly includes human approval and debt resolution commands.
+# Keep the read-only boundary on every other module; do not exempt a folder.
+COMMAND_MODULES = {
+    UI_SRC / 'components' / 'workbench' / 'approvals.ts',
+    UI_SRC / 'components' / 'workbench' / 'debts.ts',
+}
 
 
 def scan_readonly(paths) -> list[str]:
@@ -41,4 +47,7 @@ def test_scanner_flags_write_method_and_ledger_write(tmp_path):
 
 @pytest.mark.skipif(not UI_SRC.exists(), reason="ui/src 未提供，D 端交付后启用")
 def test_ui_source_is_read_only():
-    assert scan_readonly(UI_SRC.rglob("*")) == []
+    assert scan_readonly(path for path in UI_SRC.rglob("*") if path not in COMMAND_MODULES) == []
+    # Command modules may call the service; direct ledger mutation stays forbidden.
+    for path in COMMAND_MODULES:
+        assert not any(finding.endswith(':LEDGER_WRITE') for finding in scan_readonly([path]))

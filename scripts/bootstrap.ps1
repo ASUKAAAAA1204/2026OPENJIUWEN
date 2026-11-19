@@ -1,7 +1,7 @@
 param(
  [Parameter(Mandatory=$true)][string]$Python,
  [string]$Environment='.venv-m0',
- [ValidateSet('core','jiuwen')][string]$Profile='core',
+ [ValidateSet('core','jiuwen','ledger')][string]$Profile='core',
  [string]$IndexUrl='https://pypi.org/simple'
 )
 $ErrorActionPreference='Stop'
@@ -23,6 +23,7 @@ try {
  $taskInterpreter=Join-Path $taskTarget 'Scripts/python.exe'
  $taskPackages=@('-r','requirements/m0-core-py312.lock.txt')
  if ($Profile -eq 'jiuwen') { $taskPackages=@('-r','requirements/m0-jiuwen-py312.lock.txt') }
+ if ($Profile -eq 'ledger') { $taskPackages=@('-r','requirements/m1-ledger-py312.lock.txt') }
  & $taskInterpreter -m pip --disable-pip-version-check --no-cache-dir install --index-url $IndexUrl --timeout 5 --retries 0 @taskPackages
  if ($LASTEXITCODE -ne 0) { throw 'Dependency installation failed; environment is not accepted' }
  & $taskInterpreter -m pip --disable-pip-version-check install --no-build-isolation --no-deps -e .

@@ -19,6 +19,7 @@ dependencies = [
 Repository = "https://github.com/ASUKAAAAA1204/2026OPENJIUWEN"
 
 [project.optional-dependencies]
+ledger_crypto = ["cryptography>=43,<51"]
 api = [
     "fastapi>=0.110",
     "uvicorn>=0.29",
