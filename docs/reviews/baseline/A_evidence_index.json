@@ -1,0 +1,187 @@
+{
+  "scope": "M0 member A; no team signoff substituted",
+  "status": "PARTIAL",
+  "verified_checks": 12,
+  "pending": [
+    "C independent conflict review",
+    "B framework environment versions and control evidence",
+    "D CI and startup evidence"
+  ],
+  "evidence": [
+    {
+      "path": "outputs/baseline/a-status.json",
+      "sha256": "d8fc7d2adfb45716825541bde9edab879eba3830bb72fb724e3335ba7d8fb721",
+      "bytes": 371
+    },
+    {
+      "path": "outputs/baseline/all-import-origins.json",
+      "sha256": "ede8b940f2a48f5a21e20f0280f60e775377c88d2ac1305556df6a2136ab5fc2",
+      "bytes": 15560
+    },
+    {
+      "path": "outputs/baseline/baseline-summary.json",
+      "sha256": "66dcb2d93ebbbec3e3a2c0a5b3bb8289bead71f1235151118a9aa2a70e17176b",
+      "bytes": 672
+    },
+    {
+      "path": "outputs/baseline/bootstrap-negative.json",
+      "sha256": "e99cfd9d0fd58162bb65fd11685b6e3b21c4251c916b5cbd6570578ac746f178",
+      "bytes": 461
+    },
+    {
+      "path": "outputs/baseline/canary-execution.json",
+      "sha256": "7bec043b4d091a3553c20265b9c3bd2224c5219ffe59dec6fd8e2c29d2fcdf66",
+      "bytes": 267
+    },
+    {
+      "path": "outputs/baseline/cli-help.txt",
+      "sha256": "5738716b1379e2483f53275203c6c4561259b1f3e857bbfa4297836ec3a04b83",
+      "bytes": 530
+    },
+    {
+      "path": "outputs/baseline/completion-audit-console.json",
+      "sha256": "2cd6073862da4a77eb13c4247732d67fd1bbdcf257cc712d73b4282df3890d49",
+      "bytes": 2843
+    },
+    {
+      "path": "outputs/baseline/completion-audit.json",
+      "sha256": "a3b7e81d710c700adbf4a4373071e346e90621d1cebcc9b22336e5c6c06d9b7f",
+      "bytes": 2841
+    },
+    {
+      "path": "outputs/baseline/conflict-symbols.json",
+      "sha256": "e3024d870abc6673531a608030a349a33c6dffc7db02de0be66f3ef38f5355cb",
+      "bytes": 5765
+    },
+    {
+      "path": "outputs/baseline/core-candidate-lock.txt",
+      "sha256": "e7e6a26f119cdba936c6b51a8c46641bef25f7b068b2d3c9146ff80223c99db9",
+      "bytes": 613
+    },
+    {
+      "path": "outputs/baseline/core-junit.xml",
+      "sha256": "ea0d231250a6d49ac383cb0591f1d79fb16b0e1e1a65805056e5e01012cc8ea9",
+      "bytes": 63894
+    },
+    {
+      "path": "outputs/baseline/external-all-import-origins.json",
+      "sha256": "ede8b940f2a48f5a21e20f0280f60e775377c88d2ac1305556df6a2136ab5fc2",
+      "bytes": 15560
+    },
+    {
+      "path": "outputs/baseline/failure-triage.json",
+      "sha256": "33ebd57b9dd79a44a063db06bbc569b79a73b37b1d245ddbfa72e70d5bccafc9",
+      "bytes": 4004
+    },
+    {
+      "path": "outputs/baseline/full-junit.xml",
+      "sha256": "9f29ffa0768bb64a2585d2982c010d438f75523608079c06c4d9886aa7d79bcf",
+      "bytes": 115042
+    },
+    {
+      "path": "outputs/baseline/full-regression-stability.json",
+      "sha256": "7a28e68d19c3853bed434be9afa8507118fbf47fb98222d6ed72bc3413b66c49",
+      "bytes": 67596
+    },
+    {
+      "path": "outputs/baseline/inventory.json",
+      "sha256": "27022e741c0fd82559b2338d7932126d2b951b25955dae5c7fee8a4826900e24",
+      "bytes": 60489
+    },
+    {
+      "path": "outputs/baseline/jiuwen-acceptance-junit.xml",
+      "sha256": "b6b6b4fe279e334a7a1ab0b1eabd5c82237551999154ac8f59e06120e4aeb6fd",
+      "bytes": 20093
+    },
+    {
+      "path": "outputs/baseline/jiuwen-full-fixed-junit.xml",
+      "sha256": "27baa0a1e4852179a4e0e51f743b577c3c86cc5ba46e1619576959732ea51983",
+      "bytes": 92945
+    },
+    {
+      "path": "outputs/baseline/jiuwen-full-junit.xml",
+      "sha256": "b9e0c714d0315399f6e0d23af06528100c19c8faed0a041bcc99e4f4b022fa97",
+      "bytes": 141531
+    },
+    {
+      "path": "outputs/baseline/jiuwen-full-round2.xml",
+      "sha256": "e46f2c4bcf7b3200b2fd614bdc2048f6bb06ce808f672531594766e0b3ddd57f",
+      "bytes": 92945
+    },
+    {
+      "path": "outputs/baseline/jiuwen-full-round3.xml",
+      "sha256": "e107a6579d6688651de0af72435c5774fbaf9405f540d8c2ee3f49a52a16c356",
+      "bytes": 92945
+    },
+    {
+      "path": "outputs/baseline/live-processes.json",
+      "sha256": "53711bf4b475173733ca74d1200fb9a3e048a092ca895b7e2aed1a044a83394f",
+      "bytes": 135
+    },
+    {
+      "path": "outputs/baseline/network-negative-stderr.txt",
+      "sha256": "49ec4960515455770c41677f9bff941a308f716831910196e804e98e763862d3",
+      "bytes": 171
+    },
+    {
+      "path": "outputs/baseline/network-negative.json",
+      "sha256": "1f258b28a35d4a829a82ee18e9ddf2d8b2af868d7d13ea3c5bfba8a5ca51295e",
+      "bytes": 43
+    },
+    {
+      "path": "outputs/baseline/rebuild-core-junit.xml",
+      "sha256": "c180cc2c78f2287cb4bd3a45e295b14accf5e820123e099176578c88cf5498f7",
+      "bytes": 63894
+    },
+    {
+      "path": "outputs/baseline/rebuild1-lock-check.json",
+      "sha256": "d4637ca21dfabee25bd6d017ea1b62c56e3ab8c9975872a973ae2139e2eb4d5a",
+      "bytes": 55
+    },
+    {
+      "path": "outputs/baseline/rebuild2-core-junit.xml",
+      "sha256": "05de1e0f9f0152a73903ee81d65dfd249804fd8c1c80e5915845754bb8860540",
+      "bytes": 63894
+    },
+    {
+      "path": "outputs/baseline/rebuilds.json",
+      "sha256": "22213453131b3285d81405ab435d0885642b160d70374af062ecf3561280a629",
+      "bytes": 231
+    },
+    {
+      "path": "outputs/baseline/report-secret-scan.json",
+      "sha256": "9af945ffa5d4f84552f7164e72c8b69946b6836b4b8283609c1c5fb24950f1a9",
+      "bytes": 128
+    },
+    {
+      "path": "outputs/baseline/residual-archive.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    {
+      "path": "outputs/baseline/residual-final-manifest.json",
+      "sha256": "b85a34be2f8cfc1e9822da70ef42d6f2a1776825ae0f76b7664dace68d99a9f5",
+      "bytes": 10567
+    },
+    {
+      "path": "outputs/baseline/sdk-rebuild1-full.xml",
+      "sha256": "2034303aeaebd5a2ef541967c044159e101a901be3e7a8180b7141e48feda051",
+      "bytes": 92945
+    },
+    {
+      "path": "outputs/baseline/sdk-rebuild2-full.xml",
+      "sha256": "b1377ae3020149000962d13afe244c1e02cb49b683db96f1c91b25aaaa9a041d",
+      "bytes": 92945
+    },
+    {
+      "path": "outputs/baseline/sdk-rebuilds.json",
+      "sha256": "95530605c04319437c0664a2d2226db47c633d42901a9f38ba823e965d4801ce",
+      "bytes": 245
+    },
+    {
+      "path": "outputs/baseline/test-file-inventory.json",
+      "sha256": "71d98ea5cb8c7ddbaa644108977bb920bd01a2c100908a8292a22d7551622163",
+      "bytes": 1545
+    }
+  ]
+}

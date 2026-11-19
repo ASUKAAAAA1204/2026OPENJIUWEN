@@ -45,3 +45,6 @@ desktop.ini
 !/data/.gitkeep
 /outputs/*
 !/outputs/.gitkeep
+
+# M0 isolated environments
+.venv-*/

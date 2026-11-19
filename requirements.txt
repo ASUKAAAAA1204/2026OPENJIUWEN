@@ -1,33 +1,6 @@
-# Assurance Ledger —— 核心依赖（PRD §9 + 开源选型文档）
-#
-# 纪律：
-#   - 只用 MIT / Apache-2.0 / BSD-3-Clause
-#   - LGPL 只作为独立进程 CLI 调用（semgrep）
-#   - 不 vendor，不复制源码
-#   - SBOM 用 CycloneDX，W1 前生成第一次
-
-# ========== 必需 ==========
-# 数据校验：所有核心模型（claim / evidence / ars / ledger 等）的基类
-pydantic==2.14.2         # MIT
-
-# RFC 8785 JCS 规范化（C 端 S3 哈希层）
-rfc8785==0.1.4           # Apache-2.0
-
-# ========== 可选 ==========
-# 只读 API（C 端 /api/ars、/api/plan、/api/gate）
-fastapi==0.162.0         # MIT
-uvicorn==0.54.0          # BSD-3-Clause
-
-# 代码类检查：CLI 调用（独立进程，满足 LGPL-2.1 要求）
-semgrep>=1.80            # LGPL-2.1 —— 可选（CLI 模式）
-
-# ========== 开发 ==========
-# SBOM 生成
-cyclonedx-bom==7.6.0       # Apache-2.0
-# 测试
-pytest==9.2.0            # MIT
-httpx==0.28.1            # BSD-3-Clause（FastAPI TestClient）
-jsonschema==4.26.0       # MIT（API 契约测试）
-python-dotenv==1.2.4      # BSD-3-Clause（A 的 rail.model_config）
-# 类型检查
-mypy==2.4.1              # MIT
+# M0 reproducible core/API/test baseline (Python 3.12).
+# Project dependency declarations live in pyproject.toml.
+# Exact tested runtime resolution lives in the following lock.
+-r requirements/m0-core-py312.lock.txt
+# SDK profile: requirements/m0-jiuwen-py312.lock.txt
+# Optional development tools and semgrep: pyproject extras; not part of M0 runtime lock.
