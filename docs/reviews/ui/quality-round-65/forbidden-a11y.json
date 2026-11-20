@@ -1,0 +1,122 @@
+[
+  {
+    "section": "工作台",
+    "width": 1440,
+    "violations": []
+  },
+  {
+    "section": "工作台",
+    "width": 1024,
+    "violations": []
+  },
+  {
+    "section": "工作台",
+    "width": 390,
+    "violations": []
+  },
+  {
+    "section": "工作台",
+    "width": 320,
+    "violations": []
+  },
+  {
+    "section": "运行记录",
+    "width": 1440,
+    "violations": []
+  },
+  {
+    "section": "运行记录",
+    "width": 1024,
+    "violations": []
+  },
+  {
+    "section": "运行记录",
+    "width": 390,
+    "violations": []
+  },
+  {
+    "section": "运行记录",
+    "width": 320,
+    "violations": []
+  },
+  {
+    "section": "人工审批",
+    "width": 1440,
+    "violations": []
+  },
+  {
+    "section": "人工审批",
+    "width": 1024,
+    "violations": []
+  },
+  {
+    "section": "人工审批",
+    "width": 390,
+    "violations": []
+  },
+  {
+    "section": "人工审批",
+    "width": 320,
+    "violations": []
+  },
+  {
+    "section": "证据与债务",
+    "width": 1440,
+    "violations": []
+  },
+  {
+    "section": "证据与债务",
+    "width": 1024,
+    "violations": []
+  },
+  {
+    "section": "证据与债务",
+    "width": 390,
+    "violations": []
+  },
+  {
+    "section": "证据与债务",
+    "width": 320,
+    "violations": []
+  },
+  {
+    "section": "版本评估",
+    "width": 1440,
+    "violations": []
+  },
+  {
+    "section": "版本评估",
+    "width": 1024,
+    "violations": []
+  },
+  {
+    "section": "版本评估",
+    "width": 390,
+    "violations": []
+  },
+  {
+    "section": "版本评估",
+    "width": 320,
+    "violations": []
+  },
+  {
+    "section": "设置",
+    "width": 1440,
+    "violations": []
+  },
+  {
+    "section": "设置",
+    "width": 1024,
+    "violations": []
+  },
+  {
+    "section": "设置",
+    "width": 390,
+    "violations": []
+  },
+  {
+    "section": "设置",
+    "width": 320,
+    "violations": []
+  }
+]

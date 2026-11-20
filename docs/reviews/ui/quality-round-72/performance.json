@@ -1,0 +1,1198 @@
+{
+  "mode": "local-production-preview",
+  "at": "2026-11-19T15:44:31.662Z",
+  "browser": "156.0.8078.4",
+  "cache": "disabled",
+  "thresholds": {
+    "domContentLoadedMs": 1500,
+    "lcpMs": 2500,
+    "operationMs": 200,
+    "navigationMs": 200,
+    "cls": 0.05,
+    "maxLongTaskMs": 100,
+    "eventDurationMs": 200
+  },
+  "note": "One observation per page/source/width, Chromium desktop local loopback; synthetic authorized service responses, no CPU/network throttling, no backend/model latency, no field INP or percentile claim. Operation duration starts with the control visible and includes Playwright overhead and the response/render assertion. Detail uses a synthetic ledger for both source rows.",
+  "samples": [
+    {
+      "section": "工作台",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 282.6171999999999,
+      "domContentLoadedMs": 105.39999999850988,
+      "lcpMs": 176,
+      "operationMs": null,
+      "navigationMs": 70.06819999999993,
+      "cls": 0.0002041715561771262,
+      "shifts": [
+        {
+          "value": 0.0002041715561771262,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [
+        87
+      ],
+      "eventDurationMs": 40
+    },
+    {
+      "section": "运行记录",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 155.80050000000028,
+      "domContentLoadedMs": 37.70000000298023,
+      "lcpMs": 64,
+      "operationMs": null,
+      "navigationMs": 61.71109999999999,
+      "cls": 0.0002041715561771262,
+      "shifts": [
+        {
+          "value": 0.0002041715561771262,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 24
+    },
+    {
+      "section": "人工审批",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 153.20500000000038,
+      "domContentLoadedMs": 37,
+      "lcpMs": 72,
+      "operationMs": null,
+      "navigationMs": 65.36099999999988,
+      "cls": 0.0002041715561771262,
+      "shifts": [
+        {
+          "value": 0.0002041715561771262,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 40
+    },
+    {
+      "section": "证据与债务",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 163.60780000000022,
+      "domContentLoadedMs": 43,
+      "lcpMs": 76,
+      "operationMs": null,
+      "navigationMs": 61.605499999999665,
+      "cls": 0.0002041715561771262,
+      "shifts": [
+        {
+          "value": 0.0002041715561771262,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 40
+    },
+    {
+      "section": "版本评估",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 175.76300000000037,
+      "domContentLoadedMs": 42.899999998509884,
+      "lcpMs": 76,
+      "operationMs": null,
+      "navigationMs": 72.9357,
+      "cls": 0.0002041715561771262,
+      "shifts": [
+        {
+          "value": 0.0002041715561771262,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 48
+    },
+    {
+      "section": "设置",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 147.23199999999997,
+      "domContentLoadedMs": 37.19999999552965,
+      "lcpMs": 60,
+      "operationMs": null,
+      "navigationMs": 59.6266999999998,
+      "cls": 0.0002041715561771262,
+      "shifts": [
+        {
+          "value": 0.0002041715561771262,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 24
+    },
+    {
+      "section": "运行详情",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 220.27729999999974,
+      "domContentLoadedMs": 49.400000005960464,
+      "lcpMs": 120,
+      "operationMs": null,
+      "navigationMs": 62.51460000000043,
+      "cls": 0.0002041715561771262,
+      "shifts": [
+        {
+          "value": 0.0002041715561771262,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "工作台",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 175.5708999999997,
+      "domContentLoadedMs": 44.29999999701977,
+      "lcpMs": 104,
+      "operationMs": 64.19250000000011,
+      "navigationMs": 64.17839999999978,
+      "cls": 0.02303826892575446,
+      "shifts": [
+        {
+          "value": 0.02303826892575446,
+          "nodes": [
+            "FOOTER.workbench-footer",
+            "DIV.nav-footer",
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 48
+    },
+    {
+      "section": "运行记录",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 173.2556000000004,
+      "domContentLoadedMs": 46.20000000298023,
+      "lcpMs": 120,
+      "operationMs": 57.68990000000031,
+      "navigationMs": 73.9965000000002,
+      "cls": 0.0002041715561771262,
+      "shifts": [
+        {
+          "value": 0.0002041715561771262,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 24
+    },
+    {
+      "section": "人工审批",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 165.21159999999963,
+      "domContentLoadedMs": 41.29999999701977,
+      "lcpMs": 100,
+      "operationMs": 71.99179999999978,
+      "navigationMs": 73.2467999999999,
+      "cls": 0.0002041715561771262,
+      "shifts": [
+        {
+          "value": 0.0002041715561771262,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "证据与债务",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 177.38540000000012,
+      "domContentLoadedMs": 44.100000001490116,
+      "lcpMs": 120,
+      "operationMs": 73.21029999999973,
+      "navigationMs": 50.146999999999935,
+      "cls": 0.0002041715561771262,
+      "shifts": [
+        {
+          "value": 0.0002041715561771262,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 56
+    },
+    {
+      "section": "版本评估",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 179.30010000000038,
+      "domContentLoadedMs": 45.79999999701977,
+      "lcpMs": 120,
+      "operationMs": 28.90389999999934,
+      "navigationMs": 61.93279999999868,
+      "cls": 0.014165102693115569,
+      "shifts": [
+        {
+          "value": 0.0002041715561771262,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        },
+        {
+          "value": 0.013960931136938443,
+          "nodes": [
+            "DIV.metrics-grid",
+            "DIV.section-heading"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 24
+    },
+    {
+      "section": "设置",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 180.23499999999876,
+      "domContentLoadedMs": 41.79999999701977,
+      "lcpMs": 108,
+      "operationMs": 90.09540000000015,
+      "navigationMs": 60.378099999999904,
+      "cls": 0.0002041715561771262,
+      "shifts": [
+        {
+          "value": 0.0002041715561771262,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "运行详情",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 178.8829999999998,
+      "domContentLoadedMs": 43.70000000298023,
+      "lcpMs": 108,
+      "operationMs": 29.754100000000108,
+      "navigationMs": 47.87589999999909,
+      "cls": 0.0011937018416709536,
+      "shifts": [
+        {
+          "value": 0.0002041715561771262,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        },
+        {
+          "value": 0.0009895302854938273,
+          "nodes": [
+            "SECTION.detail-panel run-relations"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 24
+    },
+    {
+      "section": "工作台",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 158.36099999999897,
+      "domContentLoadedMs": 42.099999994039536,
+      "lcpMs": 76,
+      "operationMs": null,
+      "navigationMs": 63.57179999999971,
+      "cls": 0.00040375722779168024,
+      "shifts": [
+        {
+          "value": 0.00040375722779168024,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "运行记录",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 155.98209999999926,
+      "domContentLoadedMs": 39.5,
+      "lcpMs": 64,
+      "operationMs": null,
+      "navigationMs": 62.051400000000285,
+      "cls": 0.00040375722779168024,
+      "shifts": [
+        {
+          "value": 0.00040375722779168024,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "人工审批",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 158.03529999999955,
+      "domContentLoadedMs": 41.80000000447035,
+      "lcpMs": 72,
+      "operationMs": null,
+      "navigationMs": 62.711999999999534,
+      "cls": 0.00040375722779168024,
+      "shifts": [
+        {
+          "value": 0.00040375722779168024,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 48
+    },
+    {
+      "section": "证据与债务",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 155.16069999999854,
+      "domContentLoadedMs": 40.30000000447035,
+      "lcpMs": 68,
+      "operationMs": null,
+      "navigationMs": 62.78520000000026,
+      "cls": 0.00040375722779168024,
+      "shifts": [
+        {
+          "value": 0.00040375722779168024,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "版本评估",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 151.67379999999866,
+      "domContentLoadedMs": 35.899999998509884,
+      "lcpMs": 60,
+      "operationMs": null,
+      "navigationMs": 62.8033000000014,
+      "cls": 0.00040375722779168024,
+      "shifts": [
+        {
+          "value": 0.00040375722779168024,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "设置",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 143.48300000000017,
+      "domContentLoadedMs": 42.69999999552965,
+      "lcpMs": 68,
+      "operationMs": null,
+      "navigationMs": 59.66080000000147,
+      "cls": 0.00040375722779168024,
+      "shifts": [
+        {
+          "value": 0.00040375722779168024,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "运行详情",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 164.63310000000092,
+      "domContentLoadedMs": 44.399999998509884,
+      "lcpMs": 96,
+      "operationMs": null,
+      "navigationMs": 59.36629999999968,
+      "cls": 0.00040375722779168024,
+      "shifts": [
+        {
+          "value": 0.00040375722779168024,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "工作台",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 170.79240000000027,
+      "domContentLoadedMs": 40.69999999552965,
+      "lcpMs": 100,
+      "operationMs": 63.79689999999937,
+      "navigationMs": 61.57389999999941,
+      "cls": 0.03500134229660034,
+      "shifts": [
+        {
+          "value": 0.03500134229660034,
+          "nodes": [
+            "FOOTER.workbench-footer",
+            "DIV.nav-footer",
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 40
+    },
+    {
+      "section": "运行记录",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 184.95709999999963,
+      "domContentLoadedMs": 45.30000000447035,
+      "lcpMs": 124,
+      "operationMs": 61.069400000000314,
+      "navigationMs": 65.86369999999988,
+      "cls": 0.00040375722779168024,
+      "shifts": [
+        {
+          "value": 0.00040375722779168024,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 24
+    },
+    {
+      "section": "人工审批",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 158.0601999999999,
+      "domContentLoadedMs": 38.70000000298023,
+      "lcpMs": 88,
+      "operationMs": 87.95650000000023,
+      "navigationMs": 52.76690000000053,
+      "cls": 0.00040375722779168024,
+      "shifts": [
+        {
+          "value": 0.00040375722779168024,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 24
+    },
+    {
+      "section": "证据与债务",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 172.02399999999943,
+      "domContentLoadedMs": 39.099999994039536,
+      "lcpMs": 100,
+      "operationMs": 86.83489999999802,
+      "navigationMs": 48.52089999999953,
+      "cls": 0.00040375722779168024,
+      "shifts": [
+        {
+          "value": 0.00040375722779168024,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 40
+    },
+    {
+      "section": "版本评估",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 165.22370000000228,
+      "domContentLoadedMs": 37,
+      "lcpMs": 96,
+      "operationMs": 23.875599999999395,
+      "navigationMs": 55.09860000000117,
+      "cls": 0.02077887654304504,
+      "shifts": [
+        {
+          "value": 0.00040375722779168024,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        },
+        {
+          "value": 0.020375119315253362,
+          "nodes": [
+            "DIV.metrics-grid",
+            "DIV.section-heading"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "设置",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 173.9344999999994,
+      "domContentLoadedMs": 43.19999999552965,
+      "lcpMs": 104,
+      "operationMs": 69.47079999999914,
+      "navigationMs": 52.194400000000314,
+      "cls": 0.00040375722779168024,
+      "shifts": [
+        {
+          "value": 0.00040375722779168024,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 24
+    },
+    {
+      "section": "运行详情",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 182.15910000000076,
+      "domContentLoadedMs": 45.399999998509884,
+      "lcpMs": 88,
+      "operationMs": 26.91519999999946,
+      "navigationMs": 49.65339999999924,
+      "cls": 0.0007544444666968452,
+      "shifts": [
+        {
+          "value": 0.00040375722779168024,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        },
+        {
+          "value": 0.00035068723890516494,
+          "nodes": [
+            "SECTION.audit-detail"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "工作台",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 158.8025000000016,
+      "domContentLoadedMs": 42,
+      "lcpMs": 64,
+      "operationMs": null,
+      "navigationMs": 60.54479999999967,
+      "cls": 0.0006666769547325102,
+      "shifts": [
+        {
+          "value": 0.0006666769547325102,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "运行记录",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 142.59259999999995,
+      "domContentLoadedMs": 37.70000000298023,
+      "lcpMs": 56,
+      "operationMs": null,
+      "navigationMs": 64.2619999999988,
+      "cls": 0.0006666769547325102,
+      "shifts": [
+        {
+          "value": 0.0006666769547325102,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "人工审批",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 155.66249999999854,
+      "domContentLoadedMs": 38.19999999552965,
+      "lcpMs": 56,
+      "operationMs": null,
+      "navigationMs": 62.49799999999959,
+      "cls": 0.0006666769547325102,
+      "shifts": [
+        {
+          "value": 0.0006666769547325102,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "证据与债务",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 154.39329999999973,
+      "domContentLoadedMs": 38.79999999701977,
+      "lcpMs": 60,
+      "operationMs": null,
+      "navigationMs": 59.469099999998434,
+      "cls": 0.0006666769547325102,
+      "shifts": [
+        {
+          "value": 0.0006666769547325102,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "版本评估",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 144.63070000000153,
+      "domContentLoadedMs": 38.29999999701977,
+      "lcpMs": 60,
+      "operationMs": null,
+      "navigationMs": 92.21070000000327,
+      "cls": 0.0006666769547325102,
+      "shifts": [
+        {
+          "value": 0.0006666769547325102,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "设置",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 143.22479999999996,
+      "domContentLoadedMs": 40.19999999552965,
+      "lcpMs": 56,
+      "operationMs": null,
+      "navigationMs": 62.501399999997375,
+      "cls": 0.0006666769547325102,
+      "shifts": [
+        {
+          "value": 0.0006666769547325102,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "运行详情",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 166.4972999999991,
+      "domContentLoadedMs": 46.20000000298023,
+      "lcpMs": 80,
+      "operationMs": null,
+      "navigationMs": 65.550900000002,
+      "cls": 0.0006666769547325102,
+      "shifts": [
+        {
+          "value": 0.0006666769547325102,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "工作台",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 164.5607999999993,
+      "domContentLoadedMs": 40.900000005960464,
+      "lcpMs": 80,
+      "operationMs": 62.333699999999226,
+      "navigationMs": 61.23750000000291,
+      "cls": 0.039291741452991455,
+      "shifts": [
+        {
+          "value": 0.039291741452991455,
+          "nodes": [
+            "FOOTER.workbench-footer",
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "运行记录",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 175.32350000000224,
+      "domContentLoadedMs": 44.79999999701977,
+      "lcpMs": 68,
+      "operationMs": 59.543000000001484,
+      "navigationMs": 43.375,
+      "cls": 0.0006666769547325102,
+      "shifts": [
+        {
+          "value": 0.0006666769547325102,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "人工审批",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 143.17669999999998,
+      "domContentLoadedMs": 37,
+      "lcpMs": 52,
+      "operationMs": 63.06100000000151,
+      "navigationMs": 62.271099999998114,
+      "cls": 0.0006666769547325102,
+      "shifts": [
+        {
+          "value": 0.0006666769547325102,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "证据与债务",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 161.64940000000206,
+      "domContentLoadedMs": 42.79999999701977,
+      "lcpMs": 76,
+      "operationMs": 97.41389999999956,
+      "navigationMs": 56.99779999999737,
+      "cls": 0.0006666769547325102,
+      "shifts": [
+        {
+          "value": 0.0006666769547325102,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 24
+    },
+    {
+      "section": "版本评估",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 167.09460000000036,
+      "domContentLoadedMs": 37.69999999552965,
+      "lcpMs": 84,
+      "operationMs": 24.878999999997177,
+      "navigationMs": 54.95000000000073,
+      "cls": 0.0006666769547325102,
+      "shifts": [
+        {
+          "value": 0.0006666769547325102,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "设置",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 162.6196000000018,
+      "domContentLoadedMs": 42.5,
+      "lcpMs": 76,
+      "operationMs": 67.34189999999944,
+      "navigationMs": 57.34470000000147,
+      "cls": 0.0006666769547325102,
+      "shifts": [
+        {
+          "value": 0.0006666769547325102,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "运行详情",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 169.10959999999977,
+      "domContentLoadedMs": 43.20000000298023,
+      "lcpMs": 92,
+      "operationMs": 23.908400000000256,
+      "navigationMs": 50.847499999999854,
+      "cls": 0.0011354965970243748,
+      "shifts": [
+        {
+          "value": 0.0006666769547325102,
+          "nodes": [
+            "DIV.session-indicator"
+          ]
+        },
+        {
+          "value": 0.0004688196422918646,
+          "nodes": [
+            "SECTION.audit-detail"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "工作台",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 159.24800000000323,
+      "domContentLoadedMs": 38.599999994039536,
+      "lcpMs": 64,
+      "operationMs": null,
+      "navigationMs": 61.493500000000495,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": [],
+      "eventDurationMs": 48
+    },
+    {
+      "section": "运行记录",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 135.1173000000017,
+      "domContentLoadedMs": 37.399999998509884,
+      "lcpMs": 56,
+      "operationMs": null,
+      "navigationMs": 61.843800000002375,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "人工审批",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 145.1959999999999,
+      "domContentLoadedMs": 40.69999999552965,
+      "lcpMs": 60,
+      "operationMs": null,
+      "navigationMs": 59.078199999999924,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "证据与债务",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 164.43220000000292,
+      "domContentLoadedMs": 41.600000001490116,
+      "lcpMs": 68,
+      "operationMs": null,
+      "navigationMs": 58.96280000000115,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "版本评估",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 156.51770000000033,
+      "domContentLoadedMs": 37.79999999701977,
+      "lcpMs": 64,
+      "operationMs": null,
+      "navigationMs": 57.6082000000024,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "设置",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 158.2302000000018,
+      "domContentLoadedMs": 39,
+      "lcpMs": 56,
+      "operationMs": null,
+      "navigationMs": 61.183899999999994,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "section": "运行详情",
+      "source": "preview",
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 187.33109999999942,
+      "domContentLoadedMs": 46.19999999552965,
+      "lcpMs": 88,
+      "operationMs": null,
+      "navigationMs": 60.6237000000001,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "工作台",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 163.6642000000029,
+      "domContentLoadedMs": 39.900000005960464,
+      "lcpMs": 76,
+      "operationMs": 63.334100000000035,
+      "navigationMs": 146.04750000000058,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": [],
+      "eventDurationMs": 24
+    },
+    {
+      "section": "运行记录",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 161.39589999999953,
+      "domContentLoadedMs": 40.5,
+      "lcpMs": 60,
+      "operationMs": 57.916299999997136,
+      "navigationMs": 63.80040000000008,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "人工审批",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 198.95799999999872,
+      "domContentLoadedMs": 87.5,
+      "lcpMs": 104,
+      "operationMs": 63.064100000003236,
+      "navigationMs": 65.63209999999526,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "证据与债务",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 213.4033000000054,
+      "domContentLoadedMs": 42.79999999701977,
+      "lcpMs": 84,
+      "operationMs": 66.73010000000068,
+      "navigationMs": 55.39270000000397,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": [],
+      "eventDurationMs": 24
+    },
+    {
+      "section": "版本评估",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 168.02709999999934,
+      "domContentLoadedMs": 40.80000000447035,
+      "lcpMs": 72,
+      "operationMs": 25.726800000004005,
+      "navigationMs": 59.7841000000044,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "设置",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 176.38620000000083,
+      "domContentLoadedMs": 43.29999999701977,
+      "lcpMs": 96,
+      "operationMs": 93.64900000000489,
+      "navigationMs": 61.10740000000078,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": [],
+      "eventDurationMs": 16
+    },
+    {
+      "section": "运行详情",
+      "source": "api",
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 177.11420000000362,
+      "domContentLoadedMs": 42.100000001490116,
+      "lcpMs": 84,
+      "operationMs": 29.782200000001467,
+      "navigationMs": 48.98720000000321,
+      "cls": 0.0004596527777777778,
+      "shifts": [
+        {
+          "value": 0.0004596527777777778,
+          "nodes": [
+            "SECTION.audit-detail"
+          ]
+        }
+      ],
+      "longTasks": [],
+      "eventDurationMs": 16
+    }
+  ]
+}

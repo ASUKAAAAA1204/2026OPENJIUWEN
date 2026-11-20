@@ -1,0 +1,115 @@
+.approval-workspace {
+  max-width: 1400px;
+}
+.approval-overview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--hairline);
+  margin-top: 24px;
+}
+.approval-overview > span {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  color: var(--ink-2);
+  font-size: 12px;
+}
+.approval-overview strong {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.approval-overview > span:first-child strong {
+  color: var(--blue);
+  font: 26px var(--font-mono);
+}
+.approval-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.8fr);
+  gap: 24px;
+  margin-top: 24px;
+}
+.approval-queue {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+.approval-queue .history-card {
+  padding: 18px;
+}
+.approval-search {
+  display: grid;
+  gap: 8px;
+  color: var(--ink-2);
+  font-size: 12px;
+  max-width: 440px;
+}
+.approval-search input {
+  min-height: 44px;
+  padding: 12px;
+  border: 1px solid var(--hairline);
+  background: var(--surface);
+  color: var(--ink);
+}
+.approval-feedback {
+  padding: 16px;
+  margin-top: 20px;
+  border-left: 2px solid var(--danger);
+  background: var(--soft);
+  line-height: 1.8;
+}
+.approval-feedback .text-action {
+  display: block;
+  margin: 8px 0 0;
+}
+.approval-deadline {
+  margin: 24px 0 0;
+  color: var(--accent-warm);
+  font: 14px var(--font-mono);
+}
+.approval-scope {
+  margin-top: 16px;
+  line-height: 1.8;
+  color: var(--ink-2);
+  font-size: 13px;
+}
+.approval-context {
+  border-block: 1px solid var(--hairline);
+  margin: 24px 0;
+}
+.approval-context summary {
+  min-height: 44px;
+  padding-block: 14px;
+  cursor: pointer;
+  color: var(--blue);
+  font-size: 13px;
+}
+.approval-card .section-heading {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.approval-card .eyebrow {
+  overflow-wrap: anywhere;
+}
+.approval-actions button:disabled {
+  opacity: 0.45;
+}
+
+@media (max-width: 1100px) {
+  .approval-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .approval-overview {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .approval-overview > span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px;
+  }
+}

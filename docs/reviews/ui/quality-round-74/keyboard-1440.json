@@ -1,0 +1,11 @@
+{
+  "width": 1440,
+  "input": "Tab/Enter/Space/End/text only; no click/focus/fill/selectOption",
+  "operations": [
+    "create",
+    "reject",
+    "resolve",
+    "policy"
+  ],
+  "note": "synthetic responses; not a spoken screen-reader test"
+}

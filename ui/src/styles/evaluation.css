@@ -1,0 +1,309 @@
+.evaluation-selectors {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.evaluation-selectors label,
+.evaluation-selectors select {
+  min-width: 0;
+  width: 100%;
+}
+
+.evaluation-provenance {
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+}
+
+.policy-versions {
+  padding-top: 24px;
+  margin-top: 32px;
+  border-top: 1px solid var(--hairline);
+  overflow-wrap: anywhere;
+}
+
+.policy-choice {
+  display: grid;
+  gap: 12px;
+  margin-block: 24px;
+}
+
+.policy-choice select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+}
+
+.policy-diff {
+  table-layout: fixed;
+}
+
+.policy-diff pre,
+.policy-configuration {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  font: 12px/1.8 var(--font-mono);
+}
+
+.policy-diff pre {
+  margin: 0;
+}
+
+.policy-configuration {
+  max-height: 360px;
+  overflow: auto;
+  padding: 16px;
+  background: var(--soft);
+}
+
+.evaluation-samples {
+  padding-left: 24px;
+}
+
+.evaluation-samples li {
+  padding: 10px 0;
+  overflow-wrap: anywhere;
+}
+
+.evaluation-samples span {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink-2);
+}
+
+.evaluation-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.evaluation-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 520px;
+  font-size: 13px;
+  text-align: left;
+}
+
+.evaluation-table caption {
+  text-align: left;
+  padding: 16px 0;
+  color: var(--ink-2);
+}
+
+.evaluation-table :is(th, td) {
+  padding: 16px 12px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.evaluation-table th {
+  font-weight: 500;
+}
+
+.evaluation-table thead {
+  background: var(--soft);
+}
+
+.management-capabilities,
+.management-checks {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) minmax(0, 3fr);
+  gap: 16px;
+  margin: 24px 0;
+  font-size: 13px;
+}
+
+.management-capabilities dd {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.management-capabilities span,
+.management-checks span {
+  color: var(--ink-2);
+}
+
+.management-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-block: 24px;
+  border-block: 1px solid var(--hairline);
+}
+
+.management-form > label:first-child {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+
+.session-password {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+
+.session-panel .new-task {
+  margin: 0;
+  padding-inline: 20px;
+}
+
+
+.management-confirm {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.8;
+  font-size: 13px;
+}
+
+.management-confirm input {
+  margin-top: 5px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  accent-color: var(--blue);
+}
+
+.management-form input:not([type='checkbox']) {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px;
+  border: 1px solid var(--hairline);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+
+.management-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.management-actions .new-task {
+  margin: 0;
+  padding-inline: 18px;
+}
+
+.management-result {
+  padding: 24px;
+  margin-top: 24px;
+  border: 1px solid var(--hairline);
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+}
+
+.management-result.verdict-block {
+  border-left: 3px solid var(--danger);
+}
+
+.management-result.verdict-pass {
+  border-left: 3px solid var(--success);
+}
+
+.management-result dl {
+  margin: 0;
+}
+
+.management-result dd {
+  margin: 4px 0 16px;
+  color: var(--ink-2);
+}
+
+.evaluation-table small {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink-2);
+}
+
+@media (max-width: 640px) {
+  .management-capabilities,
+  .management-checks {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .management-capabilities dd,
+  .management-checks strong {
+    margin-bottom: 12px;
+  }
+
+  .management-form button,
+  .management-actions button {
+    width: 100%;
+  }
+
+  .management-result {
+    padding: 16px;
+  }
+
+  .evaluation-selectors {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .evaluation-table {
+    min-width: 0;
+  }
+
+  .evaluation-table thead {
+    position: absolute;
+    clip-path: inset(50%);
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .evaluation-table :is(tbody, tr) {
+    display: block;
+  }
+
+  .evaluation-table tbody tr {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .evaluation-table :is(th, td) {
+    display: block;
+    border: 0;
+    padding: 8px 0;
+    overflow-wrap: anywhere;
+  }
+
+  .evaluation-table td::before {
+    content: attr(data-label);
+    display: inline-block;
+    min-width: 48px;
+    margin-right: 12px;
+    color: var(--ink-2);
+  }
+
+  .policy-versions .audit-facts {
+    grid-template-columns: minmax(64px, 0.6fr) minmax(0, 2fr);
+  }
+
+  .policy-diff tbody tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .policy-diff th {
+    grid-column: 1 / -1;
+  }
+
+  .policy-diff td {
+    min-width: 0;
+  }
+
+  .policy-diff td::before {
+    display: block;
+    min-width: 0;
+    margin: 0 0 8px;
+  }
+}

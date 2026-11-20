@@ -8,6 +8,11 @@ function scan(page: Page) {
 }
 
 async function expectNoViolation(page: Page): Promise<void> {
+  await page.evaluate(async () => {
+    await document.fonts.ready
+    // Scan the completed entrance state instead of a random translucent animation frame.
+    await Promise.all(document.getAnimations().filter(animation => animation.effect?.getComputedTiming().iterations !== Infinity).map(animation => animation.finished.catch(() => {})))
+  })
   const results = await scan(page)
   const violations = results.violations.map((v) => ({
     id: v.id,

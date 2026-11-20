@@ -1,0 +1,242 @@
+[
+  {
+    "round": 64,
+    "state": "approval-failure",
+    "sheet": 0
+  },
+  {
+    "round": 64,
+    "state": "approval-loading",
+    "sheet": 0
+  },
+  {
+    "round": 64,
+    "state": "debt-failure",
+    "sheet": 0
+  },
+  {
+    "round": 64,
+    "state": "debt-loading",
+    "sheet": 0
+  },
+  {
+    "round": 64,
+    "state": "evaluation-failure",
+    "sheet": 1
+  },
+  {
+    "round": 64,
+    "state": "evaluation-loading",
+    "sheet": 1
+  },
+  {
+    "round": 64,
+    "state": "runs-failure",
+    "sheet": 1
+  },
+  {
+    "round": 64,
+    "state": "runs-loading",
+    "sheet": 1
+  },
+  {
+    "round": 64,
+    "state": "settings-failure",
+    "sheet": 2
+  },
+  {
+    "round": 64,
+    "state": "settings-loading",
+    "sheet": 2
+  },
+  {
+    "round": 64,
+    "state": "workspace-failure",
+    "sheet": 2
+  },
+  {
+    "round": 64,
+    "state": "workspace-loading",
+    "sheet": 2
+  },
+  {
+    "round": 65,
+    "state": "approval-forbidden",
+    "sheet": 3
+  },
+  {
+    "round": 65,
+    "state": "debt-forbidden",
+    "sheet": 3
+  },
+  {
+    "round": 65,
+    "state": "evaluation-forbidden",
+    "sheet": 3
+  },
+  {
+    "round": 65,
+    "state": "expired",
+    "sheet": 3
+  },
+  {
+    "round": 65,
+    "state": "read-only",
+    "sheet": 4
+  },
+  {
+    "round": 65,
+    "state": "ready",
+    "sheet": 4
+  },
+  {
+    "round": 65,
+    "state": "runs-forbidden",
+    "sheet": 4
+  },
+  {
+    "round": 65,
+    "state": "settings-forbidden",
+    "sheet": 4
+  },
+  {
+    "round": 65,
+    "state": "submitting",
+    "sheet": 5
+  },
+  {
+    "round": 65,
+    "state": "unknown",
+    "sheet": 5
+  },
+  {
+    "round": 65,
+    "state": "workspace-forbidden",
+    "sheet": 5
+  },
+  {
+    "round": 66,
+    "state": "debt-rejected",
+    "sheet": 5
+  },
+  {
+    "round": 66,
+    "state": "debt-submitting",
+    "sheet": 6
+  },
+  {
+    "round": 66,
+    "state": "management-conflict",
+    "sheet": 6
+  },
+  {
+    "round": 66,
+    "state": "release-blocked",
+    "sheet": 6
+  },
+  {
+    "round": 66,
+    "state": "session-authenticated",
+    "sheet": 6
+  },
+  {
+    "round": 66,
+    "state": "session-denied",
+    "sheet": 7
+  },
+  {
+    "round": 66,
+    "state": "session-login",
+    "sheet": 7
+  },
+  {
+    "round": 67,
+    "state": "execution-completed",
+    "sheet": 7
+  },
+  {
+    "round": 67,
+    "state": "execution-restored",
+    "sheet": 7
+  },
+  {
+    "round": 67,
+    "state": "export-completed",
+    "sheet": 8
+  },
+  {
+    "round": 67,
+    "state": "export-invalid-file",
+    "sheet": 8
+  },
+  {
+    "round": 67,
+    "state": "export-ready",
+    "sheet": 8
+  },
+  {
+    "round": 67,
+    "state": "replay-binding-error",
+    "sheet": 8
+  },
+  {
+    "round": 67,
+    "state": "replay-unreproducible",
+    "sheet": 9
+  },
+  {
+    "round": 68,
+    "state": "detail-decision",
+    "sheet": 9
+  },
+  {
+    "round": 68,
+    "state": "detail-empty",
+    "sheet": 9
+  },
+  {
+    "round": 68,
+    "state": "detail-events",
+    "sheet": 9
+  },
+  {
+    "round": 68,
+    "state": "detail-evidence",
+    "sheet": 10
+  },
+  {
+    "round": 68,
+    "state": "detail-forbidden",
+    "sheet": 10
+  },
+  {
+    "round": 68,
+    "state": "detail-service-failure",
+    "sheet": 10
+  },
+  {
+    "round": 68,
+    "state": "detail-session-expired",
+    "sheet": 10
+  },
+  {
+    "round": 68,
+    "state": "export-service-failure",
+    "sheet": 11
+  },
+  {
+    "round": 68,
+    "state": "export-waiting",
+    "sheet": 11
+  },
+  {
+    "round": 68,
+    "state": "replay-service-failure",
+    "sheet": 11
+  },
+  {
+    "round": 68,
+    "state": "replay-waiting",
+    "sheet": 11
+  }
+]

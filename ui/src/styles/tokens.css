@@ -37,9 +37,9 @@
   --sp-8: 64px;
 
   /* ── 字体 ── */
-  --font-serif: "Cormorant Garamond", "Noto Serif SC", Georgia, "Songti SC", serif;
-  --font-sans: "IBM Plex Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  --font-serif: 'Cormorant Garamond', 'Noto Serif SC', Georgia, 'Songti SC', serif;
+  --font-sans: 'IBM Plex Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
 
   /* ── 字号 ── */
   --fs-label: 11px; /* 技术标注：中文按 .06em，纯拉丁按 .18em */
@@ -61,4 +61,21 @@
   --blur-panel: 12px;
   --panel-pad: var(--sp-4);
   --hairline-w: 1px;
+}
+
+/* v2.7 workbench palette and motion; scoped to preserve the legacy Studio. */
+.workbench-shell {
+  --blue: #002fa7;
+  --blue-strong: #002fa7;
+  --ink: #191919;
+  --ink-2: #6e6e73;
+  --ink-3: #8e8e93;
+  --hairline: rgba(60, 60, 67, 0.16);
+  --surface: #ffffff;
+  --soft: #f5f5f7;
+  --wash: rgba(0, 47, 167, 0.08);
+  --accent-warm: #986100;
+  --accent-wash: #fff7e6;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --action-shadow: 0 8px 22px rgb(0 47 167 / 22%);
 }

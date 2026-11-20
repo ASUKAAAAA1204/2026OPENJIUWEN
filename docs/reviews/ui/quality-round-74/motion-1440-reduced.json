@@ -1,0 +1,38 @@
+{
+  "width": 1440,
+  "reduced": true,
+  "samples": [
+    {
+      "section": "工作台",
+      "maxDurationMs": 0,
+      "infiniteAnimations": 0
+    },
+    {
+      "section": "运行记录",
+      "maxDurationMs": 0,
+      "infiniteAnimations": 0
+    },
+    {
+      "section": "人工审批",
+      "maxDurationMs": 0,
+      "infiniteAnimations": 0
+    },
+    {
+      "section": "证据与债务",
+      "maxDurationMs": 0,
+      "infiniteAnimations": 0
+    },
+    {
+      "section": "版本评估",
+      "maxDurationMs": 0,
+      "infiniteAnimations": 0
+    },
+    {
+      "section": "设置",
+      "maxDurationMs": 0,
+      "infiniteAnimations": 0
+    }
+  ],
+  "pressFeedback": "none",
+  "notification": "status, readable, dismissible"
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "width": 1440,
+    "state": "loading",
+    "violations": []
+  },
+  {
+    "width": 1440,
+    "state": "failure",
+    "violations": []
+  },
+  {
+    "width": 1024,
+    "state": "loading",
+    "violations": []
+  },
+  {
+    "width": 1024,
+    "state": "failure",
+    "violations": []
+  },
+  {
+    "width": 390,
+    "state": "loading",
+    "violations": []
+  },
+  {
+    "width": 390,
+    "state": "failure",
+    "violations": []
+  },
+  {
+    "width": 320,
+    "state": "loading",
+    "violations": []
+  },
+  {
+    "width": 320,
+    "state": "failure",
+    "violations": []
+  }
+]

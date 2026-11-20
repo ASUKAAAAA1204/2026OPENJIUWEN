@@ -1,0 +1,63 @@
+{
+  "mode": "local-production-preview",
+  "at": "2026-11-19T14:59:47.763Z",
+  "browser": "156.0.8078.4",
+  "cache": "disabled",
+  "thresholds": {
+    "domContentLoadedMs": 1500,
+    "lcpMs": 2500,
+    "navigationMs": 200,
+    "cls": 0.05,
+    "maxLongTaskMs": 100,
+    "eventDurationMs": 200
+  },
+  "note": "One observation per width, Chromium desktop local loopback; no CPU/network throttling, no backend latency, no field INP or percentile claim. Navigation duration includes Playwright command overhead.",
+  "samples": [
+    {
+      "browserName": "chromium",
+      "width": 1440,
+      "loadMs": 248.0398,
+      "domContentLoadedMs": 90.10000000149012,
+      "lcpMs": 156,
+      "navigationMs": 69.80360000000019,
+      "cls": 0.00004074074074074074,
+      "longTasks": [
+        88
+      ],
+      "eventDurationMs": 40
+    },
+    {
+      "browserName": "chromium",
+      "width": 1024,
+      "loadMs": 121.67219999999998,
+      "domContentLoadedMs": 36.399999998509884,
+      "lcpMs": 56,
+      "navigationMs": 66.17579999999975,
+      "cls": 0.00008056640625,
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "browserName": "chromium",
+      "width": 390,
+      "loadMs": 129.71960000000036,
+      "domContentLoadedMs": 35.899999998509884,
+      "lcpMs": 60,
+      "navigationMs": 60.16700000000037,
+      "cls": 0.0002406837606837607,
+      "longTasks": [],
+      "eventDurationMs": 32
+    },
+    {
+      "browserName": "chromium",
+      "width": 320,
+      "loadMs": 124.44590000000017,
+      "domContentLoadedMs": 34.899999998509884,
+      "lcpMs": 52,
+      "navigationMs": 59.732600000000275,
+      "cls": 0,
+      "longTasks": [],
+      "eventDurationMs": 16
+    }
+  ]
+}

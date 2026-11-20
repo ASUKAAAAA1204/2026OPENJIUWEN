@@ -15,11 +15,12 @@
     "format": "prettier --write \"{src,scripts,tests,e2e}/**/*.{ts,js,mjs,vue,css,json}\"",
     "check:contract": "node scripts/check-contract.mjs",
     "test": "vitest run",
-    "test:e2e": "playwright test e2e/studio.spec.ts",
+    "test:e2e": "playwright test --workers=1",
+    "test:performance": "playwright test --config playwright.performance.config.ts",
     "test:visual": "playwright test e2e/visual.spec.ts",
     "test:a11y": "playwright test e2e/a11y.spec.ts",
     "budget": "node scripts/budget.mjs",
-    "verify": "npm run typecheck && npm run lint && npm run lint:style && npm run check:contract && npm run test && npm run build && npm run budget && npm run test:e2e && npm run test:visual && npm run test:a11y"
+    "verify": "npm run typecheck && npm run lint && npm run lint:style && npm run check:contract && npm run test && npm run build && npm run budget && npm run test:e2e && npm run test:performance"
   },
   "dependencies": {
     "axios": "^1.7.0",

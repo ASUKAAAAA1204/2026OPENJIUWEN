@@ -1,0 +1,229 @@
+{
+  "score": 95,
+  "items": {
+    "F01": "5",
+    "F02": "5",
+    "F03": "5",
+    "F04": "5",
+    "F05": "5",
+    "F06": "5",
+    "I01": "5",
+    "I02": "5",
+    "I03": "5",
+    "I04": "5",
+    "V01": "5",
+    "V02": "5",
+    "V03": "5",
+    "A01": "5",
+    "A02": "0",
+    "A03": "5",
+    "P01": "5",
+    "P02": "5",
+    "E01": "5",
+    "E02": "5"
+  },
+  "scope": "frontend local Chromium and synthetic service contracts",
+  "screenReader": "not verified; A02=0",
+  "artifacts": [
+    {
+      "path": "docs/reviews/ui/quality-round-74/backlog-index.json",
+      "bytes": 3780,
+      "sha256": "a5f357d275d7b3fba9b0142fae7c080aea0612b78003fbd25578599f04907f6f"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/backlog-review-0.png",
+      "bytes": 397253,
+      "sha256": "4b6b4ad7ae266713350debec2c6efeed82db2718b817e694c8c4abae96deca5b"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/backlog-review-1.png",
+      "bytes": 357442,
+      "sha256": "1113720b5ff8185695aac58f873425920b343b57d2f0a51bc34a55268a5ed92b"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/backlog-review-10.png",
+      "bytes": 424216,
+      "sha256": "6693488725751f327be73e7b4e620ed11ee90f794aa3a7d6fa7357557c7db72d"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/backlog-review-11.png",
+      "bytes": 654203,
+      "sha256": "bb61971cfb79a62dc4bcc2c74dd0011f8af0913e89a9e58094c40d53c76838b1"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/backlog-review-2.png",
+      "bytes": 400596,
+      "sha256": "356f031e985cff6a0d47f69b26e5f3d830808340f8e99e106e8fe6262e8e11c7"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/backlog-review-3.png",
+      "bytes": 473728,
+      "sha256": "178c3157bb415ddc0edee1227a4ff2242805821837a382ac4b5a8ffe9ab8e59a"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/backlog-review-4.png",
+      "bytes": 550927,
+      "sha256": "102a76dce276dcbc52f7505ce4cfdeb88ffb6efc0a317dcf0836340a3e9d172c"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/backlog-review-5.png",
+      "bytes": 531871,
+      "sha256": "148eb6383ac6b827499c93cd70ccbd97ac9c141065d55003a8e9bb85165cc28e"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/backlog-review-6.png",
+      "bytes": 465733,
+      "sha256": "83149554d5c03ac7ac965a720ff996287400be8f4d98465e0638db7b4fe8fca3"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/backlog-review-7.png",
+      "bytes": 346997,
+      "sha256": "276c07db2e9c888d483705310ea6bc5bd53d9f9c321317c7c9414b4b15e60278"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/backlog-review-8.png",
+      "bytes": 346277,
+      "sha256": "572283f8357b222a7acee3c0f9c7aec8eb7595386e0738e0d2cce4a1d3e9e262"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/backlog-review-9.png",
+      "bytes": 607231,
+      "sha256": "0f0c8a3f35ed83ecbff2c37ca72056bfa8735f5ba36c7c680a4b9cf4f37fce20"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/final-approval.png",
+      "bytes": 331883,
+      "sha256": "5ad18e5924a8b63b324b8f067bdbcfb903f953faac34cb843c1419637b2b2533"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/final-debt.png",
+      "bytes": 307945,
+      "sha256": "360021235bd91c5e1192ae187e76facdfffbc8142110a8f43cfeb960578213b4"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/final-evaluation.png",
+      "bytes": 310112,
+      "sha256": "7131fc51627b64cdc7b30c96e05b4d295d566df3b9bb23c3da23170ee4d21e05"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/final-history.png",
+      "bytes": 136875,
+      "sha256": "997761710e062d9bd98bb4e022fd5c487fb2b6663730f99a58b2410b6bb494a0"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/final-policy-activated.png",
+      "bytes": 401056,
+      "sha256": "56cacc09d10868ad7523bbee1c39319326e98ae2501926f307999d97345809f9"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/final-policy-rolled-back.png",
+      "bytes": 410490,
+      "sha256": "48eeba6094c625129b27ae9fcaef48aa9fdee8b0fbd803653d2ed35242529d27"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/final-settings.png",
+      "bytes": 146177,
+      "sha256": "33bcc0185badd067f3c7a738e154b0a14604aa66268b804ad3c2bd7d89807980"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/final-workspace.png",
+      "bytes": 293831,
+      "sha256": "64b9367e63d7a50ce70e56aec3aff88f847a2b0d02f6b67662500e1757104bed"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/keyboard-1440.json",
+      "bytes": 242,
+      "sha256": "2b209c6f6e71edd376e961acc27891e3e25a99c7394ccb83a5e4642dcbc485f9"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/keyboard-320.json",
+      "bytes": 241,
+      "sha256": "7369e8a12ce05d1d40d7fddb5ef96a9bc4f4dee9737c0a939bb3d7a0680e1207"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/motion-1440-normal.json",
+      "bytes": 759,
+      "sha256": "02f35c8e3d76aab63ed00c6c752eef6b874dce0b5429c7d4d09b17228e95154d"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/motion-1440-reduced.json",
+      "bytes": 741,
+      "sha256": "e48943e293d4aa48039d43fcbded18613a7587db1bc21d86ed3f5018c7744244"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/motion-320-normal.json",
+      "bytes": 758,
+      "sha256": "2f6d8349663f35c6c8e7ecc430eb5ae48b84328746601ce37e8c60cf32682448"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/motion-320-reduced.json",
+      "bytes": 740,
+      "sha256": "7502b5df829d198b22396985687e16702a92d396c9de6f33422e55374c461cdf"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/performance-final.json",
+      "bytes": 30002,
+      "sha256": "ee074d0604b830c652dcf1a564becae05ac3781f53d4a36c996614dd380d1353"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/policy-activated-1024.png",
+      "bytes": 76472,
+      "sha256": "f2311107e26b3e478dac26e1014fffe2dd7a4830d49dabe6d5e1eea356317546"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/policy-activated-1440.png",
+      "bytes": 78286,
+      "sha256": "fd1a509f6b26ab12a3a8218a2c9d1e756119f34a8f9edcd3017df1c91d3ff445"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/policy-activated-320.png",
+      "bytes": 73913,
+      "sha256": "e35ee5984a61f8eb999c1748d1b80a010750c2f3ce8d00fbb5a796822d86672b"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/policy-activated-390.png",
+      "bytes": 73587,
+      "sha256": "4af18091089ff1d6e41d68781de9432c69fd81acb048b26495a039528238ce90"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/policy-activated-a11y.json",
+      "bytes": 196,
+      "sha256": "e9662b671719af463e2b7de4ca6a34ce89f905d36bdac0ca0ad540f0735b0b2b"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/policy-rolled-back-1024.png",
+      "bytes": 78621,
+      "sha256": "07aa22f2a5879c2f511b549dbfa555e32185857992289629db4920b2cb3172e2"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/policy-rolled-back-1440.png",
+      "bytes": 80654,
+      "sha256": "27a7eb34dea4900570db79e0f9f9b7e81255bf429672c2646ed7db0f5db14bfc"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/policy-rolled-back-320.png",
+      "bytes": 76038,
+      "sha256": "dff9b9e47840cc0353b49080afb621dad49ebca0e537da7e81b10da6f9008762"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/policy-rolled-back-390.png",
+      "bytes": 75891,
+      "sha256": "1300994a758bf006156a4ab746f6cbfae5d8f2089849a4cf3e77c94f25307787"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/policy-rolled-back-a11y.json",
+      "bytes": 196,
+      "sha256": "e9662b671719af463e2b7de4ca6a34ce89f905d36bdac0ca0ad540f0735b0b2b"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/verify.log",
+      "bytes": 19316,
+      "sha256": "8439997f3bf92af09ba05abbc0365d6c5782a54eccf42a8d6e986998957346a0"
+    },
+    {
+      "path": "docs/reviews/ui/quality-round-74/验收记录.md",
+      "bytes": 7087,
+      "sha256": "67f8beb4dbe6247457880c7c54955c8af1d2ec8fdd217786ec9d3da215f0b037"
+    }
+  ]
+}
