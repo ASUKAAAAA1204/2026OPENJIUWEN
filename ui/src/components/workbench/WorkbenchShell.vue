@@ -212,15 +212,15 @@ function submit() {
         :class="{ 'wide-content': section !== '工作台' || executionMode === 'api' }"
       >
         <GovernanceWorkspace
-          v-show="['版本评估', '设置'].includes(section)"
+          v-if="['版本评估', '设置'].includes(section)"
           :section="section"
           :runs="history"
           @inspect="openRun"
           @lookup="lookupTask"
           @busy="governanceBusy = $event"
         />
-        <ApprovalWorkspace v-show="section === '人工审批'" :focus-id="pendingApprovalId" :execution-run-id="approvalExecutionRun || undefined" :execution-waiting="!!pendingApprovalId" @busy="approvalBusy = $event" @return-execution="section = '运行详情'" />
-        <DebtWorkspace v-show="section === '证据与债务'" @busy="debtBusy = $event" />
+        <ApprovalWorkspace v-if="section === '人工审批'" :focus-id="pendingApprovalId" :execution-run-id="approvalExecutionRun || undefined" :execution-waiting="!!pendingApprovalId" @busy="approvalBusy = $event" @return-execution="section = '运行详情'" />
+        <DebtWorkspace v-if="section === '证据与债务'" @busy="debtBusy = $event" />
         <KeepAlive>
         <RunHistory
           v-if="section === '运行记录'"

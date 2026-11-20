@@ -30,3 +30,13 @@ jobs:
 
       - name: Verify
         run: npm run verify
+
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-verification-evidence
+          path: |
+            ui/test-results/
+            docs/reviews/ui/quality-round-72/performance.json
+          retention-days: 7

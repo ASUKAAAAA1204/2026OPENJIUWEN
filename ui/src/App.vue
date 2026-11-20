@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import LegacyStudio from './LegacyStudio.vue'
+import { defineAsyncComponent } from 'vue'
+const LegacyStudio = defineAsyncComponent(() => import('./LegacyStudio.vue'))
 import WorkbenchShell from './components/workbench/WorkbenchShell.vue'
 const query = new URLSearchParams(window.location.search)
 const legacy =

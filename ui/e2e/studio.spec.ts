@@ -184,6 +184,7 @@ test('E10 reduced-motion：无位移动画，数字直达', async ({ page }) => 
 
 test('本地字体全部加载（离线演示不依赖 CDN）', async ({ page }) => {
   await page.goto('/?mock=pre')
+  await expect(page.locator('.stage .page')).toBeVisible()
   const faces = await page.evaluate(async () => {
     await document.fonts.ready
     return Array.from(document.fonts).map((f) => ({

@@ -152,7 +152,7 @@ test('生产七页面API四档加载、导航和核心操作达到预算', async
     expect(sample.lcpMs, `${width}px LCP`).toBeLessThan(2500)
     expect(sample.navigationMs, `${width}px navigation`).toBeLessThan(200)
     expect(sample.cls, `${width}px CLS`).toBeLessThan(0.05)
-    expect(Math.max(0, ...browserMetrics.longTasks), `${width}px long task`).toBeLessThan(100)
+    expect(Math.max(0, ...browserMetrics.longTasks), `${section} ${width}px long task: ${JSON.stringify(browserMetrics.longTasks)}`).toBeLessThan(100)
     expect(sample.eventDurationMs, `${width}px event duration`).toBeLessThan(200)
     if (operationMs !== null) expect(operationMs, `${section} ${width}px operation`).toBeLessThan(200)
     }
