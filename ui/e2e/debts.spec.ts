@@ -1,9 +1,12 @@
+import { workbenchApi } from './helpers/workbenchApi'
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { mkdir } from 'node:fs/promises'
 import { createDebtDemo } from '../src/components/workbench/debts'
 import { authenticatedSession } from './helpers/authenticatedSession'
 import { inspectState } from './helpers/stateA11y'
+test.beforeEach(async ({ page }) => workbenchApi(page))
+
 test.beforeEach(async ({ page }) => authenticatedSession(page))
 
 test('父子债务单独列示，达到自身阈值展示复核状态，消解后保留历史读数', async ({ page }) => {
@@ -86,19 +89,23 @@ test('债务提交等待期间保留当前页面，失败后恢复导航', async
 
 test('债务消解按标记核验表单，追加历史不删除原记录', async ({ page }) => {
   await mkdir('../docs/reviews/ui/quality-round-5', { recursive: true })
+  await page.route('**/api/v27/debts/*/resolve', route => {
+    const body = route.request().postDataJSON()
+    return route.fulfill({ json: { ...createDebtDemo().items[2], status: 'resolved', resolved: { seq: 4, method: body.method, evidence_ref: body.evidence_ref, regate_success: true } } })
+  })
   await page.goto('/')
   await page.getByRole('navigation').getByRole('button').nth(3).click()
   await expect(page.locator('.debt-workspace .summary-grid')).toContainText('未消解加权债务6')
   await page.locator('.debt-list .history-card').nth(2).click()
-  await page.getByLabel('演示证据标识').fill('demo:corrected-params')
+  await page.getByLabel('证据标识', { exact: true }).fill('demo:corrected-params')
   await page.getByLabel('内容指纹 SHA-256').fill('a'.repeat(64))
   await page.getByLabel('我已核对消解方法与证据范围').check()
-  await page.getByRole('button', { name: '登记演示消解' }).click()
+  await page.getByRole('button', { name: '提交消解核验' }).click()
   await expect(page.getByRole('alert')).toContainText('重新过闸')
   await page.getByLabel('重新过闸决策标识').fill('demo:regate-decision')
   await expect(page.getByLabel('我已核对消解方法与证据范围')).not.toBeChecked()
   await page.getByLabel('我已核对消解方法与证据范围').check()
-  await page.getByRole('button', { name: '登记演示消解' }).click()
+  await page.getByRole('button', { name: '提交消解核验' }).click()
   await expect(page.locator('.debt-history')).toContainText('原始登记')
   await expect(page.locator('.debt-history')).toContainText('demo:corrected-params')
   await expect(page.locator('.debt-workspace .summary-grid')).toContainText('未消解加权债务5')

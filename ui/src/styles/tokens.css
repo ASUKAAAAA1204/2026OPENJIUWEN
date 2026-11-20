@@ -67,11 +67,13 @@
 .workbench-shell {
   --blue: #002fa7;
   --blue-strong: #002fa7;
+  --blue-hover: #123fba;
+  --surface-raised: #fbfbfd;
   --ink: #191919;
-  --ink-2: #6e6e73;
-  --ink-3: #8e8e93;
+  --ink-2: #5f5f65;
+  --ink-3: #66666c;
   --hairline: rgba(60, 60, 67, 0.16);
-  --surface: #ffffff;
+  --surface: #fff;
   --soft: #f5f5f7;
   --wash: rgba(0, 47, 167, 0.08);
   --accent-warm: #986100;

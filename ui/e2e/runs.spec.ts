@@ -26,7 +26,7 @@ test('服务运行筛选与分页，真实详情不回退演示', async ({ page 
   await expect(list.locator('.history-card')).toHaveCount(2)
   await list.locator('.history-card').first().click()
   await expect(page.locator('.run-detail').getByRole('alert')).toContainText('无权')
-  await expect(page.getByLabel('数据来源')).toBeDisabled()
+  await expect(page.getByLabel('数据来源')).toHaveCount(0)
   await expect(page.getByRole('button', { name: '回到任务' })).toHaveCount(0)
 })
 

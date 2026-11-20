@@ -1,7 +1,10 @@
+import { workbenchApi } from './helpers/workbenchApi'
 import { test, expect } from '@playwright/test'
 import { mkdir } from 'node:fs/promises'
 import { previewDecisions } from '../src/components/workbench/audit'
 import { createPreview } from '../src/components/workbench/model'
+
+test.beforeEach(async ({ page }) => workbenchApi(page))
 
 test('决策与视图刷新恢复，不存在的决策链接禁止误选首条', async ({ page }) => {
   const runId = 'RUN-LOCATION'
@@ -46,11 +49,7 @@ test('同运行历史位置与预览切回服务恢复决策视图，不把预�
   await page.locator('.run-history .history-card').first().click()
   await page.locator('.decision-row').last().click()
   await page.getByRole('button', { name: '证据与账本', exact: true }).click()
-  const linked = page.url()
-  await page.getByLabel('数据来源').selectOption('preview')
-  await page.getByRole('button', { name: '判定与参数', exact: true }).click()
-  expect(page.url()).toBe(linked)
-  await page.getByLabel('数据来源').selectOption('api')
+  await page.reload()
   await expect(page.locator('.decision-row[aria-pressed="true"]')).toContainText('SERVICE-1')
   await expect(page.getByRole('region', { name: '证据与账本', exact: true })).toBeVisible()
   await page.evaluate(() => { history.pushState(null, '', location.href.replace('decision=SERVICE-1', 'decision=SERVICE-0')); history.back() })

@@ -85,9 +85,10 @@ test('审批冲突需重新核对，提交绑定版本与实参且防重复', as
 test('审批多尺寸布局、键盘核对和到期保护', async ({ page }) => {
   await mkdir('../docs/reviews/ui/quality-round-4', { recursive: true })
   await page.clock.install()
+  await page.route('**/api/v27/approvals', route => route.fulfill({ json: createApprovalDemo() }))
   await page.goto('/')
   await page.getByRole('navigation').getByRole('button').nth(2).click()
-  await page.getByRole('button', { name: '拒绝演示请求' }).click()
+  await page.getByRole('button', { name: '拒绝请求' }).click()
   await expect(page.getByRole('alert')).toContainText('请先确认')
   for (const width of [1440, 1024, 390, 320]) {
     await page.setViewportSize({ width, height: 900 })
@@ -123,7 +124,7 @@ test('提交中锁定操作，网络结果未知时强制重新读取', async ({
   await page.getByRole('button', { name: '批准请求', exact: true }).click()
   await expect(page.getByRole('button', { name: '正在提交…' })).toBeDisabled()
   await expect(page.getByRole('button', { name: '刷新队列' })).toBeDisabled()
-  await expect(page.getByLabel('审批来源')).toBeDisabled()
+  await expect(page.getByLabel('审批来源')).toHaveCount(0)
   await page.getByRole('navigation', { name: '主导航' }).getByRole('button').first().click()
   await expect(page.getByRole('heading', { name: '人工审批', exact: true })).toBeVisible()
   await expect(page.locator('.demo-notice')).toContainText('审批操作正在等待回执')

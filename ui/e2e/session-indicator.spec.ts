@@ -1,3 +1,4 @@
+import { runContextFixture } from '../tests/fixtures/lifecycle'
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { mkdir } from 'node:fs/promises'
@@ -39,6 +40,7 @@ test('无法确认不冒充登录，重试可恢复匿名会话', async ({ page 
 test('确认账号或权限变更后重新加载，清除原任务草稿', async ({ page }) => {
   let identity = testSession.identity
   await page.route('**/api/v27/session', route => route.fulfill({ json: { ...testSession, identity } }))
+  await page.route('**/api/v27/run-context', route => route.fulfill({ json: runContextFixture() }))
   await page.goto('/')
   const indicator = page.getByLabel('全局会话状态', { exact: true })
   await expect(indicator).toContainText('平台管理员')

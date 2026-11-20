@@ -64,7 +64,7 @@ test('真实账本发起只读回放并按原决策分母展示缺证据', async
   await page.route('**/api/v27/runs?*', route => route.fulfill({ json: { source: 'ledger', next_cursor: null, items: [{ id: 'RUN-REAL', title: '账本运行', framework: 'openJiuwen', tools: [], source: 'ledger', state: 'closed', segment: 1, started_at: '2026-11-19T11:00:00Z', completed_at: '2026-11-19T12:00:00Z', parent_run_id: null, child_run_ids: [], decision_count: 2 }] } }))
   await page.goto('/')
   await page.getByRole('navigation').getByRole('button').nth(1).click()
-  await page.locator('.run-history').getByLabel('运行来源').selectOption('api')
+
   await page.getByLabel('查询运行').fill('RUN-REAL')
   await page.locator('.service-run-history').getByRole('button', { name: '查询运行' }).click()
   await expect(page.locator('.service-run-history .history-card')).toContainText('RUN-REAL')

@@ -15,7 +15,7 @@ test('证据正文缺失保留已有引用，不把缺失响应断言成事件�
   await page.goto(`/#run=${runId}&framework=openJiuwen`)
   await page.getByRole('button', { name: '证据与账本', exact: true }).click()
   const region = page.getByRole('region', { name: '证据与账本', exact: true })
-  await expect(region).toContainText('当前响应未包含证据正文')
+  await expect(region).toContainText('尚无可核验证据')
   await expect(region).toContainText('EVIDENCE-REF-KEPT')
   await expect(region).toContainText('RULE-REF-KEPT')
   await expect(region).toContainText('此响应未提供，待核对')

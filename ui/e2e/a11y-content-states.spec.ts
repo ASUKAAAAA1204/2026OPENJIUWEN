@@ -66,7 +66,7 @@ for (const resource of ['events', 'claims']) test(`${resource}加载和空集合
   await expect(page.locator(selector).getByRole('status')).toContainText('正在读取')
   await inspectState(page, `${resource}-loading`, selector, 73)
   release()
-  await expect(page.locator(selector)).toContainText(resource === 'events' ? '暂无可核验事件' : '空集合不表示声明一致率100%')
+  await expect(page.locator(selector)).toContainText(resource === 'events' ? '暂无事件' : '空集合不表示声明一致率100%')
   await inspectState(page, `${resource}-empty-final`, selector, 73)
 })
 

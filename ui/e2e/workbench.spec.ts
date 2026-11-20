@@ -1,6 +1,9 @@
+import { workbenchApi } from './helpers/workbenchApi'
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { mkdir } from 'node:fs/promises'
+
+test.beforeEach(async ({ page }) => workbenchApi(page))
 
 test('工作台导航、通知、键盘和减少动态效果', async ({ page }) => {
   await page.goto('/')
@@ -8,11 +11,8 @@ test('工作台导航、通知、键盘和减少动态效果', async ({ page }) 
   await expect(page.getByRole('link', { name: '跳转到工作区' })).toBeFocused()
   await page.keyboard.press('Enter')
   await expect(page.locator('#workspace-content')).toBeFocused()
-  await page.getByLabel('任务描述').fill('检查文档并形成复核建议')
-  await page.getByRole('button', { name: '创建演示任务' }).click()
-  await expect(page.getByRole('status')).toContainText('未调用模型')
-  await page.getByRole('button', { name: '关闭提示' }).click()
-  await expect(page.getByRole('status')).toHaveCount(0)
+  await expect(page.locator('.run-create-form')).toBeVisible()
+  await expect(page.locator('.source-picker')).toHaveCount(0)
   await page.getByRole('button', { name: '运行记录', exact: false }).click()
   await expect(page).toHaveTitle('运行记录 · TemisGuard')
   await page.emulateMedia({ reducedMotion: 'reduce' })
@@ -21,15 +21,15 @@ test('工作台导航、通知、键盘和减少动态效果', async ({ page }) 
 
 test('工作台来源刷新恢复，任务草稿与确认不进入链接', async ({ page }) => {
   await page.goto('/')
-  await page.getByRole('combobox', { name: '任务来源', exact: true }).selectOption('api')
+
   await page.reload()
-  await expect(page.getByRole('combobox', { name: '任务来源', exact: true })).toHaveValue('api')
+  await expect(page.getByRole('combobox', { name: '任务来源', exact: true })).toHaveCount(0)
   await page.goto('/#section=工作台&workspace_source=api&task=secret&confirmed=true')
-  await expect(page.getByRole('combobox', { name: '任务来源', exact: true })).toHaveValue('api')
+  await expect(page.getByRole('combobox', { name: '任务来源', exact: true })).toHaveCount(0)
   expect(page.url()).not.toContain('task=secret')
   await page.getByRole('navigation').getByRole('button').nth(1).click()
   await page.goBack()
-  await expect(page.getByRole('combobox', { name: '任务来源', exact: true })).toHaveValue('api')
+  await expect(page.getByRole('combobox', { name: '任务来源', exact: true })).toHaveCount(0)
   await mkdir('../docs/reviews/ui/quality-round-61', { recursive: true })
   for (const width of [1440, 1024, 390, 320]) {
     await page.setViewportSize({ width, height: 900 })
@@ -75,13 +75,9 @@ test('运行详情筛选、证据边界、下载与回放条件', async ({ page 
   await page.getByRole('button', { name: '清除筛选' }).click()
   await page.getByRole('button', { name: '证据与账本', exact: true }).click()
   await expect(page.getByRole('heading', { name: '尚无可核验证据' })).toBeVisible()
-  const downloadPromise = page.waitForEvent('download')
-  await page.getByRole('button', { name: '下载预览 JSON' }).click()
-  expect((await downloadPromise).suggestedFilename()).toBe('RUN-DEMO-001-preview.json')
+  await expect(page.getByText('授权导出 JSONL', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: '回放', exact: true }).click()
-  await page.getByRole('button', { name: '检查回放条件' }).click()
-  await expect(page.locator('.replay-result')).toContainText('0 / 2')
-  await expect(page.locator('.replay-result li')).toHaveCount(2)
+  await expect(page.getByRole('region', { name: '回放', exact: true })).toBeVisible()
   for (const width of [1440, 1024, 390, 320]) {
     await page.setViewportSize({ width, height: 900 })
     for (const [name, label] of [['decision', '判定与参数'], ['evidence', '证据与账本'], ['replay', '回放']]) {
@@ -92,6 +88,6 @@ test('运行详情筛选、证据边界、下载与回放条件', async ({ page 
   }
   const result = await new AxeBuilder({ page }).include('.workbench-shell').analyze()
   expect(result.violations.filter(item => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([])
-  await page.getByRole('button', { name: '返回运行记录' }).click()
+  await page.getByRole('button', { name: '← 返回运行记录' }).click()
   await expect(page.getByRole('heading', { name: '运行记录', exact: true })).toBeVisible()
 })

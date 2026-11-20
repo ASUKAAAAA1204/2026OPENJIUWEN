@@ -1,3 +1,4 @@
+import { workbenchApi } from './helpers/workbenchApi'
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { mkdir } from 'node:fs/promises'
@@ -6,6 +7,8 @@ import { evaluationFixture } from '../tests/fixtures/evaluations'
 import { authenticatedSession } from './helpers/authenticatedSession'
 import { versionKey } from '../src/components/workbench/evaluations'
 import { inspectState } from './helpers/stateA11y'
+
+test.beforeEach(async ({ page }) => workbenchApi(page))
 
 test('评估版本与单次范围刷新及后退恢复，失效范围不冒充聚合读数', async ({ page }) => {
   await authenticatedSession(page)
@@ -121,6 +124,7 @@ test('单次读数可追溯到授权运行查询，不猜测框架或伪造账�
 
 test('版本评估显示可解释口径，未接入数据不产生通过结论', async ({ page }) => {
   await mkdir('../docs/reviews/ui/quality-round-7', { recursive: true })
+  await page.route('**/api/v27/evaluations', route => route.fulfill({ json: { source: 'ledger', revision: 'empty', generated_at: '2026-11-19T12:00:00Z', comparison_enabled: false, versions: [] } }))
   await page.goto('/')
   await page.getByRole('navigation').getByRole('button').nth(4).click()
   const workspace = page.locator('.governance-workspace')
@@ -128,7 +132,7 @@ test('版本评估显示可解释口径，未接入数据不产生通过结论',
   await workspace.getByText('复现率', { exact: true }).locator('..').getByText('计算口径').click()
   await expect(workspace.getByText(/缺证据计为未复现，保留在分母内/)).toBeVisible()
   await workspace.getByText('哪些运行可以计入样本？').click()
-  await expect(workspace.getByText(/shadow 条件约束实时拦截上线/)).toBeVisible()
+  await expect(workspace.getByText(/至少包含 1 个白名单决策的运行才有效/)).toBeVisible()
   for (const width of [1440, 1024, 390, 320]) {
     await page.setViewportSize({ width, height: 900 })
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)

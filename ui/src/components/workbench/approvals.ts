@@ -63,8 +63,8 @@ async function apiRequest(path: string, signal: AbortSignal, answer?: ApprovalAn
   }
   return response.json()
 }
-export function useApprovals() {
-  const mode = ref<'preview' | 'api'>('api')
+export function useApprovals(initialMode: 'preview' | 'api' = 'api') {
+  const mode = ref<'preview' | 'api'>(initialMode)
   const items = shallowRef<ApprovalItem[]>([])
   const loading = ref(false), submitting = ref(false), error = ref(''), stale = ref(false), now = ref(Date.now())
   let demo = createApprovalDemo()

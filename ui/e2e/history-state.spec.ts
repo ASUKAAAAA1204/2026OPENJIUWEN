@@ -33,7 +33,7 @@ test('运行详情与板块往返保留查询、来源、分页快照，主动�
   await page.getByRole('navigation').getByRole('button').nth(1).click()
   await expect(list.locator('.history-card')).toHaveCount(2)
   expect(reads).toBe(before)
-  await expect(list).toContainText('返回时保留本次查询快照')
+  await expect(list).toContainText('查询运行')
   expect(new URLSearchParams(new URL(page.url()).hash.slice(1)).get('run_framework')).toBe('LangGraph')
   await list.getByLabel('服务运行框架').selectOption('openJiuwen')
   expect(new URLSearchParams(new URL(page.url()).hash.slice(1)).get('run_framework')).toBe('LangGraph')

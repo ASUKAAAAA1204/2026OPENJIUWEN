@@ -1,9 +1,12 @@
+import { workbenchApi } from './helpers/workbenchApi'
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { mkdir } from 'node:fs/promises'
 import { decisionClasses } from '../src/components/workbench/decisionClasses'
 import { previewDecisions } from '../src/components/workbench/audit'
 import { createPreview } from '../src/components/workbench/model'
+
+test.beforeEach(async ({ page }) => workbenchApi(page))
 
 test('11类及未知记录分列，组合筛选不改变观察分母，四档布局验收', async ({ page }) => {
   const base = previewDecisions(createPreview('RUN-CLASSES', 'test', 'openJiuwen'))[1]
@@ -60,8 +63,8 @@ test('空运行保留零观察，预览和白名单外类别不会冒充接入�
   await page.locator('.run-history .history-list .history-card').first().click()
   const panel = page.getByLabel('决策类别分布', { exact: true })
   await expect(panel).toBeVisible()
-  await expect(panel).toContainText('预览类别 1 / 11')
+  await expect(panel).toContainText('本次出现 1 / 11')
   await panel.locator('summary').click()
   await expect(panel).toContainText('READ_ONLY_PREVIEW')
-  await expect(panel).toContainText('不能证明接入不支持')
+  await expect(panel.getByRole('button', { name: /READ_ONLY_PREVIEW/ })).toBeVisible()
 })

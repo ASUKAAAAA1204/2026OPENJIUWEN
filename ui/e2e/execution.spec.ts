@@ -263,7 +263,7 @@ test('启动运行显示脱敏流、完成状态与四档截图', async ({ page 
   for (const status of [401, 403, 404]) {
     auditStatus = status
     await page.getByRole('button', { name: '刷新账本', exact: true }).click()
-    await expect(page.locator('.resource-error')).toBeVisible()
+    await expect(page.locator('.run-detail .resource-error')).toBeVisible()
     await expect(panel).toHaveCount(0)
     if (status === 403) {
       for (const width of [1440, 1024, 390, 320]) {
@@ -286,7 +286,7 @@ test('ASK 暂停运行流进入精确审批，批准后同一流继续并释放�
   await mkdir('../docs/reviews/ui/quality-round-41', { recursive: true })
   const approval = {
     approval_id: 'APP-EXEC-1', decision_id: 'DEC-EXEC-1', run_id: 'RUN-ASK', title: '写入受控配置', tool_name: 'file_write', risk: 'high',
-    args_digest: '{"path":"workspace/config.yml"}', scope: '仅当前授权工作目录', requested_at: '2026-11-19T19:00:00Z', expires_at: '2026-11-19T21:00:00Z', revision: 'APP-REV-1',
+    args_digest: '{"path":"workspace/config.yml"}', scope: '仅当前授权工作目录', requested_at: new Date(Date.now() - 60000).toISOString(), expires_at: new Date(Date.now() + 3600000).toISOString(), revision: 'APP-REV-1',
     status: 'pending', can_respond: true, timeout_policy: 'DENY', response: null,
   }
   let release: () => void = () => {}
@@ -313,7 +313,7 @@ test('ASK 暂停运行流进入精确审批，批准后同一流继续并释放�
     const body = route.request().postDataJSON()
     expect(body.approved_args_digest).toBe(approval.args_digest)
     expect(body.expected_revision).toBe(approval.revision)
-    return route.fulfill({ json: { ...approval, status: 'approved', revision: 'APP-REV-2', response: { approver_id: 'reviewer-1', approve_ts: '2026-11-19T20:00:00Z', approved_args_digest: approval.args_digest, approve_result: 'approve', content_hash: 'f'.repeat(64), note: body.note } } })
+    return route.fulfill({ json: { ...approval, status: 'approved', revision: 'APP-REV-2', response: { approver_id: 'reviewer-1', approve_ts: new Date().toISOString(), approved_args_digest: approval.args_digest, approve_result: 'approve', content_hash: 'f'.repeat(64), note: body.note } } })
   })
   await page.goto('/#run=RUN-ASK&framework=openJiuwen')
   const panel = page.getByRole('region', { name: 'Agent 运行控制' })

@@ -1,5 +1,8 @@
+import { workbenchApi } from './helpers/workbenchApi'
 import { test, expect } from '@playwright/test'
 import { mkdir } from 'node:fs/promises'
+
+test.beforeEach(async ({ page }) => workbenchApi(page))
 
 test('直接修改片段恢复板块及同页分类，后退还原分类', async ({ page }) => {
   await page.goto('/')

@@ -1,0 +1,251 @@
+
+> assurance-ledger-ui@0.1.0 verify
+> npm run typecheck && npm run lint && npm run lint:style && npm run check:contract && npm run test && npm run build && npm run budget && npm run test:e2e && npm run test:performance
+
+
+> assurance-ledger-ui@0.1.0 typecheck
+> vue-tsc --noEmit
+
+
+> assurance-ledger-ui@0.1.0 lint
+> eslint .
+
+
+> assurance-ledger-ui@0.1.0 lint:style
+> stylelint "src/**/*.{css,vue}"
+
+
+> assurance-ledger-ui@0.1.0 check:contract
+> node scripts/check-contract.mjs
+
+契约校验通过：5 套 mock 均符合 types.ts
+
+> assurance-ledger-ui@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 D:/CQUPT/self_file/competition/openjiuwen/ui
+
+ ✓ tests/ack.spec.ts (5 tests) 11ms
+ ✓ tests/runs.spec.ts (3 tests) 12ms
+ ✓ tests/useTween.spec.ts (4 tests) 28ms
+ ✓ tests/replay.spec.ts (3 tests) 9ms
+ ✓ tests/auditSource.spec.ts (7 tests) 16ms
+ ✓ tests/evaluations.spec.ts (6 tests) 43ms
+ ✓ tests/writeSession.spec.ts (3 tests) 11ms
+ ✓ tests/components/SegmentBar.spec.ts (4 tests) 42ms
+ ✓ tests/session.spec.ts (2 tests) 9ms
+ ✓ tests/approvals-state.spec.ts (3 tests) 13ms
+ ✓ tests/useReport.spec.ts (3 tests) 50ms
+ ✓ tests/management.spec.ts (5 tests) 21ms
+ ✓ tests/components/StatusBadge.spec.ts (4 tests) 36ms
+ ✓ tests/components/AckForm.spec.ts (4 tests) 73ms
+ ✓ tests/api-defaults.spec.ts (1 test) 9ms
+ ✓ tests/lifecycle.spec.ts (6 tests) 8ms
+ ✓ tests/history.spec.ts (2 tests) 45ms
+ ✓ tests/components/EvidenceDrawer.spec.ts (4 tests) 151ms
+ ✓ tests/components/DeductionList.spec.ts (4 tests) 60ms
+ ✓ tests/components/ScoreCard.spec.ts (4 tests) 72ms
+ ✓ tests/components/BudgetPills.spec.ts (4 tests) 78ms
+ ✓ tests/components/PlanTable.spec.ts (4 tests) 85ms
+ ✓ tests/components/CostCurve.spec.ts (4 tests) 100ms
+ ✓ tests/approval.spec.ts (2 tests) 92ms
+ ✓ tests/components/GateDialog.spec.ts (4 tests) 122ms
+ ✓ tests/components/DimensionBars.spec.ts (4 tests) 141ms
+ ✓ tests/policies.spec.ts (6 tests) 13ms
+ ✓ tests/components/CoordBar.spec.ts (4 tests) 72ms
+ ✓ tests/debts.spec.ts (9 tests) 123ms
+ ✓ tests/governance.spec.ts (1 test) 54ms
+ ✓ tests/settingsLocation.spec.ts (1 test) 5ms
+ ✓ tests/format.spec.ts (13 tests) 6ms
+ ✓ tests/audit.spec.ts (2 tests) 4ms
+ ✓ tests/claims.spec.ts (3 tests) 6ms
+ ✓ tests/evaluationLocation.spec.ts (1 test) 3ms
+ ✓ tests/decisionClasses.spec.ts (3 tests) 6ms
+ ✓ tests/settings.spec.ts (3 tests) 7ms
+ ✓ tests/events.spec.ts (2 tests) 5ms
+ ✓ tests/historyLocation.spec.ts (1 test) 6ms
+ ✓ tests/client.spec.ts (4 tests) 6ms
+ ✓ tests/mock.spec.ts (6 tests) 5ms
+ ✓ tests/queueLocation.spec.ts (1 test) 5ms
+ ✓ tests/runLocation.spec.ts (4 tests) 8ms
+ ✓ tests/execution.spec.ts (7 tests) 2067ms
+   ✓ Agent 执行事件流契约 > 连续短流断开时最多尝试三次重连  1780ms
+
+ Test Files  44 passed (44)
+      Tests  170 passed (170)
+   Start at  19:09:28
+   Duration  5.37s (transform 11.78s, setup 0ms, collect 33.22s, tests 3.74s, environment 59.10s, prepare 11.59s)
+
+
+> assurance-ledger-ui@0.1.0 build
+> vite build
+
+vite v5.4.21 building for production...
+transforming...
+✓ 204 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                      1.27 kB │ gzip:   0.50 kB
+dist/assets/ibm-plex-mono-400-B0Ztqn6Q.woff2         6.08 kB
+dist/assets/ibm-plex-sans-400-CiVHr-lB.woff2        10.22 kB
+dist/assets/ibm-plex-sans-500-COc3-1CW.woff2        11.18 kB
+dist/assets/cormorant-garamond-400-6hkdE2Tv.woff2   12.52 kB
+dist/assets/noto-serif-sc-400-CiwAGGV2.woff2       108.76 kB
+dist/assets/index-noRV3XwT.css                      70.74 kB │ gzip:  13.44 kB
+dist/assets/RunExecutionPanel-aHAD-reA.js           11.87 kB │ gzip:   5.96 kB
+dist/assets/index-D7KU6qX-.js                      417.05 kB │ gzip: 158.00 kB
+✓ built in 2.07s
+
+> assurance-ledger-ui@0.1.0 budget
+> node scripts/budget.mjs
+
+入口 JS       160.1 KB /  260.0 KB  PASS  (2 个文件)
+入口 CSS       13.1 KB /   40.0 KB  PASS  (1 个文件)
+字体 woff2    145.4 KB /  600.0 KB  PASS  (5 个文件)
+
+> assurance-ledger-ui@0.1.0 test:e2e
+> playwright test --workers=1
+
+
+Running 123 tests using 1 worker
+
+(node:71068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok   1 e2e\a11y-approval-states.spec.ts:7:1 › 审批可提交、提交中、结果未知、只读与到期状态四档可访问 (10.2s)
+  ok   2 e2e\a11y-content-states.spec.ts:13:1 › 六板块服务成功内容、运行查询空集和设置分类四档可访问 (21.7s)
+  ok   3 e2e\a11y-content-states.spec.ts:51:46 › events加载和空集合四档可访问 (4.9s)
+  ok   4 e2e\a11y-content-states.spec.ts:51:46 › claims加载和空集合四档可访问 (5.0s)
+  ok   5 e2e\a11y-content-states.spec.ts:73:1 › 策略目录加载和空目录不提供可用切换动作 (4.2s)
+  ok   6 e2e\a11y-states.spec.ts:14:35 › 工作台服务加载和失败状态四档无严重可访问性违规 (4.3s)
+  ok   7 e2e\a11y-states.spec.ts:14:35 › 运行记录服务加载和失败状态四档无严重可访问性违规 (4.5s)
+  ok   8 e2e\a11y-states.spec.ts:14:35 › 人工审批服务加载和失败状态四档无严重可访问性违规 (5.3s)
+  ok   9 e2e\a11y-states.spec.ts:14:35 › 证据与债务服务加载和失败状态四档无严重可访问性违规 (4.7s)
+  ok  10 e2e\a11y-states.spec.ts:14:35 › 版本评估服务加载和失败状态四档无严重可访问性违规 (4.5s)
+  ok  11 e2e\a11y-states.spec.ts:14:35 › 设置服务加载和失败状态四档无严重可访问性违规 (4.9s)
+  ok  12 e2e\a11y-states.spec.ts:44:1 › 六板块服务拒绝访问四档保留可读错误，不回退演示结果 (12.4s)
+  ok  13 e2e\a11y.spec.ts:25:1 › 可访问性 1/3：pre 一屏无 WCAG A/AA 违规 (1.7s)
+  ok  14 e2e\a11y.spec.ts:32:1 › 可访问性 2/3：阻断弹窗无 WCAG A/AA 违规 (1.8s)
+  ok  15 e2e\a11y.spec.ts:39:1 › 可访问性 3/3：证据抽屉无 WCAG A/AA 违规 (1.9s)
+  ok  16 e2e\approvals.spec.ts:9:1 › 拒绝回执保留参数和责任主体，不提供再次批准入口 (2.8s)
+  ok  17 e2e\approvals.spec.ts:27:1 › 审批回执不得改写已核对的工具与授权范围 (1.1s)
+  ok  18 e2e\approvals.spec.ts:47:1 › 审批冲突需重新核对，提交绑定版本与实参且防重复 (3.3s)
+  ok  19 e2e\approvals.spec.ts:85:1 › 审批多尺寸布局、键盘核对和到期保护 (1.9s)
+  ok  20 e2e\approvals.spec.ts:110:1 › 提交中锁定操作，网络结果未知时强制重新读取 (1.2s)
+  ok  21 e2e\audit-refresh.spec.ts:9:1 › 主动刷新读取新快照，生命周期提交中阻止刷新，权限失败清除旧记录 (1.3s)
+  ok  22 e2e\audit-refresh.spec.ts:46:3 › export 等待服务时锁定账本刷新，失败后恢复刷新入口 (6.7s)
+  ok  23 e2e\audit-refresh.spec.ts:46:3 › replay 等待服务时锁定账本刷新，失败后恢复刷新入口 (7.0s)
+  ok  24 e2e\audit-source.spec.ts:11:1 › 服务错误、权限、空记录、重试与证据数据渲染 (20.5s)
+  ok  25 e2e\audit-source.spec.ts:68:1 › 取消旧请求后不会用旧运行内容覆盖预览 (2.7s)
+  ok  26 e2e\claims.spec.ts:8:1 › 断言独立展示关联与缺决策风险，失败清空旧记录且可重读空集合 (8.0s)
+  ok  27 e2e\claims.spec.ts:43:1 › 断言定位清除冲突筛选并把焦点交给指定决策，孤立引用不跳转 (1.1s)
+  ok  28 e2e\debts.spec.ts:12:1 › 父子债务单独列示，达到自身阈值展示复核状态，消解后保留历史读数 (4.4s)
+  ok  29 e2e\debts.spec.ts:45:1 › 未提供关系不假定父子或复核事实，循环关系拒绝汇总 (701ms)
+  ok  30 e2e\debts.spec.ts:59:1 › 债务提交等待期间保留当前页面，失败后恢复导航 (6.0s)
+  ok  31 e2e\debts.spec.ts:90:1 › 债务消解按标记核验表单，追加历史不删除原记录 (2.1s)
+  ok  32 e2e\debts.spec.ts:126:1 › 服务端核验失败保留债务，刷新后需重新核对 (825ms)
+  ok  33 e2e\debts.spec.ts:145:1 › 成功响应不得改写原始债务，只有匹配的追加消解可更新界面 (972ms)
+  ok  34 e2e\decision-classes.spec.ts:11:1 › 11类及未知记录分列，组合筛选不改变观察分母，四档布局验收 (4.8s)
+  ok  35 e2e\decision-classes.spec.ts:57:1 › 空运行保留零观察，预览和白名单外类别不会冒充接入覆盖 (1.2s)
+  ok  36 e2e\decision-location.spec.ts:9:1 › 决策与视图刷新恢复，不存在的决策链接禁止误选首条 (1.8s)
+  ok  37 e2e\decision-location.spec.ts:43:1 › 同运行历史位置与预览切回服务恢复决策视图，不把预览位置写入账本链接 (1.7s)
+  ok  38 e2e\decision-risks.spec.ts:10:1 › 未覆盖及未知结果明确告警，定位清理冲突筛选且保持键盘焦点 (1.6s)
+  ok  39 e2e\decision-risks.spec.ts:46:1 › 预览和仅未分类记录不伪造真实未覆盖动作告警 (984ms)
+  ok  40 e2e\evaluation.spec.ts:13:1 › 评估版本与单次范围刷新及后退恢复，失效范围不冒充聚合读数 (1.9s)
+  ok  41 e2e\evaluation.spec.ts:51:1 › 版本对比同时核对启用、执行权限和当前评估快照 (1.2s)
+  ok  42 e2e\evaluation.spec.ts:85:1 › 单次读数可追溯到授权运行查询，不猜测框架或伪造账本 (1.5s)
+  ok  43 e2e\evaluation.spec.ts:125:1 › 版本评估显示可解释口径，未接入数据不产生通过结论 (1.7s)
+  ok  44 e2e\evaluation.spec.ts:145:1 › 服务读数区分聚合与运行，比较差值保留方向和不适用 (7.4s)
+  ok  45 e2e\evaluation.spec.ts:182:1 › 无权限与损坏快照阻止展示，重试空集合不伪造版本 (602ms)
+  ok  46 e2e\events.spec.ts:9:1 › 事件时间线展示真实来源边界和结果未知，权限失败清除旧记录 (6.8s)
+  ok  47 e2e\evidence-state.spec.ts:7:1 › 证据正文缺失保留已有引用，不把缺失响应断言成事件未发生 (1.5s)
+  ok  48 e2e\execution.spec.ts:15:1 › 持续接收事件和明确失败终态四档可读，失败后不自动重启 (4.8s)
+  ok  49 e2e\execution.spec.ts:51:1 › 刷新后恢复服务端在途请求，先查状态再连接且不创建新请求 (5.3s)
+  ok  50 e2e\execution.spec.ts:91:1 › 恢复既有执行时连接被拒绝，不把拒绝续读当成原任务失败 (601ms)
+  ok  51 e2e\execution.spec.ts:104:1 › 执行状态失败不显示启动入口，重读已完成状态仍不重复执行 (2.5s)
+  ok  52 e2e\execution.spec.ts:123:1 › 超大运行事件停止展示并保留同请求核对入口 (1.0s)
+  ok  53 e2e\execution.spec.ts:149:1 › 轮次结束保留工具未知结果告警，空白分片不导致断流 (3.3s)
+  ok  54 e2e\execution.spec.ts:182:1 › 长运行预览截断有明确边界且保留终态 (1.7s)
+  ok  55 e2e\execution.spec.ts:215:1 › 启动运行显示脱敏流、完成状态与四档截图 (2.7s)
+  ok  56 e2e\execution.spec.ts:284:1 › ASK 暂停运行流进入精确审批，批准后同一流继续并释放导航 (4.2s)
+  ok  57 e2e\export.spec.ts:11:1 › 授权导出核对审计与文件指纹，坏文件不下载 (9.4s)
+  ok  58 e2e\feedback-motion.spec.ts:7:71 › 1440px 正常动态效果下创建反馈及时且可读 (2.0s)
+  ok  59 e2e\feedback-motion.spec.ts:7:71 › 1440px 减少动态效果下创建反馈及时且可读 (1.7s)
+  ok  60 e2e\feedback-motion.spec.ts:7:71 › 320px 正常动态效果下创建反馈及时且可读 (1.8s)
+  ok  61 e2e\feedback-motion.spec.ts:7:71 › 320px 减少动态效果下创建反馈及时且可读 (1.5s)
+  ok  62 e2e\history-location.spec.ts:4:1 › 列表前进后退恢复来源与旧筛选并重新查询，地址不包含搜索文本 (701ms)
+  ok  63 e2e\history-state.spec.ts:4:1 › 运行详情与板块往返保留查询、来源、分页快照，主动查询获取新权限 (2.1s)
+  ok  64 e2e\keyboard-flow.spec.ts:25:34 › 1440px只用键盘完成创建、拒绝审批、消解及策略切换 (3.1s)
+  ok  65 e2e\keyboard-flow.spec.ts:25:34 › 320px只用键盘完成创建、拒绝审批、消解及策略切换 (2.7s)
+  ok  66 e2e\lifecycle.spec.ts:15:1 › 创建范围变更清除旧确认，未核对新范围不提交 (980ms)
+  ok  67 e2e\lifecycle.spec.ts:46:1 › 创建配置缺少资源时列出原因，不把空配置当可执行 (1.4s)
+  ok  68 e2e\lifecycle.spec.ts:75:1 › 创建、两次中断恢复保持同一运行，关闭后只读且可刷新恢复 (8.6s)
+  ok  69 e2e\lifecycle.spec.ts:158:1 › 重复任务返回原运行，关闭状态不允许恢复 (736ms)
+  ok  70 e2e\lifecycle.spec.ts:174:1 › 创建结果未知时停止重复提交，可按原任务标识查询核对 (725ms)
+  ok  71 e2e\lifecycle.spec.ts:194:1 › 账本创建等待回执时阻止导航和浏览器返回，成功后恢复并保存四档截图 (1.2s)
+  ok  72 e2e\lifecycle.spec.ts:232:1 › 快照不一致与关闭冲突均禁止继续写入，刷新重新获取权限 (956ms)
+  ok  73 e2e\management.spec.ts:13:1 › 发布通过仍注明未发布，报价需范围确认且零条目有明确空态 (6.3s)
+  ok  74 e2e\management.spec.ts:53:1 › 本地管理启用留痕、阻断评估与逐条报价 (4.4s)
+  ok  75 e2e\management.spec.ts:83:1 › 配置冲突需刷新，服务判定绑定评估快照且不执行发布 (5.5s)
+  ok  76 e2e\navigation.spec.ts:7:1 › 直接修改片段恢复板块及同页分类，后退还原分类 (378ms)
+  ok  77 e2e\navigation.spec.ts:18:1 › 六板块刷新保留位置，前进后退不新增历史，未知位置安全返回工作台 (2.7s)
+  ok  78 e2e\policies.spec.ts:18:1 › 会话退出等待期间双向锁定策略提交，完成后重新核对 (868ms)
+  ok  79 e2e\policies.spec.ts:45:1 › 策略差异与只读配置、切换/回滚审计、提交锁定及四档截图 (8.0s)
+  ok  80 e2e\policies.spec.ts:101:1 › 切换冲突和网络结果未知均锁定，刷新后需重新核对候选与原因 (5.6s)
+  ok  81 e2e\policies.spec.ts:128:1 › 策略切换等待回执时阻止工作台导航与浏览器返回，回执后恢复并保存截图 (1.2s)
+  ok  82 e2e\policies.spec.ts:162:1 › 只读账号可看差异但不能切换，错误生效指针不展示成功 (5.0s)
+  ok  83 e2e\queue-location.spec.ts:7:1 › 审批和债务刷新恢复原条目，表单不恢复，失效定位不替换为其他条目 (1.8s)
+  ok  84 e2e\relation-chain.spec.ts:7:1 › 责任链按快照展示，委派失败不伪造子运行绑定，四档截图 (1.5s)
+  ok  85 e2e\replay.spec.ts:9:1 › 规则快照缺失时拒绝一致结论，刷新后不可复现仍保留在分母 (6.9s)
+  ok  86 e2e\replay.spec.ts:47:1 › 真实账本发起只读回放并按原决策分母展示缺证据 (3.0s)
+  ok  87 e2e\run-relations.spec.ts:6:1 › 父子运行可导航、深链接可回退且每次重验权限 (2.3s)
+  ok  88 e2e\runs.spec.ts:4:1 › 服务运行筛选与分页，真实详情不回退演示 (1.4s)
+  ok  89 e2e\runs.spec.ts:34:3 › 分页 401 撤销可见列表与游标，重新查询从首屏重新授权 (880ms)
+  ok  90 e2e\runs.spec.ts:34:3 › 分页 403 撤销可见列表与游标，重新查询从首屏重新授权 (1.1s)
+  ok  91 e2e\session-indicator.spec.ts:7:1 › 全局身份明确认证与可见范围，四档布局、键盘进入设置 (853ms)
+  ok  92 e2e\session-indicator.spec.ts:27:1 › 无法确认不冒充登录，重试可恢复匿名会话 (360ms)
+  ok  93 e2e\session-indicator.spec.ts:40:1 › 确认账号或权限变更后重新加载，清除原任务草稿 (604ms)
+  ok  94 e2e\session.spec.ts:6:1 › 登录失败清空密码，重新读取后登录并退出清理页面 (10.1s)
+  ok  95 e2e\settings.spec.ts:6:1 › 设置分类与手动选择来源刷新恢复，非法分类安全回退 (1.5s)
+  ok  96 e2e\settings.spec.ts:36:1 › 配置身份范围、规则版本与接入状态按服务快照显示 (1.6s)
+  ok  97 e2e\settings.spec.ts:62:1 › 无权限不会回退预览，重试后可恢复真实空配置 (619ms)
+  ok  98 e2e\settings.spec.ts:76:1 › 白名单能力与三框架状态按快照展示，不把选择器当接入证明 (1.1s)
+  ok  99 e2e\studio.spec.ts:14:1 › E1 pre 坐标与五维计数与 mock 一致 (1.2s)
+  ok 100 e2e\studio.spec.ts:26:1 › E2 点 L 维：抽屉 20 条、11 条未定位、两层内到详情 (1.1s)
+  ok 101 e2e\studio.spec.ts:49:1 › E3 发起发布：弹窗、无 X、Esc 不关闭、焦点在主按钮 (411ms)
+  ok 102 e2e\studio.spec.ts:64:1 › E4 执行修复：切到 79 / B，曲线含 (34, 79) (1.6s)
+  ok 103 e2e\studio.spec.ts:75:1 › E5 豁免：未选原因码不可提交，提交后 banner 常驻 (964ms)
+  ok 104 e2e\studio.spec.ts:96:1 › E6 partial：总分占位，闸门按钮禁用 (247ms)
+  ok 105 e2e\studio.spec.ts:104:1 › E7 design：只提示不阻断，闸门可记录放行 (322ms)
+  ok 106 e2e\studio.spec.ts:112:1 › E8 导出：文件名与内容数字一致 (403ms)
+  ok 107 e2e\studio.spec.ts:137:1 › E9 键盘：仅用 Tab/Enter/Esc 完成主流程 (1.4s)
+  ok 108 e2e\studio.spec.ts:158:1 › E10 reduced-motion：无位移动画，数字直达 (274ms)
+  ok 109 e2e\studio.spec.ts:185:1 › 本地字体全部加载（离线演示不依赖 CDN） (247ms)
+  ok 110 e2e\view-navigation.spec.ts:6:1 › 检查器和决策详情支持方向键、首尾键与单一Tab入口 (1.2s)
+  ok 111 e2e\visual.spec.ts:9:1 › 视觉基线 1/6：pre 一屏 (1.7s)
+  ok 112 e2e\visual.spec.ts:16:1 › 视觉基线 2/6：pre 抽屉打开 (1.0s)
+  ok 113 e2e\visual.spec.ts:24:1 › 视觉基线 3/6：pre 阻断弹窗 (1.1s)
+  ok 114 e2e\visual.spec.ts:32:1 › 视觉基线 4/6：post 一屏 (1.7s)
+  ok 115 e2e\visual.spec.ts:39:1 › 视觉基线 5/6：partial 一屏 (917ms)
+  ok 116 e2e\visual.spec.ts:46:1 › 视觉基线 6/6：design 一屏 (864ms)
+  ok 117 e2e\workbench.spec.ts:8:1 › 工作台导航、通知、键盘和减少动态效果 (479ms)
+  ok 118 e2e\workbench.spec.ts:22:1 › 工作台来源刷新恢复，任务草稿与确认不进入链接 (1.1s)
+  ok 119 e2e\workbench.spec.ts:41:1 › 全页面响应式截图与严重无障碍检查 (19.4s)
+  ok 120 e2e\workbench.spec.ts:66:1 › 运行详情筛选、证据边界、下载与回放条件 (3.8s)
+  ok 121 e2e\write-session.spec.ts:10:3 › approval 登录失效时阻止写入，恢复会话后携带新令牌 (1.4s)
+  ok 122 e2e\write-session.spec.ts:10:3 › debt 登录失效时阻止写入，恢复会话后携带新令牌 (1.2s)
+  ok 123 e2e\write-session.spec.ts:10:3 › management 登录失效时阻止写入，恢复会话后携带新令牌 (1.1s)
+
+  123 passed (6.5m)
+
+> assurance-ledger-ui@0.1.0 test:performance
+> playwright test --config playwright.performance.config.ts
+
+
+Running 1 test using 1 worker
+
+(node:67876) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\performance.spec.ts:24:1 › 生产七页面API四档加载、导航和核心操作达到预算 (21.5s)
+
+  1 passed (23.3s)

@@ -15,7 +15,7 @@ test('责任链按快照展示，委派失败不伪造子运行绑定，四档�
   await expect(panel).toContainText('2 个直接子运行')
   await panel.getByText('当前运行的委派决策 · 1 条').click()
   await expect(panel).toContainText('结果状态 EXEC_FAILED')
-  await expect(panel).toContainText('不能按列表顺序猜测对应关系')
+  await expect(panel.getByRole('button', { name: /^子运行 / })).toHaveCount(2)
   await expect(panel).toContainText('不推断全图或委派深度')
   await mkdir('../docs/reviews/ui/quality-round-22', { recursive: true })
   for (const width of [1440, 1024, 390, 320]) {

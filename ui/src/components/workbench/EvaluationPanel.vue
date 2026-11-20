@@ -45,7 +45,7 @@ function restoreLocation() {
   if (managementSubmitting.value) return
   const value = readEvaluationLocation(location.hash)
   if (!value) return
-  if (value.source) mode.value = value.source
+  mode.value = 'api'
   selected.value = value.selected; scope.value = value.scope; baselineKey.value = value.baseline; candidateKey.value = value.candidate
 }
 function saveLocation() {

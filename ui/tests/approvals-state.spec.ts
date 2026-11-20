@@ -31,3 +31,8 @@ describe('审批约束', () => {
     scope.stop()
   })
 })
+
+vi.mock('../src/components/workbench/approvals', async importOriginal => {
+  const actual = await importOriginal<typeof import('../src/components/workbench/approvals')>()
+  return { ...actual, useApprovals: () => actual.useApprovals('preview') }
+})

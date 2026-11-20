@@ -21,7 +21,7 @@ declare global {
   interface Window { __workbenchMetrics: { lcp: number; longTasks: number[]; cls: number; interaction: number; shifts: Array<{ value: number; nodes: string[] }> } }
 }
 
-test('生产七页面两来源四档加载、导航和核心操作达到预算', async ({ page, browserName, browser }) => {
+test('生产七页面API四档加载、导航和核心操作达到预算', async ({ page, browserName, browser }) => {
   test.setTimeout(120000)
   const samples: Array<Record<string, unknown>> = []
   const directory = '../docs/reviews/ui/quality-round-72'
@@ -63,7 +63,7 @@ test('生产七页面两来源四档加载、导航和核心操作达到预算',
     new PerformanceObserver(list => { for (const entry of list.getEntries()) metrics.interaction = Math.max(metrics.interaction, entry.duration) }).observe(eventOptions)
   })
   for (const width of [1440, 1024, 390, 320]) {
-    for (const source of ['preview', 'api']) {
+    for (const source of ['api']) {
     for (const section of ['工作台', '运行记录', '人工审批', '证据与债务', '版本评估', '设置', '运行详情']) {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('about:blank')
@@ -146,7 +146,7 @@ test('生产七页面两来源四档加载、导航和核心操作达到预算',
     })
     const sample = { section, source, browserName, width, loadMs: loadDuration, domContentLoadedMs: loaded.dom, lcpMs: loaded.lcp, operationMs, navigationMs: navDuration, cls: browserMetrics.cls, shifts: browserMetrics.shifts, longTasks: browserMetrics.longTasks, eventDurationMs: browserMetrics.interaction }
     samples.push(sample)
-    await writeFile(`${directory}/performance.json`, `${JSON.stringify({ mode: 'local-production-preview', at: new Date().toISOString(), browser: browser.version(), cache: 'disabled', thresholds: { domContentLoadedMs: 1500, lcpMs: 2500, operationMs: 200, navigationMs: 200, cls: 0.05, maxLongTaskMs: 100, eventDurationMs: 200 }, note: 'One observation per page/source/width, Chromium desktop local loopback; synthetic authorized service responses, no CPU/network throttling, no backend/model latency, no field INP or percentile claim. Operation duration starts with the control visible and includes Playwright overhead and the response/render assertion. Detail uses a synthetic ledger for both source rows.', samples }, null, 2)}\n`)
+    await writeFile(`${directory}/performance.json`, `${JSON.stringify({ mode: 'local-production-preview', at: new Date().toISOString(), browser: browser.version(), cache: 'disabled', thresholds: { domContentLoadedMs: 1500, lcpMs: 2500, operationMs: 200, navigationMs: 200, cls: 0.05, maxLongTaskMs: 100, eventDurationMs: 200 }, note: 'One observation per page/source/width, Chromium desktop local loopback; synthetic authorized service responses, no CPU/network throttling, no backend/model latency, no field INP or percentile claim. Operation duration starts with the control visible and includes Playwright overhead and the response/render assertion. All pages use HTTP API fixtures.', samples }, null, 2)}\n`)
     expect(sample.domContentLoadedMs, `${width}px DOMContentLoaded`).toBeLessThan(1500)
     expect(sample.lcpMs, `${width}px observed LCP`).toBeGreaterThan(0)
     expect(sample.lcpMs, `${width}px LCP`).toBeLessThan(2500)

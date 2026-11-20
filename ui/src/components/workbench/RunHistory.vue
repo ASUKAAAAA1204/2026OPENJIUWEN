@@ -13,7 +13,7 @@ watch(source, value => { if (!restoringSource) replaceHistoryLocation({ source: 
 function restoreSource() {
   const restored = readHistoryLocation(location.hash)
   if (!restored) return
-  restoringSource = true; source.value = restored.source; restoringSource = false
+  restoringSource = true; source.value = 'api'; restoringSource = false
 }
 function listen() { window.addEventListener('popstate', restoreSource); window.addEventListener('workspace-location', restoreSource) }
 function unlisten() { window.removeEventListener('popstate', restoreSource); window.removeEventListener('workspace-location', restoreSource) }

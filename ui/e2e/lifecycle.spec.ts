@@ -118,7 +118,7 @@ test('创建、两次中断恢复保持同一运行，关闭后只读且可刷�
   const accessibility = await new AxeBuilder({ page }).include('.run-create-panel').analyze()
   expect(accessibility.violations.filter(item => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([])
   await page.getByRole('button', { name: '创建账本运行', exact: true }).click()
-  await expect(page.locator('.run-create-panel').getByRole('status')).toContainText('不代表模型或工具已经执行')
+  await expect(page.locator('.run-create-panel').getByRole('status')).toContainText('运行已登记')
   await inspectState(page, 'run-created', '.run-create-panel', 71)
   await page.getByRole('button', { name: '查看已登记运行' }).click()
   await expect(page).toHaveURL(/#run=RUN-LIFECYCLE-42/)
@@ -187,7 +187,7 @@ test('创建结果未知时停止重复提交，可按原任务标识查询核�
   await expect(page.getByRole('button', { name: '创建账本运行', exact: true })).toBeDisabled()
   expect(posts).toBe(1)
   await page.getByRole('button', { name: '按任务查询运行记录' }).click()
-  await expect(page.locator('.run-history').getByLabel('运行来源')).toHaveValue('api')
+  await expect(page.locator('.run-history').getByLabel('运行来源')).toHaveCount(0)
   await expect(page.locator('.service-run-history').getByLabel('查询运行', { exact: true })).toHaveValue(createRunFixture.task_id)
 })
 
@@ -208,7 +208,7 @@ test('账本创建等待回执时阻止导航和浏览器返回，成功后恢�
   await fillCreate(page)
   await page.getByRole('button', { name: '创建账本运行', exact: true }).click()
   await expect(page.getByRole('button', { name: '正在登记运行…', exact: true })).toBeDisabled()
-  await expect(page.getByRole('combobox', { name: '任务来源', exact: true })).toBeDisabled()
+  await expect(page.getByRole('combobox', { name: '任务来源', exact: true })).toHaveCount(0)
   const busyHash = new URL(page.url()).hash
   await page.locator('.workbench-nav nav button').nth(1).click()
   await expect(page.locator('.demo-notice')).toContainText('运行操作正在等待回执')

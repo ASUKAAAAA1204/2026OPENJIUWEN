@@ -84,7 +84,7 @@ test('策略差异与只读配置、切换/回滚审计、提交锁定及四档�
   expect(accessibility.violations.filter(item => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([])
   await page.getByRole('button', { name: '确认切换策略版本', exact: true }).click()
   await expect(page.getByRole('button', { name: '正在切换策略…' })).toBeDisabled()
-  await expect(page.getByLabel('配置来源')).toBeDisabled()
+  await expect(page.getByLabel('配置来源')).toHaveCount(0)
   await expect(page.getByRole('button', { name: '退出本机账号' })).toBeDisabled()
   await inspectState(page, 'policy-submitting', '.policy-versions', 71)
   release()

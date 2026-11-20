@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import ApprovalWorkspace from '../src/components/workbench/ApprovalWorkspace.vue'
 describe('演示审批', () => {
   it('核对前阻止批准，核对后完成且不能重复处理', async () => {
@@ -21,4 +21,9 @@ describe('演示审批', () => {
     expect(w.get('.approval-result').text()).toContain('目标分支未经确认')
     expect(w.text()).toContain('演示已拒绝')
   })
+})
+
+vi.mock('../src/components/workbench/approvals', async importOriginal => {
+  const actual = await importOriginal<typeof import('../src/components/workbench/approvals')>()
+  return { ...actual, useApprovals: () => actual.useApprovals('preview') }
 })

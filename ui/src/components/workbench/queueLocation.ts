@@ -16,7 +16,7 @@ export function useQueueLocation(section: Queue, mode: Ref<'api' | 'preview'>, f
     if (busy.value) return
     const value = readQueueLocation(location.hash, section)
     if (!value) return
-    if (value.source) mode.value = value.source
+    mode.value = 'api'
     filter.value = value.filter
     selected.value = value.selected
   }

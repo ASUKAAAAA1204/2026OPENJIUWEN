@@ -1,6 +1,6 @@
 import { effectScope } from 'vue'
 import { mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { createDebtDemo, debtSummary, normalizeDebtItems, parseDebtRuns, runDebtSummary, useDebts, validateResolution } from '../src/components/workbench/debts'
 import DebtWorkspace from '../src/components/workbench/DebtWorkspace.vue'
 
@@ -95,4 +95,9 @@ describe('不确定债务', () => {
     expect(page.find('form').exists()).toBe(false)
     page.unmount()
   })
+})
+
+vi.mock('../src/components/workbench/debts', async importOriginal => {
+  const actual = await importOriginal<typeof import('../src/components/workbench/debts')>()
+  return { ...actual, useDebts: () => actual.useDebts('preview') }
 })

@@ -1,8 +1,11 @@
+import { workbenchApi } from './helpers/workbenchApi'
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { mkdir } from 'node:fs/promises'
 import { previewDecisions } from '../src/components/workbench/audit'
 import { createPreview } from '../src/components/workbench/model'
+
+test.beforeEach(async ({ page }) => workbenchApi(page))
 
 test('未覆盖及未知结果明确告警，定位清理冲突筛选且保持键盘焦点', async ({ page }) => {
   const base = previewDecisions(createPreview('RUN-RISK', 'risk', 'openJiuwen'))[1]
@@ -25,7 +28,7 @@ test('未覆盖及未知结果明确告警，定位清理冲突筛选且保持�
   await expect(page.locator('.decision-row')).toContainText('UNHOOKED-1')
   await panel.getByRole('button', { name: '定位结果未知动作' }).click()
   await expect(page.locator('.decision-row')).toContainText('UNKNOWN-1')
-  await expect(panel).toContainText('结果未知不等于失败')
+  await expect(panel).toContainText('执行结果未知')
   await mkdir('../docs/reviews/ui/quality-round-25', { recursive: true })
   for (const width of [1440, 1024, 390, 320]) {
     await page.setViewportSize({ width, height: 900 })

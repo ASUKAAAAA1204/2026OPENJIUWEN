@@ -1,8 +1,11 @@
+import { workbenchApi } from './helpers/workbenchApi'
 import { test, expect } from '@playwright/test'
 import { mkdir } from 'node:fs/promises'
 import { previewDecisions } from '../src/components/workbench/audit'
 import { createPreview } from '../src/components/workbench/model'
 import { inspectState } from './helpers/stateA11y'
+test.beforeEach(async ({ page }) => workbenchApi(page))
+
 test('事件时间线展示真实来源边界和结果未知，权限失败清除旧记录', async ({ page }) => {
   await mkdir('../docs/reviews/ui/quality-round-15', { recursive: true })
   const run = createPreview('RUN-DEMO-001', '事件测试', 'openJiuwen'), decision = previewDecisions(run)[0]

@@ -44,8 +44,6 @@ test('审批和债务刷新恢复原条目，表单不恢复，失效定位不�
   }
   await page.getByRole('button', { name: '清除债务定位' }).click()
   await expect(page.locator('.debt-detail')).toBeVisible()
-  await page.getByRole('combobox', { name: '债务来源', exact: true }).selectOption('preview')
-  await expect.poll(() => new URLSearchParams(new URL(page.url()).hash.slice(1)).get('queue_item')).toBeNull()
-  await expect(page.locator('.debt-workspace')).toContainText('合成样例')
+  await expect(page.getByRole('combobox', { name: '债务来源', exact: true })).toHaveCount(0)
   expect(writes).toBe(0)
 })

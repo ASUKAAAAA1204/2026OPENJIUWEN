@@ -13,7 +13,7 @@ test('父子运行可导航、深链接可回退且每次重验权限', async ({
   await page.route('**/api/v27/runs?*', route => route.fulfill({ json: { source: 'ledger', next_cursor: null, items: [{ source: 'ledger', id: 'RUN-PARENT', title: 'Parent run', framework: 'LangGraph', tools: [], state: 'closed', segment: 1, started_at: '2026-11-19T11:00:00Z', completed_at: '2026-11-19T12:00:00Z', parent_run_id: null, child_run_ids: ['RUN-CHILD'], decision_count: 0 }] } }))
   await page.goto('/?runs=api')
   await page.getByRole('navigation').getByRole('button').nth(1).click()
-  await page.locator('.run-history').getByLabel('运行来源').selectOption('api')
+
   await page.locator('.service-run-history').getByLabel('查询运行').fill('RUN-PARENT')
   await page.locator('.service-run-history').getByRole('button', { name: '查询运行' }).click()
   await page.locator('.service-run-history .history-card').click()

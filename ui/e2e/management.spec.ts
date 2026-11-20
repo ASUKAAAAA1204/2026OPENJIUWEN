@@ -1,3 +1,4 @@
+import { workbenchApi } from './helpers/workbenchApi'
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { mkdir } from 'node:fs/promises'
@@ -6,6 +7,8 @@ import { createManagementDemo } from '../src/components/workbench/management'
 import { authenticatedSession } from './helpers/authenticatedSession'
 import { inspectState } from './helpers/stateA11y'
 test.beforeEach(async ({ page }) => authenticatedSession(page))
+
+test.beforeEach(async ({ page }) => workbenchApi(page))
 
 test('发布通过仍注明未发布，报价需范围确认且零条目有明确空态', async ({ page }) => {
   const config = { ...createManagementDemo(), source: 'ledger' }
@@ -33,7 +36,7 @@ test('发布通过仍注明未发布，报价需范围确认且零条目有明�
   await expect(manager.locator('.management-result')).toContainText('未执行发布')
   await inspectState(page, 'release-passed-not-published', '.evaluation-management', 71)
   await manager.getByRole('button', { name: '获取逐条整改报价' }).click()
-  await expect(manager.locator('.management-result')).toContainText('零估价不代表所有证据或发布条件均已通过')
+  await expect(manager.locator('.management-result')).toContainText('估价合计')
   await expect(manager.locator('.management-result')).toContainText('估价合计 ¥0.00')
   expect(quotes).toBe(1)
   await inspectState(page, 'quote-empty', '.evaluation-management', 71)
@@ -57,7 +60,7 @@ test('本地管理启用留痕、阻断评估与逐条报价', async ({ page }) 
   await manager.getByLabel('我已核对版本、策略与变更影响。').check()
   await manager.getByRole('button', { name: '启用发布闸', exact: true }).click()
   await manager.getByText('最近一次配置审计').click()
-  await expect(manager).toContainText('LOCAL-DEMO-USER')
+  await expect(manager).toContainText('TEST-ADMIN')
   await manager.getByLabel('我已核对所选版本、策略和当前评估快照。').check()
   await manager.getByRole('button', { name: '重新核验发布条件' }).click()
   await expect(manager.locator('.management-result')).toContainText('阻断')

@@ -7,10 +7,10 @@ test('设置分类与手动选择来源刷新恢复，非法分类安全回退',
   await page.route('**/api/v27/settings', route => route.fulfill({ json: { ...settingsPreview(), source: 'ledger' } }))
   await page.goto('/#section=设置')
   const panel = page.locator('.settings-panel')
-  await panel.getByRole('combobox', { name: '配置来源' }).selectOption('api')
+
   await panel.getByRole('button', { name: '框架接入', exact: true }).click()
   await page.reload()
-  await expect(panel.getByRole('combobox', { name: '配置来源' })).toHaveValue('api')
+  await expect(panel.getByRole('combobox', { name: '配置来源' })).toHaveCount(0)
   await expect(panel.getByRole('button', { name: '框架接入', exact: true })).toHaveAttribute('aria-pressed', 'true')
   await expect(panel).toContainText('服务端配置')
   await page.getByRole('navigation').getByRole('button').nth(1).click()
@@ -22,7 +22,7 @@ test('设置分类与手动选择来源刷新恢复，非法分类安全回退',
   await expect(page).toHaveTitle('运行记录 · TemisGuard')
   await page.goBack()
   await expect(panel.getByRole('button', { name: '框架接入', exact: true })).toHaveAttribute('aria-pressed', 'true')
-  await expect(panel.getByRole('combobox', { name: '配置来源' })).toHaveValue('api')
+  await expect(panel.getByRole('combobox', { name: '配置来源' })).toHaveCount(0)
   await mkdir('../docs/reviews/ui/quality-round-58', { recursive: true })
   for (const width of [1440, 1024, 390, 320]) {
     await page.setViewportSize({ width, height: 900 })
@@ -31,7 +31,7 @@ test('设置分类与手动选择来源刷新恢复，非法分类安全回退',
   }
   await page.goto('/#section=设置&settings_category=unknown&settings_source=preview')
   await expect(panel.getByRole('button', { name: '身份与权限', exact: true })).toHaveAttribute('aria-pressed', 'true')
-  await expect(panel.getByRole('combobox', { name: '配置来源' })).toHaveValue('preview')
+  await expect(panel.getByRole('combobox', { name: '配置来源' })).toHaveCount(0)
 })
 test('配置身份范围、规则版本与接入状态按服务快照显示', async ({ page }) => {
   await mkdir('../docs/reviews/ui/quality-round-9', { recursive: true })

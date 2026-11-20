@@ -1,9 +1,12 @@
+import { workbenchApi } from './helpers/workbenchApi'
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { mkdir } from 'node:fs/promises'
 import { previewDecisions } from '../src/components/workbench/audit'
 import { createPreview } from '../src/components/workbench/model'
 import { inspectState } from './helpers/stateA11y'
+
+test.beforeEach(async ({ page }) => workbenchApi(page))
 
 test('服务错误、权限、空记录、重试与证据数据渲染', async ({ page }) => {
   test.setTimeout(120000)
@@ -70,7 +73,7 @@ test('取消旧请求后不会用旧运行内容覆盖预览', async ({ page }) 
   await page.locator('.run-history .history-card').first().click()
   await expect(page.getByRole('heading', { name: '正在读取运行账本' })).toBeVisible()
   await inspectState(page, 'detail-loading-reserved', '.run-detail', 70)
-  await page.getByLabel('数据来源').selectOption('preview')
-  await expect(page.locator('.decision-row')).toHaveCount(2)
+  await page.getByRole('button', { name: '← 返回运行记录' }).click()
+  await expect(page.locator('.service-run-history')).toBeVisible()
   await expect(page.getByRole('heading', { name: '正在读取运行账本' })).toHaveCount(0)
 })

@@ -19,7 +19,7 @@ function restoreLocation() {
   const value = readSettingsLocation(location.hash)
   if (!value) return
   setting.value = value.category
-  if (value.source) mode.value = value.source
+  mode.value = 'api'
 }
 watch([setting, mode], saveLocation, { flush: 'post' })
 onMounted(() => { saveLocation(); window.addEventListener('popstate', restoreLocation); window.addEventListener('workspace-location', restoreLocation) })

@@ -29,6 +29,7 @@ onScopeDispose(reset)
     <p v-if="loading" role="status">正在读取当前运行的断言及关联…</p>
     <p v-else-if="error" role="alert" class="approval-error">{{ error }}</p>
     
+    <p v-else-if="!loaded" class="muted">尚未读取断言</p>
     <template v-else>
       <p class="muted">{{ claims.length }} 条断言 · 缺决策 {{ claims.filter(item => !item.decision_id).length }} 条 · 不以断言数量推算声明一致率。</p>
       <p v-if="!claims.length" class="muted">此运行暂无断言记录。空集合不表示声明一致率100%。</p>

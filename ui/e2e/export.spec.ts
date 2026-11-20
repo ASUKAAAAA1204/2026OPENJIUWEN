@@ -1,3 +1,4 @@
+import { workbenchApi } from './helpers/workbenchApi'
 import { test, expect } from '@playwright/test'
 import { createHash } from 'node:crypto'
 import { mkdir, readFile } from 'node:fs/promises'
@@ -5,6 +6,8 @@ import AxeBuilder from '@axe-core/playwright'
 import { previewDecisions } from '../src/components/workbench/audit'
 import { createPreview } from '../src/components/workbench/model'
 import { inspectState } from './helpers/stateA11y'
+test.beforeEach(async ({ page }) => workbenchApi(page))
+
 test('授权导出核对审计与文件指纹，坏文件不下载', async ({ page }) => {
   await mkdir('../docs/reviews/ui/quality-round-13', { recursive: true })
   const run = createPreview('RUN-DEMO-001', '合成导出测试', 'openJiuwen')

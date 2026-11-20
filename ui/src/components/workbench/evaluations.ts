@@ -147,8 +147,8 @@ export function formatDelta(baseline: AggregateReadings, candidate: AggregateRea
   return `${rounded > 0 ? '+' : ''}${formatNumber(Object.is(rounded, -0) ? 0 : rounded)}${key === 'uncertainty_debt' ? ' 权重' : ' 个百分点'}`
 }
 
-export function useEvaluations() {
-  const mode = ref<'preview' | 'api'>('api')
+export function useEvaluations(initialMode: 'preview' | 'api' = 'api') {
+  const mode = ref<'preview' | 'api'>(initialMode)
   const data = shallowRef<EvaluationSnapshot | null>(null), loading = ref(false), error = ref('')
   let revision = 0, controller: AbortController | undefined
   async function load() {

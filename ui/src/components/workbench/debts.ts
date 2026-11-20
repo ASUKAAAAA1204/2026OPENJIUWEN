@@ -154,8 +154,8 @@ async function request(path: string, signal: AbortSignal, payload?: unknown): Pr
   }
   return result.json()
 }
-export function useDebts() {
-  const mode = ref<'preview' | 'api'>('api')
+export function useDebts(initialMode: 'preview' | 'api' = 'api') {
+  const mode = ref<'preview' | 'api'>(initialMode)
   const data = shallowRef<DebtSnapshot | null>(null)
   const loading = ref(false), submitting = ref(false), stale = ref(false), error = ref('')
   let demo = createDebtDemo(), revision = 0, controller: AbortController | undefined
