@@ -1,0 +1,317 @@
+{
+  "format": "b-m0-live-v1",
+  "provider": "DeepSeek",
+  "model": "deepseek-flash",
+  "git_head": "65a09fef0833af73e924675d26d2606744a03599",
+  "sources_sha256": {
+    "online.py": "7aa42bda56e5eea314aafcecddfa4c5a214fb35a6575d0e5d367852efd118245",
+    "adapters.py": "83a69ae471b8fabe7e2c0021d2841804982f8b11be7e20e5775f32257d39226d",
+    "controlled.py": "3ac931d922dfa111222e9b384e6e6b5cade31c44bce0188ba116c27aa9f39e6b",
+    "approval.py": "b90c9c1d5f2ddcb574f92826d51e2952dfe55ccff6cb388fb579a0fab24217b8"
+  },
+  "task_sha256": "d4e5a5bba1a1cf0c30b2a6ced30469c5ad9ee426b739104a46915a13b3d724be",
+  "frameworks": [
+    {
+      "framework": "openjiuwen",
+      "trials": [
+        {
+          "run_id": "live-8c7c309d070c4483b352660ff888570d",
+          "framework": "openjiuwen",
+          "sdk_version": "0.1.20.post1",
+          "model": "deepseek-flash",
+          "provider_requests": 1,
+          "passed": true,
+          "provider_response_sha256": "d88226081118def8eebdc7de6d454ddd0d98f048f3696d4fe4797acfd42e033b",
+          "response_model": "deepseek-flash",
+          "tool_call_id": "call_00_uaElnl4brAU2f06NTEjr6422",
+          "model_arguments": {
+            "target": "requested.txt"
+          },
+          "prompt_tokens": 301,
+          "completion_tokens": 48,
+          "files": {
+            "requested.txt": [
+              "written:call_00_uaElnl4brAU2f06NTEjr6422:requested.txt:ce5e92a6e3a240e9a9717176660a7413"
+            ]
+          },
+          "actual_invocations": [
+            "requested.txt"
+          ],
+          "sdk_replies": [
+            [
+              "call_00_uaElnl4brAU2f06NTEjr6422",
+              "written:call_00_uaElnl4brAU2f06NTEjr6422:requested.txt:ce5e92a6e3a240e9a9717176660a7413"
+            ]
+          ],
+          "repeat": 1
+        },
+        {
+          "run_id": "live-dd3d0d7b6d8246e1918210b1643e87d2",
+          "framework": "openjiuwen",
+          "sdk_version": "0.1.20.post1",
+          "model": "deepseek-flash",
+          "provider_requests": 1,
+          "passed": true,
+          "provider_response_sha256": "ca58f98c626b924bb9634239899027ce00795baee89606bf09f16a31099b44cd",
+          "response_model": "deepseek-flash",
+          "tool_call_id": "call_00_T7KIrEYobP5tBLigWv621379",
+          "model_arguments": {
+            "target": "requested.txt"
+          },
+          "prompt_tokens": 301,
+          "completion_tokens": 48,
+          "files": {
+            "requested.txt": [
+              "written:call_00_T7KIrEYobP5tBLigWv621379:requested.txt:9f3d575a11d04dd4a38289c47f7b7e6c"
+            ]
+          },
+          "actual_invocations": [
+            "requested.txt"
+          ],
+          "sdk_replies": [
+            [
+              "call_00_T7KIrEYobP5tBLigWv621379",
+              "written:call_00_T7KIrEYobP5tBLigWv621379:requested.txt:9f3d575a11d04dd4a38289c47f7b7e6c"
+            ]
+          ],
+          "repeat": 2
+        },
+        {
+          "run_id": "live-d359d7da82c245828584506c852bcabb",
+          "framework": "openjiuwen",
+          "sdk_version": "0.1.20.post1",
+          "model": "deepseek-flash",
+          "provider_requests": 1,
+          "passed": true,
+          "provider_response_sha256": "cae28ccb84c861899d957053e9cc76d740420333e0a07a6c8db135c8bc168e1b",
+          "response_model": "deepseek-flash",
+          "tool_call_id": "call_00_F6CzaiSI3cdwfqjC6BaG4520",
+          "model_arguments": {
+            "target": "requested.txt"
+          },
+          "prompt_tokens": 301,
+          "completion_tokens": 48,
+          "files": {
+            "requested.txt": [
+              "written:call_00_F6CzaiSI3cdwfqjC6BaG4520:requested.txt:35ca2e5ab6684cdfa74299e5133aa1f3"
+            ]
+          },
+          "actual_invocations": [
+            "requested.txt"
+          ],
+          "sdk_replies": [
+            [
+              "call_00_F6CzaiSI3cdwfqjC6BaG4520",
+              "written:call_00_F6CzaiSI3cdwfqjC6BaG4520:requested.txt:35ca2e5ab6684cdfa74299e5133aa1f3"
+            ]
+          ],
+          "repeat": 3
+        }
+      ],
+      "error": null
+    },
+    {
+      "framework": "langgraph",
+      "trials": [
+        {
+          "run_id": "live-b8b41d26a79343dc8f272271f4bd2ed2",
+          "framework": "langgraph",
+          "sdk_version": "1.2.22",
+          "model": "deepseek-flash",
+          "provider_requests": 1,
+          "passed": true,
+          "provider_response_sha256": "703f58e59d80b4ea10c8120f93bffb4e9c467da5fdb7f055c2f2c9e911c72ee2",
+          "response_model": "deepseek-flash",
+          "tool_call_id": "call_00_Tl6trOCeChQb8rZL9NEq3073",
+          "model_arguments": {
+            "target": "requested.txt"
+          },
+          "prompt_tokens": 301,
+          "completion_tokens": 48,
+          "files": {
+            "requested.txt": [
+              "written:call_00_Tl6trOCeChQb8rZL9NEq3073:requested.txt:f24f7c1d037349f8adec01359696ebe6"
+            ]
+          },
+          "actual_invocations": [
+            "requested.txt"
+          ],
+          "sdk_replies": [
+            [
+              "call_00_Tl6trOCeChQb8rZL9NEq3073",
+              "written:call_00_Tl6trOCeChQb8rZL9NEq3073:requested.txt:f24f7c1d037349f8adec01359696ebe6"
+            ]
+          ],
+          "repeat": 1
+        },
+        {
+          "run_id": "live-bec6b103ae2d4ec299f6e4217ba34fbf",
+          "framework": "langgraph",
+          "sdk_version": "1.2.22",
+          "model": "deepseek-flash",
+          "provider_requests": 1,
+          "passed": true,
+          "provider_response_sha256": "601c0a7470cf025f0c9a5a9e16d31ea703046e3e7a5a96ba5af0556acfbd60bf",
+          "response_model": "deepseek-flash",
+          "tool_call_id": "call_00_hZQWKOfHM2OXTYYGV9A17883",
+          "model_arguments": {
+            "target": "requested.txt"
+          },
+          "prompt_tokens": 301,
+          "completion_tokens": 48,
+          "files": {
+            "requested.txt": [
+              "written:call_00_hZQWKOfHM2OXTYYGV9A17883:requested.txt:1427532f0b164f99ace98d0d5ca90276"
+            ]
+          },
+          "actual_invocations": [
+            "requested.txt"
+          ],
+          "sdk_replies": [
+            [
+              "call_00_hZQWKOfHM2OXTYYGV9A17883",
+              "written:call_00_hZQWKOfHM2OXTYYGV9A17883:requested.txt:1427532f0b164f99ace98d0d5ca90276"
+            ]
+          ],
+          "repeat": 2
+        },
+        {
+          "run_id": "live-07a0f94213a24ac8b2661cd269ad3082",
+          "framework": "langgraph",
+          "sdk_version": "1.2.22",
+          "model": "deepseek-flash",
+          "provider_requests": 1,
+          "passed": true,
+          "provider_response_sha256": "b00f9d9f2e5eb9a95fc56e3e08f61f953a78df3db24da030153f62b5ae1df85b",
+          "response_model": "deepseek-flash",
+          "tool_call_id": "call_00_1e4kRVNtaLNs1wXki62a8935",
+          "model_arguments": {
+            "target": "requested.txt"
+          },
+          "prompt_tokens": 301,
+          "completion_tokens": 48,
+          "files": {
+            "requested.txt": [
+              "written:call_00_1e4kRVNtaLNs1wXki62a8935:requested.txt:032e0fed050f4cd6875993efe40dda02"
+            ]
+          },
+          "actual_invocations": [
+            "requested.txt"
+          ],
+          "sdk_replies": [
+            [
+              "call_00_1e4kRVNtaLNs1wXki62a8935",
+              "written:call_00_1e4kRVNtaLNs1wXki62a8935:requested.txt:032e0fed050f4cd6875993efe40dda02"
+            ]
+          ],
+          "repeat": 3
+        }
+      ],
+      "error": null
+    },
+    {
+      "framework": "agents",
+      "trials": [
+        {
+          "run_id": "live-e36a43139f524c3a907d9e007dd36ce2",
+          "framework": "agents",
+          "sdk_version": "0.25.0",
+          "model": "deepseek-flash",
+          "provider_requests": 1,
+          "passed": true,
+          "provider_response_sha256": "0319d72498db9bdb243321b8361cab01579a1e77c0e4e7410b7d353741ec7379",
+          "response_model": "deepseek-flash",
+          "tool_call_id": "call_00_9HU65t6VGgPUwd3MuumB5545",
+          "model_arguments": {
+            "target": "requested.txt"
+          },
+          "prompt_tokens": 301,
+          "completion_tokens": 40,
+          "files": {
+            "requested.txt": [
+              "written:call_00_9HU65t6VGgPUwd3MuumB5545:requested.txt:ac228167fd9f44ceb97e6f4d11ffebc9"
+            ]
+          },
+          "actual_invocations": [
+            "requested.txt"
+          ],
+          "sdk_replies": [
+            [
+              "call_00_9HU65t6VGgPUwd3MuumB5545",
+              "written:call_00_9HU65t6VGgPUwd3MuumB5545:requested.txt:ac228167fd9f44ceb97e6f4d11ffebc9"
+            ]
+          ],
+          "repeat": 1
+        },
+        {
+          "run_id": "live-4f884a64f56e43b0bca51e38af2d909e",
+          "framework": "agents",
+          "sdk_version": "0.25.0",
+          "model": "deepseek-flash",
+          "provider_requests": 1,
+          "passed": true,
+          "provider_response_sha256": "e851f7a4048fd2ab780e9022089643e33f2bf865a539c63cf8c5de64cf38482d",
+          "response_model": "deepseek-flash",
+          "tool_call_id": "call_00_VHK0DwveRoq0AZUFYh2N7408",
+          "model_arguments": {
+            "target": "requested.txt"
+          },
+          "prompt_tokens": 301,
+          "completion_tokens": 48,
+          "files": {
+            "requested.txt": [
+              "written:call_00_VHK0DwveRoq0AZUFYh2N7408:requested.txt:faf33b54b72c4a2481d1b6b104c7a72a"
+            ]
+          },
+          "actual_invocations": [
+            "requested.txt"
+          ],
+          "sdk_replies": [
+            [
+              "call_00_VHK0DwveRoq0AZUFYh2N7408",
+              "written:call_00_VHK0DwveRoq0AZUFYh2N7408:requested.txt:faf33b54b72c4a2481d1b6b104c7a72a"
+            ]
+          ],
+          "repeat": 2
+        },
+        {
+          "run_id": "live-60287307b96343fb9986573c95900c20",
+          "framework": "agents",
+          "sdk_version": "0.25.0",
+          "model": "deepseek-flash",
+          "provider_requests": 1,
+          "passed": true,
+          "provider_response_sha256": "9e1d440f2d44c2c3e524c5801d81c62d5fe77cbb77f4e82c9ed38ada6b690ce7",
+          "response_model": "deepseek-flash",
+          "tool_call_id": "call_00_vGkMKNtlR7sH8dmq3Nf64881",
+          "model_arguments": {
+            "target": "requested.txt"
+          },
+          "prompt_tokens": 301,
+          "completion_tokens": 48,
+          "files": {
+            "requested.txt": [
+              "written:call_00_vGkMKNtlR7sH8dmq3Nf64881:requested.txt:4e0dcd1ffb2540cca36a7e5d8023c95f"
+            ]
+          },
+          "actual_invocations": [
+            "requested.txt"
+          ],
+          "sdk_replies": [
+            [
+              "call_00_vGkMKNtlR7sH8dmq3Nf64881",
+              "written:call_00_vGkMKNtlR7sH8dmq3Nf64881:requested.txt:4e0dcd1ffb2540cca36a7e5d8023c95f"
+            ]
+          ],
+          "repeat": 3
+        }
+      ],
+      "error": null
+    }
+  ],
+  "completed_at": "2026-11-22T08:36:44.397941+00:00",
+  "provider_requests": 9,
+  "passed_trials": 9,
+  "required_trials": 9,
+  "passed": true
+}

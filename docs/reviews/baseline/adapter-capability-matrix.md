@@ -1,6 +1,69 @@
 # B 的 M0 三框架文件工具验证
 
-## 11 月 22 日交付 · S01–S06
+## 11 月 22 日完整复跑
+
+**B 的三框架控制验证已达到 T0.4 的数字要求。** 在主线 `3dc4919` 基础上，用提交 `65a09fe` 跑完 36/36 个框架与场景组合、108/108 次离线执行。随后在三个 SDK 的模型步骤分别接入 DeepSeek 官方 `deepseek-flash`，每个框架 3/3 次由模型实际返回工具调用，合计 9/9。离线、在线和下方 M1 接口核对分别计数。团队 M0 退出还需要非作者复核、全仓回归和本机启动验收。[M0 计划](../../plan/TemisGuard-v2.7_M0基线建设详细计划_2026-11-18.md) · [108 次逐条结果](b-m0-s01-s12-results.json) · [9 次模型实测](b-m0-deepseek-results.json)
+
+|场景|openJiuwen|LangGraph|Agents SDK|实际观察|
+|---|---:|---:|---:|---|
+|S01 允许|3/3|3/3|3/3|按原参数写一条，SDK 收到相同回执|
+|S02 拒绝|3/3|3/3|3/3|零调用、空目录、一条拒绝回执|
+|S03 改写|3/3|3/3|3/3|只有 `approved.txt` 被写入|
+|S04 等待后批准|3/3|3/3|3/3|审批时目录为空，批准后只执行一次|
+|S05 等待后拒绝|3/3|3/3|3/3|零写入，只有拒绝回执|
+|S06 高危超时|3/3|3/3|3/3|测试时钟到期后拒绝，零写入|
+|S07 工具异常|3/3|3/3|3/3|目标被同名目录占用，真实写入尝试一次，失败终态一次|
+|S08 等待时取消|3/3|3/3|3/3|取消正在等待的 SDK 任务，终态唯一，迟到的批准无效，零写入|
+|S09 十任务并发|3/3|3/3|3/3|9 轮均让 10 个调用同时进入工具，再核对每个任务的编号、参数和文件，90 个任务归属错误 0|
+|S10 中断恢复|3/3|3/3|3/3|用各 SDK 返回的中断标识继续，同一个业务任务和运行从第 1 段到第 2 段，恢复后才写|
+|S11 父子委派|3/3|3/3|3/3|父、子运行独立编号，只有子任务写文件，父任务只收到委派回执|
+|S12 已声明副作用但未分类|3/3|3/3|3/3|每次在工具写入前记录一条 `UNHOOKED`，标为 `gate=NONE`，并在临时目录观察到实际写入|
+
+108 次场景执行共包含 198 个不同的调用编号和 36 个宿主审批编号。S09 每次包含十个调用，S11 每次包含父、子两个调用。S10 的框架中断标识单独保存。审批测试覆盖原参数、错误绑定、重复批准和过期应答。S10 是同一进程内的框架中断与继续。[审批测试](../../../scripts/spikes/b_m0/test_approval.py) · [生命周期场景](../../../scripts/spikes/b_m0/lifecycle.py)
+
+三个 SDK 共用 `guarded_call`。openJiuwen 通过注册的 `LocalFunction`，S10 使用 `ConfirmInterruptRail`。LangGraph 通过 `ToolNode`，S10 使用带检查点的 `interrupt`。Agents SDK 通过 `function_tool`，S10 使用 `RunState` 的审批，S11 使用原生 `handoff`。前两者的 S11 由已注册的委派工具启动另一个真实 SDK 调用。[框架接入代码](../../../scripts/spikes/b_m0/adapters.py)
+
+**覆盖边界。** openJiuwen 中另外注册且没有经过包装的工具、LangGraph 中直接执行 I/O 的普通节点、Agents SDK 的托管工具（如 `FileSearchTool`），以及外部进程和 MCP 服务内部写入，都在本轮分母之外。新增一种工具时，要在它的实际执行入口接上同一个门控，再用该工具的外部结果验证放行与拒绝。S12 只能观察已经声明副作用且经过入口的工具。A 的 M1 账本中 `NONE` 单独记录事实，正式执行需要取得授权。
+
+**真实模型计数。** 九个不同的服务端响应各返回了一个 `write_probe` 调用。逐条核对了模型返回的参数、SDK 回传的调用编号及临时文件中的唯一回执。每个案例只发出一次模型请求，模型返回名均为 `deepseek-flash`。报告保存响应编号摘要、调用编号和用量。运行命令需要显式传入本机配置。[实测入口](../../../scripts/spikes/b_m0/online.py) · [脱敏结果](b-m0-deepseek-results.json)
+
+### B 对 M1 账本的接口核对
+
+用 A 已提交的 `TaskRegistry` 把 S09–S11 的三框架观测写入新 SQLite 库，再从独立连接读回。90 个并发任务身份、9 次原运行恢复、9 对父子关系逐项吻合，重复提交创建事件后仍只有 126 条注册或恢复事件。这部分是对已采样身份的回放。下表的六项另用真实 openJiuwen 工具，在它的回调当场读写 SQLite。[六项结果](b-m1-consumer-results.json) · [复跑脚本](../../../scripts/spikes/b_m0/ledger_probe.py)
+
+|工具执行条件|回调、账本和磁盘的结果|
+|---|---|
+|允许|工具写文件前，从另一连接已能读到 `GATE_DECIDED`、`EXEC_STARTED`。结束后读到 `EXEC_FINISHED` 和匹配的结果快照。同一决策再试被拒，只有一行文件。|
+|改写并重新判定|仍用同一 `decision_id`。账本先记录原摘要、改写摘要及 `REWRITE_VALIDATED`，回调只写改写目标一次。|
+|改写后的参数被换回|重判失败，已落盘的意图可查，执行启动记录和文件均为零。|
+|直接拒绝|意图可查，执行启动被账本拒绝，零写入。|
+|缺规则快照或段号已过期（两项）|两种输入都在意图提交时被挡下，意图、执行启动和文件均为零。|
+
+复核一个改写时，按 `sdk_call_id` 找对应的业务 `decision_id`、`run_id` 和当前 `segment`。A 的结果证据 `input_digest` 保留原参数摘要。B 在意图 `args_after` 和 `REWRITE_VALIDATED.args_digest` 中保存本次重判的摘要，两者都要与工具实际收到的参数一致。进入网页审批联调时，还需要 D 的服务端身份和审批应答，并绑定同一个业务决策、审批编号及参数摘要。此次使用 B 的固定测试规则与本机文件工具。[A 的四记录契约](../../plan/成员A_M1四记录契约说明.md) · [D 的事件流契约](../../api/v27-execution-stream-frontend-contract.md)
+
+M0 内存审批使用固定单字段参数的 SHA-256 十六进制串。上表的 M1 核对使用 A 的 RFC 8785 规范化与 `sha256:` 前缀。后续接真实审批时，由服务端生成统一摘要，并将 D 请求中的 `approved_args_digest` 与对应意图逐字比较。前端沿用服务端下发的值。[D 的审批字段](../../api/v27-approval-frontend-contract.md)
+
+### 环境、复跑与待复核项
+
+openJiuwen `0.1.20.post1` 使用 A 的 174 项锁，本机 Python `3.12.14`。LangGraph `1.2.22` 与 Agents SDK `0.25.0` 的联合候选环境从空目录重建两次，两次 `pip check` 均通过，61 项安装清单逐项吻合。两次 pip 安装日志从创建到最后写入约 55 秒和 31 秒，第二次使用了已下载的包。每个 SDK 的 CPU、工作集、磁盘字节和总耗时见独立离线复跑。场景报告保留门控、文件和等待的分项耗时，并发等待可能重叠，不能把各项累加成单次规则延迟。[候选包清单](b-m0-langgraph-agents-installed.json) · [Windows 实测](b-m0-windows-profile.json)
+
+以下命令从仓库根目录运行。`$fw` 指向按 61 项清单安装的环境，`$jw` 指向用 A 的 jiuwen 配置安装的环境。`--suite m0` 是完整矩阵，历史 `--suite all` 仍复跑 S01–S06。可以直接用已提交的矩阵复核 M1。最后一条会使用本机 DeepSeek 额度。
+
+```powershell
+$jw = '.\.venv-m0-jiuwen\Scripts\python.exe'
+$fw = '.\.venv-b-m0-rebuild-one\Scripts\python.exe'
+& $fw -B scripts/spikes/b_m0/run.py --suite m0 --openjiuwen-python $jw --jiuwen-lock requirements/m0-jiuwen-py312.lock.txt
+& $jw -B -m unittest discover -v -s scripts/spikes/b_m0 -p 'test_*.py'
+& $jw -B scripts/spikes/b_m0/ledger_probe.py --matrix docs/reviews/baseline/b-m0-s01-s12-results.json
+& ./scripts/spikes/b_m0/profile_windows.ps1 -JiuwenPython $jw -FrameworkPython $fw
+& $jw -B scripts/spikes/b_m0/online.py --env-file .env --langgraph-python $fw --agents-python $fw
+```
+
+离线完整入口、SDK 调用失败、解释器缺失和输出路径指向普通文件都有对应非零/零退出检查。完整矩阵和 M1 报告的源代码哈希逐项与对应 Git 提交比对。复跑会在 `outputs/b-m0/` 新建目录，包含逐次实际文件和回执。正式结果 JSON 中的 `directory`、`details` 都相对于当次运行目录。
+
+本次全仓 Python 回归仍为 **855 通过、1 失败、14 条告警**。已有失败 `test_ui_source_is_read_only` 将七个前端命令模块命中 `WRITE_METHOD`，详情见下方早期复核。B 的六项边界测试全部通过。T0.5 的本机启停脚本与端点清单尚待 D 提交，届时 B 可连续三轮启停复核。A、D 对控制边界的评审，以及 C、D 对只读规则的核对，保留为团队待办。
+
+## 11 月 22 日早期记录 · S01–S06
 
 在主线 `3dc4919` 上，先用 #10 原样脚本复跑了 S01–S03，三框架合计 27/27。再用 B 提交 `19f4561` 将六个场景一起跑完，共 18 个框架场景组合、54/54 次执行、54 个不同的工具调用编号。下表每格是同一框架、同一场景的三次独立运行。[原版复跑摘要](b-m0-s01-s03-main-rerun.json) · [54 次逐条报告](b-m0-s01-s06-results.json)
 
