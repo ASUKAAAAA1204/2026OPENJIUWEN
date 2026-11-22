@@ -1,0 +1,37 @@
+{
+  "format": "b-m0-windows-profile-v1",
+  "completed_at": "2026-11-22T08:48:42.2210975+00:00",
+  "git_head": "834b5aead5f191a94e7678566779c8b0b365441f",
+  "script_sha256": "b6d76ef6230c870b3a7419ec296eecd92186a0810217b6b2567a39c57973d55b",
+  "sampling_interval_ms": 50,
+  "online_model_calls": 0,
+  "frameworks": [
+    {
+      "framework": "openjiuwen",
+      "trials": 36,
+      "worker_wall_ns": 6756438100,
+      "worker_cpu_ns": 3671875000,
+      "sampled_peak_working_set_bytes": 267243520,
+      "scenario_files_bytes": 4497.0,
+      "including_startup_ms": 7857
+    },
+    {
+      "framework": "langgraph",
+      "trials": 36,
+      "worker_wall_ns": 4018579400,
+      "worker_cpu_ns": 1000000000,
+      "sampled_peak_working_set_bytes": 78221312,
+      "scenario_files_bytes": 4497.0,
+      "including_startup_ms": 4387
+    },
+    {
+      "framework": "agents",
+      "trials": 36,
+      "worker_wall_ns": 4580665600,
+      "worker_cpu_ns": 1546875000,
+      "sampled_peak_working_set_bytes": 108871680,
+      "scenario_files_bytes": 4497.0,
+      "including_startup_ms": 5188
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "format": "b-m1-consumer-v1",
+  "completed_at": "2026-11-22T08:45:24.875491+00:00",
+  "git_head": "7203ec46b6502a9a1f898cefe7d13a99ac2e7921",
+  "script_sha256": "f4497e4ef98fabb5eeb3bf655162c9de71b4beacca6bd68ce3e755b628487b9d",
+  "matrix_canonical_sha256": "sha256:85e6b6ef26bd46ea04c374b929ccffaef5d819955206be31ac20dbc56e389a02",
+  "matrix_source_head": "65a09fef0833af73e924675d26d2606744a03599",
+  "sdk_for_journal_cases": "openjiuwen",
+  "online_model_calls": 0,
+  "identities": {
+    "concurrent_tasks": 90,
+    "resumes": 9,
+    "parent_child_pairs": 9,
+    "scenarios_replayed": 27,
+    "registry_events_after_idempotent_retries": 126
+  },
+  "journal_cases": [
+    {
+      "case": "allow",
+      "sdk_call_id": "call-27c5e78ebb794b79b9968254aa9694a8",
+      "decision_id": "decision-60126675e289443798be862ee1fa6afa",
+      "run_id": "run-f97513ab4a2a4172ae3ee49b19b94538",
+      "original_args_digest": "sha256:f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+      "actual_args_digest": "sha256:f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+      "evidence_input_digest": "sha256:f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+      "persisted_types_before_write": [
+        "GATE_DECIDED",
+        "EXEC_STARTED"
+      ],
+      "persisted_types_after": [
+        "GATE_DECIDED",
+        "EXEC_STARTED",
+        "EXEC_FINISHED"
+      ],
+      "disk": {
+        "requested.txt": [
+          "written:call-27c5e78ebb794b79b9968254aa9694a8:requested.txt:7de33590f06a45f99671bfcb83391a44"
+        ]
+      },
+      "blocked_by": null,
+      "repeat_rejected": true,
+      "passed": true
+    },
+    {
+      "case": "rewrite",
+      "sdk_call_id": "call-584ac75e12ed4c878f7fa4e35d158444",
+      "decision_id": "decision-06de5c9854f1410095fd4574ff3fc114",
+      "run_id": "run-62242e4faa074b6ca1182e8e59d11520",
+      "original_args_digest": "sha256:f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+      "actual_args_digest": "sha256:4e83d61269e2538f56609591918c8097d7f21faf2a44466f7a70a74761ade228",
+      "evidence_input_digest": "sha256:f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+      "persisted_types_before_write": [
+        "GATE_DECIDED",
+        "REWRITE_VALIDATED",
+        "EXEC_STARTED"
+      ],
+      "persisted_types_after": [
+        "GATE_DECIDED",
+        "REWRITE_VALIDATED",
+        "EXEC_STARTED",
+        "EXEC_FINISHED"
+      ],
+      "disk": {
+        "approved.txt": [
+          "written:call-584ac75e12ed4c878f7fa4e35d158444:approved.txt:439a2cab45464af88247558f75ed1381"
+        ]
+      },
+      "blocked_by": null,
+      "repeat_rejected": true,
+      "passed": true
+    },
+    {
+      "case": "rewrite_mismatch",
+      "sdk_call_id": "call-57c0bae9d74e4a3789af5217713ed38f",
+      "decision_id": "decision-8846ab2893364e7fa32bd94c01084875",
+      "run_id": "run-4edb69402a044c2490c3e9d542bdaea0",
+      "original_args_digest": "sha256:f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+      "actual_args_digest": null,
+      "evidence_input_digest": null,
+      "persisted_types_before_write": [],
+      "persisted_types_after": [
+        "GATE_DECIDED"
+      ],
+      "disk": {},
+      "blocked_by": "RecheckRejected",
+      "repeat_rejected": null,
+      "passed": true
+    },
+    {
+      "case": "deny",
+      "sdk_call_id": "call-3156146f62654a218f836fb41bad7e14",
+      "decision_id": "decision-3afbef5578ab4ea6853a903bf3a78469",
+      "run_id": "run-b37dccbcad0445108ab258e66f284251",
+      "original_args_digest": "sha256:f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+      "actual_args_digest": null,
+      "evidence_input_digest": null,
+      "persisted_types_before_write": [],
+      "persisted_types_after": [
+        "GATE_DECIDED"
+      ],
+      "disk": {},
+      "blocked_by": "TransitionError",
+      "repeat_rejected": null,
+      "passed": true
+    },
+    {
+      "case": "missing_snapshot",
+      "sdk_call_id": "call-aeeb7d5808bf486889c6e9741ce4b304",
+      "decision_id": "decision-407f1d16faa343588e2170772d2d525b",
+      "run_id": "run-70b8f4718eab4b59a31159e835c67854",
+      "original_args_digest": "sha256:f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+      "actual_args_digest": null,
+      "evidence_input_digest": null,
+      "persisted_types_before_write": [],
+      "persisted_types_after": [],
+      "disk": {},
+      "blocked_by": "SnapshotError",
+      "repeat_rejected": null,
+      "passed": true
+    },
+    {
+      "case": "stale_segment",
+      "sdk_call_id": "call-9764b4e471a0420d81a80399a5669005",
+      "decision_id": "decision-b0dc99c9d83148328aa672360ff79713",
+      "run_id": "run-2ae5b88df3ea4058addb495ae0ec5939",
+      "original_args_digest": "sha256:f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+      "actual_args_digest": null,
+      "evidence_input_digest": null,
+      "persisted_types_before_write": [],
+      "persisted_types_after": [],
+      "disk": {},
+      "blocked_by": "TransitionError",
+      "repeat_rejected": null,
+      "passed": true
+    }
+  ],
+  "passed": true
+}

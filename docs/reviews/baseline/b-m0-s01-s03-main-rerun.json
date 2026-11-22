@@ -1,0 +1,50 @@
+{
+  "format": "b-m0-control-points-v1",
+  "scope": "registered local tool, S01/S02/S03 preflight",
+  "completed_at": "2026-11-22T07:42:39.337475+00:00",
+  "git_head": "3dc49194fcbe6f5d0a4dba7f3f5409951cea2928",
+  "os": "Windows-11-10.0.26200-SP0",
+  "sources_sha256": {
+    "run.py": "c41008ffbc682e4a03bbc22a06dda7a6cef602c6cb823a7f66c8b4037609503c",
+    "adapters.py": "e4e329b96d7ba5af6708d53fe431876a77477e5210a8fbf427493c145c376a69",
+    "worker.py": "c91e227648197cf7503589ecaab76d0e37c0995d5d0126fcd8f0db1ca9845985"
+  },
+  "frameworks": [
+    {
+      "framework": "openjiuwen",
+      "passed": true,
+      "executions_passed": 9,
+      "scenarios_passed": 3,
+      "executions_measured": 9,
+      "sdk_version": "0.1.20.post1",
+      "python": "3.12.14",
+      "details": "openjiuwen/result.json"
+    },
+    {
+      "framework": "langgraph",
+      "passed": true,
+      "executions_passed": 9,
+      "scenarios_passed": 3,
+      "executions_measured": 9,
+      "sdk_version": "1.2.22",
+      "python": "3.12.14",
+      "details": "langgraph/result.json"
+    },
+    {
+      "framework": "agents",
+      "passed": true,
+      "executions_passed": 9,
+      "scenarios_passed": 3,
+      "executions_measured": 9,
+      "sdk_version": "0.25.0",
+      "python": "3.12.14",
+      "details": "agents/result.json"
+    }
+  ],
+  "scenarios_passed": 9,
+  "scenarios_requested": 9,
+  "executions_passed": 27,
+  "executions_requested": 27,
+  "online_model_calls": 0,
+  "preflight_passed": true
+}
