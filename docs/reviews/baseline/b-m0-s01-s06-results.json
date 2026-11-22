@@ -1,0 +1,2617 @@
+{
+  "format": "b-m0-control-points-v2",
+  "scope": "registered local tool, S01/S02/S03/S04/S05/S06 preflight",
+  "completed_at": "2026-11-22T07:48:24.485106+00:00",
+  "git_head": "19f456149f984e8067980bcd6bdbfe801d52cc0a",
+  "os": "Windows-11-10.0.26200-SP0",
+  "sources_sha256": {
+    "run.py": "d3568a38c4710036716d570eb42ce04544bcdf2e8135d7b9e58e4d3c4e1d85a1",
+    "adapters.py": "0cd71a1e3a4b27ed1738adaeafaa618f7a1edf057b16c184836e90f391821075",
+    "worker.py": "eae3c0801cb51faccbaaac4ac412890a80cf16b93af0b9aca8db91b47273cbec",
+    "approval.py": "b90c9c1d5f2ddcb574f92826d51e2952dfe55ccff6cb388fb579a0fab24217b8"
+  },
+  "frameworks": [
+    {
+      "framework": "openjiuwen",
+      "passed": true,
+      "executions_passed": 18,
+      "scenarios_passed": 6,
+      "executions_measured": 18,
+      "sdk_version": "0.1.20.post1",
+      "mcp_version": "1.30.0",
+      "python": "3.12.14",
+      "model_input": "scripted_tool_request",
+      "installed_versions_sha256": "dcb64b509889f700463fa05e3e24f617fda7c994412945032ddc75bd17263c97",
+      "installed_versions_verified": true,
+      "details": "openjiuwen/result.json",
+      "trials": [
+        {
+          "scenario": "S01",
+          "decision": "ALLOW",
+          "repeat": 1,
+          "directory": "S01-1",
+          "call_id": "call-b7839a239abd4492aec583506128692a",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-b7839a239abd4492aec583506128692a:requested.txt:02fb1a53e6df481abdfc857b111d7ce8"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-b7839a239abd4492aec583506128692a:requested.txt:02fb1a53e6df481abdfc857b111d7ce8"
+          ],
+          "sdk_replies": [
+            [
+              "call-b7839a239abd4492aec583506128692a",
+              "written:call-b7839a239abd4492aec583506128692a:requested.txt:02fb1a53e6df481abdfc857b111d7ce8"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S02",
+          "decision": "DENY",
+          "repeat": 1,
+          "directory": "S02-1",
+          "call_id": "call-be3a9d1e2e994b398744ea65531a8c5e",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-be3a9d1e2e994b398744ea65531a8c5e"
+          ],
+          "sdk_replies": [
+            [
+              "call-be3a9d1e2e994b398744ea65531a8c5e",
+              "denied:call-be3a9d1e2e994b398744ea65531a8c5e"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S03",
+          "decision": "REWRITE",
+          "repeat": 1,
+          "directory": "S03-1",
+          "call_id": "call-897ba662f1dc420a8d2394eb74d86092",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "approved.txt": [
+              "written:call-897ba662f1dc420a8d2394eb74d86092:approved.txt:d3456275d6c2445fa802da0482190688"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "approved.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-897ba662f1dc420a8d2394eb74d86092:approved.txt:d3456275d6c2445fa802da0482190688"
+          ],
+          "sdk_replies": [
+            [
+              "call-897ba662f1dc420a8d2394eb74d86092",
+              "written:call-897ba662f1dc420a8d2394eb74d86092:approved.txt:d3456275d6c2445fa802da0482190688"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S04",
+          "decision": "ASK",
+          "repeat": 1,
+          "directory": "S04-1",
+          "call_id": "call-96d4e40fe3d24e219907140ffe795f62",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-96d4e40fe3d24e219907140ffe795f62:requested.txt:5bdb1b2cfc99484c81784be8ba596bcc"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-96d4e40fe3d24e219907140ffe795f62:requested.txt:5bdb1b2cfc99484c81784be8ba596bcc"
+          ],
+          "sdk_replies": [
+            [
+              "call-96d4e40fe3d24e219907140ffe795f62",
+              "written:call-96d4e40fe3d24e219907140ffe795f62:requested.txt:5bdb1b2cfc99484c81784be8ba596bcc"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "37a1490cc55946c2b1361f0ea0b6724c",
+              "call_id": "call-96d4e40fe3d24e219907140ffe795f62",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "approve",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "37a1490cc55946c2b1361f0ea0b6724c",
+              "call_id": "call-96d4e40fe3d24e219907140ffe795f62",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "approve",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S05",
+          "decision": "ASK",
+          "repeat": 1,
+          "directory": "S05-1",
+          "call_id": "call-d484b2ada1dd4b9e9819f19956b1ae2f",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-d484b2ada1dd4b9e9819f19956b1ae2f"
+          ],
+          "sdk_replies": [
+            [
+              "call-d484b2ada1dd4b9e9819f19956b1ae2f",
+              "denied:call-d484b2ada1dd4b9e9819f19956b1ae2f"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "2cd256710d704f74a87bf9dbeb9f2003",
+              "call_id": "call-d484b2ada1dd4b9e9819f19956b1ae2f",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "reject",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "2cd256710d704f74a87bf9dbeb9f2003",
+              "call_id": "call-d484b2ada1dd4b9e9819f19956b1ae2f",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "reject",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S06",
+          "decision": "ASK",
+          "repeat": 1,
+          "directory": "S06-1",
+          "call_id": "call-898c829f16834a5194e13da3ae5678db",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "timeout_denied:call-898c829f16834a5194e13da3ae5678db"
+          ],
+          "sdk_replies": [
+            [
+              "call-898c829f16834a5194e13da3ae5678db",
+              "timeout_denied:call-898c829f16834a5194e13da3ae5678db"
+            ]
+          ],
+          "approval": {
+            "response": null,
+            "request": {
+              "approval_id": "d747871eb747402e9e0eb7765d6b1a11",
+              "call_id": "call-898c829f16834a5194e13da3ae5678db",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "timeout",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 1.0160000000000764
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S01",
+          "decision": "ALLOW",
+          "repeat": 2,
+          "directory": "S01-2",
+          "call_id": "call-c60beea783194ce4a286bafc10c67837",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-c60beea783194ce4a286bafc10c67837:requested.txt:9b9808923256473bbf90f974ec443f19"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-c60beea783194ce4a286bafc10c67837:requested.txt:9b9808923256473bbf90f974ec443f19"
+          ],
+          "sdk_replies": [
+            [
+              "call-c60beea783194ce4a286bafc10c67837",
+              "written:call-c60beea783194ce4a286bafc10c67837:requested.txt:9b9808923256473bbf90f974ec443f19"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S02",
+          "decision": "DENY",
+          "repeat": 2,
+          "directory": "S02-2",
+          "call_id": "call-72e801ab10d042fcbd2a8eab8e8154e0",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-72e801ab10d042fcbd2a8eab8e8154e0"
+          ],
+          "sdk_replies": [
+            [
+              "call-72e801ab10d042fcbd2a8eab8e8154e0",
+              "denied:call-72e801ab10d042fcbd2a8eab8e8154e0"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S03",
+          "decision": "REWRITE",
+          "repeat": 2,
+          "directory": "S03-2",
+          "call_id": "call-e02e11a9dc2547949e5b7af9f3620e9e",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "approved.txt": [
+              "written:call-e02e11a9dc2547949e5b7af9f3620e9e:approved.txt:be12cd578f8f411cb7e9ae075a416f91"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "approved.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-e02e11a9dc2547949e5b7af9f3620e9e:approved.txt:be12cd578f8f411cb7e9ae075a416f91"
+          ],
+          "sdk_replies": [
+            [
+              "call-e02e11a9dc2547949e5b7af9f3620e9e",
+              "written:call-e02e11a9dc2547949e5b7af9f3620e9e:approved.txt:be12cd578f8f411cb7e9ae075a416f91"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S04",
+          "decision": "ASK",
+          "repeat": 2,
+          "directory": "S04-2",
+          "call_id": "call-c21654e842af4053aadb1822feb28c1c",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-c21654e842af4053aadb1822feb28c1c:requested.txt:5d0297840746402f8e40aa5d75618426"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-c21654e842af4053aadb1822feb28c1c:requested.txt:5d0297840746402f8e40aa5d75618426"
+          ],
+          "sdk_replies": [
+            [
+              "call-c21654e842af4053aadb1822feb28c1c",
+              "written:call-c21654e842af4053aadb1822feb28c1c:requested.txt:5d0297840746402f8e40aa5d75618426"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "7be936710f6e468186c07230a504d63c",
+              "call_id": "call-c21654e842af4053aadb1822feb28c1c",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "approve",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "7be936710f6e468186c07230a504d63c",
+              "call_id": "call-c21654e842af4053aadb1822feb28c1c",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "approve",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S05",
+          "decision": "ASK",
+          "repeat": 2,
+          "directory": "S05-2",
+          "call_id": "call-53f4db4f7c61447397295e574422a911",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-53f4db4f7c61447397295e574422a911"
+          ],
+          "sdk_replies": [
+            [
+              "call-53f4db4f7c61447397295e574422a911",
+              "denied:call-53f4db4f7c61447397295e574422a911"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "e9687686ef3d4498b0f4d7e514ea6352",
+              "call_id": "call-53f4db4f7c61447397295e574422a911",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "reject",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "e9687686ef3d4498b0f4d7e514ea6352",
+              "call_id": "call-53f4db4f7c61447397295e574422a911",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "reject",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S06",
+          "decision": "ASK",
+          "repeat": 2,
+          "directory": "S06-2",
+          "call_id": "call-0d30733cfab2478886859935d3eaaa30",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "timeout_denied:call-0d30733cfab2478886859935d3eaaa30"
+          ],
+          "sdk_replies": [
+            [
+              "call-0d30733cfab2478886859935d3eaaa30",
+              "timeout_denied:call-0d30733cfab2478886859935d3eaaa30"
+            ]
+          ],
+          "approval": {
+            "response": null,
+            "request": {
+              "approval_id": "067e5a1731de40b8becba43dce1aefae",
+              "call_id": "call-0d30733cfab2478886859935d3eaaa30",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "timeout",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 1.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S01",
+          "decision": "ALLOW",
+          "repeat": 3,
+          "directory": "S01-3",
+          "call_id": "call-64b6d08a7b2d4338bb0f92a676d1a2e9",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-64b6d08a7b2d4338bb0f92a676d1a2e9:requested.txt:4c56fb7264194e4f993378eca3a4eba2"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-64b6d08a7b2d4338bb0f92a676d1a2e9:requested.txt:4c56fb7264194e4f993378eca3a4eba2"
+          ],
+          "sdk_replies": [
+            [
+              "call-64b6d08a7b2d4338bb0f92a676d1a2e9",
+              "written:call-64b6d08a7b2d4338bb0f92a676d1a2e9:requested.txt:4c56fb7264194e4f993378eca3a4eba2"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S02",
+          "decision": "DENY",
+          "repeat": 3,
+          "directory": "S02-3",
+          "call_id": "call-83de92dc1bb64d5d95750bcedf5623c7",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-83de92dc1bb64d5d95750bcedf5623c7"
+          ],
+          "sdk_replies": [
+            [
+              "call-83de92dc1bb64d5d95750bcedf5623c7",
+              "denied:call-83de92dc1bb64d5d95750bcedf5623c7"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S03",
+          "decision": "REWRITE",
+          "repeat": 3,
+          "directory": "S03-3",
+          "call_id": "call-3065ad56b3cd4c9e93d94bbc4175c203",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "approved.txt": [
+              "written:call-3065ad56b3cd4c9e93d94bbc4175c203:approved.txt:4d2e4f8218854bbf8b6e4c167eb8254c"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "approved.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-3065ad56b3cd4c9e93d94bbc4175c203:approved.txt:4d2e4f8218854bbf8b6e4c167eb8254c"
+          ],
+          "sdk_replies": [
+            [
+              "call-3065ad56b3cd4c9e93d94bbc4175c203",
+              "written:call-3065ad56b3cd4c9e93d94bbc4175c203:approved.txt:4d2e4f8218854bbf8b6e4c167eb8254c"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S04",
+          "decision": "ASK",
+          "repeat": 3,
+          "directory": "S04-3",
+          "call_id": "call-8aff4bfaf53244b292538402651c73a5",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-8aff4bfaf53244b292538402651c73a5:requested.txt:6a0f08c4cdab460083fe9543ba2f220c"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-8aff4bfaf53244b292538402651c73a5:requested.txt:6a0f08c4cdab460083fe9543ba2f220c"
+          ],
+          "sdk_replies": [
+            [
+              "call-8aff4bfaf53244b292538402651c73a5",
+              "written:call-8aff4bfaf53244b292538402651c73a5:requested.txt:6a0f08c4cdab460083fe9543ba2f220c"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "22264bdd9dff4ab48c3a664fc183d12d",
+              "call_id": "call-8aff4bfaf53244b292538402651c73a5",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "approve",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "22264bdd9dff4ab48c3a664fc183d12d",
+              "call_id": "call-8aff4bfaf53244b292538402651c73a5",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "approve",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S05",
+          "decision": "ASK",
+          "repeat": 3,
+          "directory": "S05-3",
+          "call_id": "call-8b6b4cae5b814afb97ca97b6f8307ef3",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-8b6b4cae5b814afb97ca97b6f8307ef3"
+          ],
+          "sdk_replies": [
+            [
+              "call-8b6b4cae5b814afb97ca97b6f8307ef3",
+              "denied:call-8b6b4cae5b814afb97ca97b6f8307ef3"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "4c685cf8eef64f96b465d29015243061",
+              "call_id": "call-8b6b4cae5b814afb97ca97b6f8307ef3",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "reject",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "4c685cf8eef64f96b465d29015243061",
+              "call_id": "call-8b6b4cae5b814afb97ca97b6f8307ef3",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "reject",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S06",
+          "decision": "ASK",
+          "repeat": 3,
+          "directory": "S06-3",
+          "call_id": "call-ccc1162de15f4ce0967f095cc2e5f514",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "timeout_denied:call-ccc1162de15f4ce0967f095cc2e5f514"
+          ],
+          "sdk_replies": [
+            [
+              "call-ccc1162de15f4ce0967f095cc2e5f514",
+              "timeout_denied:call-ccc1162de15f4ce0967f095cc2e5f514"
+            ]
+          ],
+          "approval": {
+            "response": null,
+            "request": {
+              "approval_id": "476a90ff93dc437bb6d700e91abbc67a",
+              "call_id": "call-ccc1162de15f4ce0967f095cc2e5f514",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "timeout",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 1.0
+          },
+          "passed": true
+        }
+      ],
+      "team_lock": {
+        "file": "m0-jiuwen-py312.lock.txt",
+        "sha256": "f9dc3d26d077e8c5e97e3ffda9cfb38b47333d2cf0908f88f302ddf87d5d7670",
+        "pins": 174,
+        "matching": 174,
+        "differences": {},
+        "unexpected": [],
+        "passed": true
+      }
+    },
+    {
+      "framework": "langgraph",
+      "passed": true,
+      "executions_passed": 18,
+      "scenarios_passed": 6,
+      "executions_measured": 18,
+      "sdk_version": "1.2.22",
+      "mcp_version": "2.3.0",
+      "python": "3.12.14",
+      "model_input": "scripted_tool_request",
+      "installed_versions_sha256": "e7ecfb311bd87e3a9749be30a1b517dff428d5e2170654c6c2f50e233ea8c290",
+      "installed_versions_verified": true,
+      "details": "langgraph/result.json",
+      "trials": [
+        {
+          "scenario": "S01",
+          "decision": "ALLOW",
+          "repeat": 1,
+          "directory": "S01-1",
+          "call_id": "call-f15216cf202c4ff8bad284bee734f85c",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-f15216cf202c4ff8bad284bee734f85c:requested.txt:796c53e57fe241f5a83a56070f1372af"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-f15216cf202c4ff8bad284bee734f85c:requested.txt:796c53e57fe241f5a83a56070f1372af"
+          ],
+          "sdk_replies": [
+            [
+              "call-f15216cf202c4ff8bad284bee734f85c",
+              "written:call-f15216cf202c4ff8bad284bee734f85c:requested.txt:796c53e57fe241f5a83a56070f1372af"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S02",
+          "decision": "DENY",
+          "repeat": 1,
+          "directory": "S02-1",
+          "call_id": "call-daee73d751e048fcb9f7b8beda3983c1",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-daee73d751e048fcb9f7b8beda3983c1"
+          ],
+          "sdk_replies": [
+            [
+              "call-daee73d751e048fcb9f7b8beda3983c1",
+              "denied:call-daee73d751e048fcb9f7b8beda3983c1"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S03",
+          "decision": "REWRITE",
+          "repeat": 1,
+          "directory": "S03-1",
+          "call_id": "call-7a1ff8e816484f609f8f91641186fe39",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "approved.txt": [
+              "written:call-7a1ff8e816484f609f8f91641186fe39:approved.txt:c9b2e566a6bd46aca238fae7f473b387"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "approved.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-7a1ff8e816484f609f8f91641186fe39:approved.txt:c9b2e566a6bd46aca238fae7f473b387"
+          ],
+          "sdk_replies": [
+            [
+              "call-7a1ff8e816484f609f8f91641186fe39",
+              "written:call-7a1ff8e816484f609f8f91641186fe39:approved.txt:c9b2e566a6bd46aca238fae7f473b387"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S04",
+          "decision": "ASK",
+          "repeat": 1,
+          "directory": "S04-1",
+          "call_id": "call-e5eebf33f68344aa94cc0829ba482fc6",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-e5eebf33f68344aa94cc0829ba482fc6:requested.txt:981dd2c4958246069154c60015a87fd1"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-e5eebf33f68344aa94cc0829ba482fc6:requested.txt:981dd2c4958246069154c60015a87fd1"
+          ],
+          "sdk_replies": [
+            [
+              "call-e5eebf33f68344aa94cc0829ba482fc6",
+              "written:call-e5eebf33f68344aa94cc0829ba482fc6:requested.txt:981dd2c4958246069154c60015a87fd1"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "ab3c868899764629854d0897dd4e90da",
+              "call_id": "call-e5eebf33f68344aa94cc0829ba482fc6",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "approve",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "ab3c868899764629854d0897dd4e90da",
+              "call_id": "call-e5eebf33f68344aa94cc0829ba482fc6",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "approve",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S05",
+          "decision": "ASK",
+          "repeat": 1,
+          "directory": "S05-1",
+          "call_id": "call-87aa04df2fd54ecf8da60d6b29ca955b",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-87aa04df2fd54ecf8da60d6b29ca955b"
+          ],
+          "sdk_replies": [
+            [
+              "call-87aa04df2fd54ecf8da60d6b29ca955b",
+              "denied:call-87aa04df2fd54ecf8da60d6b29ca955b"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "070fd5d83ad246998dc9cec2010c871d",
+              "call_id": "call-87aa04df2fd54ecf8da60d6b29ca955b",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "reject",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "070fd5d83ad246998dc9cec2010c871d",
+              "call_id": "call-87aa04df2fd54ecf8da60d6b29ca955b",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "reject",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S06",
+          "decision": "ASK",
+          "repeat": 1,
+          "directory": "S06-1",
+          "call_id": "call-14c0443db045453c831dc5598b29f479",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "timeout_denied:call-14c0443db045453c831dc5598b29f479"
+          ],
+          "sdk_replies": [
+            [
+              "call-14c0443db045453c831dc5598b29f479",
+              "timeout_denied:call-14c0443db045453c831dc5598b29f479"
+            ]
+          ],
+          "approval": {
+            "response": null,
+            "request": {
+              "approval_id": "c81ba74aa4594ed387a29dda42abfeb5",
+              "call_id": "call-14c0443db045453c831dc5598b29f479",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "timeout",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 1.0149999999998727
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S01",
+          "decision": "ALLOW",
+          "repeat": 2,
+          "directory": "S01-2",
+          "call_id": "call-8f49a1fba1d745caaae136164d007c62",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-8f49a1fba1d745caaae136164d007c62:requested.txt:6aa5a05e5cf7477abb02432dc23b9f7d"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-8f49a1fba1d745caaae136164d007c62:requested.txt:6aa5a05e5cf7477abb02432dc23b9f7d"
+          ],
+          "sdk_replies": [
+            [
+              "call-8f49a1fba1d745caaae136164d007c62",
+              "written:call-8f49a1fba1d745caaae136164d007c62:requested.txt:6aa5a05e5cf7477abb02432dc23b9f7d"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S02",
+          "decision": "DENY",
+          "repeat": 2,
+          "directory": "S02-2",
+          "call_id": "call-047f816f2c064147a1e584fbe5141f4e",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-047f816f2c064147a1e584fbe5141f4e"
+          ],
+          "sdk_replies": [
+            [
+              "call-047f816f2c064147a1e584fbe5141f4e",
+              "denied:call-047f816f2c064147a1e584fbe5141f4e"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S03",
+          "decision": "REWRITE",
+          "repeat": 2,
+          "directory": "S03-2",
+          "call_id": "call-ab5bbe179d8a4d84acbf5effafc6f153",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "approved.txt": [
+              "written:call-ab5bbe179d8a4d84acbf5effafc6f153:approved.txt:640bc9041e2c4289803ccf6bae165dd3"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "approved.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-ab5bbe179d8a4d84acbf5effafc6f153:approved.txt:640bc9041e2c4289803ccf6bae165dd3"
+          ],
+          "sdk_replies": [
+            [
+              "call-ab5bbe179d8a4d84acbf5effafc6f153",
+              "written:call-ab5bbe179d8a4d84acbf5effafc6f153:approved.txt:640bc9041e2c4289803ccf6bae165dd3"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S04",
+          "decision": "ASK",
+          "repeat": 2,
+          "directory": "S04-2",
+          "call_id": "call-0cb2e45770cf461cae58d530cb3592a7",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-0cb2e45770cf461cae58d530cb3592a7:requested.txt:fca90be47a6742cf86d06318647e2ddc"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-0cb2e45770cf461cae58d530cb3592a7:requested.txt:fca90be47a6742cf86d06318647e2ddc"
+          ],
+          "sdk_replies": [
+            [
+              "call-0cb2e45770cf461cae58d530cb3592a7",
+              "written:call-0cb2e45770cf461cae58d530cb3592a7:requested.txt:fca90be47a6742cf86d06318647e2ddc"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "cf6d697d404e4fc6bc3f464e8284a741",
+              "call_id": "call-0cb2e45770cf461cae58d530cb3592a7",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "approve",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "cf6d697d404e4fc6bc3f464e8284a741",
+              "call_id": "call-0cb2e45770cf461cae58d530cb3592a7",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "approve",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S05",
+          "decision": "ASK",
+          "repeat": 2,
+          "directory": "S05-2",
+          "call_id": "call-d2914737123a40968fe49235521cdc29",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-d2914737123a40968fe49235521cdc29"
+          ],
+          "sdk_replies": [
+            [
+              "call-d2914737123a40968fe49235521cdc29",
+              "denied:call-d2914737123a40968fe49235521cdc29"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "531f34659150439db8c831afe9835371",
+              "call_id": "call-d2914737123a40968fe49235521cdc29",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "reject",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "531f34659150439db8c831afe9835371",
+              "call_id": "call-d2914737123a40968fe49235521cdc29",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "reject",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S06",
+          "decision": "ASK",
+          "repeat": 2,
+          "directory": "S06-2",
+          "call_id": "call-c2ae4f680200424295a0da3138e8c987",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "timeout_denied:call-c2ae4f680200424295a0da3138e8c987"
+          ],
+          "sdk_replies": [
+            [
+              "call-c2ae4f680200424295a0da3138e8c987",
+              "timeout_denied:call-c2ae4f680200424295a0da3138e8c987"
+            ]
+          ],
+          "approval": {
+            "response": null,
+            "request": {
+              "approval_id": "27a12464f0014992836c298ccecf44d7",
+              "call_id": "call-c2ae4f680200424295a0da3138e8c987",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "timeout",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 1.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S01",
+          "decision": "ALLOW",
+          "repeat": 3,
+          "directory": "S01-3",
+          "call_id": "call-5a13a13bdc084235bb81ca7a976226e3",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-5a13a13bdc084235bb81ca7a976226e3:requested.txt:84867fa07b5142f690fa06ee2606818f"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-5a13a13bdc084235bb81ca7a976226e3:requested.txt:84867fa07b5142f690fa06ee2606818f"
+          ],
+          "sdk_replies": [
+            [
+              "call-5a13a13bdc084235bb81ca7a976226e3",
+              "written:call-5a13a13bdc084235bb81ca7a976226e3:requested.txt:84867fa07b5142f690fa06ee2606818f"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S02",
+          "decision": "DENY",
+          "repeat": 3,
+          "directory": "S02-3",
+          "call_id": "call-60e8cc81e2dc414e8f1c689cf3283d97",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-60e8cc81e2dc414e8f1c689cf3283d97"
+          ],
+          "sdk_replies": [
+            [
+              "call-60e8cc81e2dc414e8f1c689cf3283d97",
+              "denied:call-60e8cc81e2dc414e8f1c689cf3283d97"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S03",
+          "decision": "REWRITE",
+          "repeat": 3,
+          "directory": "S03-3",
+          "call_id": "call-b7871224aa374181b146a4968e7189e2",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "approved.txt": [
+              "written:call-b7871224aa374181b146a4968e7189e2:approved.txt:5540b9b17e1e4355a437be65ae5fc662"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "approved.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-b7871224aa374181b146a4968e7189e2:approved.txt:5540b9b17e1e4355a437be65ae5fc662"
+          ],
+          "sdk_replies": [
+            [
+              "call-b7871224aa374181b146a4968e7189e2",
+              "written:call-b7871224aa374181b146a4968e7189e2:approved.txt:5540b9b17e1e4355a437be65ae5fc662"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S04",
+          "decision": "ASK",
+          "repeat": 3,
+          "directory": "S04-3",
+          "call_id": "call-d7985d8b9f8a426ea9dec2c277da8fcf",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-d7985d8b9f8a426ea9dec2c277da8fcf:requested.txt:d3a6cf482ef7447abb6d0d58119c9ef5"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-d7985d8b9f8a426ea9dec2c277da8fcf:requested.txt:d3a6cf482ef7447abb6d0d58119c9ef5"
+          ],
+          "sdk_replies": [
+            [
+              "call-d7985d8b9f8a426ea9dec2c277da8fcf",
+              "written:call-d7985d8b9f8a426ea9dec2c277da8fcf:requested.txt:d3a6cf482ef7447abb6d0d58119c9ef5"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "2f1f472f23884fd599eb9918e37abf5b",
+              "call_id": "call-d7985d8b9f8a426ea9dec2c277da8fcf",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "approve",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "2f1f472f23884fd599eb9918e37abf5b",
+              "call_id": "call-d7985d8b9f8a426ea9dec2c277da8fcf",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "approve",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S05",
+          "decision": "ASK",
+          "repeat": 3,
+          "directory": "S05-3",
+          "call_id": "call-f35b9f3d654843d7b21ff5ff4e902664",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-f35b9f3d654843d7b21ff5ff4e902664"
+          ],
+          "sdk_replies": [
+            [
+              "call-f35b9f3d654843d7b21ff5ff4e902664",
+              "denied:call-f35b9f3d654843d7b21ff5ff4e902664"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "2ae1b9a6aee344be8adb0ea3bd2b9939",
+              "call_id": "call-f35b9f3d654843d7b21ff5ff4e902664",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "reject",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "2ae1b9a6aee344be8adb0ea3bd2b9939",
+              "call_id": "call-f35b9f3d654843d7b21ff5ff4e902664",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "reject",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S06",
+          "decision": "ASK",
+          "repeat": 3,
+          "directory": "S06-3",
+          "call_id": "call-bb167c7b0f654e8d877e0e9842a7fea0",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "timeout_denied:call-bb167c7b0f654e8d877e0e9842a7fea0"
+          ],
+          "sdk_replies": [
+            [
+              "call-bb167c7b0f654e8d877e0e9842a7fea0",
+              "timeout_denied:call-bb167c7b0f654e8d877e0e9842a7fea0"
+            ]
+          ],
+          "approval": {
+            "response": null,
+            "request": {
+              "approval_id": "c0555a32cc6743cfa69820168b702b9d",
+              "call_id": "call-bb167c7b0f654e8d877e0e9842a7fea0",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "timeout",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 1.0149999999998727
+          },
+          "passed": true
+        }
+      ]
+    },
+    {
+      "framework": "agents",
+      "passed": true,
+      "executions_passed": 18,
+      "scenarios_passed": 6,
+      "executions_measured": 18,
+      "sdk_version": "0.25.0",
+      "mcp_version": "2.3.0",
+      "python": "3.12.14",
+      "model_input": "scripted_tool_request",
+      "installed_versions_sha256": "e7ecfb311bd87e3a9749be30a1b517dff428d5e2170654c6c2f50e233ea8c290",
+      "installed_versions_verified": true,
+      "details": "agents/result.json",
+      "trials": [
+        {
+          "scenario": "S01",
+          "decision": "ALLOW",
+          "repeat": 1,
+          "directory": "S01-1",
+          "call_id": "call-b717890b9ff6452d9791781c5092f6d2",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-b717890b9ff6452d9791781c5092f6d2:requested.txt:a239fd8214074f2b93181aea6ac95a6a"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-b717890b9ff6452d9791781c5092f6d2:requested.txt:a239fd8214074f2b93181aea6ac95a6a"
+          ],
+          "sdk_replies": [
+            [
+              "call-b717890b9ff6452d9791781c5092f6d2",
+              "written:call-b717890b9ff6452d9791781c5092f6d2:requested.txt:a239fd8214074f2b93181aea6ac95a6a"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S02",
+          "decision": "DENY",
+          "repeat": 1,
+          "directory": "S02-1",
+          "call_id": "call-5f249bdc60a8419eabd599ac633a5cc9",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-5f249bdc60a8419eabd599ac633a5cc9"
+          ],
+          "sdk_replies": [
+            [
+              "call-5f249bdc60a8419eabd599ac633a5cc9",
+              "denied:call-5f249bdc60a8419eabd599ac633a5cc9"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S03",
+          "decision": "REWRITE",
+          "repeat": 1,
+          "directory": "S03-1",
+          "call_id": "call-2aed65a41b2c4920bd6717382aeaf7a6",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "approved.txt": [
+              "written:call-2aed65a41b2c4920bd6717382aeaf7a6:approved.txt:8279c2647cad43c3904f544698078663"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "approved.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-2aed65a41b2c4920bd6717382aeaf7a6:approved.txt:8279c2647cad43c3904f544698078663"
+          ],
+          "sdk_replies": [
+            [
+              "call-2aed65a41b2c4920bd6717382aeaf7a6",
+              "written:call-2aed65a41b2c4920bd6717382aeaf7a6:approved.txt:8279c2647cad43c3904f544698078663"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S04",
+          "decision": "ASK",
+          "repeat": 1,
+          "directory": "S04-1",
+          "call_id": "call-22d422e475114616bd7c25f62a966bb5",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-22d422e475114616bd7c25f62a966bb5:requested.txt:945c93a7b0cb4c1f9b6d167f455dbe3b"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-22d422e475114616bd7c25f62a966bb5:requested.txt:945c93a7b0cb4c1f9b6d167f455dbe3b"
+          ],
+          "sdk_replies": [
+            [
+              "call-22d422e475114616bd7c25f62a966bb5",
+              "written:call-22d422e475114616bd7c25f62a966bb5:requested.txt:945c93a7b0cb4c1f9b6d167f455dbe3b"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "47a4a92b706c4a6e9552095851cb88f3",
+              "call_id": "call-22d422e475114616bd7c25f62a966bb5",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "approve",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "47a4a92b706c4a6e9552095851cb88f3",
+              "call_id": "call-22d422e475114616bd7c25f62a966bb5",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "approve",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S05",
+          "decision": "ASK",
+          "repeat": 1,
+          "directory": "S05-1",
+          "call_id": "call-296469e413dd4ad9a2b71015e3260d69",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-296469e413dd4ad9a2b71015e3260d69"
+          ],
+          "sdk_replies": [
+            [
+              "call-296469e413dd4ad9a2b71015e3260d69",
+              "denied:call-296469e413dd4ad9a2b71015e3260d69"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "dcccf884db14432faf9c2dc5b87bfa9b",
+              "call_id": "call-296469e413dd4ad9a2b71015e3260d69",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "reject",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "dcccf884db14432faf9c2dc5b87bfa9b",
+              "call_id": "call-296469e413dd4ad9a2b71015e3260d69",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "reject",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S06",
+          "decision": "ASK",
+          "repeat": 1,
+          "directory": "S06-1",
+          "call_id": "call-f9e3e149496d43e4ad675e261d4c1543",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "timeout_denied:call-f9e3e149496d43e4ad675e261d4c1543"
+          ],
+          "sdk_replies": [
+            [
+              "call-f9e3e149496d43e4ad675e261d4c1543",
+              "timeout_denied:call-f9e3e149496d43e4ad675e261d4c1543"
+            ]
+          ],
+          "approval": {
+            "response": null,
+            "request": {
+              "approval_id": "43ff88f20f15445b9cc984499eac4d2c",
+              "call_id": "call-f9e3e149496d43e4ad675e261d4c1543",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "timeout",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 1.0149999999998727
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S01",
+          "decision": "ALLOW",
+          "repeat": 2,
+          "directory": "S01-2",
+          "call_id": "call-16fa3847742e4799b1b577153f8d8db1",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-16fa3847742e4799b1b577153f8d8db1:requested.txt:9e0e1e232a444e2782173a722d2c4756"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-16fa3847742e4799b1b577153f8d8db1:requested.txt:9e0e1e232a444e2782173a722d2c4756"
+          ],
+          "sdk_replies": [
+            [
+              "call-16fa3847742e4799b1b577153f8d8db1",
+              "written:call-16fa3847742e4799b1b577153f8d8db1:requested.txt:9e0e1e232a444e2782173a722d2c4756"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S02",
+          "decision": "DENY",
+          "repeat": 2,
+          "directory": "S02-2",
+          "call_id": "call-44bf3eff356c46078d95d9f3f98b1ca3",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-44bf3eff356c46078d95d9f3f98b1ca3"
+          ],
+          "sdk_replies": [
+            [
+              "call-44bf3eff356c46078d95d9f3f98b1ca3",
+              "denied:call-44bf3eff356c46078d95d9f3f98b1ca3"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S03",
+          "decision": "REWRITE",
+          "repeat": 2,
+          "directory": "S03-2",
+          "call_id": "call-39135e4d3fee43c8960801dfa6794e46",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "approved.txt": [
+              "written:call-39135e4d3fee43c8960801dfa6794e46:approved.txt:98cbb494afa649d6add15ca285002c92"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "approved.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-39135e4d3fee43c8960801dfa6794e46:approved.txt:98cbb494afa649d6add15ca285002c92"
+          ],
+          "sdk_replies": [
+            [
+              "call-39135e4d3fee43c8960801dfa6794e46",
+              "written:call-39135e4d3fee43c8960801dfa6794e46:approved.txt:98cbb494afa649d6add15ca285002c92"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S04",
+          "decision": "ASK",
+          "repeat": 2,
+          "directory": "S04-2",
+          "call_id": "call-6f3c509f76dd4b0b87f4e47adea48e5b",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-6f3c509f76dd4b0b87f4e47adea48e5b:requested.txt:7e08832c1b7e4a0ea83996800649dded"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-6f3c509f76dd4b0b87f4e47adea48e5b:requested.txt:7e08832c1b7e4a0ea83996800649dded"
+          ],
+          "sdk_replies": [
+            [
+              "call-6f3c509f76dd4b0b87f4e47adea48e5b",
+              "written:call-6f3c509f76dd4b0b87f4e47adea48e5b:requested.txt:7e08832c1b7e4a0ea83996800649dded"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "66aec2b217dc4414b1452a679216a504",
+              "call_id": "call-6f3c509f76dd4b0b87f4e47adea48e5b",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "approve",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "66aec2b217dc4414b1452a679216a504",
+              "call_id": "call-6f3c509f76dd4b0b87f4e47adea48e5b",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "approve",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S05",
+          "decision": "ASK",
+          "repeat": 2,
+          "directory": "S05-2",
+          "call_id": "call-0d03fd564a6242d38cfb58f88055cada",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-0d03fd564a6242d38cfb58f88055cada"
+          ],
+          "sdk_replies": [
+            [
+              "call-0d03fd564a6242d38cfb58f88055cada",
+              "denied:call-0d03fd564a6242d38cfb58f88055cada"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "ab0ddd695af54db7b1562751c1a3561a",
+              "call_id": "call-0d03fd564a6242d38cfb58f88055cada",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "reject",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "ab0ddd695af54db7b1562751c1a3561a",
+              "call_id": "call-0d03fd564a6242d38cfb58f88055cada",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "reject",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S06",
+          "decision": "ASK",
+          "repeat": 2,
+          "directory": "S06-2",
+          "call_id": "call-c53252cd55064343ab84865183c6633e",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "timeout_denied:call-c53252cd55064343ab84865183c6633e"
+          ],
+          "sdk_replies": [
+            [
+              "call-c53252cd55064343ab84865183c6633e",
+              "timeout_denied:call-c53252cd55064343ab84865183c6633e"
+            ]
+          ],
+          "approval": {
+            "response": null,
+            "request": {
+              "approval_id": "b7273e922a9c4a6da8b82b729323da7f",
+              "call_id": "call-c53252cd55064343ab84865183c6633e",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "timeout",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 1.0149999999998727
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S01",
+          "decision": "ALLOW",
+          "repeat": 3,
+          "directory": "S01-3",
+          "call_id": "call-0eb124868aae4a6383f2b76b1bbc717b",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-0eb124868aae4a6383f2b76b1bbc717b:requested.txt:f12a20c74f76467ebdb7958631ad9510"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-0eb124868aae4a6383f2b76b1bbc717b:requested.txt:f12a20c74f76467ebdb7958631ad9510"
+          ],
+          "sdk_replies": [
+            [
+              "call-0eb124868aae4a6383f2b76b1bbc717b",
+              "written:call-0eb124868aae4a6383f2b76b1bbc717b:requested.txt:f12a20c74f76467ebdb7958631ad9510"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S02",
+          "decision": "DENY",
+          "repeat": 3,
+          "directory": "S02-3",
+          "call_id": "call-4549a63e2e814687b02f7b32580d1ae0",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-4549a63e2e814687b02f7b32580d1ae0"
+          ],
+          "sdk_replies": [
+            [
+              "call-4549a63e2e814687b02f7b32580d1ae0",
+              "denied:call-4549a63e2e814687b02f7b32580d1ae0"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S03",
+          "decision": "REWRITE",
+          "repeat": 3,
+          "directory": "S03-3",
+          "call_id": "call-4af5ebfbc30a43979bd0e43d15815d86",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true
+          },
+          "files_read_back": {
+            "approved.txt": [
+              "written:call-4af5ebfbc30a43979bd0e43d15815d86:approved.txt:a2018b337ede4619bd2050f4c3ea1212"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "approved.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-4af5ebfbc30a43979bd0e43d15815d86:approved.txt:a2018b337ede4619bd2050f4c3ea1212"
+          ],
+          "sdk_replies": [
+            [
+              "call-4af5ebfbc30a43979bd0e43d15815d86",
+              "written:call-4af5ebfbc30a43979bd0e43d15815d86:approved.txt:a2018b337ede4619bd2050f4c3ea1212"
+            ]
+          ],
+          "passed": true
+        },
+        {
+          "scenario": "S04",
+          "decision": "ASK",
+          "repeat": 3,
+          "directory": "S04-3",
+          "call_id": "call-84a60182a991438897e32eb2fe3ade9a",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {
+            "requested.txt": [
+              "written:call-84a60182a991438897e32eb2fe3ade9a:requested.txt:1608d002c4e440e5b388556a476f17fe"
+            ]
+          },
+          "write_count": 1,
+          "invocations": [
+            "requested.txt"
+          ],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "written:call-84a60182a991438897e32eb2fe3ade9a:requested.txt:1608d002c4e440e5b388556a476f17fe"
+          ],
+          "sdk_replies": [
+            [
+              "call-84a60182a991438897e32eb2fe3ade9a",
+              "written:call-84a60182a991438897e32eb2fe3ade9a:requested.txt:1608d002c4e440e5b388556a476f17fe"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "58143c7fdcdc4bc6a781b74a5f56b42d",
+              "call_id": "call-84a60182a991438897e32eb2fe3ade9a",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "approve",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "58143c7fdcdc4bc6a781b74a5f56b42d",
+              "call_id": "call-84a60182a991438897e32eb2fe3ade9a",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "approve",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S05",
+          "decision": "ASK",
+          "repeat": 3,
+          "directory": "S05-3",
+          "call_id": "call-ec850be50d1a4bce8b74fe110d46e1cb",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "denied:call-ec850be50d1a4bce8b74fe110d46e1cb"
+          ],
+          "sdk_replies": [
+            [
+              "call-ec850be50d1a4bce8b74fe110d46e1cb",
+              "denied:call-ec850be50d1a4bce8b74fe110d46e1cb"
+            ]
+          ],
+          "approval": {
+            "response": {
+              "approval_id": "3f4c5c57064449b194d4c4e16f2c2def",
+              "call_id": "call-ec850be50d1a4bce8b74fe110d46e1cb",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9",
+              "result": "reject",
+              "accepted": true
+            },
+            "request": {
+              "approval_id": "3f4c5c57064449b194d4c4e16f2c2def",
+              "call_id": "call-ec850be50d1a4bce8b74fe110d46e1cb",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "reject",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 0.0
+          },
+          "passed": true
+        },
+        {
+          "scenario": "S06",
+          "decision": "ASK",
+          "repeat": 3,
+          "directory": "S06-3",
+          "call_id": "call-56e5beaf5e4242d9b1f38ae7950dc9c0",
+          "checks": {
+            "original_argument_seen_once": true,
+            "side_effect_invocations": true,
+            "disk_readback": true,
+            "one_terminal": true,
+            "sdk_receipt_and_call_id": true,
+            "approval_bound_to_call_and_args": true,
+            "pending_before_side_effect": true,
+            "approval_response_or_automatic_timeout": true,
+            "deadline_observed": true
+          },
+          "files_read_back": {},
+          "write_count": 0,
+          "invocations": [],
+          "requested": [
+            "requested.txt"
+          ],
+          "terminals": [
+            "timeout_denied:call-56e5beaf5e4242d9b1f38ae7950dc9c0"
+          ],
+          "sdk_replies": [
+            [
+              "call-56e5beaf5e4242d9b1f38ae7950dc9c0",
+              "timeout_denied:call-56e5beaf5e4242d9b1f38ae7950dc9c0"
+            ]
+          ],
+          "approval": {
+            "response": null,
+            "request": {
+              "approval_id": "bc39b640a4f24e8aa730e24dbabac716",
+              "call_id": "call-56e5beaf5e4242d9b1f38ae7950dc9c0",
+              "args_digest": "f6b4cb8188eb2c148033aa80c1112b0fa0c3af2e628f6e8adc6e02cb4653a2d9"
+            },
+            "while_waiting": {
+              "sdk_pending": true,
+              "approval_pending": true,
+              "invocations": [],
+              "terminals": [],
+              "files": []
+            },
+            "outcome": "timeout",
+            "risk": "high",
+            "timeout_policy": "DENY",
+            "timeout_seconds": 1.0,
+            "elapsed_seconds": 1.0
+          },
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "scenarios_passed": 18,
+  "scenarios_requested": 18,
+  "executions_passed": 54,
+  "executions_requested": 54,
+  "online_model_calls": 0,
+  "preflight_passed": true,
+  "unique_call_and_approval_ids": true
+}
