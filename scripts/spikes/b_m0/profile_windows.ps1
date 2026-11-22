@@ -14,7 +14,9 @@ $rows = foreach ($name in $interpreters.Keys) {
     $directory = [IO.Directory]::CreateDirectory((Join-Path $root $name)).FullName
     $start = [Diagnostics.ProcessStartInfo]::new()
     $start.FileName = $interpreters[$name]
-    $start.Arguments = '-B "' + $worker + '" ' + $name + ' m0'
+    # The Windows venv executable can be a launcher. The running SDK worker identifies its own PID.
+    $bootstrap = "import os,runpy,sys; from pathlib import Path; Path('worker-pid.txt').write_text(str(os.getpid())); sys.argv=sys.argv[1:]; sys.path.insert(0,str(Path(sys.argv[0]).parent)); runpy.run_path(sys.argv[0],run_name='__main__')"
+    $start.Arguments = '-B -c "' + $bootstrap + '" "' + $worker + '" ' + $name + ' m0'
     $start.WorkingDirectory = $directory
     $start.UseShellExecute = $false
     $start.CreateNoWindow = $true
@@ -31,14 +33,22 @@ $rows = foreach ($name in $interpreters.Keys) {
     $start.EnvironmentVariables['LANGSMITH_TRACING'] = 'false'
     $start.EnvironmentVariables['HF_HUB_OFFLINE'] = '1'
     $proc = [Diagnostics.Process]::Start($start)
+    $workerProcess = $null
+    $pidFile = Join-Path $directory 'worker-pid.txt'
     $peak = 0L
     $timer = [Diagnostics.Stopwatch]::StartNew()
     try {
         $stdout = $proc.StandardOutput.ReadToEndAsync()
         $stderr = $proc.StandardError.ReadToEndAsync()
         while (-not $proc.WaitForExit(50)) {
-            $proc.Refresh()
-            if (-not $proc.HasExited) { $peak = [Math]::Max($peak, $proc.WorkingSet64) }
+            if (-not $workerProcess -and [IO.File]::Exists($pidFile)) {
+                $workerId = [IO.File]::ReadAllText($pidFile).Trim()
+                if ($workerId) { $workerProcess = [Diagnostics.Process]::GetProcessById([int]$workerId) }
+            }
+            if ($workerProcess -and -not $workerProcess.HasExited) {
+                $workerProcess.Refresh()
+                $peak = [Math]::Max($peak, $workerProcess.WorkingSet64)
+            }
             if ($timer.Elapsed.TotalSeconds -gt 180) { $proc.Kill(); throw "$name timed out" }
         }
         $null = $stdout.GetAwaiter().GetResult()
@@ -46,6 +56,7 @@ $rows = foreach ($name in $interpreters.Keys) {
         if ($proc.ExitCode -ne 0) { throw "$name failed with exit code $($proc.ExitCode)" }
     } finally {
         $timer.Stop()
+        if ($workerProcess) { $workerProcess.Dispose() }
         $proc.Dispose()
     }
     $result = Get-Content -Raw -Encoding utf8 (Join-Path $directory "result.json") | ConvertFrom-Json
