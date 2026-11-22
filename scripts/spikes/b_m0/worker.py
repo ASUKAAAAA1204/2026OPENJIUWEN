@@ -4,65 +4,22 @@ import hashlib
 import json
 import platform
 import sys
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict
 from importlib import metadata
 from pathlib import Path
-from uuid import uuid4
+from time import perf_counter_ns, process_time_ns
 
 from adapters import ADAPTERS, DISTRIBUTIONS, REQUESTED, Replies
 from approval import ApprovalRequest, PendingApproval, args_digest
+from controlled import APPROVED, WriteTrial
+from lifecycle import CASES
 
 
 BASELINE = {"S01": "ALLOW", "S02": "DENY", "S03": "REWRITE"}
 RESPONSES = {"S04": "approve", "S05": "reject", "S06": None}
 SUITES = {"baseline": tuple(BASELINE), "approval": tuple(RESPONSES),
-          "all": (*BASELINE, *RESPONSES)}
-APPROVED = "approved.txt"
-
-
-@dataclass
-class WriteTrial:
-    directory: Path
-    decision: str
-    call_id: str = field(default_factory=lambda: "call-" + uuid4().hex)
-    requested: list[str] = field(default_factory=list)
-    executions: list[str] = field(default_factory=list)
-    terminals: list[str] = field(default_factory=list)
-    approval: PendingApproval | None = None
-
-    def write_file(self, target: str) -> str:
-        # Count entry to the side-effecting tool independently of gate events and disk reads.
-        self.executions.append(target)
-        if target not in (REQUESTED, APPROVED):
-            raise ValueError("Unexpected file name in fixed test tool")
-        receipt = f"written:{self.call_id}:{target}:{uuid4().hex}"
-        with (self.directory / target).open("a", encoding="ascii") as output:
-            output.write(receipt + "\n")
-        return receipt
-
-    async def guarded_call(self, target: str) -> str:
-        """Write a receipt to the requested test file, subject to the host's test policy."""
-        self.requested.append(target)
-        if target != REQUESTED:
-            raise ValueError("Unexpected tool argument")
-        decision = self.decision
-        outcome = None
-        if decision == "ASK":
-            if self.approval is None:
-                raise ValueError("ASK has no approval context")
-            outcome = await self.approval.wait(self.call_id, target)
-            decision = {"approve": "ALLOW", "reject": "DENY", "timeout": self.approval.timeout_policy}[outcome]
-        if decision == "DENY":
-            reason = "timeout_denied" if outcome == "timeout" else "denied"
-            receipt = f"{reason}:{self.call_id}"
-        elif decision == "REWRITE":
-            receipt = self.write_file(APPROVED)
-        elif decision == "ALLOW":
-            receipt = self.write_file(target)
-        else:
-            raise ValueError("Unknown test policy")
-        self.terminals.append(receipt)
-        return receipt
+          "all": (*BASELINE, *RESPONSES), "lifecycle": tuple(CASES),
+          "m0": (*BASELINE, *RESPONSES, *CASES)}
 
 
 async def dispatch(framework: str, trial: WriteTrial, case: str, observation: dict) -> Replies:
@@ -153,6 +110,12 @@ def verify_approval(trial: WriteTrial, case: str, observation: dict) -> dict[str
 async def exercise(framework: str, case: str, repeat: int) -> dict:
     directory = Path(f"{case}-{repeat}")
     directory.mkdir()
+    if case in CASES:
+        try:
+            evidence = await asyncio.wait_for(CASES[case](framework, directory), 35)
+        except Exception as exc:
+            evidence = {"passed": False, "error": f"{type(exc).__name__}: {exc}"}
+        return {"scenario": case, "repeat": repeat, "directory": str(directory), **evidence}
     trial = WriteTrial(directory, BASELINE.get(case, "ASK"),
                        approval=PendingApproval() if case in RESPONSES else None)
     row = {"scenario": case, "decision": trial.decision, "repeat": repeat, "directory": str(directory),
@@ -163,7 +126,8 @@ async def exercise(framework: str, case: str, repeat: int) -> dict:
         replies = await asyncio.wait_for(dispatch(framework, trial, case, observation), 30)
     except Exception as exc:
         row["error"] = f"{type(exc).__name__}: {exc}"
-    row.update(verify(trial, case, replies))
+    row.update(verify(trial, case, replies), gate_ns=trial.gate_ns, file_ns=trial.file_ns,
+               approval_wait_ns=trial.wait_ns)
     if trial.approval is not None:
         row["checks"].update(verify_approval(trial, case, observation))
         row["approval"] = observation
@@ -182,9 +146,14 @@ async def run(framework: str, suite: str = "baseline") -> bool:
         manifest = (json.dumps(packages, sort_keys=True, indent=2) + "\n").encode("utf-8")
         Path("installed-versions.json").write_bytes(manifest)
         report["installed_versions_sha256"] = hashlib.sha256(manifest).hexdigest()
+        started, cpu_started = perf_counter_ns(), process_time_ns()
         for repeat in range(1, 4):
             for case in SUITES[suite]:
-                report["trials"].append(await exercise(framework, case, repeat))
+                begin = perf_counter_ns()
+                row = await exercise(framework, case, repeat)
+                row["elapsed_ns"] = perf_counter_ns() - begin
+                report["trials"].append(row)
+        report.update(wall_ns=perf_counter_ns() - started, cpu_ns=process_time_ns() - cpu_started)
         report["passed"] = all(row["passed"] for row in report["trials"])
     except Exception as exc:
         report["error"] = f"{type(exc).__name__}: {exc}"

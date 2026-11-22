@@ -74,6 +74,7 @@ def run_framework(root: Path, framework: str, python: Path, suite: str, lock: Pa
                                             for s in SUITES[suite]),
                        sdk_version=detail.get("sdk_version"), mcp_version=detail.get("mcp_version"),
                        python=detail["python"], model_input=detail["model_input"],
+                       wall_ns=detail.get("wall_ns"), cpu_ns=detail.get("cpu_ns"),
                        installed_versions_sha256=detail.get("installed_versions_sha256"),
                        installed_versions_verified=manifest_ok,
                        details=f"{framework}/result.json",
@@ -98,7 +99,7 @@ def main() -> bool:
     parser.add_argument("--output", type=Path, default=ROOT / "outputs" / "b-m0")
     parser.add_argument("--framework", choices=ADAPTERS, help="Run one SDK for diagnosis")
     parser.add_argument("--suite", choices=SUITES, default="baseline",
-                        help="baseline=S01–S03 (default), approval=S04–S06, all=S01–S06")
+                        help="baseline=S01–S03, approval=S04–S06, all=S01–S06, lifecycle=S07–S12, m0=S01–S12")
     parser.add_argument("--jiuwen-lock", type=Path, help="Check installed openJiuwen packages against A's lock")
     for framework in ADAPTERS:
         parser.add_argument(f"--{framework}-python", type=Path, default=Path(sys.executable))
@@ -116,11 +117,13 @@ def main() -> bool:
     except (OSError, subprocess.SubprocessError):
         head = None
     report = {
-        "format": "b-m0-control-points-v1" if args.suite == "baseline" else "b-m0-control-points-v2",
+        "format": {"baseline": "b-m0-control-points-v1", "m0": "b-m0-control-points-v3",
+                   "lifecycle": "b-m0-control-points-v3"}.get(args.suite, "b-m0-control-points-v2"),
         "scope": "registered local tool, " + "/".join(SUITES[args.suite]) + " preflight",
         "completed_at": datetime.now(timezone.utc).isoformat(), "git_head": head, "os": platform.platform(),
         "sources_sha256": {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
-                           for p in (HERE / "run.py", HERE / "adapters.py", HERE / "worker.py", HERE / "approval.py")},
+                           for p in (HERE / name for name in
+                                     ("run.py", "adapters.py", "worker.py", "approval.py", "controlled.py", "lifecycle.py"))},
         "frameworks": engines, "scenarios_passed": sum(f["scenarios_passed"] for f in engines),
         "scenarios_requested": len(SUITES[args.suite]) * len(engines),
         "executions_passed": sum(f["executions_passed"] for f in engines),
@@ -129,13 +132,16 @@ def main() -> bool:
     }
     if args.suite != "baseline":
         rows = [row for engine in engines for row in engine.get("trials", [])]
-        calls = [row.get("call_id") for row in rows]
+        calls = [call.get("call_id") for row in rows for call in row.get("observations", [row])]
         approvals = [row["approval"].get("request", {}).get("approval_id")
                      for row in rows if "approval" in row]
-        expected_approvals = len(engines) * len(SUITES["approval"]) * 3
-        unique = (all(calls) and len(set(calls)) == len(calls) == report["executions_requested"]
+        approvals += [row["pending_request"].get("approval_id") for row in rows if "pending_request" in row]
+        expected_approvals = len(engines) * 3 * len(set(SUITES[args.suite]) & {"S04","S05","S06","S08"})
+        expected_calls = len(engines) * 3 * sum({"S09": 10, "S11": 2}.get(case, 1) for case in SUITES[args.suite])
+        unique = (all(calls) and len(set(calls)) == len(calls) == expected_calls
                   and all(approvals) and len(set(approvals)) == len(approvals) == expected_approvals)
-        report.update(unique_call_and_approval_ids=unique, preflight_passed=report["preflight_passed"] and unique)
+        report.update(unique_call_and_approval_ids=unique, logical_calls=len(calls), host_approvals=len(approvals),
+                      preflight_passed=report["preflight_passed"] and unique)
     path = run_dir / "report.json"
     path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     for item in engines:
