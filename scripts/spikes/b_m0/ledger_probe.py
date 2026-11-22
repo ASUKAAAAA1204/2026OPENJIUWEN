@@ -24,6 +24,10 @@ from lifecycle import invoke
 from run import ROOT
 
 
+class RecheckRejected(ValueError):
+    """The proposed execution argument differs from the rechecked argument."""
+
+
 def require(condition, message):
     if not condition:
         raise ValueError(message)
@@ -98,7 +102,8 @@ async def journal_case(name, directory, store):
     original_digest = digest_json({"target": REQUESTED})
     actual_digest = digest_json({"target": actual})
     events_before_effect = []
-    expected_errors = {"missing_snapshot": SnapshotError, "stale_segment": TransitionError, "deny": TransitionError}
+    expected_errors = {"missing_snapshot": SnapshotError, "stale_segment": TransitionError,
+                       "deny": TransitionError, "rewrite_mismatch": RecheckRejected}
     blocked_by = None
 
     def history():
@@ -113,10 +118,10 @@ async def journal_case(name, directory, store):
         nonlocal blocked_by
         owner = ACTIVE_RUN.get()
         require(owner is run and target == REQUESTED, "SDK callback did not supply the bound run/argument")
-        gate = {"rewrite": "REWRITE", "deny": "DENY"}.get(name, "ALLOW")
+        gate = {"rewrite": "REWRITE", "rewrite_mismatch": "REWRITE", "deny": "DENY"}.get(name, "ALLOW")
         intent = {"decision_id": decision_id, "run_id": owner.run_id, "segment": owner.segment,
                   "class": "file_write", "tool_name": TOOL, "args_digest": original_digest,
-                  "args_after": actual_digest if gate == "REWRITE" else None,
+                  "args_after": digest_json({"target": APPROVED}) if gate == "REWRITE" else None,
                   "whitelist_version": "probe-v1", "policy_version": "probe-v1", "rule_snapshot_ref": snapshot,
                   "gate": gate, "gate_reason": "controlled test", "gate_latency_ms": 0, "exec_policy": "normal",
                   "status": {"ALLOW": "ALLOWED", "REWRITE": "REWRITTEN", "DENY": "DENIED"}[gate]}
@@ -128,12 +133,12 @@ async def journal_case(name, directory, store):
             journal.record_intent(trial.call_id + ":intent", intent, recorded_at=datetime.now(timezone.utc).isoformat())
             if gate == "REWRITE":
                 rule = SnapshotStore(store).read(snapshot)["value"]
-                require(rule["tool"] == TOOL and rule["allowed_target"] == actual
-                        and intent["args_after"] == digest_json({"target": actual}), "rewritten arguments failed recheck")
+                if not (rule["tool"] == TOOL and rule["allowed_target"] == actual and intent["args_after"] == actual_digest):
+                    raise RecheckRejected("rewritten arguments failed recheck")
                 journal.append(trial.call_id + ":recheck", decision_id,
                                {"type": "REWRITE_VALIDATED", "gate": "ALLOW", "args_digest": actual_digest})
             return journal.execute_once(decision_id, trial.call_id, write, model_id="scripted-probe")
-        except (SnapshotError, TransitionError) as error:
+        except (SnapshotError, TransitionError, RecheckRejected) as error:
             if type(error) is not expected_errors.get(name):
                 raise
             blocked_by = type(error).__name__
@@ -146,13 +151,19 @@ async def journal_case(name, directory, store):
     types = [e["type"] for e in events]
     disk = {p.name: p.read_text(encoding="ascii").splitlines() for p in directory.iterdir()}
     duplicate_rejected = None
+    evidence_input_digest = None
     if name in expected_errors:
         require(blocked_by and not disk and not trial.executions and not events_before_effect, "blocked tool executed")
-        require(types == (["GATE_DECIDED"] if name == "deny" else []), "invalid intent persisted")
+        require(types == (["GATE_DECIDED"] if name in ("deny", "rewrite_mismatch") else []), "unexpected persisted events")
     else:
         before = ["GATE_DECIDED"] + (["REWRITE_VALIDATED"] if name == "rewrite" else []) + ["EXEC_STARTED"]
         require(events_before_effect == before and types == before + ["EXEC_FINISHED"], "incorrect commit order")
         output_ref = events[-1]["evidence"]["output_digest"]
+        evidence_input_digest = events[-1]["evidence"]["input_digest"]
+        require(evidence_input_digest == original_digest, "ledger evidence lost the original argument digest")
+        if name == "rewrite":
+            require(events[0]["intent"]["args_after"] == events[1]["args_digest"] == actual_digest,
+                    "persisted rewritten argument differs from the actual argument")
         require(SnapshotStore(store).read(output_ref)["value"] == trial.terminals[0]
                 and trial.executions == [actual] and disk == {actual: trial.terminals}, "effect or evidence mismatch")
         try:
@@ -162,6 +173,7 @@ async def journal_case(name, directory, store):
         require(duplicate_rejected and trial.executions == [actual] and history() == events, "duplicate execution")
     return {"case": name, "sdk_call_id": trial.call_id, "decision_id": decision_id, "run_id": run.run_id,
             "original_args_digest": original_digest, "actual_args_digest": actual_digest if disk else None,
+            "evidence_input_digest": evidence_input_digest,
             "persisted_types_before_write": events_before_effect, "persisted_types_after": types, "disk": disk,
             "blocked_by": blocked_by, "repeat_rejected": duplicate_rejected, "passed": True}
 
@@ -178,7 +190,7 @@ async def main():
     identities = replay_identities(matrix, store)
     with chdir(root):
         cases = [await journal_case(name, root / name, store)
-                 for name in ("allow", "rewrite", "deny", "missing_snapshot", "stale_segment")]
+                 for name in ("allow", "rewrite", "rewrite_mismatch", "deny", "missing_snapshot", "stale_segment")]
     result = {"format": "b-m1-consumer-v1", "completed_at": datetime.now(timezone.utc).isoformat(),
               "git_head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
               "script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
