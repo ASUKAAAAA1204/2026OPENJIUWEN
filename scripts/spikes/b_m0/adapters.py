@@ -1,10 +1,10 @@
 """Dispatch one scripted tool request through each real SDK. Imports stay isolated."""
 import json
-from collections.abc import Callable
+from collections.abc import Awaitable, Callable
 
 TOOL = "write_probe"
 REQUESTED = "requested.txt"
-Tool = Callable[[str], str]
+Tool = Callable[[str], str | Awaitable[str]]
 Replies = list[tuple[str, str]]
 
 
