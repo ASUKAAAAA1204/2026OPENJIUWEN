@@ -74,6 +74,7 @@ flowchart LR
 |---|---|
 | 产品规格 | v2.7 已冻结，16 页 PDF |
 | 后端代码 | 现有流水线沿用 ARS；B 已新增 `engine/v27/` 离线计算入口，输出标记、债务、8 项读数与 Skill 聚合 |
+| 运行文件评测 | 按新版分工由 C 提供 `scripts/c_v27_evaluate.py`，读取运行信息、事件流和证据内容，复用 v2.7 引擎输出标记、债务与八项读数 |
 | 债务模块 | B 的 v2.7 投影按 high/mid/low 加权、消解只追加；C 的 `ledger/debt_tracker.py` 仍为旧 CU 模型，持久化接线待联调 |
 | Studio UI | 根目录已有 Vue Studio 源码与测试，当前仍展示 ARS；v2.7 展示与接口接线待实现 |
 | 测试 | `tests/` 已覆盖旧 ARS 与 v2.7 计算；SDK 采集集成需另配环境验证 |
@@ -103,6 +104,14 @@ python scripts/b_v27_demo.py --output outputs/b_v27_demo/report.json
 ```
 
 债务初始 6 条、权重 11；消解 3 条后剩余 3 条、权重 5，原始事件保留。接口和接入边界见 [B v2.7 契约](docs/api/B_V27_CONTRACT.md) 与 [本轮交接](docs/handoff/B_v27_R1_2026-11-11.md)。
+
+C 的运行文件评测入口（下例仍为合成数据，可替换三个输入文件）：
+
+```bash
+python scripts/c_v27_evaluate.py --run fixtures/c_v27/run.json --events fixtures/c_v27/events.jsonl --evidence fixtures/c_v27/evidence.json --expected fixtures/c_v27/expected.json --output outputs/c_v27/report.json
+```
+
+样例包含三类标记，债务权重从 6 变为 5；报告保留消解前后状态与事件。`--expected` 可省略；回放结果消费上游事实，证据校验限于内容哈希。文件字段、退出码、历史续算及联调边界见 [C 评测说明](docs/handoff/C_V27_EVALUATOR.md)。
 
 ```bash
 python -m pip install -e ".[dev]"

@@ -1,0 +1,113 @@
+{
+  "schema_version": "temisguard-c-eval-v1",
+  "run_id": "run-c-demo-1",
+  "records": [
+    {
+      "record": {
+        "evidence_id": "ev-02",
+        "decision_id": "d-02",
+        "content_hash": "991ac15260cfa47c90f401885c2e2fd90700b72de3eafc53c3b42ca42f489798",
+        "assertion": "fact",
+        "input_digest": "in-02",
+        "output_digest": "out-02",
+        "model_id": "synthetic-model",
+        "model_params": "temperature=0",
+        "verdict": "allowed",
+        "ts": "2026-11-02T10:00:02+00:00",
+        "source": "source-a",
+        "reachable": true,
+        "outcome": true,
+        "version": "synthetic-v1",
+        "owner": "run-c-demo-1",
+        "strict_empty": false
+      },
+      "payload": {
+        "kind": "synthetic-fact",
+        "decision": "d-02",
+        "assertion": "fact",
+        "source": "source-a",
+        "outcome": true,
+        "note": "SYNTHETIC payload"
+      }
+    },
+    {
+      "record": {
+        "evidence_id": "ev-03a",
+        "decision_id": "d-03",
+        "content_hash": "40ae363465a90fbb7923bc3c6e79a945545b9a6dae8d148c3bbf95e00d34cdea",
+        "assertion": "result",
+        "input_digest": "in-03a",
+        "output_digest": "out-03a",
+        "model_id": "synthetic-model",
+        "model_params": "temperature=0",
+        "verdict": "allowed",
+        "ts": "2026-11-02T10:00:03+00:00",
+        "source": "source-a",
+        "reachable": true,
+        "outcome": true,
+        "version": "synthetic-v1",
+        "owner": "run-c-demo-1"
+      },
+      "payload": {
+        "kind": "synthetic-source",
+        "decision": "d-03",
+        "assertion": "result",
+        "source": "source-a",
+        "outcome": true,
+        "note": "SYNTHETIC payload"
+      }
+    },
+    {
+      "record": {
+        "evidence_id": "ev-03b",
+        "decision_id": "d-03",
+        "content_hash": "7472bdf0c540af548e6ddb89ea8052b0b08a19ae9be4009fc16b3beee75c3115",
+        "assertion": "result",
+        "input_digest": "in-03b",
+        "output_digest": "out-03b",
+        "model_id": "synthetic-model",
+        "model_params": "temperature=0",
+        "verdict": "denied",
+        "ts": "2026-11-02T10:00:03+00:00",
+        "source": "source-b",
+        "reachable": true,
+        "outcome": false,
+        "version": "synthetic-v1",
+        "owner": "run-c-demo-1"
+      },
+      "payload": {
+        "kind": "synthetic-source",
+        "decision": "d-03",
+        "assertion": "result",
+        "source": "source-b",
+        "outcome": false,
+        "note": "SYNTHETIC payload"
+      }
+    },
+    {
+      "record": {
+        "evidence_id": "ev-res-02",
+        "decision_id": "d-02",
+        "content_hash": "aa2d62c26ab360921e9f50edcb7f69e8fe22e944ac485512d0e5756ce12306ea",
+        "assertion": "resolution",
+        "input_digest": "in-res-02",
+        "output_digest": "out-res-02",
+        "model_id": "synthetic-model",
+        "model_params": "temperature=0",
+        "verdict": "re-gated",
+        "ts": "2026-11-02T10:00:20+00:00",
+        "source": "regate",
+        "reachable": true,
+        "outcome": true,
+        "version": "synthetic-v1",
+        "owner": "run-c-demo-1"
+      },
+      "payload": {
+        "kind": "synthetic-resolution",
+        "decision": "d-02",
+        "parameters_match": true,
+        "note": "SYNTHETIC re-gate"
+      }
+    }
+  ]
+}
