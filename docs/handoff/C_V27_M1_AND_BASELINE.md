@@ -84,7 +84,9 @@ core 固定 `tests/`；sdk 固定 `tests/ + fixtures/a_s3 + fixtures/a_acceptanc
 
 Windows 11、Python 3.14.5、pytest 9.2.0，`pip check` 通过。冻结 822 项，三轮均为 **821 passed / 1 registered skipped / 0 failed / 0 errors**，耗时分别 55.043 / 55.039 / 54.417 秒。各轮 nodeid、源码指纹、结果和依赖版本一致。跳过项仅为真实文件符号链接创建权限限制，目录 junction 的实际逃逸测试通过。
 
-这是当前本机环境的基线，未声称匹配 A 的 3.12 锁：有 7 项依赖版本/安装差异，SDK 预检明确 BLOCKED（缺 openjiuwen）。锁环境的三轮验收由新增 CI 单独执行。首轮尝试虽三轮测试本身均通过，但第三轮期间适配器文件变化使来源指纹不一致，整轮报告为 FAIL；最终证据使用源码稳定后的重跑结果。
+这是 `c92ec1a` 对应的本机环境基线，未声称匹配 A 的 3.12 锁：有 7 项依赖版本/安装差异，SDK 预检明确 BLOCKED（缺 openjiuwen）。锁环境的三轮验收由新增 CI 单独执行。首轮尝试虽三轮测试本身均通过，但第三轮期间适配器文件变化使来源指纹不一致，整轮报告为 FAIL；最终证据使用源码稳定后的重跑结果。
+
+首轮 SDK CI 安装后暴露 runner 全局 `pipx` 与锁内 `filelock` 的冲突，`pip check` 正确失败，测试没有开始。工作流已改为每个 profile 创建独立 `.venv-c-ci`，安装/一致性检查/三轮回归都显式使用该解释器；保留原依赖锁和 pip check，不通过卸载 runner 工具或放宽版本掩盖冲突。此工作流修正后的锁环境结果以最新 PR checks 为准。
 
 证据索引见 [C 基线结果](C_V27_BASELINE_EVIDENCE.json)，冻结用例见 [822 项 nodeid](C_V27_CORE_NODEIDS_20261125.txt)。原始本机 JUnit/log/collection 位于 `outputs/c_core_baseline_20261125_final/`，SDK 预检位于 `outputs/c_sdk_preflight_20261125_final/`；CI 原始报告通过工作流 artifact 提供。
 
