@@ -1,0 +1,19 @@
+{
+  "schema_version": "temisguard-c-m1-context-v1",
+  "synthetic": true,
+  "run": {
+    "run_id": "run-m1",
+    "skill_id": "skill-m1",
+    "skill_version": "1.0.0",
+    "completed_at": "2026-11-20T10:00:10+00:00",
+    "whitelist_classes": ["exec"],
+    "whitelist_version": "whitelist-v1",
+    "policy_version": "policy-v1",
+    "references": [],
+    "debt_threshold": 10.0
+  },
+  "decisions": {
+    "d1": {"risk": "low"},
+    "d2": {"risk": "high", "rule_based": true, "claim_ids": ["claim-d2"], "upstream": ["d1"]}
+  }
+}
