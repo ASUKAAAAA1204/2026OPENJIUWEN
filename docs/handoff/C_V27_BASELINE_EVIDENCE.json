@@ -1,0 +1,149 @@
+{
+  "schema_version": "temisguard-c-baseline-evidence-v1",
+  "date": "2026-11-25",
+  "base_main": "f78eb3c0a5cd1bf616e102b6f8dabca0c38c4694",
+  "depends_on_pr": 12,
+  "local_core": {
+    "status": "PASS",
+    "profile": "core",
+    "scopes": [
+      "tests"
+    ],
+    "python": "3.14.5 (tags/v3.14.5:5607950, May 10 2026, 10:43:50) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "collected": 822,
+    "nodeids_sha256": "b8f1976e43c91d537d42b3e83dfae94f50a43cbe41f62d607e7dfabb8f44eb42",
+    "source_sha256": "2082bca677e4c1591c93e9b71bfee709f57a0121a6166dc160ea7cf87a98eaf7",
+    "installed_versions": {
+      "pytest": "9.2.0",
+      "pydantic": "2.14.2",
+      "rfc8785": "0.1.4",
+      "fastapi": "0.162.0",
+      "httpx": "0.28.1",
+      "cryptography": "50.0.2"
+    },
+    "lock_sha256": {
+      "m0-core-py312.lock.txt": "e7e6a26f119cdba936c6b51a8c46641bef25f7b068b2d3c9146ff80223c99db9",
+      "m0-jiuwen-py312.lock.txt": "9719c391c5cb34b3918db4775f2f60eb85caf8347af70b02d76946a719e3b12b",
+      "m1-ledger-py312.lock.txt": "9e6685903bfc58c2feeb74f8f03136c2e9fb26723d5cd1422a02305935a4407f"
+    },
+    "lock_required": false,
+    "lock_mismatches": {
+      "annotated-doc": {
+        "expected": "0.0.7",
+        "installed": "0.0.5"
+      },
+      "click": {
+        "expected": "8.5.1",
+        "installed": null
+      },
+      "fastapi": {
+        "expected": "0.164.0",
+        "installed": "0.162.0"
+      },
+      "pydantic": {
+        "expected": "2.14.3",
+        "installed": "2.14.2"
+      },
+      "pydantic_core": {
+        "expected": "2.50.4",
+        "installed": "2.50.2"
+      },
+      "typing-inspection": {
+        "expected": "0.4.5",
+        "installed": "0.4.4"
+      },
+      "uvicorn": {
+        "expected": "0.54.0",
+        "installed": null
+      }
+    },
+    "pip_check_exit": 0,
+    "skip_register_sha256": "cd8ef3631b9219ff5ba9e1b7b37a9af4bb910cafd53640f989c7caa9d46f80af",
+    "rounds": [
+      {
+        "round": 1,
+        "returncode": 0,
+        "tests": 822,
+        "passed": 821,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1,
+        "identities_match": true,
+        "unexpected_skips": [],
+        "outcomes_match_first": true,
+        "source_matches": true,
+        "valid": true,
+        "junit_sha256": "c847d42d6eeae5b9a2e0ee79585b6586ad1154255712decea52faf689342f428",
+        "seconds": 55.043
+      },
+      {
+        "round": 2,
+        "returncode": 0,
+        "tests": 822,
+        "passed": 821,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1,
+        "identities_match": true,
+        "unexpected_skips": [],
+        "outcomes_match_first": true,
+        "source_matches": true,
+        "valid": true,
+        "junit_sha256": "f56037ab03f1e1310148d0bb3eab172ce57d6377b9adbc466ad485c3d53d3416",
+        "seconds": 55.039
+      },
+      {
+        "round": 3,
+        "returncode": 0,
+        "tests": 822,
+        "passed": 821,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1,
+        "identities_match": true,
+        "unexpected_skips": [],
+        "outcomes_match_first": true,
+        "source_matches": true,
+        "valid": true,
+        "junit_sha256": "6694230a6906beda0ab3ffb1e52f78277f69ab29f305c84ab1d652859068d23e",
+        "seconds": 54.417
+      }
+    ],
+    "network_guard": "pytest process blocks external sockets/DNS; loopback permitted; subprocesses/OS are not isolated"
+  },
+  "local_sdk": {
+    "status": "BLOCKED",
+    "missing_dependencies": [
+      "openjiuwen"
+    ]
+  },
+  "independent_a_writer_probe": {
+    "checks": [
+      "whole-chain-count",
+      "whole-chain-head",
+      "checkpoint-verified",
+      "unsigned-db-not-authenticated",
+      "foreign-run-filter",
+      "eight-readings",
+      "missing-declaration-not-success",
+      "complete-evidence-1-of-5",
+      "no-fabricated-reproduction",
+      "no-fabricated-rule-replay",
+      "timestamps-from-retained-evidence",
+      "unhooked-excluded-from-disposition",
+      "no-evidence-preserves-high-and-mid-floor",
+      "signed-bundle-same-readings",
+      "signed-bundle-same-marks",
+      "signed-bundle-same-debts",
+      "deterministic-same-source",
+      "reader-never-invoked-tools"
+    ],
+    "passed": 18,
+    "source": "synthetic A writer",
+    "source_ledger_head": "sha256:bab9d1b6997372c049962c64ac2ddb6f90080b55f1a5cc1565f6733dd615fb31"
+  },
+  "ui_contract_probe": "PASS: actual D parseEvaluations function accepted the C synthetic snapshot; no HTTP/browser/auth integration claimed",
+  "raw_evidence_directory": "outputs/c_core_baseline_20261125_final",
+  "ci": "See PR checks: Python 3.12 core/sdk require the existing A lock and three clean rounds; local Python 3.14 is not that locked acceptance"
+}

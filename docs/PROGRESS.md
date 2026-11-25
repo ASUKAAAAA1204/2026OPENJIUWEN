@@ -238,3 +238,15 @@ docs/design/design_cheatsheet.md → 一页速查
 **复核**：当前基线相关测试 **130 passed**（B v2.7 102 项 + C 新增 28 项）；合成样例 41 项预期一致；上一轮 B 样例 13 项读数/债务及幂等续算通过；`git diff --check` 通过。11 月 18 日全量 564/1/2 为历史快照记录，未宣称今天重跑最新主分支全量测试。
 
 **边界**：本轮交付本地文件适配与离线评测；真实事件导出、SQLite、独立回放、Gate 事实以及 API/UI 消费该报告仍需联调。详见 [C 评测说明](handoff/C_V27_EVALUATOR.md)。
+
+---
+
+### 2026-11-25（C，约 1h）
+
+**内容**：复核最新 main 与 C 的 PR #12，补齐 A M1 账本评测适配、版本快照/对比、显式规则发布评估及债务报价；恢复 UI 命令边界测试，新增 Python core/SDK 三轮 CI。
+
+**产出**：[C 交接与联调边界](handoff/C_V27_M1_AND_BASELINE.md)、[本机基线证据](handoff/C_V27_BASELINE_EVIDENCE.json)。本机冻结 822 项，三轮均 821 passed / 1 登记 skip / 0 failed / 0 errors；A 写入器到 C 的独立核对 18 项通过。
+
+**阻塞**：本机缺 openjiuwen，SDK 预检 BLOCKED；本机 3.14 不等于 A 的锁环境。正式 Gate 回放、typed debt 消解映射及 D 真实授权/API 接线仍需联调。
+
+**下一步**：以 PR 检查验收 3.12 两个锁环境，按交接说明连接 A/B/D 的真实生产者和服务；不把纯计算/合成结果记作产品全链路验收。

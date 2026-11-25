@@ -75,9 +75,11 @@ flowchart LR
 | 产品规格 | v2.7 已冻结，16 页 PDF |
 | 后端代码 | 现有流水线沿用 ARS；B 已新增 `engine/v27/` 离线计算入口，输出标记、债务、8 项读数与 Skill 聚合 |
 | 运行文件评测 | 按新版分工由 C 提供 `scripts/c_v27_evaluate.py`，读取运行信息、事件流和证据内容，复用 v2.7 引擎输出标记、债务与八项读数 |
+| M1 账本评测 | C 新增 `scripts/c_v27_ledger_evaluate.py`，只读消费 A 的 SQLite/签名导出包；sidecar 提供分析上下文；不完整债务映射明确报告 |
+| 管理计算 | C 新增 `evaluation/management.py`，提供版本快照/比较、显式规则的发布评估、显式费率卡的债务估价；真实服务授权与发布另需接线 |
 | 债务模块 | B 的 v2.7 投影按 high/mid/low 加权、消解只追加；C 的 `ledger/debt_tracker.py` 仍为旧 CU 模型，持久化接线待联调 |
-| Studio UI | 根目录已有 Vue Studio 源码与测试，当前仍展示 ARS；v2.7 展示与接口接线待实现 |
-| 测试 | `tests/` 已覆盖旧 ARS 与 v2.7 计算；SDK 采集集成需另配环境验证 |
+| Studio UI | 已有 v2.7 工作台与前端契约；界面、演示及拦截响应不等于真实后端联调通过 |
+| 测试 | 新增 Python core/SDK 两个独立 CI profile，各固定 nodeid 连跑三轮；真实模型/产品验收仍需独立证据 |
 | 文档构建 | PRD PDF 与架构图均可由脚本重复生成 |
 
 ## 6. 口径迁移
@@ -112,6 +114,16 @@ python scripts/c_v27_evaluate.py --run fixtures/c_v27/run.json --events fixtures
 ```
 
 样例包含三类标记，债务权重从 6 变为 5；报告保留消解前后状态与事件。`--expected` 可省略；回放结果消费上游事实，证据校验限于内容哈希。文件字段、退出码、历史续算及联调边界见 [C 评测说明](docs/handoff/C_V27_EVALUATOR.md)。
+
+C 的 M1 账本输入及回归基线（输入文件由调用方提供）：
+
+```bash
+python scripts/c_v27_ledger_evaluate.py --context context.json --database ledger.db --output outputs/c-ledger.json
+python scripts/c_v27_ledger_evaluate.py --context context.json --bundle exported-bundle --public-key trusted-public.pem --output outputs/c-bundle.json
+python scripts/baseline/c_regression.py --profile core --require-lock --rounds 3 --output outputs/c-core-new
+```
+
+安装对应的 A 依赖锁后运行基线；SDK 用独立环境与 `--profile sdk`。M1 报告的链/签名校验不替代 Gate 回放，Risk/Skill 元数据来自显式上下文，typed debt 无法无损导入时退出 3。字段、管理计算 API、失败归因和待联调边界见 [C M1 与基线交接](docs/handoff/C_V27_M1_AND_BASELINE.md)。
 
 ```bash
 python -m pip install -e ".[dev]"
