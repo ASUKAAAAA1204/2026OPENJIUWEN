@@ -1,0 +1,58 @@
+name: python-verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: ${{ matrix.profile }}-py312
+    runs-on: windows-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - profile: core
+            lock: requirements/m1-ledger-py312.lock.txt
+          - profile: sdk
+            lock: requirements/m0-jiuwen-py312.lock.txt
+    env:
+      PYTHONUTF8: '1'
+      DEEPSEEK_API_KEY: ''
+      OPENAI_API_KEY: ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements/*.lock.txt
+      - name: Create an isolated profile environment
+        run: python -m venv .venv-c-ci
+      - name: Install the existing A dependency profile
+        run: |
+          .\.venv-c-ci\Scripts\python.exe -m pip install -r "${{ matrix.lock }}"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          .\.venv-c-ci\Scripts\python.exe -m pip install --no-build-isolation --no-deps -e .
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          .\.venv-c-ci\Scripts\python.exe -m pip check
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Freeze identities and run three regression rounds
+        run: .\.venv-c-ci\Scripts\python.exe scripts/baseline/c_regression.py --profile "${{ matrix.profile }}" --require-lock --rounds 3 --output "outputs/c-baseline-${{ matrix.profile }}"
+      - name: Upload baseline reports (exclude temporary databases and test keys)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c-python-${{ matrix.profile }}
+          path: |
+            outputs/c-baseline-${{ matrix.profile }}/summary.json
+            outputs/c-baseline-${{ matrix.profile }}/*collection.json
+            outputs/c-baseline-${{ matrix.profile }}/nodeids.txt
+            outputs/c-baseline-${{ matrix.profile }}/*.xml
+            outputs/c-baseline-${{ matrix.profile }}/*.log
+          retention-days: 7

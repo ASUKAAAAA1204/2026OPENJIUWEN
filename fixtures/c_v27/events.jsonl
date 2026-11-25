@@ -1,0 +1,12 @@
+{"seq":1,"run_id":"run-c-demo-1","event_type":"decision","payload":{"decision_id":"d-01","claim_id":"claim-d-01","run_id":"run-c-demo-1","skill_id":"skill-c-demo","skill_version":"1.0.0","decision_class":"classifier","disposition":"DENY","gate":"DENY","risk":"high","action_timestamp":"2026-11-02T10:00:01+00:00","rule_based":false,"evidence_ids":["ev-missing"],"upstream":[]}}
+{"seq":2,"run_id":"run-c-demo-1","event_type":"decision","payload":{"decision_id":"d-02","claim_id":"claim-d-02","run_id":"run-c-demo-1","skill_id":"skill-c-demo","skill_version":"1.0.0","decision_class":"retriever","disposition":"ALLOW","gate":"ALLOW","risk":"mid","action_timestamp":"2026-11-02T10:00:02+00:00","rule_based":true,"evidence_ids":["ev-02"],"upstream":[]}}
+{"seq":3,"run_id":"run-c-demo-1","event_type":"decision","payload":{"decision_id":"d-03","claim_id":"claim-d-03","run_id":"run-c-demo-1","skill_id":"skill-c-demo","skill_version":"1.0.0","decision_class":"classifier","disposition":"ALLOW","gate":"ALLOW","risk":"low","action_timestamp":"2026-11-02T10:00:03+00:00","rule_based":true,"evidence_ids":["ev-03a","ev-03b"],"upstream":[]}}
+{"seq":4,"run_id":"run-c-demo-1","event_type":"policy_observation","payload":{"decision_id":"d-02","declaration_available":true,"parameters_match":false,"convertible":true}}
+{"seq":5,"run_id":"run-c-demo-1","event_type":"policy_observation","payload":{"decision_id":"d-03","declaration_available":true,"parameters_match":true,"convertible":false}}
+{"seq":6,"run_id":"run-c-demo-1","event_type":"replay_outcome","payload":{"decision_id":"d-02","evidence_id":"ev-02","reproduced":false,"rule_matched":true}}
+{"seq":7,"run_id":"run-c-demo-1","event_type":"replay_outcome","payload":{"decision_id":"d-03","evidence_id":"ev-03a","reproduced":true,"rule_matched":true}}
+{"seq":8,"run_id":"run-c-demo-1","event_type":"disposition","payload":{"decision_id":"d-01","executed":false}}
+{"seq":9,"run_id":"run-c-demo-1","event_type":"disposition","payload":{"decision_id":"d-02","executed":true,"completed":true}}
+{"seq":10,"run_id":"run-c-demo-1","event_type":"disposition","payload":{"decision_id":"d-03","executed":true,"completed":true}}
+{"seq":11,"run_id":"run-c-demo-1","event_type":"debt_resolution","payload":{"decision_id":"d-02","mark_type":"SPEC_MISMATCH","method":"correct_params_and_regate","evidence_id":"ev-res-02","regate_success":true}}
+{"seq":12,"run_id":"run-c-demo-1","event_type":"run_completed","payload":{"completed_at":"2026-11-02T10:00:10+00:00"}}

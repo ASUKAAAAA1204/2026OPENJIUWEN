@@ -1,0 +1,19 @@
+{
+  "schema_version": "temisguard-c-eval-v1",
+  "synthetic": true,
+  "notice": "SYNTHETIC fixture for TemisGuard C v2.7 offline evaluation. All decisions, evidence payloads, replays, dispositions and debt events are hand-built synthetic data; they do not represent any real run and do not constitute a production acceptance result.",
+  "run": {
+    "run_id": "run-c-demo-1",
+    "skill_id": "skill-c-demo",
+    "skill_version": "1.0.0",
+    "completed_at": "2026-11-02T10:00:10+00:00",
+    "whitelist_classes": [
+      "classifier",
+      "retriever"
+    ],
+    "whitelist_version": "whitelist-c-demo-v1",
+    "policy_version": "policy-c-demo-v1",
+    "references": [],
+    "debt_threshold": 10.0
+  }
+}

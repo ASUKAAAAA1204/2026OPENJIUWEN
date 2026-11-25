@@ -1,0 +1,10 @@
+{
+  "schema_version": "temisguard-c-skips-v1",
+  "items": [
+    {
+      "nodeid": "tests/test_c_v27_m1.py::test_bundle_rejects_symlink_snapshot",
+      "kind": "skip",
+      "reason": "Only when the operating system denies creating a real symlink (Windows privilege/developer-mode restriction). Hash tampering/path traversal checks are separate passing tests."
+    }
+  ]
+}
