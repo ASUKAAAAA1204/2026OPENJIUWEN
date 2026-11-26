@@ -17,6 +17,16 @@ docker compose up --build -d
 docker compose exec app python scripts/seed_demo.py
 ```
 
+若 `docker compose up --build` 报
+`additional privileges requested: pass "--allow=fs.read=Dockerfile"`，这是 Compose 5.x
+bake 集成的问题；绕过 compose 的 build 包装，直接构建两个 target：
+
+```bash
+docker build --target app -t temisguard/app:v2.7 .
+docker build --target web -t temisguard/web:v2.7 .
+docker compose up -d
+```
+
 打开 <http://127.0.0.1:8080>，用 `.env` 中的 `TEMIS_ADMIN_USERNAME` 与
 `TEMIS_DEMO_ADMIN_PASSWORD` 登录。
 
@@ -33,7 +43,9 @@ curl http://127.0.0.1:8080/healthz   # 存活
 ```
 
 `/readyz` 在没有注册 worker 时返回 503，这是设计行为；Docker healthcheck 使用
-`/healthz`，因此中央服务可正常运行。
+`/healthz`，因此中央服务可正常运行。若配置 `server.start_workers=true` 且超过
+`startup_wait_seconds` 仍无 worker，`/readyz` 返回 200 并标记 `mode=readonly`，
+表示只能读取、不能新开执行。
 
 ## 3 目录与数据
 
