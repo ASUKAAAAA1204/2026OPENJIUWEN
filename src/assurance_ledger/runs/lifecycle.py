@@ -325,7 +325,7 @@ def _delegation_depth(db: sqlite3.Connection, run_id: str) -> int:
 
 
 def _validate_create(payload: Mapping[str, Any], config: PlatformConfig,
-                     user: Any) -> tuple[str, str, str, str, str, str]:
+                     user: Any) -> tuple[str, str, str, str, str, str, str | None]:
     if not rbac.can_create_run(user):
         raise RunPermissionError("当前账号不能创建运行")
     task_id = payload.get("task_id")
