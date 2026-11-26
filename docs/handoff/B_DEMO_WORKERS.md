@@ -24,9 +24,7 @@ py -3.12 -m venv .venv-b-jiuwen
 .\.venv-b-jiuwen\Scripts\python.exe -m pip install -r requirements/m0-jiuwen-py312.lock.txt
 
 py -3.12 -m venv .venv-b-frameworks
-$packages = Get-Content -Raw docs/reviews/baseline/b-m0-langgraph-agents-installed.json | ConvertFrom-Json
-$pins = $packages.PSObject.Properties | ForEach-Object { "$($_.Name)==$($_.Value)" }
-.\.venv-b-frameworks\Scripts\python.exe -m pip install @pins rfc8785==0.1.4 python-dotenv==1.2.4
+.\.venv-b-frameworks\Scripts\python.exe -m pip install -r requirements/m2-frameworks-py312.lock.txt
 
 .\.venv-b-central\Scripts\python.exe scripts/verify_b_demo_workers.py `
   --env-file .env `
@@ -37,8 +35,16 @@ $pins = $packages.PSObject.Properties | ForEach-Object { "$($_.Name)==$($_.Value
 
 脚本为本次测试创建临时账号、数据库和工作目录。默认最多发起九个模型请求，任一组失败就停止后续组。输出使用新文件名。只想复验主场景时，在命令末尾加 `--frameworks jiuwen --cases approve`，只产生一个模型请求。三框架的其他两项复验可用 `--cases reject timeout`。
 
+## 锁文件与制品来源
+
+- LangGraph `1.2.22`、OpenAI Agents SDK `0.25.0` 及其联合依赖已固化到
+  `requirements/m2-frameworks-py312.lock.txt`（来源：M0 的 61 项安装清单）。
+- openJiuwen `0.1.20.post1` 使用 `requirements/m0-jiuwen-py312.lock.txt`。该制品
+  当时如何获取（wheel、私有源或本地缓存）**没有记录在本仓库**；复验需要现成
+  venv，干净环境无法据此重建。补齐来源后才能在 CI 复跑三框架在线脚本。
+
 ## 团队接入
 
 - D 在本机平台配置中按 `configs/platform.example.toml` 设置解释器路径、启用相应 worker 和 `server.start_workers`，在启动中央服务前设置 `MODEL_ENV_FILE` 为本机配置文件的绝对路径。前端沿用已有的创建运行、执行事件流、审批应答和审计详情接口。用一个新的任务编号走一遍页面，检查同意后文件出现、拒绝或超时后文件未创建。默认 Docker 镜像还需另行配置 worker 环境才能演示实时模型。
 - A/C 可用报告中的运行编号、决策编号及参数摘要核对样本结构。在自己启动的实例上重跑能得到新的样本；需要将本机审计数据提供给独立校验时，在同一实例内导出。报告里的批准样本包含文件 SHA-256，账本输出摘要另行绑定工具结果快照，两者校验的对象不同。
-- B 后续按 PRD 补齐 11 类决策的正式路径、崩溃恢复和并发隔离，并与 C 复核至少 100 次 shadow 运行及误报率。当前在线记录仅覆盖文件工具的三条人工审批路径。M0 中的受控探针保留其原有验收范围。
+- 平台协议层已能记录 11 类决策，并有崩溃恢复、十任务身份隔离与父子委派测试；生产适配器仍只注册文件写入。B 后续需把删除、命令、网络、Git 与委派工具接入三框架，并与 C 复核至少 100 次 shadow 运行及误报率。当前在线记录仅覆盖文件工具的三条人工审批路径；M0 受控探针保留原有验收范围，不能替代平台记录。

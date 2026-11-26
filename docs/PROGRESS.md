@@ -276,3 +276,29 @@ docs/design/design_cheatsheet.md → 一页速查
 **验证**：`docker compose build` 成功；`docker compose up -d` 后 app/web 均 healthy；8080 登录、运行列表、审计、债务、评估通过；Nginx `/healthz` 200、`/internal/` 404；容器内 `id` 为 `uid=10001(temis)`。演示数据由 `scripts/seed_demo.py` 写入，属合成样例，不计三框架或产品验收。
 
 **边界**：三框架真实适配未完成，镜像默认不启动 worker，`/readyz` 在无 worker 时为 503；独立容器 worker 的回环鉴权仍需单独设计。镜像构建与本地 Compose 验证已完成，未推送镜像仓库。
+
+---
+
+### 2026-11-26 后端完成度复评（backend@804904a）
+
+**内容**：拉取 main 最新提交（PR #14 三框架文件审批），按开发文档 M0–M6 退出条件重评；确认 9 次在线文件审批通过，同时明确生产适配器仍只覆盖 `write_file`，M5 硬门禁尚无证据。
+
+**产出**：[后端完成度审计与后续计划](../draft/TemisGuard-v2.7_后端完成度审计与后续计划_2026-11-26.md)；`tests/platform` 41 passed，全量 1039 passed / 2 failed / 14 errors（均为 `fixtures/a_acceptance` 既有基线）。
+
+**阻塞**：M2 缺 REWRITE、异常、取消、并发、恢复、委派与其余决策类；M5 的 shadow、红队、11 类覆盖、3 轮 + 2 次 resume 无记录。
+
+**下一步**：按计划批次 1 同步过时文档与锁文件，批次 2 把 M0 探针 S01–S12 折入生产适配器，批次 3 执行 M5 门禁取样。
+
+---
+
+### 2026-11-27 后端完善批次 1（backend 分支）
+
+**内容**：按[后端完成度审计与后续计划](../draft/TemisGuard-v2.7_后端完成度审计与后续计划_2026-11-26.md)完成批次 1：文档状态同步、框架锁文件、SQLite 独立校验入口、启动门控与只读降级、断言/恢复/示例测试。批次 2 在协议层推进：运行级父子委派、11 类决策覆盖报告、场景矩阵。
+
+**产出**：`verify_ledger.py --database`、`verify_decision_coverage.py`、`server.startup_wait_seconds`、`POST /runs/create.parent_run_id`、`requirements/m2-frameworks-py312.lock.txt`、`tests/platform` 新增 8 个测试文件、`tests/contracts/index.json`；同步 `CHANGELOG`、`BACKEND_v27_STATUS`、15 份前端契约状态行与 `B_DEMO_WORKERS`。
+
+**验证**：`tests/platform tests/contracts` 197 passed；全量 1068 passed / 3 failed / 14 errors，失败与错误均为既有基线（`fixtures/a_acceptance` 与 pytest 9 nodeid 差异）。`verify_ledger` 负例覆盖中间篡改、尾部截断、空库、缺库；示例脚本在真实 uvicorn 上跑通登录→审计→回放→导出。
+
+**边界**：三框架生产适配器仍只注册文件写入；REWRITE、异常、取消、并发、恢复、委派在线记录未取得，协议层测试不计三框架验收。服务端仍无取消端点。openJiuwen `0.1.20.post1` 制品获取方式未记录，干净环境不可复现。M5 硬门禁未开始。
+
+**下一步**：批次 2 把删除/命令/网络/Git/委派工具接入三个生产适配器并补在线矩阵；记录 openJiuwen 制品来源；批次 3 执行 shadow、红队、回放与导出独立复核。

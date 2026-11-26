@@ -1,6 +1,6 @@
 # v2.7 回放前端契约草案
 
-现有HTTP服务尚未提供此路由。本轮验证使用合成响应，不能证明真实规则重判或独立复算已完成。
+状态（2026-11-26 更新）：后端已实现 `POST /api/v27/runs/{run_id}/replay`，按账本顺序纯重判且不调用原工具；平台测试覆盖执行回放与导出复核。合成响应仍不能替代真实运行取证。
 
 `POST /api/v27/runs/{run_id}/replay`。同源Cookie、先读取会话取得CSRF令牌，X-CSRF-Token与Idempotency-Key；body含request_id、expected_decisions（原顺序decision_id/evidence_ref/content_hash/rule_snapshot_ref）、execute_tools=false。
 

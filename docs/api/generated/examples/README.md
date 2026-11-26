@@ -41,7 +41,20 @@ python docs/api/generated/examples/api_walkthrough.py \
 
 脚本会读取审批队列、回放绑定、导出 JSONL，并校验 `X-Content-SHA256` 与响应字节。
 
+## 自动化执行
+
+CI 通过 `tests/platform/test_api_walkthrough.py` 启动真实 uvicorn，准备账号与一条已完成
+运行，再执行本目录脚本并校验退出码、审计输出与导出哈希。自动化时用
+`--password-env TEMIS_EXAMPLE_PASSWORD` 读取环境变量，避免把密码放进命令行或历史记录。
+
+```bash
+TEMIS_EXAMPLE_PASSWORD=... python docs/api/generated/examples/api_walkthrough.py \
+  --username admin --password-env TEMIS_EXAMPLE_PASSWORD \
+  --run-id RUN-... --request-id req-... --out export.jsonl
+```
+
 ## 验收边界
 
 示例通过公共 HTTP 执行，不替代服务端权限、账本哈希链、真实工具阻断或三框架联调验收。
-后端的契约测试位于 `tests/platform/`，以 ASGI 走真实接口并覆盖 SSE、审批、债务与管理场景。
+后端的契约测试位于 `tests/platform/`，以 ASGI 走真实接口并覆盖 SSE、审批、债务与管理场景；
+15 份契约与测试文件的映射见 `tests/contracts/index.json`。

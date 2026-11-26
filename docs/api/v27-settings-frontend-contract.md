@@ -1,6 +1,6 @@
 # v2.7 配置快照前端契约草案
 
-`GET /api/v27/settings`，同源凭据，只读。现有HTTP服务尚未实现，浏览器测试使用合成拦截响应。默认本地预览不包含认证身份、生效策略或工具配置；不授予权限。
+状态（2026-11-26 更新）：后端已实现只读 `GET /api/v27/settings`。默认本地预览不包含认证身份、生效策略或工具配置；不授予权限。
 
 结构定义于 `ui/src/components/workbench/settings.ts`：source=ledger、revision、identity、policy、whitelist、frameworks。
 

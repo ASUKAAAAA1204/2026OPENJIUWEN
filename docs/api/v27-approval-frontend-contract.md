@@ -1,6 +1,6 @@
 # v2.7 人工审批前端接口草案
 
-状态：前端已适配；后端尚未实现或确认此契约。Playwright响应拦截仅验证前端，不能证明真实认证、指纹校验、幂等存储或执行端门控通过。
+状态（2026-11-26 更新）：后端已实现 `GET /api/v27/approvals` 与应答路由，字段以 `docs/api/generated/reference.md` 为准。本文保留前端约束；Playwright 响应拦截仍不能替代真实认证、指纹校验、幂等存储或执行端门控验收。
 
 建议GET /api/v27/approvals返回ApprovalItem[]；POST /api/v27/approvals/{approval_id}/respond返回更新后的单个ApprovalItem。类型位于ui/src/components/workbench/approvals.ts，字段包括审批/决策/运行标识、脱敏args_digest、操作范围、风险、requested_at/expires_at、revision、status、can_respond、timeout_policy、response。
 

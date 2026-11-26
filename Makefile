@@ -7,7 +7,7 @@ ifeq ($(OS),)
 PY := python
 endif
 
-.PHONY: install test test-c test-platform mypy sbom run demo verify api curve platform api-docs migrate bench-platform
+.PHONY: install test test-c test-platform test-contracts mypy sbom run demo verify verify-db coverage-decisions api curve platform api-docs migrate bench-platform
 
 install:
 	$(PY) -m pip install -e ".[dev,api]"
@@ -20,6 +20,9 @@ test-c:
 
 test-platform:
 	$(PY) -m pytest -q tests/platform
+
+test-contracts:
+	$(PY) -m pytest -q tests/contracts
 
 mypy:
 	$(PY) -m mypy src/assurance_ledger/ledger
@@ -35,6 +38,14 @@ demo: run
 
 verify:
 	$(PY) scripts/assurance.py verify-ledger outputs/r1/ledger.json
+
+# v2.7 SQLite 主账本独立校验（PASS/FAIL/UNVERIFIED）
+verify-db:
+	$(PY) scripts/verify_ledger.py --database data/platform.db
+
+# 11 类决策覆盖；硬门禁用 --require-covered
+coverage-decisions:
+	$(PY) scripts/verify_decision_coverage.py --database data/platform.db
 
 api:
 	$(PY) scripts/assurance.py serve --outputs outputs --port 8008

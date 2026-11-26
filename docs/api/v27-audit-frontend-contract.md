@@ -1,6 +1,6 @@
 # v2.7 运行详情前端接口草案
 
-状态：前端适配已实现，后端尚未实现或确认本接口；禁止据此宣称真实联调通过。既有scripts/serve_api.py只提供旧版ARS/plan/gate，不能复用旧版分数作为v2.7八项读数。
+状态（2026-11-26 更新）：后端已实现 `GET /api/v27/runs/{run_id}/audit`，哈希链与决策字段见 `reference.md`。旧 `scripts/serve_api.py` 仍只提供 ARS/plan/gate，不能复用旧版分数作为 v2.7 八项读数。
 
 建议端点：GET /api/v27/runs/{encodeURIComponent(run_id)}/audit。同源凭据，返回JSON；前端12秒超时，切换运行/来源或离开页面取消旧请求。请求失败清空旧数据，不自动回退演示。
 

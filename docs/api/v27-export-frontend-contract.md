@@ -1,6 +1,6 @@
 # v2.7 授权导出前端契约草案
 
-现有HTTP服务尚未提供此路由，当前验收使用合成JSONL。此处不替代真实自包含账本或授权隔离验收。
+状态（2026-11-26 更新）：后端已实现 `POST /api/v27/runs/{id}/export`，包含 SHA-256、审计标识与独立复核测试。合成 JSONL 不替代真实授权隔离验收。
 
 `POST /api/v27/runs/{id}/export`，同源会话Cookie、X-CSRF-Token及Idempotency-Key；JSON请求 `{request_id,format:'jsonl'}`。发起前GET会话核验已认证状态。服务端按账号角色与运行归属核验导出权限，脱敏后登记审计，再返回文件；不能接受客户端身份声明作为授权。
 
