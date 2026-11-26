@@ -31,13 +31,19 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="TemisGuard 公共 API 示例")
     parser.add_argument("--base-url", default="http://127.0.0.1:8000")
     parser.add_argument("--username", required=True)
+    parser.add_argument("--password-env", default=None,
+                        help="从该环境变量读取密码（仅供自动化；默认交互输入）")
     parser.add_argument("--run-id", default=None)
     parser.add_argument("--request-id", default=None)
     parser.add_argument("--last-event-id", type=int, default=0)
     parser.add_argument("--out", default="export.jsonl")
     args = parser.parse_args()
     import getpass
-    password = getpass.getpass("密码：")
+    import os
+    password = (os.environ.get(args.password_env, "")
+                if args.password_env else "")
+    if not password:
+        password = getpass.getpass("密码：")
     with httpx.Client(base_url=args.base_url, timeout=30,
                       follow_redirects=False) as client:
         session = _show("匿名会话", client.get("/api/v27/session"))
