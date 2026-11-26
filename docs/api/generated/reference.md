@@ -1,6 +1,5 @@
 # TemisGuard v2.7 后端接口文档
 
-- 生成时间：2026-11-26T03:28:40+00:00
 - 版本：v2.7；公共 API 前缀：`/api/v27`
 - 范围：仅后端公共接口；`/internal/v1/*` 不提供给前端
 - 机器可读附件：`openapi-v27.json`、`events.schema.json`、`events.md`

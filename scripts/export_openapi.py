@@ -7,7 +7,6 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -216,11 +215,9 @@ def _event_markdown() -> str:
 
 
 def _reference_markdown(schema: dict[str, Any]) -> str:
-    generated = datetime.now(timezone.utc).isoformat(timespec="seconds")
     lines = [
         "# TemisGuard v2.7 后端接口文档",
         "",
-        f"- 生成时间：{generated}",
         "- 版本：v2.7；公共 API 前缀：`/api/v27`",
         "- 范围：仅后端公共接口；`/internal/v1/*` 不提供给前端",
         "- 机器可读附件：`openapi-v27.json`、`events.schema.json`、`events.md`",
@@ -375,13 +372,15 @@ def main() -> int:
     out.mkdir(parents=True, exist_ok=True)
     schema = _public_schema(app)
     (out / "openapi-v27.json").write_text(
-        json.dumps(schema, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        json.dumps(schema, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8", newline="\n")
     (out / "events.schema.json").write_text(
         json.dumps(event_schema(), ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8")
-    (out / "events.md").write_text(_event_markdown(), encoding="utf-8")
+        encoding="utf-8", newline="\n")
+    (out / "events.md").write_text(_event_markdown(), encoding="utf-8",
+                                   newline="\n")
     (out / "reference.md").write_text(_reference_markdown(schema),
-                                      encoding="utf-8")
+                                      encoding="utf-8", newline="\n")
     print(f"已生成：{out}")
     print(f"公共端点：{sum(len(v) for v in schema['paths'].values())}")
     return 0

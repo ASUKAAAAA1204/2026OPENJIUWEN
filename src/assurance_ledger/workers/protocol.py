@@ -155,7 +155,8 @@ class WorkerHooks(TurnHooks):
                 decision_id=decision, attempt_id=response.get("attempt_id"),
                 gate=gate or "NONE", execute=True,
                 args=response.get("args") or args,
-                approval_id=response.get("approval_id"))
+                approval_id=response.get("approval_id"),
+                args_digest=response.get("args_digest"))
         if gate == "ASK" and response.get("approval_id"):
             result = await self.client.wait_approval(response["approval_id"])
             if result.get("execute"):
@@ -163,7 +164,8 @@ class WorkerHooks(TurnHooks):
                     decision_id=decision,
                     attempt_id=response.get("attempt_id"),
                     gate=gate, execute=True, args=args,
-                    approval_id=response.get("approval_id"))
+                    approval_id=response.get("approval_id"),
+                    args_digest=response.get("args_digest"))
             raise Denied(decision, f"审批未通过：{result.get('status')}")
         raise Denied(decision, response.get("gate_reason") or "Gate 拒绝执行")
 

@@ -259,7 +259,7 @@ docs/design/design_cheatsheet.md → 一页速查
 
 **产出**：`src/assurance_ledger/{api,auth,workers,policy,gate,runs,readings}/`、`ledger/{writer,migrations,chain,export}.py`、`configs/platform.example.toml`、`scripts/{run_platform,create_admin,migrate_db,backup_db,publish_policy,export_openapi}.py`、`docs/api/generated/`、`tests/platform/`。
 
-**验证**：`tests/platform` 26 项通过（会话/CSRF/限流、运行幂等与分页、SSE+审批、DENY/UNHOOKED/REWRITE、债务快照与消解历史、管理/报价、导出独立哈希校验、文档一致性）；领域回归 `tests/contracts` 及原有测试保持基线通过。README 所述全量测试仍为既有基线 997 passed / 3 failed / 14 errors（缺 openjiuwen、pytest 9 nodeid 差异），未新增失败。
+**验证**：`tests/platform` 35 项通过（会话/CSRF/限流、运行幂等与分页、SSE+审批、审批过期/参数指纹/重复消费、DENY/UNHOOKED/REWRITE、受控文件/命令/Git 工具、债务快照与消解历史、管理/报价、导出独立哈希校验、文档一致性）；连续 5 轮无失败。全量测试 1032 passed / 3 failed / 14 errors，失败与错误均为既有基线（缺 openjiuwen、pytest 9 nodeid 差异），未新增失败。
 
 **边界**：三框架真实 SDK 执行前阻断适配尚未实现；worker 内部协议与适配器入口已就绪，适配器缺失时显式退出、不注册虚假能力。`types.ts` 未生成；报价费率为合成示例，不代表生产计价。公共 API 文档只覆盖 `/api/v27` 与兼容接口，`/internal/v1/*` 不提供给前端。
 

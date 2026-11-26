@@ -171,7 +171,7 @@ def build_run_facts(db: sqlite3.Connection, run: Any, *,
                     ts=_aware(evidence.get("ts")),
                     source="ledger",
                     reachable=True,
-                    outcome=True,
+                    outcome=_outcome(evidence.get("verdict")),
                     version="ledger-v2",
                     owner=run["owner_user_id"],
                     strict_empty=False,
@@ -236,6 +236,17 @@ def build_run_facts(db: sqlite3.Connection, run: Any, *,
 def _text(value: Any) -> str | None:
     if isinstance(value, str) and value.strip():
         return value
+    return None
+
+
+def _outcome(verdict: Any) -> bool | None:
+    if not isinstance(verdict, str):
+        return None
+    lowered = verdict.strip().casefold()
+    if lowered in ("completed", "ok", "success", "succeeded", "passed"):
+        return True
+    if lowered in ("failed", "failure", "error", "denied", "rejected"):
+        return False
     return None
 
 

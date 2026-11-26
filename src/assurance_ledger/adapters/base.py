@@ -39,6 +39,7 @@ class IntentOutcome:
     execute: bool
     args: dict[str, Any]
     approval_id: str | None = None
+    args_digest: str | None = None
 
 
 @dataclass(frozen=True)

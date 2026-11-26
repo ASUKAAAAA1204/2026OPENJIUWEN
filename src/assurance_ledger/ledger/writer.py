@@ -158,7 +158,9 @@ class WriterQueue:
 
 @contextmanager
 def read_connection(path: str | Path) -> Iterator[sqlite3.Connection]:
-    db = sqlite3.connect(path, timeout=30)
+    # FastAPI 的 yield 依赖与同步端点可能落在不同线程池线程；
+    # 连接在同一次请求内串行使用，允许跨线程但禁止并发共享。
+    db = sqlite3.connect(path, timeout=30, check_same_thread=False)
     try:
         db.row_factory = sqlite3.Row
         db.execute("PRAGMA query_only=ON")

@@ -257,6 +257,8 @@ def respond(writer, journal: DecisionJournal, record_store: RecordStore,
         if turn is None or turn["status"] in (
                 "completed", "failed", "unknown", "review"):
             raise ApprovalConflict("轮次已结束，审批只能进入人工复核")
+        if row["status"] == "timed_out":
+            raise ApprovalExpired("审批已过期")
         if row["status"] != "pending":
             raise ApprovalConflict("审批已被处理")
         if str(expected_revision) != str(row["revision"]):
