@@ -48,29 +48,33 @@ CREATE TRIGGER IF NOT EXISTS events_no_delete BEFORE DELETE ON events BEGIN SELE
         finally:
             self._sessions.writer=None
             keeper.close()
-    def append(self,event_id,body,*,validate=None):
+    def append_on(self,db,event_id,body,*,validate=None):
+        """Append inside a caller-owned transaction; no commit or rollback."""
         if not isinstance(event_id,str) or not event_id.strip():raise ValueError('event_id required')
         if not isinstance(body,dict):raise ValueError('body must be JSON object')
         encoded=canonical_bytes(body).decode('utf-8')
+        old=db.execute('SELECT seq,body,prev_hash,content_hash FROM events WHERE event_id=?',(event_id,)).fetchone()
+        if old:
+            if old[1]!=encoded:raise IdempotencyConflict(event_id)
+            return self._wire(old[0],event_id,old[1],old[2],old[3])
+        if validate is not None:
+            validate(db,body)
+        last=db.execute('SELECT seq,content_hash FROM events ORDER BY seq DESC LIMIT 1').fetchone()
+        seq=last[0]+1 if last else 1
+        prev=last[1] if last else GENESIS
+        event={'seq':seq,'event_id':event_id,'body':json.loads(encoded),'prev_hash':prev}
+        content=digest_json(event)
+        db.execute('INSERT INTO events VALUES(?,?,?,?,?)',(seq,event_id,encoded,prev,content))
+        return dict(event,content_hash=content)
+
+    def append(self,event_id,body,*,validate=None):
         writer=getattr(self._sessions,'writer',None)
         db=writer if writer is not None else self._connect()
         try:
             db.execute('BEGIN IMMEDIATE')
-            old=db.execute('SELECT seq,body,prev_hash,content_hash FROM events WHERE event_id=?',(event_id,)).fetchone()
-            if old:
-                if old[1]!=encoded:raise IdempotencyConflict(event_id)
-                db.rollback()
-                return self._wire(old[0],event_id,old[1],old[2],old[3])
-            if validate is not None:
-                validate(db,body)
-            last=db.execute('SELECT seq,content_hash FROM events ORDER BY seq DESC LIMIT 1').fetchone()
-            seq=last[0]+1 if last else 1
-            prev=last[1] if last else GENESIS
-            event={'seq':seq,'event_id':event_id,'body':json.loads(encoded),'prev_hash':prev}
-            content=digest_json(event)
-            db.execute('INSERT INTO events VALUES(?,?,?,?,?)',(seq,event_id,encoded,prev,content))
+            result=self.append_on(db,event_id,body,validate=validate)
             db.commit()
-            return dict(event,content_hash=content)
+            return result
         except BaseException:
             db.rollback();raise
         finally:
