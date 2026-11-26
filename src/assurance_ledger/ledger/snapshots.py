@@ -43,3 +43,8 @@ CREATE TRIGGER IF NOT EXISTS snapshots_no_delete BEFORE DELETE ON snapshots BEGI
     @staticmethod
     def read_ref(db,ref):
         return SnapshotStore.read_on(db,ref)
+    @staticmethod
+    def unwrap(body):
+        if isinstance(body,dict) and 'value' in body and 'redaction_version' in body:
+            return body['value']
+        return body

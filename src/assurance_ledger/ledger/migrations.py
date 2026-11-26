@@ -11,7 +11,7 @@ from typing import Iterable
 
 from .canonical import utc_iso
 
-LATEST_VERSION = 1
+LATEST_VERSION = 2
 
 _V1: tuple[str, ...] = (
     """CREATE TABLE IF NOT EXISTS events(
@@ -299,7 +299,20 @@ _V1: tuple[str, ...] = (
     "CREATE INDEX IF NOT EXISTS exports_run ON exports(run_id, created_at DESC)",
 )
 
-MIGRATIONS: tuple[tuple[int, tuple[str, ...]], ...] = ((1, _V1),)
+_V2: tuple[str, ...] = (
+    """CREATE TABLE IF NOT EXISTS run_fact_snapshots(
+        run_id TEXT PRIMARY KEY REFERENCES runs(run_id),
+        facts TEXT NOT NULL,
+        created_at TEXT NOT NULL)""",
+    """CREATE TRIGGER IF NOT EXISTS run_fact_snapshots_no_update
+        BEFORE UPDATE ON run_fact_snapshots
+        BEGIN SELECT RAISE(ABORT,'run facts are frozen'); END""",
+    """CREATE TRIGGER IF NOT EXISTS run_fact_snapshots_no_delete
+        BEFORE DELETE ON run_fact_snapshots
+        BEGIN SELECT RAISE(ABORT,'run facts are frozen'); END""",
+)
+
+MIGRATIONS: tuple[tuple[int, tuple[str, ...]], ...] = ((1, _V1), (2, _V2))
 
 
 def current_version(db: sqlite3.Connection) -> int:

@@ -62,12 +62,14 @@ class WriterQueue:
     def _run(self, bootstrap: Callable[[sqlite3.Connection], None] | None) -> None:
         db = sqlite3.connect(self.path, timeout=self.timeout, check_same_thread=False)
         try:
+            db.row_factory = sqlite3.Row
             db.execute("PRAGMA journal_mode=WAL")
             db.execute("PRAGMA synchronous=FULL")
             db.execute("PRAGMA foreign_keys=ON")
             db.execute("PRAGMA busy_timeout=30000")
             if bootstrap is not None:
                 bootstrap(db)
+            db.commit()
             self._db = db
         except BaseException as error:
             self._startup_error = error

@@ -79,6 +79,7 @@ class PlatformConfig:
     skills: tuple[SkillConfig, ...] = ()
     policy_file: Path | None = None
     outputs_max_export_bytes: int = 128 * 1024 * 1024
+    start_workers: bool = False
 
     @property
     def database(self) -> Path:
@@ -205,6 +206,7 @@ class PlatformConfig:
             policy_file=_path(policy_file, base) if policy_file else None,
             outputs_max_export_bytes=_positive_int(
                 storage.get("max_export_bytes", 128 * 1024 * 1024), "max_export_bytes"),
+            start_workers=bool(server.get("start_workers", False)),
         )
 
     def with_env(self, env: Mapping[str, str]) -> "PlatformConfig":
@@ -226,7 +228,11 @@ class PlatformConfig:
             security = replace(security, worker_bootstrap_token=env["TEMIS_WORKER_BOOTSTRAP_TOKEN"])
         if env.get("TEMIS_SECURE_COOKIES"):
             security = replace(security, secure_cookies=env["TEMIS_SECURE_COOKIES"].lower() in ("1", "true", "yes"))
-        return replace(self, storage=storage, security=security, server=server)
+        start_workers = self.start_workers
+        if env.get("TEMIS_START_WORKERS"):
+            start_workers = env["TEMIS_START_WORKERS"].lower() in ("1", "true", "yes")
+        return replace(self, storage=storage, security=security, server=server,
+                       start_workers=start_workers)
 
     def prepare_directories(self) -> None:
         for path in (self.storage.database.parent, self.storage.outputs,

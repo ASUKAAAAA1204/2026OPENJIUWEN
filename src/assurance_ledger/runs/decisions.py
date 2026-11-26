@@ -38,6 +38,7 @@ STATUS_BY_GATE = {
     "REWRITE": "REWRITTEN", "NONE": "UNHOOKED",
 }
 EXECUTABLE = ("ALLOW", "NONE")
+STARTABLE = ("ALLOW",)
 
 
 class DecisionError(ValueError):
@@ -112,7 +113,7 @@ def _intent_response(db: sqlite3.Connection, body: dict[str, Any]) -> dict[str, 
     ref = event.get("args_snapshot_ref")
     if execute and ref:
         try:
-            snapshot = SnapshotStore.read_on(db, ref)
+            snapshot = SnapshotStore.unwrap(SnapshotStore.read_on(db, ref))
             args_payload = snapshot.get("args")
         except Exception:
             args_payload = None
@@ -236,13 +237,15 @@ def record_intent(writer, store, journal: DecisionJournal,
             "exec_policy": gate.exec_policy,
             "evaluated_at": utc_iso(moment),
         }, redactor)
+        effective_args = (dict(gate.rewritten_args)
+                          if gate.rewritten_args is not None else dict(args))
         args_ref = snapshots.capture_on(db, {
             "kind": "args_snapshot",
             "tool_name": tool_name,
             "decision_class": decision_class,
-            "args": dict(args),
+            "args": effective_args,
         }, redactor)
-        redacted_args = SnapshotStore.read_ref(db, args_ref)
+        redacted_args = SnapshotStore.unwrap(SnapshotStore.read_ref(db, args_ref))
         summary = _summary(tool_name, decision_class, redacted_args.get("args"))
         intent = IntentRecord(
             decision_id=decision_id, run_id=run_row.run_id,
@@ -296,12 +299,12 @@ def record_intent(writer, store, journal: DecisionJournal,
                 "type": "ASK_REQUESTED", "approval_id": approval_id,
                 "recorded_at": utc_iso(moment),
             })
-        if gate.final_gate in EXECUTABLE:
+        if gate.final_gate in STARTABLE:
             journal.append_in(db, f"start:{decision_id}", decision_id, {
                 "type": "EXEC_STARTED", "attempt_id": attempt_id,
                 "started_at": utc_iso(moment),
             })
-        turns.append_turn_event(
+        emitted = [turns.append_turn_event(
             db, turn_id=turn_id,
             client_event_id=f"intent:{decision_id}",
             event_type="tool_intent",
@@ -310,15 +313,15 @@ def record_intent(writer, store, journal: DecisionJournal,
                 "decision_class": decision_class, "tool_name": tool_name,
                 "gate": gate.gate, "summary": summary,
                 "approval_id": approval_id,
-            }, now=moment)
+            }, now=moment)]
         if approval_id is not None:
-            turns.append_turn_event(
+            emitted.append(turns.append_turn_event(
                 db, turn_id=turn_id,
                 client_event_id=f"approval-requested:{decision_id}",
                 event_type="approval_requested",
                 payload={"turn_id": turn_id, "approval_id": approval_id,
                          "decision_id": decision_id, "expires_at": expires_at},
-                now=moment)
+                now=moment))
             db.execute(
                 "UPDATE turns SET status='awaiting_approval', revision=revision+1 "
                 "WHERE turn_id=? AND status='active'", (turn_id,))
@@ -327,6 +330,7 @@ def record_intent(writer, store, journal: DecisionJournal,
         response = _intent_response(db, body)
         response["args"] = redacted_args.get("args")
         response["execute"] = gate.final_gate in EXECUTABLE
+        response["_events"] = emitted
         return response
 
     return writer.call(job, intent=True)
@@ -378,8 +382,8 @@ def record_result(writer, store, journal: DecisionJournal,
                   now: datetime | None = None) -> dict[str, Any]:
     moment = now or datetime.now(timezone.utc)
     status = payload.get("status")
-    if status not in ("EXEC_FINISHED", "EXEC_FAILED"):
-        raise DecisionError("status 必须是 EXEC_FINISHED/EXEC_FAILED")
+    if status not in ("EXEC_FINISHED", "EXEC_FAILED", "UNKNOWN_OUTCOME"):
+        raise DecisionError("status 必须是 EXEC_FINISHED/EXEC_FAILED/UNKNOWN_OUTCOME")
     attempt_id = payload.get("attempt_id")
     if not isinstance(attempt_id, str) or not attempt_id.strip():
         raise DecisionError("attempt_id 必填")
@@ -404,18 +408,18 @@ def record_result(writer, store, journal: DecisionJournal,
         run = lifecycle.require_run(db, intent["run_id"])
         if run.framework != worker["framework"]:
             raise DecisionConflict("worker 框架与运行不一致")
+        if run.state == "closed":
+            raise DecisionConflict("运行已关闭，不能再追加结果")
         gate = intent["gate"]
         existing_result = db.execute(
             "SELECT body FROM events WHERE json_extract(body,'$.decision_id')=? "
-            "AND json_extract(body,'$.event.type') IN ('EXEC_FINISHED','EXEC_FAILED') "
+            "AND json_extract(body,'$.event.type') IN "
+            "('EXEC_FINISHED','EXEC_FAILED','UNKNOWN_OUTCOME') "
             "ORDER BY seq DESC LIMIT 1", (decision_id,)).fetchone()
         if existing_result is not None:
             old = json.loads(existing_result["body"])["event"]
-            wire = {"decision_id": decision_id,
-                    "status": old.get("type"),
+            return {"decision_id": decision_id, "status": old.get("type"),
                     "evidence_ref": (old.get("evidence") or {}).get("evidence_id")}
-            wire["status"] = "EXEC_FINISHED" if old.get("type") == "EXEC_FINISHED" else "EXEC_FAILED"
-            return wire
         policy_cache: dict[str, Any] = {}
         policy_row = db.execute(
             "SELECT configuration FROM policy_versions WHERE version=?",
@@ -424,16 +428,30 @@ def record_result(writer, store, journal: DecisionJournal,
         redactor = Redactor(configuration.get("redaction_version", "redaction-v1"),
                             REDACTION_PATTERNS)
         evidence_ref = None
-        if gate == "NONE":
-            evidence = _result_evidence(
-                db, store, redactor, decision_id=decision_id, payload=payload,
-                intent=intent, attempt_id=attempt_id, moment=moment)
-            record = record_store.append_on(
-                db, f"unhooked-result:{decision_id}:{attempt_id}", "evidence",
-                {key: value for key, value in evidence.items()
-                 if key != "content_hash"},
-                decision_id=decision_id)
-            evidence_ref = record["record"]["evidence_id"]
+        if status == "UNKNOWN_OUTCOME":
+            journal.append_in(db, f"result:{decision_id}:{attempt_id}:unknown",
+                              decision_id, {
+                                  "type": "UNKNOWN_OUTCOME",
+                                  "reason": "worker_reported_unknown",
+                                  "recorded_at": utc_iso(moment),
+                              })
+        elif gate == "NONE":
+            event_id = f"unhooked-result:{decision_id}:{attempt_id}"
+            prior = db.execute("SELECT body FROM events WHERE event_id=?",
+                               (event_id,)).fetchone()
+            if prior is not None:
+                record = json.loads(prior["body"]).get("record") or {}
+                evidence_ref = record.get("evidence_id")
+            else:
+                evidence = _result_evidence(
+                    db, store, redactor, decision_id=decision_id, payload=payload,
+                    intent=intent, attempt_id=attempt_id, moment=moment)
+                record = record_store.append_on(
+                    db, event_id, "evidence",
+                    {key: value for key, value in evidence.items()
+                     if key != "content_hash"},
+                    decision_id=decision_id)
+                evidence_ref = record["body"]["record"]["evidence_id"]
         elif status == "EXEC_FINISHED":
             started = db.execute(
                 "SELECT 1 FROM events WHERE json_extract(body,'$.decision_id')=? "
@@ -457,7 +475,7 @@ def record_result(writer, store, journal: DecisionJournal,
                                   "type": "EXEC_FAILED", "attempt_id": attempt_id,
                                   "recorded_at": utc_iso(moment),
                               })
-        turns.append_turn_event(
+        emitted = turns.append_turn_event(
             db, turn_id=turn_id,
             client_event_id=f"result:{decision_id}:{attempt_id}",
             event_type="tool_result",
@@ -465,7 +483,7 @@ def record_result(writer, store, journal: DecisionJournal,
                      "status": status, "summary": summary,
                      "evidence_ref": evidence_ref}, now=moment)
         return {"decision_id": decision_id, "status": status,
-                "evidence_ref": evidence_ref}
+                "evidence_ref": evidence_ref, "_events": [emitted]}
 
     return writer.call(job)
 

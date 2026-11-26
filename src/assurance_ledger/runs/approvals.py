@@ -5,7 +5,6 @@
 """
 from __future__ import annotations
 
-import json
 import secrets
 import sqlite3
 from datetime import datetime, timedelta, timezone
@@ -253,6 +252,11 @@ def respond(writer, journal: DecisionJournal, record_store: RecordStore,
             raise ApprovalPermission("当前账号无权读取此运行审批")
         if not rbac.can_approve(user):
             raise ApprovalPermission("当前账号没有审批权限")
+        turn = db.execute("SELECT status FROM turns WHERE turn_id=?",
+                          (row["turn_id"],)).fetchone()
+        if turn is None or turn["status"] in (
+                "completed", "failed", "unknown", "review"):
+            raise ApprovalConflict("轮次已结束，审批只能进入人工复核")
         if row["status"] != "pending":
             raise ApprovalConflict("审批已被处理")
         if str(expected_revision) != str(row["revision"]):

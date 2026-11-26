@@ -533,7 +533,16 @@ def close_run(writer, store, config: PlatformConfig, *, user: Any, run_id: str,
         record = require_run(db, run_id)
         try:
             from ..readings.service import snapshot_run_readings
-            snapshot_run_readings(db, record, moment)
+            output = snapshot_run_readings(db, record, moment)
+            threshold = record.debt_threshold
+            if threshold is not None and output["readings"]["uncertainty_debt"][
+                    "inclusive_summary"]["weighted_value"] >= threshold:
+                db.execute(
+                    "INSERT OR IGNORE INTO review_queue(review_id,run_id,kind,"
+                    "decision_id,claim_id,reason,status,created_at,reviewed_at) "
+                    "VALUES(?,?,?,NULL,NULL,?,'queued',?,NULL)",
+                    ("REV-" + secrets.token_hex(8).upper(), run_id,
+                     "DEBT_THRESHOLD", "未消解债务达到复核阈值", utc_iso(moment)))
         except Exception:
             # 读数生成失败不阻断关闭事实，但保留待复核审计
             append_audit(db, actor_id="SYSTEM", action="readings.failed",
@@ -555,7 +564,7 @@ def list_runs(db: sqlite3.Connection, config: PlatformConfig, user: Any, *,
               q: str = "", framework: str | None = None,
               state: str | None = None,
               after: tuple[str, str] | None = None,
-              limit: int = 50) -> list[RunRecord]:
+              limit: int = 50) -> tuple[list[RunRecord], tuple[str, str] | None]:
     clauses: list[str] = []
     params: list[Any] = []
     role = rbac.role_of(user)
@@ -565,11 +574,11 @@ def list_runs(db: sqlite3.Connection, config: PlatformConfig, user: Any, *,
     elif role == "operator":
         skills = config.security.operator_skills
         if not skills:
-            return []
+            return [], None
         clauses.append("skill_id IN (" + ",".join("?" for _ in skills) + ")")
         params.extend(skills)
     elif role not in ("platform_admin", "on_call", "auditor"):
-        return []
+        return [], None
     if q:
         pattern = "%" + q.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
         clauses.append("(title LIKE ? ESCAPE '\\' OR task_id LIKE ? ESCAPE '\\' OR run_id LIKE ? ESCAPE '\\')")
@@ -589,7 +598,12 @@ def list_runs(db: sqlite3.Connection, config: PlatformConfig, user: Any, *,
            " ORDER BY created_at DESC, run_id ASC LIMIT ?")
     params.append(limit + 1)
     rows = db.execute(sql, params).fetchall()
-    return [_record(row) for row in rows[:limit]]
+    records = [_record(row) for row in rows[:limit]]
+    after_row = None
+    if len(rows) > limit and records:
+        last = records[-1]
+        after_row = (last.created_at, last.run_id)
+    return records, after_row
 
 
 __all__ = [

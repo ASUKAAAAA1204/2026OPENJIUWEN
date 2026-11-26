@@ -8,16 +8,20 @@ from __future__ import annotations
 import hashlib
 import json
 import sqlite3
+from dataclasses import fields, is_dataclass
 from datetime import datetime, timezone
 from typing import Any, Iterable, Mapping
 
 from ..engine.v27 import (
-    Mark,
+    DebtProjection,
     PolicyObservation,
     ReplayOutcome,
     RunFacts,
     aggregate_skill,
     compute_run,
+    generate_marks,
+    open_debts_for_run,
+    ts_to_str,
 )
 from ..engine.v27.models import (
     DecisionFact,
@@ -78,7 +82,12 @@ def _events_for_run(db: sqlite3.Connection, run_id: str) -> list[tuple[int, dict
 
 
 def build_run_facts(db: sqlite3.Connection, run: Any, *,
-                    policy_cache: dict[str, Any] | None = None) -> RunFacts:
+                    policy_cache: dict[str, Any] | None = None,
+                    prefer_frozen: bool = True) -> RunFacts:
+    if prefer_frozen and run["state"] == "closed":
+        frozen = load_frozen_facts(db, run["run_id"])
+        if frozen is not None:
+            return frozen
     cache = policy_cache if policy_cache is not None else {}
     policy_config = _policy_config(db, run["policy_version"], cache)
     rules = {}
@@ -192,10 +201,16 @@ def build_run_facts(db: sqlite3.Connection, run: Any, *,
 
     replays = _replays(db, run["run_id"])
     debt_events = []
+    closed_at = _aware(run["closed_at"])
     for row in db.execute(
             "SELECT payload FROM debt_events WHERE run_id=? ORDER BY seq",
             (run["run_id"],)):
-        debt_events.append(json.loads(row["payload"]))
+        event = json.loads(row["payload"])
+        if closed_at is not None and event.get("event_type") == "debt_resolved":
+            resolved_at = _aware(event.get("resolved_at"))
+            if resolved_at is not None and resolved_at > closed_at:
+                break
+        debt_events.append(event)
     completed_at = _aware(run["closed_at"] or run["updated_at"])
     assert completed_at is not None
     return RunFacts(
@@ -222,6 +237,39 @@ def _text(value: Any) -> str | None:
     if isinstance(value, str) and value.strip():
         return value
     return None
+
+
+def _facts_json(value: Any) -> Any:
+    if is_dataclass(value):
+        return {field.name: _facts_json(getattr(value, field.name))
+                for field in fields(value)}
+    if isinstance(value, datetime):
+        return ts_to_str(value)
+    if isinstance(value, tuple):
+        return [_facts_json(item) for item in value]
+    if isinstance(value, list):
+        return [_facts_json(item) for item in value]
+    if isinstance(value, Mapping):
+        return {str(key): _facts_json(item) for key, item in value.items()}
+    return value
+
+
+def freeze_run_facts(db: sqlite3.Connection, run_id: str, facts: RunFacts,
+                     moment: datetime) -> None:
+    db.execute(
+        "INSERT OR IGNORE INTO run_fact_snapshots(run_id,facts,created_at) "
+        "VALUES(?,?,?)",
+        (run_id, json.dumps(_facts_json(facts), ensure_ascii=False,
+                            sort_keys=True), utc_iso(moment)))
+
+
+def load_frozen_facts(db: sqlite3.Connection, run_id: str) -> RunFacts | None:
+    row = db.execute(
+        "SELECT facts FROM run_fact_snapshots WHERE run_id=?", (run_id,)
+    ).fetchone()
+    if row is None:
+        return None
+    return RunFacts.from_dict(json.loads(row["facts"]))
 
 
 def _disposition(decision_id: str, gate: str | None, history: Iterable[dict],
@@ -296,9 +344,33 @@ def compute_run_readings(db: sqlite3.Connection, run: Any, *,
     return compute_run(facts)
 
 
+def persist_run_debts(db: sqlite3.Connection, run: Any, facts: RunFacts) -> None:
+    existing = [json.loads(row["payload"]) for row in db.execute(
+        "SELECT payload FROM debt_events WHERE run_id=? ORDER BY seq",
+        (run["run_id"],))]
+    projection = DebtProjection.from_events(existing) if existing else DebtProjection()
+    report = generate_marks(facts.decisions, facts.evidence, facts.observations,
+                            facts.extracted_claim_ids)
+    projection = open_debts_for_run(facts.decisions, report.marks,
+                                    projection=projection, run_id=facts.run_id)
+    events = projection.to_events()
+    for event in events[len(existing):]:
+        db.execute(
+            "INSERT OR IGNORE INTO debt_events(run_id,seq,event_id,payload,created_at) "
+            "VALUES(?,?,?,?,?)",
+            (run["run_id"], event["seq"],
+             f"debt:{run['run_id']}:{event['seq']}",
+             json.dumps(event, ensure_ascii=False, sort_keys=True),
+             utc_iso(datetime.now(timezone.utc))))
+
+
 def snapshot_run_readings(db: sqlite3.Connection, run: Any,
                           moment: datetime | None = None) -> dict[str, Any]:
-    output = compute_run_readings(db, run, now=moment)
+    facts = build_run_facts(db, run)
+    freeze_run_facts(db, run["run_id"], facts,
+                     moment or datetime.now(timezone.utc))
+    persist_run_debts(db, run, facts)
+    output = compute_run(facts)
     completed = run["closed_at"] or utc_iso(moment or datetime.now(timezone.utc))
     db.execute(
         "INSERT INTO reading_snapshots(run_id,completed_at,payload) VALUES(?,?,?) "

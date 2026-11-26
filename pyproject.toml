@@ -23,6 +23,8 @@ ledger_crypto = ["cryptography>=43,<51"]
 api = [
     "fastapi>=0.110",
     "uvicorn>=0.29",
+    "argon2-cffi>=23.1",
+    "tomli>=2.0; python_version < '3.11'",
 ]
 dev = [
     "cyclonedx-python-lib>=5.0",

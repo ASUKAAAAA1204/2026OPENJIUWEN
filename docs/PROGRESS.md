@@ -250,3 +250,17 @@ docs/design/design_cheatsheet.md → 一页速查
 **阻塞**：本机缺 openjiuwen，SDK 预检 BLOCKED；本机 3.14 不等于 A 的锁环境。正式 Gate 回放、typed debt 消解映射及 D 真实授权/API 接线仍需联调。
 
 **下一步**：以 PR 检查验收 3.12 两个锁环境，按交接说明连接 A/B/D 的真实生产者和服务；不把纯计算/合成结果记作产品全链路验收。
+
+---
+
+### 2026-11-26 后端 FastAPI 平台 M1/M4 基础（backend 分支）
+
+**内容**：按 `draft/开发文档/TemisGuard-v2.7_FastAPI平台开发方案_2026-11-26.md` 在 `backend` 分支建立中央服务：配置、SQLite 前向迁移、单写者队列、Argon2id 本地账号、服务端会话/CSRF、五角色 RBAC、worker 注册/心跳/turn claim、意图先落账、四值 Gate、审批原子消费、SSE 重放、运行生命周期、八项读数/债务/回放/报价/发布评估、授权 JSONL 导出及公共接口文档生成。旧 `ledger.json` 与只读 `/api/*` 兼容接口保留，`ui/` 未改动。
+
+**产出**：`src/assurance_ledger/{api,auth,workers,policy,gate,runs,readings}/`、`ledger/{writer,migrations,chain,export}.py`、`configs/platform.example.toml`、`scripts/{run_platform,create_admin,migrate_db,backup_db,publish_policy,export_openapi}.py`、`docs/api/generated/`、`tests/platform/`。
+
+**验证**：`tests/platform` 26 项通过（会话/CSRF/限流、运行幂等与分页、SSE+审批、DENY/UNHOOKED/REWRITE、债务快照与消解历史、管理/报价、导出独立哈希校验、文档一致性）；领域回归 `tests/contracts` 及原有测试保持基线通过。README 所述全量测试仍为既有基线 997 passed / 3 failed / 14 errors（缺 openjiuwen、pytest 9 nodeid 差异），未新增失败。
+
+**边界**：三框架真实 SDK 执行前阻断适配尚未实现；worker 内部协议与适配器入口已就绪，适配器缺失时显式退出、不注册虚假能力。`types.ts` 未生成；报价费率为合成示例，不代表生产计价。公共 API 文档只覆盖 `/api/v27` 与兼容接口，`/internal/v1/*` 不提供给前端。
+
+**下一步**：为 openJiuwen/LangGraph/Agents 锁定版本并实现真实 guarded_call；补 11 类决策覆盖与三框架场景矩阵；接真实命令/文件/Git 受控工具；完成 M5 八项评测与 shadow/红队证据。
