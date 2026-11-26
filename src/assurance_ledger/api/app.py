@@ -6,6 +6,7 @@ import logging
 import secrets
 import shutil
 import sqlite3
+import time
 from contextlib import asynccontextmanager
 from dataclasses import replace
 from datetime import datetime, timezone
@@ -28,6 +29,7 @@ from ..runs import lifecycle
 from ..runs.decisions import REDACTION_PATTERNS
 from ..runs import approvals as approval_service
 from ..runs import execution
+from ..workers.registry import healthy_workers
 from ..workers.supervisor import WorkerSupervisor, central_url
 from .errors import ApiError, error_body, error_response, map_exception, request_id
 from .routers import (
@@ -68,6 +70,39 @@ def _backup_before_migration(config: PlatformConfig) -> None:
     config.storage.backups.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     shutil.copy2(path, config.storage.backups / f"platform-{stamp}.db")
+
+
+def _healthy_worker_count(config: PlatformConfig) -> int:
+    with read_connection(config.database) as db:
+        return len(healthy_workers(db))
+
+
+async def _await_first_worker(state: PlatformState, seconds: int) -> dict:
+    """启动门控：等待至少一个健康 worker 注册；超时降级为只读就绪"""
+    started = time.monotonic()
+    observed = 0
+    while True:
+        observed = await run_in_threadpool(_healthy_worker_count, state.config)
+        if observed:
+            break
+        if time.monotonic() - started >= seconds:
+            break
+        await asyncio.sleep(0.25)
+    waited = round(time.monotonic() - started, 3)
+    if observed:
+        return {"gate": "ok", "waited_seconds": waited,
+                "workers_observed": observed, "reason": "至少一个 worker 已注册"}
+    reasons = []
+    if state.supervisor is not None:
+        reasons = [f"{item['name']}：{item['reason']}"
+                   for item in state.supervisor.status()
+                   if item["state"] not in ("running", "starting")]
+    logger.warning("启动门控超时（%.1fs），没有健康 worker；降级为只读就绪。%s",
+                   waited, "；".join(reasons) or "无 worker 状态")
+    return {"gate": "degraded", "waited_seconds": waited,
+            "workers_observed": 0,
+            "reason": "等待 worker 注册超时，仅接受只读请求" +
+                      ("；" + "；".join(reasons) if reasons else "")}
 
 
 async def _recovery_loop(state: PlatformState) -> None:
@@ -128,6 +163,16 @@ def create_app(config: PlatformConfig | None = None, *,
                 central_url=central_url(resolved))
             supervisor.start()
             state.supervisor = supervisor
+            wait_seconds = resolved.server.startup_wait_seconds
+            if wait_seconds > 0:
+                state.startup = await _await_first_worker(state, wait_seconds)
+            else:
+                state.startup = {
+                    "gate": "skipped", "waited_seconds": 0.0,
+                    "workers_observed": await run_in_threadpool(
+                        _healthy_worker_count, resolved),
+                    "reason": "startup_wait_seconds=0，不等待 worker",
+                }
         recovery_task = asyncio.create_task(_recovery_loop(state))
         state.recovery_task = recovery_task
         try:

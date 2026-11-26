@@ -7,6 +7,8 @@ internal_bind = "127.0.0.1:8000"
 public_origin = "http://127.0.0.1:8000"
 # 由 scripts/run_platform.py 默认开启；测试或只跑中央时设为 false
 start_workers = false
+# 拉起 worker 后等待首个健康注册的秒数；超时降级为只读就绪（/readyz 返回 mode=readonly）
+startup_wait_seconds = 30
 
 [storage]
 database = "data/platform.db"

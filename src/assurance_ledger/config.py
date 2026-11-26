@@ -24,6 +24,8 @@ class ServerConfig:
     bind: str = "127.0.0.1:8000"
     internal_bind: str = "127.0.0.1:8000"
     public_origin: str = "http://127.0.0.1:8000"
+    # 启动门控：拉起 worker 后最多等待多少秒出现一次健康注册；0 表示不等待
+    startup_wait_seconds: int = 30
 
 
 @dataclass(frozen=True)
@@ -197,6 +199,8 @@ class PlatformConfig:
                 bind=str(server.get("bind", "127.0.0.1:8000")),
                 internal_bind=str(server.get("internal_bind", server.get("bind", "127.0.0.1:8000"))),
                 public_origin=str(server.get("public_origin", "http://127.0.0.1:8000")).rstrip("/"),
+                startup_wait_seconds=_non_negative_int(
+                    server.get("startup_wait_seconds", 30), "startup_wait_seconds"),
             ),
             storage=storage_cfg,
             security=security_cfg,
@@ -222,6 +226,14 @@ class PlatformConfig:
             security = replace(security, allowed_root=_path(env["TEMIS_ALLOWED_ROOT"], self.root))
         if env.get("TEMIS_PUBLIC_ORIGIN"):
             server = replace(server, public_origin=env["TEMIS_PUBLIC_ORIGIN"].rstrip("/"))
+        if env.get("TEMIS_STARTUP_WAIT_SECONDS"):
+            try:
+                seconds = int(env["TEMIS_STARTUP_WAIT_SECONDS"])
+            except ValueError:
+                raise ConfigError("TEMIS_STARTUP_WAIT_SECONDS 必须是非负整数") from None
+            if seconds < 0:
+                raise ConfigError("TEMIS_STARTUP_WAIT_SECONDS 必须是非负整数")
+            server = replace(server, startup_wait_seconds=seconds)
         if env.get("TEMIS_SESSION_SECRET"):
             security = replace(security, session_secret=env["TEMIS_SESSION_SECRET"])
         if env.get("TEMIS_WORKER_BOOTSTRAP_TOKEN"):
@@ -252,6 +264,12 @@ def _path(value: Any, base: Path) -> Path:
 def _positive_int(value: Any, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
         raise ConfigError(f"{name} 必须是正整数：{value!r}")
+    return value
+
+
+def _non_negative_int(value: Any, name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise ConfigError(f"{name} 必须是非负整数：{value!r}")
     return value
 
 

@@ -33,10 +33,15 @@ def readyz(request: Request):
     checks["schema_current"] = int(version) >= LATEST_VERSION
     checks["worker_registered"] = len(workers) > 0
     checks["writer_queue_available"] = state.writer.depth < state.writer.maxsize
-    ready = all(checks.values())
+    # 启动门控超时后显式降级为只读就绪：不把“无 worker”伪装成正常执行环境
+    read_only = state.read_only
+    essential = (checks["database_writable"] and checks["schema_current"]
+                 and checks["writer_queue_available"])
+    ready = essential and (checks["worker_registered"] or read_only)
     response = JSONResponse(
         status_code=200 if ready else 503,
-        content={"ready": ready, "checks": checks,
+        content={"ready": ready, "mode": "readonly" if read_only else "normal",
+                 "checks": checks, "startup": state.startup,
                  "schema_version": int(version)})
     response.headers["Cache-Control"] = "no-store"
     return response
