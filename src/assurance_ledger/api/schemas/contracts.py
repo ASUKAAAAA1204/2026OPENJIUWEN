@@ -28,6 +28,8 @@ class RunCreateRequest(StrictModel):
     skill_version: str = Field(min_length=1, max_length=160)
     expected_context_revision: str = Field(min_length=1, max_length=160)
     request_id: str = Field(min_length=1, max_length=160)
+    # 委派产生的子运行指向父运行；深度上限 3，父运行关闭后不再接受委派
+    parent_run_id: str | None = Field(default=None, max_length=160)
 
 
 class LifecycleAction(StrictModel):
