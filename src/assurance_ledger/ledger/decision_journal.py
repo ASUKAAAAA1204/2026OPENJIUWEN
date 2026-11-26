@@ -21,6 +21,15 @@ class DecisionJournal:
         SnapshotStore(store)
 
     def append(self, event_id, decision_id, event):
+        body, validate = self._prepare(decision_id, event)
+        return self.store.append(event_id, body, validate=validate)
+
+    def append_in(self, db, event_id, decision_id, event):
+        """Append inside a caller-owned transaction; no commit or rollback."""
+        body, validate = self._prepare(decision_id, event)
+        return self.store.append_on(db, event_id, body, validate=validate)
+
+    def _prepare(self, decision_id, event):
         if not isinstance(decision_id, str) or not decision_id.strip():
             raise ValueError('decision_id required')
         safe = self.redactor.redact(event)['value']
@@ -74,8 +83,7 @@ class DecisionJournal:
                              if json.loads(row[0]).get('record_kind') == 'approval']
                 if not any(a['approval_id'] == approval_id and a['approve_result'] == candidate['event'].get('result') for a in approvals):
                     raise ValueError('persisted matching approval required')
-
-        return self.store.append(event_id, body, validate=validate)
+        return body, validate
 
     def record_intent(self, event_id, intent, *, recorded_at):
         record = IntentRecord.model_validate(intent)

@@ -1,0 +1,359 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TemisGuard v2.7 SSE events",
+  "x-schema-version": "temisguard-events-v1",
+  "oneOf": [
+    {
+      "additionalProperties": false,
+      "properties": {
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "type": {
+          "const": "turn_started",
+          "title": "Type",
+          "type": "string"
+        },
+        "turn_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        },
+        "segment": {
+          "minimum": 1,
+          "title": "Segment",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "seq",
+        "type",
+        "turn_id",
+        "run_id",
+        "segment"
+      ],
+      "title": "TurnStarted",
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "type": {
+          "const": "assistant_delta",
+          "title": "Type",
+          "type": "string"
+        },
+        "turn_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "seq",
+        "type",
+        "turn_id",
+        "text"
+      ],
+      "title": "AssistantDelta",
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "type": {
+          "const": "tool_intent",
+          "title": "Type",
+          "type": "string"
+        },
+        "turn_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "decision_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Decision Id",
+          "type": "string"
+        },
+        "decision_class": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Decision Class",
+          "type": "string"
+        },
+        "tool_name": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Tool Name",
+          "type": "string"
+        },
+        "gate": {
+          "enum": [
+            "ALLOW",
+            "ASK",
+            "DENY",
+            "REWRITE",
+            "NONE"
+          ],
+          "title": "Gate",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "approval_id": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approval Id"
+        }
+      },
+      "required": [
+        "seq",
+        "type",
+        "turn_id",
+        "decision_id",
+        "decision_class",
+        "tool_name",
+        "gate",
+        "summary"
+      ],
+      "title": "ToolIntent",
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "type": {
+          "const": "approval_requested",
+          "title": "Type",
+          "type": "string"
+        },
+        "turn_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "approval_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Approval Id",
+          "type": "string"
+        },
+        "decision_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Decision Id",
+          "type": "string"
+        },
+        "expires_at": {
+          "format": "date-time",
+          "title": "Expires At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "seq",
+        "type",
+        "turn_id",
+        "approval_id",
+        "decision_id",
+        "expires_at"
+      ],
+      "title": "ApprovalRequested",
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "type": {
+          "const": "tool_result",
+          "title": "Type",
+          "type": "string"
+        },
+        "turn_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "decision_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Decision Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "EXEC_FINISHED",
+            "EXEC_FAILED",
+            "UNKNOWN_OUTCOME"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "evidence_ref": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Ref"
+        }
+      },
+      "required": [
+        "seq",
+        "type",
+        "turn_id",
+        "decision_id",
+        "status",
+        "summary"
+      ],
+      "title": "ToolResult",
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "type": {
+          "const": "turn_completed",
+          "title": "Type",
+          "type": "string"
+        },
+        "turn_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "run_state": {
+          "enum": [
+            "open",
+            "degraded",
+            "closed"
+          ],
+          "title": "Run State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "seq",
+        "type",
+        "turn_id",
+        "run_state"
+      ],
+      "title": "TurnCompleted",
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "type": {
+          "const": "turn_failed",
+          "title": "Type",
+          "type": "string"
+        },
+        "turn_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "outcome": {
+          "enum": [
+            "known_failure",
+            "unknown"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "seq",
+        "type",
+        "turn_id",
+        "outcome",
+        "message"
+      ],
+      "title": "TurnFailed",
+      "type": "object"
+    }
+  ]
+}

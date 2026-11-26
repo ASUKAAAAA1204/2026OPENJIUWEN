@@ -7,7 +7,7 @@ ifeq ($(OS),)
 PY := python
 endif
 
-.PHONY: install test test-c mypy sbom run demo verify api curve
+.PHONY: install test test-c test-platform mypy sbom run demo verify api curve platform api-docs migrate bench-platform
 
 install:
 	$(PY) -m pip install -e ".[dev,api]"
@@ -17,6 +17,9 @@ test:
 
 test-c:
 	$(PY) -m pytest -q tests/test_c_*.py
+
+test-platform:
+	$(PY) -m pytest -q tests/platform
 
 mypy:
 	$(PY) -m mypy src/assurance_ledger/ledger
@@ -35,6 +38,19 @@ verify:
 
 api:
 	$(PY) scripts/assurance.py serve --outputs outputs --port 8008
+
+# v2.7 中央服务
+platform:
+	$(PY) scripts/run_platform.py --config configs/platform.toml
+
+api-docs:
+	$(PY) scripts/export_openapi.py
+
+migrate:
+	$(PY) scripts/migrate_db.py --config configs/platform.toml
+
+bench-platform:
+	$(PY) scripts/bench_platform.py
 
 # 预留：D 端曲线数据由 export 导出
 curve:

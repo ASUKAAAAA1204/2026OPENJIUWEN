@@ -17,6 +17,21 @@ class RecordStore:
 
     def append(self, event_id, kind, payload, *, decision_id, origin_mark_id=None,
                source_level=None):
+        body, validate = self._prepare(
+            kind, payload, decision_id=decision_id,
+            origin_mark_id=origin_mark_id, source_level=source_level)
+        return self.events.append(event_id, body, validate=validate)
+
+    def append_on(self, db, event_id, kind, payload, *, decision_id,
+                  origin_mark_id=None, source_level=None):
+        """Append inside a caller-owned transaction; no commit or rollback."""
+        body, validate = self._prepare(
+            kind, payload, decision_id=decision_id,
+            origin_mark_id=origin_mark_id, source_level=source_level)
+        return self.events.append_on(db, event_id, body, validate=validate)
+
+    def _prepare(self, kind, payload, *, decision_id, origin_mark_id=None,
+                 source_level=None):
         if kind not in MODELS:
             raise ValueError('unknown record kind')
         if not isinstance(decision_id, str) or not decision_id.strip():
@@ -84,4 +99,4 @@ class RecordStore:
                     refs = [row['record']['evidence_id'] for row in rows if row.get('record_kind') == 'evidence']
                     if record.resolve_ref not in refs:
                         raise ValueError('resolution evidence missing')
-        return self.events.append(event_id, body, validate=validate)
+        return body, validate

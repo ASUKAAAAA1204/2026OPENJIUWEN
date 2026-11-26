@@ -78,8 +78,9 @@ flowchart LR
 | M1 账本评测 | C 新增 `scripts/c_v27_ledger_evaluate.py`，只读消费 A 的 SQLite/签名导出包；sidecar 提供分析上下文；不完整债务映射明确报告 |
 | 管理计算 | C 新增 `evaluation/management.py`，提供版本快照/比较、显式规则的发布评估、显式费率卡的债务估价；真实服务授权与发布另需接线 |
 | 债务模块 | B 的 v2.7 投影按 high/mid/low 加权、消解只追加；C 的 `ledger/debt_tracker.py` 仍为旧 CU 模型，持久化接线待联调 |
-| Studio UI | 已有 v2.7 工作台与前端契约；界面、演示及拦截响应不等于真实后端联调通过 |
-| 测试 | 新增 Python core/SDK 两个独立 CI profile，各固定 nodeid 连跑三轮；真实模型/产品验收仍需独立证据 |
+| 后端平台 | `backend` 分支新增 FastAPI 中央服务、SQLite 主账本、单写者队列、本地账号/CSRF、审批、SSE、导出与接口文档；三框架真实 SDK 阻断适配仍待实现 |
+| Studio UI | 已有 v2.7 工作台与前端契约；本次未修改 `ui/`，界面联调需按 `docs/api/generated/reference.md` 接入 |
+| 测试 | 新增 Python core/SDK 两个独立 CI profile，各固定 nodeid 连跑三轮；平台 API 另有 `tests/platform` 与 `platform-api` CI job |
 | 文档构建 | PRD PDF 与架构图均可由脚本重复生成 |
 
 ## 6. 口径迁移
@@ -129,6 +130,21 @@ python scripts/baseline/c_regression.py --profile core --require-lock --rounds 3
 python -m pip install -e ".[dev]"
 ```
 
+### v2.7 中央服务（backend 分支）
+
+```bash
+python -m pip install -e ".[dev,api,ledger_crypto]"
+cp configs/platform.example.toml configs/platform.toml   # 按环境修改
+python scripts/migrate_db.py --config configs/platform.toml
+python scripts/create_admin.py --config configs/platform.toml
+python scripts/run_platform.py --config configs/platform.toml --no-workers
+```
+
+- 公共接口文档：[reference.md](docs/api/generated/reference.md)、[OpenAPI](docs/api/generated/openapi-v27.json)、[SSE Schema](docs/api/generated/events.schema.json)
+- 平台测试：`python -m pytest -q tests/platform`
+- 接口文档生成：`python scripts/export_openapi.py`
+- 三框架真实适配器尚未实现；`--no-workers` 只启动中央，worker 显式不可用时不注册虚假能力。
+
 跑一次真实运行（调用 DeepSeek，温度 0，读取 `fixtures/source/` 的行情快照，产出编译判定、日报、claim 与用量）：
 
 ```bash
@@ -177,7 +193,13 @@ src/assurance_ledger/
   schemas/      接口契约 C1–C13 校验
   rail/         S2 采集与成本
   engine/       规则编译、评分、改造方案
-  ledger/       证据包、检查、账本、债务台账
+  ledger/       证据包、检查、账本、债务台账；v2.7 单写者/迁移/导出
+  api/          FastAPI 中央服务、SSE、内部 worker API
+  auth/         本地账号、会话、CSRF、RBAC、限流
+  runs/         run/turn 生命周期、意图/Gate、审批、断言
+  policy/ gate/ 策略目录与四值判定
+  readings/     八项读数、债务、回放、管理计算
+  workers/ adapters/  worker 守护、内部协议、三框架适配入口
 scripts/        run_daily_agent / measure_ars / fetch_source / generate_sbom
 tests/          旧 ARS 与 v2.7 计算回归
 ui/             Vue Studio 源码与测试，v2.7 展示待接入

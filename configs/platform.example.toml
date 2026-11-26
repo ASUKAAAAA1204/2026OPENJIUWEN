@@ -1,0 +1,54 @@
+# TemisGuard v2.7 平台配置示例
+# 复制为 configs/platform.toml 后按环境修改；密钥只放环境变量或 0600 文件。
+
+[server]
+bind = "127.0.0.1:8000"
+internal_bind = "127.0.0.1:8000"
+public_origin = "http://127.0.0.1:8000"
+# 由 scripts/run_platform.py 默认开启；测试或只跑中央时设为 false
+start_workers = false
+
+[storage]
+database = "data/platform.db"
+outputs = "outputs"
+keys = "data/keys"
+backups = "data/backups"
+max_export_bytes = 134217728
+
+[security]
+allowed_root = "workspaces"
+session_idle_minutes = 30
+session_absolute_hours = 8
+approval_timeout_seconds = 30
+secure_cookies = false
+# 留空时由中央生成并写入 data/keys/session.secret；生产建议显式注入
+session_secret = ""
+login_max_attempts = 5
+login_window_seconds = 300
+# 留空且启用 worker 时由中央生成，注入子进程；外部 worker 需显式配置
+worker_bootstrap_token = ""
+operator_skills = ["code-assistant"]
+
+[[workspaces]]
+id = "workspace"
+path = "workspaces/workspace"
+
+[[skills]]
+id = "code-assistant"
+version = "1.0.0"
+
+[workers.openjiuwen]
+# Windows 开发用 .venvs/openjiuwen/Scripts/python.exe；Linux 用 .venvs/openjiuwen/bin/python
+python = ".venvs/openjiuwen/Scripts/python.exe"
+enabled = true
+
+[workers.langgraph]
+python = ".venvs/langgraph/Scripts/python.exe"
+enabled = true
+
+[workers.agents]
+python = ".venvs/agents/Scripts/python.exe"
+enabled = true
+
+# 可选：启动时导入的策略配置文件（JSON）
+# policy_file = "configs/policy.default.json"

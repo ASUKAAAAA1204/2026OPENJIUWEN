@@ -9,6 +9,34 @@ permissions:
   contents: read
 
 jobs:
+  platform-api:
+    name: platform-api-py312
+    runs-on: windows-latest
+    timeout-minutes: 20
+    env:
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements/*.lock.txt
+      - name: Install M1 platform profile
+        run: |
+          python -m pip install -r requirements/m1-ledger-py312.lock.txt
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m pip install --no-build-isolation --no-deps -e .
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m pip check
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Platform API tests (SSE, approvals, gate, debt, export)
+        run: python -m pytest tests/platform -q
+      - name: Generate public contract docs
+        run: python scripts/export_openapi.py
+      - name: Contract docs must match runtime
+        run: git diff --exit-code -- docs/api/generated
+
   verify:
     name: ${{ matrix.profile }}-py312
     runs-on: windows-latest
@@ -36,7 +64,7 @@ jobs:
         run: python -m venv .venv-c-ci
       - name: Install the existing A dependency profile
         run: |
-          .\.venv-c-ci\Scripts\python.exe -m pip install -r "${{ matrix.lock }}"
+          .\.venv-c-ci\Scripts\python.exe -m pip install -r "${{ matrix.lock }}" -r requirements/m1-ledger-py312.lock.txt
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           .\.venv-c-ci\Scripts\python.exe -m pip install --no-build-isolation --no-deps -e .
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
