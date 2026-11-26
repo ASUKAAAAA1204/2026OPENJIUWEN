@@ -42,6 +42,8 @@ def export_run(request: Request, run_id: str, body: ExportRequest,
             data = path.read_bytes()
             if hashlib.sha256(data).hexdigest() == existing["sha256"]:
                 return _file_response(data, run_id, existing)
+        raise ApiError(409, "EXPORT_CONFLICT",
+                       "导出文件缺失或指纹不符，无法确认原导出内容")
     data, meta = ledger_export.build_run_export(db, run)
     if meta["byte_size"] > state.config.outputs_max_export_bytes:
         raise ApiError(413, "EXPORT_TOO_LARGE", "导出超过配置大小上限")

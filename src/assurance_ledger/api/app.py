@@ -26,6 +26,7 @@ from ..ledger.sqlite_events import SQLiteEventStore
 from ..ledger.writer import WriterQueue, read_connection
 from ..runs import lifecycle
 from ..runs.decisions import REDACTION_PATTERNS
+from ..runs import approvals as approval_service
 from ..runs import execution
 from ..workers.supervisor import WorkerSupervisor, central_url
 from .errors import ApiError, error_body, error_response, map_exception, request_id
@@ -73,10 +74,13 @@ async def _recovery_loop(state: PlatformState) -> None:
     while True:
         try:
             await run_in_threadpool(
+                approval_service.expire_pending, state.writer, state.journal,
+                state.record_store)
+            await run_in_threadpool(
                 execution.recover_stale_turns, state.writer, state.journal,
                 state.config)
         except Exception:
-            logger.exception("turn 恢复扫描失败")
+            logger.exception("turn/审批恢复扫描失败")
         await asyncio.sleep(10)
 
 

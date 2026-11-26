@@ -41,15 +41,16 @@ def list_runs(request: Request, db=Depends(read_db),
         raise ApiError(422, "INVALID_FILTER", "state 过滤值非法")
     if limit < 1 or limit > 200:
         raise ApiError(422, "INVALID_FILTER", "limit 必须是 1..200")
+    query = q.strip()
     after = None
     if cursor:
-        after = decode_cursor(state_obj.secret, cursor, q=q,
+        after = decode_cursor(state_obj.secret, cursor, q=query,
                               framework=framework, state=state)
     records, next_after = lifecycle.list_runs(
-        db, state_obj.config, context.user, q=q.strip(), framework=framework,
+        db, state_obj.config, context.user, q=query, framework=framework,
         state=state, after=after, limit=limit)
     items = [lifecycle.run_summary(db, record) for record in records]
-    next_cursor = (encode_cursor(state_obj.secret, q=q.strip(), framework=framework,
+    next_cursor = (encode_cursor(state_obj.secret, q=query, framework=framework,
                                  state=state, after=next_after)
                    if next_after else None)
     return {"source": "ledger", "items": items, "next_cursor": next_cursor}

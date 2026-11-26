@@ -158,7 +158,7 @@ def _regate_ok(db: sqlite3.Connection, run_id: str, decision_id: str) -> bool:
     except (TransitionError, ValueError):
         return False
     if intent.get("gate") == "ALLOW":
-        return state.status == "ALLOWED" and state.started
+        return state.status == "ALLOWED"
     if intent.get("gate") == "REWRITE":
         return state.approved
     return False

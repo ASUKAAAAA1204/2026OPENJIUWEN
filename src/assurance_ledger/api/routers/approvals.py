@@ -4,6 +4,7 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import JSONResponse
 
+from ...auth import rbac
 from ...runs import approvals
 from ..deps import (
     platform_state,
@@ -21,6 +22,8 @@ router = APIRouter(prefix="/api/v27", tags=["approvals"])
 @router.get("/approvals")
 def list_approvals(request: Request, db=Depends(read_db)):
     context = require_auth(request)
+    if not rbac.can_approve(context.user):
+        raise ApiError(403, "FORBIDDEN", "当前账号没有审批权限")
     state = platform_state(request)
     items = approvals.list_approvals(db, user=context.user, config=state.config)
     return JSONResponse(content=items, headers={"Cache-Control": "no-store"})

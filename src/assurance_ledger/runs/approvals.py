@@ -196,6 +196,33 @@ def _timeout_in(db: sqlite3.Connection, journal: DecisionJournal,
         (utc_iso(now), "超过绝对有效期未应答", utc_iso(now), row["approval_id"]))
 
 
+def expire_pending(writer, journal: DecisionJournal,
+                   record_store: RecordStore, *,
+                   now: datetime | None = None) -> list[str]:
+    moment = now or datetime.now(timezone.utc)
+
+    def job(db: sqlite3.Connection) -> list[str]:
+        rows = db.execute(
+            "SELECT * FROM approvals WHERE status='pending' AND expires_at<=?",
+            (utc_iso(moment),)).fetchall()
+        expired = []
+        for raw in rows:
+            row = dict(raw)
+            try:
+                _timeout_in(db, journal, record_store, row, now=moment)
+            except ValueError:
+                db.execute(
+                    "UPDATE approvals SET status='timed_out', decided_at=?, "
+                    "result='timeout', note=?, consumed_at=?, revision=revision+1 "
+                    "WHERE approval_id=? AND status='pending'",
+                    (utc_iso(moment), "决策已终结，审批自动过期",
+                     utc_iso(moment), row["approval_id"]))
+            expired.append(row["approval_id"])
+        return expired
+
+    return writer.call(job)
+
+
 def consume_timeout(writer, journal: DecisionJournal, record_store: RecordStore,
                     approval_id: str, *, now: datetime | None = None) -> dict[str, Any] | None:
     moment = now or datetime.now(timezone.utc)
@@ -317,6 +344,7 @@ __all__ = [
     "approval_payload",
     "consume_timeout",
     "create_approval",
+    "expire_pending",
     "get_approval",
     "list_approvals",
     "new_approval_id",

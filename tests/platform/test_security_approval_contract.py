@@ -130,6 +130,7 @@ def test_origin_cursor_and_role_guards(platform):
         json={"username": "auditor", "password": "password123"},
         headers={"X-CSRF-Token": session["csrf_token"]})
     csrf = login.json()["csrf_token"]
+    assert platform.client.get("/api/v27/approvals").status_code == 403
     context = platform.run_context()
     denied = platform.client.post(
         "/api/v27/runs/create",

@@ -113,8 +113,12 @@ def can_configure_management(user: Any, capability: str) -> bool:
 
 
 def can_execute_management(user: Any, capability: str) -> bool:
-    return capability in MANAGEMENT_CAPABILITIES and role_of(user) in (
-        "platform_admin", "operator")
+    role = role_of(user)
+    if capability == "release_gate":
+        return role in ("platform_admin", "operator")
+    if capability in ("remediation_quote", "version_comparison"):
+        return role == "platform_admin"
+    return False
 
 
 __all__ = [

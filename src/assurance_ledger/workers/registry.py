@@ -105,7 +105,9 @@ def healthy_workers(db: sqlite3.Connection, *,
 def framework_states(db: sqlite3.Connection, config: PlatformConfig, *,
                      now: datetime | None = None) -> list[dict[str, Any]]:
     moment = now or datetime.now(timezone.utc)
-    healthy = {row["framework"]: row for row in healthy_workers(db, now=moment)}
+    healthy: dict[str, Any] = {}
+    for row in healthy_workers(db, now=moment):
+        healthy.setdefault(row["framework"], row)
     configured = {worker.framework: worker for worker in config.workers}
     states = []
     for name in FRAMEWORKS:
