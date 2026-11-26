@@ -30,10 +30,15 @@
 ## 2 验证
 
 ```bash
-python -m pytest -q tests/platform        # 35 passed
+python -m pytest -q tests/platform        # 36 passed
 python scripts/export_openapi.py          # 生成 docs/api/generated/
-python -m pytest -q                       # 1032 passed, 1 skipped, 既有 3 failed + 14 errors
+python scripts/bench_platform.py          # 本机 P95 记录
+python -m pytest -q                       # 1033 passed, 1 skipped, 既有 3 failed + 14 errors
 ```
+
+本机实测（Windows 11、Python 3.14、32 逻辑核、单写者顺序写入）：
+账本持久化 P95 **1.374ms**（200 次），纯规则 Gate P95 **0.4654ms**（2000 次）。
+目标是意图/结果 P95 ≤5ms、Gate P95 <50ms；本机达标，但不等同生产 Linux/容器指标。
 
 既有失败/错误与本次无关：缺 `openjiuwen` 的 SDK fixture，以及 pytest 9 对 nodeid 的差异。
 未把平台测试计入三框架或真实模型验收。

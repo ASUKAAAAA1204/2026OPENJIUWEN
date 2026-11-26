@@ -7,7 +7,7 @@ ifeq ($(OS),)
 PY := python
 endif
 
-.PHONY: install test test-c test-platform mypy sbom run demo verify api curve platform api-docs migrate
+.PHONY: install test test-c test-platform mypy sbom run demo verify api curve platform api-docs migrate bench-platform
 
 install:
 	$(PY) -m pip install -e ".[dev,api]"
@@ -48,6 +48,9 @@ api-docs:
 
 migrate:
 	$(PY) scripts/migrate_db.py --config configs/platform.toml
+
+bench-platform:
+	$(PY) scripts/bench_platform.py
 
 # 预留：D 端曲线数据由 export 导出
 curve:

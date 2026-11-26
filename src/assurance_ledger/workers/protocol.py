@@ -21,12 +21,12 @@ class CentralError(RuntimeError):
 class CentralClient:
     def __init__(self, base_url: str, *, token: str | None = None,
                  bootstrap_token: str | None = None,
-                 timeout: float = 40.0):
+                 timeout: float = 40.0, transport=None):
         self.base_url = base_url.rstrip("/")
         self.token = token
         self.bootstrap_token = bootstrap_token
         self._client = httpx.AsyncClient(
-            base_url=self.base_url,
+            base_url=self.base_url, transport=transport,
             timeout=httpx.Timeout(timeout, connect=5.0))
 
     async def close(self) -> None:
