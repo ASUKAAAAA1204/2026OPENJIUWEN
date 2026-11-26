@@ -8,6 +8,7 @@ from typing import Any
 import httpx
 
 from ..adapters.base import Denied, IntentOutcome, TurnHooks
+from ..ledger.canonical import digest_json
 
 
 class CentralError(RuntimeError):
@@ -150,24 +151,39 @@ class WorkerHooks(TurnHooks):
             "args": args, "side_effect": True,
             "summary": f"{decision_class}/{tool_name}"})
         gate = response.get("gate")
-        if response.get("execute"):
-            return IntentOutcome(
-                decision_id=decision, attempt_id=response.get("attempt_id"),
-                gate=gate or "NONE", execute=True,
-                args=response.get("args") or args,
-                approval_id=response.get("approval_id"),
-                args_digest=response.get("args_digest"))
-        if gate == "ASK" and response.get("approval_id"):
-            result = await self.client.wait_approval(response["approval_id"])
-            if result.get("execute"):
-                return IntentOutcome(
-                    decision_id=decision,
-                    attempt_id=response.get("attempt_id"),
-                    gate=gate, execute=True, args=args,
-                    approval_id=response.get("approval_id"),
-                    args_digest=response.get("args_digest"))
-            raise Denied(decision, f"审批未通过：{result.get('status')}")
-        raise Denied(decision, response.get("gate_reason") or "Gate 拒绝执行")
+        digest = digest_json(args)
+        attempt = response.get("attempt_id")
+        if response.get("decision_id") != decision or response.get("args_digest") != digest or not attempt:
+            raise CentralError(409, "INTENT_BINDING", "意图回执与本次工具调用不一致")
+        if response.get("replayed"):
+            raise Denied(decision, "已有决策回执，请核对原执行结果")
+        approval_id = response.get("approval_id")
+        effective = args
+        if gate == "ASK" and approval_id:
+            while True:
+                result = await self.client.wait_approval(approval_id)
+                approval = result.get("approval") or {}
+                if (result.get("decision_id") != decision or result.get("args_digest") != digest
+                        or approval.get("approval_id") != approval_id or approval.get("run_id") != self.run_id
+                        or approval.get("decision_id") != decision or approval.get("args_digest") != digest):
+                    raise CentralError(409, "APPROVAL_BINDING", "审批回执归属或参数不匹配")
+                if result.get("status") != "pending":
+                    break
+            answer = approval.get("response") or {}
+            if (result.get("status") != "approved" or result.get("execute") is not True
+                    or answer.get("approve_result") != "approve" or answer.get("approved_args_digest") != digest):
+                raise Denied(decision, "审批未批准或已过期")
+        elif response.get("execute") is True and gate in ("ALLOW", "REWRITE", "NONE"):
+            if gate == "REWRITE":
+                effective = response.get("args")
+                if (response.get("final_gate") != "ALLOW" or not isinstance(effective, dict)
+                        or digest_json(effective) != response.get("args_after")):
+                    raise CentralError(409, "REWRITE_BINDING", "改写参数与复判回执不一致")
+            elif response.get("final_gate") != gate:
+                raise CentralError(409, "INTENT_BINDING", "最终判定与原始判定不一致")
+        else:
+            raise Denied(decision, response.get("gate_reason") or "Gate 拒绝执行")
+        return IntentOutcome(decision, attempt, gate, True, effective, approval_id, digest)
 
     async def report_result(self, decision_id: str, attempt_id: str,
                             status: str, summary: str,

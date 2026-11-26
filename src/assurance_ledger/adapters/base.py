@@ -51,7 +51,7 @@ class TurnResult:
 
 class TurnHooks(Protocol):
     async def guarded_call(self, tool_name: str, args: dict[str, Any],
-                           decision_class: str) -> IntentOutcome: ...
+                           decision_class: str, decision_id: str | None = None) -> IntentOutcome: ...
 
     async def report_result(self, decision_id: str, attempt_id: str,
                             status: str, summary: str,

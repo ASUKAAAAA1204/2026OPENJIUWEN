@@ -1,1 +1,1 @@
-"""TemisGuard v2.7 module; implementation pending."""
+"""SDK adapters and centrally controlled workspace tools."""

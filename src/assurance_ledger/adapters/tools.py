@@ -204,21 +204,27 @@ def _summary(value: str) -> str:
 async def guarded_execute(hooks: TurnHooks, executor: ToolExecutor, *,
                           tool_name: str, args: dict[str, Any],
                           decision_class: str,
+                          decision_id: str | None = None,
                           model_id: str | None = None,
                           model_params: str | None = None) -> dict[str, Any]:
     try:
-        outcome: IntentOutcome = await hooks.guarded_call(
-            tool_name, args, decision_class)
+        if decision_id is None:
+            outcome: IntentOutcome = await hooks.guarded_call(tool_name, args, decision_class)
+        else:
+            outcome = await hooks.guarded_call(tool_name, args, decision_class, decision_id=decision_id)
     except Denied as error:
         return {"ok": False, "denied": True, "summary": error.reason,
                 "decision_id": error.decision_id}
+    if not outcome.execute or not outcome.attempt_id or (decision_id and outcome.decision_id != decision_id):
+        raise ToolViolation("中央服务未提供绑定该决策的执行许可")
     try:
         result = executor.execute(tool_name, outcome.args)
-    except ToolError as error:
+    except (OSError, ToolError) as error:
+        message = str(error) if isinstance(error, ToolError) else type(error).__name__
         await hooks.report_result(
-            outcome.decision_id, outcome.attempt_id or "", "EXEC_FAILED",
-            _summary(f"{tool_name} 执行失败：{error}"))
-        return {"ok": False, "error": str(error), "summary": str(error),
+            outcome.decision_id, outcome.attempt_id, "EXEC_FAILED",
+            _summary(f"{tool_name} 执行失败：{message}"))
+        return {"ok": False, "error": message, "summary": message,
                 "decision_id": outcome.decision_id}
     evidence = {
         "model_id": model_id or os.environ.get("MODEL_NAME", "unknown"),
@@ -228,7 +234,7 @@ async def guarded_execute(hooks: TurnHooks, executor: ToolExecutor, *,
     if outcome.args_digest:
         evidence["input_digest"] = outcome.args_digest
     await hooks.report_result(
-        outcome.decision_id, outcome.attempt_id or "", "EXEC_FINISHED",
+        outcome.decision_id, outcome.attempt_id, "EXEC_FINISHED" if result.get("ok") else "EXEC_FAILED",
         _summary(str(result.get("summary", ""))),
         evidence=evidence, output=result)
     return result

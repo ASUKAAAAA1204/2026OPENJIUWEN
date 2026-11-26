@@ -64,7 +64,7 @@ jobs:
         run: python -m venv .venv-c-ci
       - name: Install the existing A dependency profile
         run: |
-          .\.venv-c-ci\Scripts\python.exe -m pip install -r "${{ matrix.lock }}"
+          .\.venv-c-ci\Scripts\python.exe -m pip install -r "${{ matrix.lock }}" -r requirements/m1-ledger-py312.lock.txt
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           .\.venv-c-ci\Scripts\python.exe -m pip install --no-build-isolation --no-deps -e .
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

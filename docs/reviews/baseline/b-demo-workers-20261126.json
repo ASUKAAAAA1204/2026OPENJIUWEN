@@ -1,0 +1,240 @@
+{
+  "checked_at_utc": "2026-11-26T14:18:48.996653+00:00",
+  "provider": "DeepSeek",
+  "approval_timeout_seconds": 30,
+  "sdk_versions": {
+    "openJiuwen": "0.1.20.post1",
+    "LangGraph": "1.2.22",
+    "OpenAI Agents SDK": "0.25.0"
+  },
+  "cases": [
+    {
+      "framework": "openJiuwen",
+      "case": "approve",
+      "run_id": "RUN-B88281C9E4CE64364507A47F",
+      "decision_id": "DEC-ad8439d8b361e80403e9a3c4209331e41dd9874206075b0d8e4d901965cee072",
+      "approval_status": "approved",
+      "args_digest": "sha256:5029bf0355ca0a0fd8da88ed4076fe9a2e3e8cd0a906419833c36cae3a4fc3aa",
+      "file_sha256": "c8188174116b9540a8311e42fecd6ec99ef94eb6be37283f8a5dd72071b7635c",
+      "model_on_execution_evidence": "deepseek-flash",
+      "sse": [
+        "turn_started",
+        "tool_intent",
+        "approval_requested",
+        "tool_result",
+        "assistant_delta",
+        "turn_completed"
+      ],
+      "ledger_events": [
+        "GATE_DECIDED",
+        "ASK_REQUESTED",
+        "ASK_ANSWERED",
+        "EXEC_STARTED",
+        "EXEC_FINISHED"
+      ],
+      "chain": "verified",
+      "sse_replay_matches": true
+    },
+    {
+      "framework": "LangGraph",
+      "case": "approve",
+      "run_id": "RUN-A2064275272B57B1AFED13B2",
+      "decision_id": "DEC-f0c3692e6ef91ea9505a3fa1d8639eca08c8ca98714e2cb781347e0d703e7f9c",
+      "approval_status": "approved",
+      "args_digest": "sha256:bf92a29afc2c918461e55c51cb6d4422270a55dfb5d90aa6b311ca39a82574d8",
+      "file_sha256": "2dcb065f6bb8c6da1c38a45061e9a39ab24cd80831f0a8eb072327494b6408e7",
+      "model_on_execution_evidence": "deepseek-flash",
+      "sse": [
+        "turn_started",
+        "tool_intent",
+        "approval_requested",
+        "tool_result",
+        "assistant_delta",
+        "turn_completed"
+      ],
+      "ledger_events": [
+        "GATE_DECIDED",
+        "ASK_REQUESTED",
+        "ASK_ANSWERED",
+        "EXEC_STARTED",
+        "EXEC_FINISHED"
+      ],
+      "chain": "verified",
+      "sse_replay_matches": true
+    },
+    {
+      "framework": "OpenAI Agents SDK",
+      "case": "approve",
+      "run_id": "RUN-69002C3BFBA2AE220BADD8B6",
+      "decision_id": "DEC-1a2b10a4d9f7cc9c7802994c195a1425eed2e0f0ec42b725741753b775f64c4a",
+      "approval_status": "approved",
+      "args_digest": "sha256:e19fbd9f34ddddb9947ae0d8e7642b63e03bf212d839d2ac147997ed095fb6be",
+      "file_sha256": "42a03733a40c11d7ce64e9c5ff5fd6ba60589c92dae18be22fae86ce92869a07",
+      "model_on_execution_evidence": "deepseek-flash",
+      "sse": [
+        "turn_started",
+        "tool_intent",
+        "approval_requested",
+        "tool_result",
+        "assistant_delta",
+        "turn_completed"
+      ],
+      "ledger_events": [
+        "GATE_DECIDED",
+        "ASK_REQUESTED",
+        "ASK_ANSWERED",
+        "EXEC_STARTED",
+        "EXEC_FINISHED"
+      ],
+      "chain": "verified",
+      "sse_replay_matches": true
+    },
+    {
+      "framework": "openJiuwen",
+      "case": "reject",
+      "run_id": "RUN-8F8481891E61875544EC03A2",
+      "decision_id": "DEC-da5a77a3677087b2a86969d932f5e4bfd55b9a8a0f8ffb595b4493150bfd0af3",
+      "approval_status": "rejected",
+      "args_digest": "sha256:ccb1f09d4dbf0830131760aff08bc4cfe38b370865c8ec0d93586491463c17de",
+      "file_sha256": null,
+      "model_on_execution_evidence": null,
+      "sse": [
+        "turn_started",
+        "tool_intent",
+        "approval_requested",
+        "assistant_delta",
+        "turn_failed"
+      ],
+      "ledger_events": [
+        "GATE_DECIDED",
+        "ASK_REQUESTED",
+        "ASK_ANSWERED"
+      ],
+      "chain": "verified",
+      "sse_replay_matches": true
+    },
+    {
+      "framework": "LangGraph",
+      "case": "reject",
+      "run_id": "RUN-7D7A59871AC3A2EC23C0BB7E",
+      "decision_id": "DEC-13cf5777d5b6db9e3fed00dc779bf16e2ea87f24e87a3116dd5fc63dcd1ecde9",
+      "approval_status": "rejected",
+      "args_digest": "sha256:12bd170528699949cd57e9ba443e89efa1a111b7a1ffd774330835b9264a3763",
+      "file_sha256": null,
+      "model_on_execution_evidence": null,
+      "sse": [
+        "turn_started",
+        "tool_intent",
+        "approval_requested",
+        "assistant_delta",
+        "turn_failed"
+      ],
+      "ledger_events": [
+        "GATE_DECIDED",
+        "ASK_REQUESTED",
+        "ASK_ANSWERED"
+      ],
+      "chain": "verified",
+      "sse_replay_matches": true
+    },
+    {
+      "framework": "OpenAI Agents SDK",
+      "case": "reject",
+      "run_id": "RUN-46AE4525B22435844677376B",
+      "decision_id": "DEC-ca501d21396041b7b5528d5f035d45512dfa5e51b3ddb22d5648d661b99ecddb",
+      "approval_status": "rejected",
+      "args_digest": "sha256:029827ac88cb0e5b35aa7f8deebc8d20de4c2465edd19298f418f88f82c9b974",
+      "file_sha256": null,
+      "model_on_execution_evidence": null,
+      "sse": [
+        "turn_started",
+        "tool_intent",
+        "approval_requested",
+        "assistant_delta",
+        "turn_failed"
+      ],
+      "ledger_events": [
+        "GATE_DECIDED",
+        "ASK_REQUESTED",
+        "ASK_ANSWERED"
+      ],
+      "chain": "verified",
+      "sse_replay_matches": true
+    },
+    {
+      "framework": "openJiuwen",
+      "case": "timeout",
+      "run_id": "RUN-8D611E83BBEA56099AB77F51",
+      "decision_id": "DEC-518ca930fe13406cd649650ff03974a824132da98d0ac6b422f616c0cc65f504",
+      "approval_status": "timeout",
+      "args_digest": "sha256:512b8fd5e957a9a67f291095ea034c1d777ba95c1ef773e005c9fb8ec9123dba",
+      "file_sha256": null,
+      "model_on_execution_evidence": null,
+      "sse": [
+        "turn_started",
+        "tool_intent",
+        "approval_requested",
+        "assistant_delta",
+        "turn_failed"
+      ],
+      "ledger_events": [
+        "GATE_DECIDED",
+        "ASK_REQUESTED",
+        "ASK_ANSWERED"
+      ],
+      "chain": "verified",
+      "sse_replay_matches": true
+    },
+    {
+      "framework": "LangGraph",
+      "case": "timeout",
+      "run_id": "RUN-19B308DB8E7612C47A0C2E7B",
+      "decision_id": "DEC-f9d4fec8dba9dab3bd5d6e07c4d902e39ef694eb105ae5a0227e153521f9138a",
+      "approval_status": "timeout",
+      "args_digest": "sha256:7d250869dbce22d6591e76aee4403dfd702660e0135825b158aa3e4ce2aa64a3",
+      "file_sha256": null,
+      "model_on_execution_evidence": null,
+      "sse": [
+        "turn_started",
+        "tool_intent",
+        "approval_requested",
+        "assistant_delta",
+        "turn_failed"
+      ],
+      "ledger_events": [
+        "GATE_DECIDED",
+        "ASK_REQUESTED",
+        "ASK_ANSWERED"
+      ],
+      "chain": "verified",
+      "sse_replay_matches": true
+    },
+    {
+      "framework": "OpenAI Agents SDK",
+      "case": "timeout",
+      "run_id": "RUN-3CB69375B054184CDB795D53",
+      "decision_id": "DEC-c15a9c909c6f94de28ba62b06142a603bb8b71bfaff2a8c7ef1767bc5bc1c602",
+      "approval_status": "timeout",
+      "args_digest": "sha256:ba7e866b42a33cbcf154a0f22d4157daadfaa6384c7f1b9d188836dc02dc5b60",
+      "file_sha256": null,
+      "model_on_execution_evidence": null,
+      "sse": [
+        "turn_started",
+        "tool_intent",
+        "approval_requested",
+        "assistant_delta",
+        "turn_failed"
+      ],
+      "ledger_events": [
+        "GATE_DECIDED",
+        "ASK_REQUESTED",
+        "ASK_ANSWERED"
+      ],
+      "chain": "verified",
+      "sse_replay_matches": true
+    }
+  ],
+  "failures": [],
+  "passed": 9,
+  "expected": 9
+}

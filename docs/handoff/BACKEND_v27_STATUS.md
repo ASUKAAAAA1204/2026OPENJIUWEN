@@ -6,6 +6,8 @@
 - 依据：`draft/开发文档/TemisGuard-v2.7_FastAPI平台开发方案_2026-11-26.md`、
   `docs/prd/PRD-v2.7.md`
 
+11 月 26 日补记：下文记录 `backend@f21b0df` 的交付状态。其后的三个正式框架文件审批结果、实测版本与复验命令见 [B 的演示复验说明](B_DEMO_WORKERS.md)。
+
 ## 1 已完成
 
 | 范围 | 内容 | 证据 |

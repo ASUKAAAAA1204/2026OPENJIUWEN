@@ -4,7 +4,7 @@
 
 - `app`：FastAPI 中央服务（单进程、SQLite 单写者）
 - `web`：Nginx 非特权镜像，托管 `ui/` 构建产物，并把 `/api/` 同源代理到 `app`
-- 不包含三框架 worker 的独立 venv；适配器未实现时不启动虚假 worker
+- 三框架的 worker 环境由部署方单独配置；本地复验步骤见 [B 的演示复验说明](../handoff/B_DEMO_WORKERS.md)
 
 ## 1 快速演示
 
@@ -78,7 +78,7 @@ docker compose exec app python scripts/create_admin.py \
 
 ## 6 已知边界
 
-- 三框架真实 SDK 适配未完成；镜像默认不启动 worker，`readyz` 会显示 `worker_registered=false`。
+- 镜像默认只启动中央服务与前端，此时 `readyz` 显示 `worker_registered=false`。本地文件审批演示使用独立配置的 SDK 解释器。
 - 内部 `/internal/v1/*` 只接受回环来源；将来 worker 若独立容器运行，需要共享网络命名空间或单独设计内部监听端口，不能直接把容器 IP 当回环。
 - `seed_demo.py` 为合成演示数据；报价费率与管理规则仍是后端显式配置，不代表生产结论。
 - `ui/` 本次未修改；`web` 镜像只是构建现有前端源码。

@@ -92,7 +92,16 @@ def _existing_intent(db: sqlite3.Connection, decision_id: str) -> dict[str, Any]
     return json.loads(row["body"]) if row is not None else None
 
 
-def _intent_response(db: sqlite3.Connection, body: dict[str, Any]) -> dict[str, Any]:
+def _check_same_intent(body: dict[str, Any], turn_id: str, tool_name: str,
+                       args_digest: str, decision_class: str) -> None:
+    event = body["event"]
+    intent = event["intent"]
+    if (event["turn_id"], intent["tool_name"], intent["args_digest"], intent["class"]) != (
+            turn_id, tool_name, args_digest, decision_class):
+        raise DecisionConflict("decision_id 已用于其他意图")
+
+
+def _intent_response(db: sqlite3.Connection, body: dict[str, Any], *, fresh: bool = False) -> dict[str, Any]:
     event = body["event"]
     intent = event["intent"]
     approval = db.execute(
@@ -108,21 +117,15 @@ def _intent_response(db: sqlite3.Connection, body: dict[str, Any]) -> dict[str, 
         if validated is not None:
             validated_event = json.loads(validated["body"])["event"]
             final_gate = "ALLOW" if validated_event.get("gate") == "ALLOW" else "DENY"
-    execute = final_gate in EXECUTABLE
-    args_payload = None
-    ref = event.get("args_snapshot_ref")
-    if execute and ref:
-        try:
-            snapshot = SnapshotStore.unwrap(SnapshotStore.read_on(db, ref))
-            args_payload = snapshot.get("args")
-        except Exception:
-            args_payload = None
+    # A readback of an existing decision is a receipt, never a second permission to run.
+    execute = fresh and final_gate in EXECUTABLE
     return {
         "decision_id": intent["decision_id"],
         "gate": gate,
         "final_gate": final_gate,
         "status": intent["status"],
         "execute": execute,
+        "replayed": not fresh,
         "args_digest": intent["args_digest"],
         "args_after": intent.get("args_after"),
         "policy_version": intent["policy_version"],
@@ -135,7 +138,7 @@ def _intent_response(db: sqlite3.Connection, body: dict[str, Any]) -> dict[str, 
         "attempt_id": event.get("attempt_id"),
         "approval_id": approval["approval_id"] if approval is not None else None,
         "expires_at": approval["expires_at"] if approval is not None else None,
-        "args": args_payload,
+        "args": None,
     }
 
 
@@ -184,18 +187,9 @@ def record_intent(writer, store, journal: DecisionJournal,
         if workspace is None:
             raise DecisionConflict("运行工作目录未授权")
         depth = _delegation_depth(rdb, run.run_id)
-        pending = rdb.execute(
-            "SELECT 1 FROM approvals WHERE turn_id=? AND status='pending' LIMIT 1",
-            (turn_id,)).fetchone()
-        if pending is not None:
-            raise DecisionConflict("turn 已有待处理审批")
         existing = _existing_intent(rdb, decision_id)
         if existing is not None:
-            old_intent = existing["event"]["intent"]
-            if (old_intent["tool_name"], old_intent["args_digest"],
-                    old_intent["class"], old_intent["run_id"]) != (
-                    tool_name, protected_digest(dict(args)), decision_class, run.run_id):
-                raise DecisionConflict("decision_id 已用于其他意图")
+            _check_same_intent(existing, turn_id, tool_name, protected_digest(dict(args)), decision_class)
             return _intent_response(rdb, existing)
 
     started = time.perf_counter_ns()
@@ -221,7 +215,11 @@ def record_intent(writer, store, journal: DecisionJournal,
             raise DecisionConflict("turn 状态已变化")
         prior = _existing_intent(db, decision_id)
         if prior is not None:
+            _check_same_intent(prior, turn_id, tool_name, args_digest, decision_class)
             return _intent_response(db, prior)
+        if db.execute("SELECT 1 FROM approvals WHERE turn_id=? AND status='pending' LIMIT 1",
+                      (turn_id,)).fetchone():
+            raise DecisionConflict("turn 已有待处理审批")
         snapshots = SnapshotStore(store)
         rule_ref = snapshots.capture_on(db, {
             "kind": "rule_snapshot",
@@ -327,9 +325,10 @@ def record_intent(writer, store, journal: DecisionJournal,
                 "WHERE turn_id=? AND status='active'", (turn_id,))
         body = _existing_intent(db, decision_id)
         assert body is not None
-        response = _intent_response(db, body)
-        response["args"] = redacted_args.get("args")
-        response["execute"] = gate.final_gate in EXECUTABLE
+        response = _intent_response(db, body, fresh=True)
+        # Only the authenticated, newly granted caller receives the in-memory effective arguments.
+        # Stored snapshots, SSE and historical receipts remain redacted.
+        response["args"] = effective_args if response["execute"] else None
         response["_events"] = emitted
         return response
 
