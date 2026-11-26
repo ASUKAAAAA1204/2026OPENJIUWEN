@@ -261,6 +261,6 @@ docs/design/design_cheatsheet.md → 一页速查
 
 **验证**：`tests/platform` 35 项通过（会话/CSRF/限流、运行幂等与分页、SSE+审批、审批过期/参数指纹/重复消费、DENY/UNHOOKED/REWRITE、受控文件/命令/Git 工具、债务快照与消解历史、管理/报价、导出独立哈希校验、文档一致性）；连续 5 轮无失败。全量测试 1032 passed / 3 failed / 14 errors，失败与错误均为既有基线（缺 openjiuwen、pytest 9 nodeid 差异），未新增失败。
 
-**边界**：三框架真实 SDK 执行前阻断适配尚未实现；worker 内部协议与适配器入口已就绪，适配器缺失时显式退出、不注册虚假能力。`types.ts` 未生成；报价费率为合成示例，不代表生产计价。公共 API 文档只覆盖 `/api/v27` 与兼容接口，`/internal/v1/*` 不提供给前端。
+**边界**：PRD 锁定的 `openjiuwen==0.1.20.post1` 当前不在 PyPI 公共索引（可检索最新为 `0.1.13.post1`），仓库也无对应 wheel；三框架真实 SDK 执行前阻断适配因此尚未实现，worker 内部协议与适配器入口已就绪，适配器缺失时显式退出、不注册虚假能力。`types.ts` 未生成；报价费率为合成示例，不代表生产计价。公共 API 文档只覆盖 `/api/v27` 与兼容接口，`/internal/v1/*` 不提供给前端。详见 [后端状态与联调边界](handoff/BACKEND_v27_STATUS.md)。
 
 **下一步**：为 openJiuwen/LangGraph/Agents 锁定版本并实现真实 guarded_call；补 11 类决策覆盖与三框架场景矩阵；接真实命令/文件/Git 受控工具；完成 M5 八项评测与 shadow/红队证据。

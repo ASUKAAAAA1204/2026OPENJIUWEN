@@ -11,6 +11,8 @@
 
 ## 已知未完成（不得据此宣称验收）
 
+- openJiuwen 锁定版本 `0.1.20.post1` 当前不在 PyPI 公共索引（可检索到的最新为
+  `0.1.13.post1`），仓库内也无对应 wheel；需项目方提供制品或走版本变更单。
 - 三框架（openJiuwen / LangGraph / OpenAI Agents SDK）真实 SDK 执行前阻断适配尚未实现；
   worker 注册、心跳、claim、意图/结果与审批长轮询协议已具备，适配器缺失时 worker 显式退出。
 - `types.ts` 可选产物尚未生成；需要前端团队安装 `openapi-typescript` 后由
