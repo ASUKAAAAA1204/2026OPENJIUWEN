@@ -1,0 +1,68 @@
+name: temisguard
+
+services:
+  app:
+    build:
+      context: .
+      target: app
+    image: temisguard/app:v2.7
+    environment:
+      TEMIS_CONFIG: /app/configs/platform.docker.toml
+      TEMIS_PUBLIC_ORIGIN: ${TEMIS_PUBLIC_ORIGIN:-http://127.0.0.1:8080}
+      TEMIS_SESSION_SECRET: ${TEMIS_SESSION_SECRET:-}
+      TEMIS_WORKER_BOOTSTRAP_TOKEN: ${TEMIS_WORKER_BOOTSTRAP_TOKEN:-}
+      TEMIS_DEMO_ADMIN_PASSWORD: ${TEMIS_DEMO_ADMIN_PASSWORD:-}
+      TEMIS_ADMIN_USERNAME: ${TEMIS_ADMIN_USERNAME:-admin}
+      TEMIS_ADMIN_DISPLAY_NAME: ${TEMIS_ADMIN_DISPLAY_NAME:-管理员}
+      MODEL_PROVIDER: ${MODEL_PROVIDER:-}
+      MODEL_NAME: ${MODEL_NAME:-}
+      MODEL_API_KEY: ${MODEL_API_KEY:-}
+    expose:
+      - "8000"
+    volumes:
+      - temis-data:/app/data
+      - temis-outputs:/app/outputs
+      - temis-workspaces:/app/workspaces
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+    stop_grace_period: 30s
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+
+  web:
+    build:
+      context: .
+      target: web
+    image: temisguard/web:v2.7
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      app:
+        condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+
+volumes:
+  temis-data:
+  temis-outputs:
+  temis-workspaces:

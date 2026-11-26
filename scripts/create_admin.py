@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import getpass
+import os
 import sys
 from pathlib import Path
 
@@ -25,6 +26,12 @@ def main() -> int:
     parser.add_argument("--display-name", default=None)
     parser.add_argument("--role", default="platform_admin",
                         choices=sorted(ROLE_LABELS))
+    parser.add_argument("--password-env", default=None,
+                        help="从该环境变量读取密码（非交互）")
+    parser.add_argument("--password-file", default=None,
+                        help="从文件读取密码（Docker secret）")
+    parser.add_argument("--if-exists-ok", action="store_true",
+                        help="账号已存在时成功退出，便于容器幂等启动")
     args = parser.parse_args()
     try:
         config = PlatformConfig.load(args.config)
@@ -33,11 +40,26 @@ def main() -> int:
         print(f"配置错误：{error}", file=sys.stderr)
         return 2
     display = args.display_name or ROLE_LABELS[args.role]
-    password = getpass.getpass("密码（至少 8 位）：")
-    confirm = getpass.getpass("再次输入密码：")
-    if password != confirm:
-        print("两次输入不一致", file=sys.stderr)
-        return 2
+    if args.password_env:
+        password = os.environ.get(args.password_env, "")
+        if not password:
+            print(f"环境变量 {args.password_env} 为空", file=sys.stderr)
+            return 2
+    elif args.password_file:
+        try:
+            password = Path(args.password_file).read_text(encoding="utf-8").strip()
+        except OSError as error:
+            print(f"密码文件无法读取：{error}", file=sys.stderr)
+            return 2
+        if not password:
+            print("密码文件为空", file=sys.stderr)
+            return 2
+    else:
+        password = getpass.getpass("密码（至少 8 位）：")
+        confirm = getpass.getpass("再次输入密码：")
+        if password != confirm:
+            print("两次输入不一致", file=sys.stderr)
+            return 2
     writer = WriterQueue(config.database)
 
     def bootstrap(db) -> None:
@@ -48,7 +70,13 @@ def main() -> int:
     try:
         user = create_user(writer, username=args.username, password=password,
                            display_name=display, role=args.role)
-    except (PasswordError, UserExists) as error:
+    except UserExists:
+        if args.if_exists_ok:
+            print(f"账号已存在，跳过：{args.username}")
+            return 0
+        print("创建失败：用户名已存在", file=sys.stderr)
+        return 2
+    except PasswordError as error:
         print(f"创建失败：{error}", file=sys.stderr)
         return 2
     finally:

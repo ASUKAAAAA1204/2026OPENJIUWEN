@@ -28,6 +28,15 @@ ledger.json
 .screenshots/
 *.log
 
+# 容器与本地配置
+.env
+.env.*
+!.env.example
+data/*
+!data/.gitkeep
+workspaces/*
+!workspaces/.gitkeep
+
 # 环境与密钥
 .env
 .env.*

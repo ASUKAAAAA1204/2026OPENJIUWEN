@@ -1,0 +1,46 @@
+# TemisGuard v2.7 容器内配置
+# 通过环境变量覆盖：TEMIS_PUBLIC_ORIGIN / TEMIS_SESSION_SECRET /
+# TEMIS_WORKER_BOOTSTRAP_TOKEN / TEMIS_START_WORKERS / TEMIS_DB_PATH
+
+[server]
+bind = "0.0.0.0:8000"
+public_origin = "http://127.0.0.1:8080"
+start_workers = false
+
+[storage]
+database = "/app/data/platform.db"
+outputs = "/app/outputs"
+keys = "/app/data/keys"
+backups = "/app/data/backups"
+
+[security]
+allowed_root = "/app/workspaces"
+session_idle_minutes = 30
+session_absolute_hours = 8
+approval_timeout_seconds = 30
+secure_cookies = false
+session_secret = ""
+login_max_attempts = 5
+login_window_seconds = 300
+worker_bootstrap_token = ""
+operator_skills = ["code-assistant"]
+
+[[workspaces]]
+id = "workspace"
+path = "/app/workspaces/workspace"
+
+[[skills]]
+id = "code-assistant"
+version = "1.0.0"
+
+[workers.openjiuwen]
+python = "/app/.venvs/openjiuwen/bin/python"
+enabled = false
+
+[workers.langgraph]
+python = "/app/.venvs/langgraph/bin/python"
+enabled = false
+
+[workers.agents]
+python = "/app/.venvs/agents/bin/python"
+enabled = false
