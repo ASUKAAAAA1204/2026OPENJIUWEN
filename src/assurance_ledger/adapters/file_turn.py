@@ -13,7 +13,7 @@ from pathlib import Path
 from ..ledger.canonical import digest_json, parse_json
 from ..rail.model_config import DeepSeekSettings, ModelConfigError, load_deepseek_settings
 from .base import AdapterUnavailable, TurnHooks, TurnRequest, TurnResult
-from .tools import ToolExecutor, guarded_execute
+from .tools import CommandLimits, ToolExecutor, guarded_execute
 
 TOOL = "write_file"
 PARAMETERS = {
@@ -115,7 +115,13 @@ class FileAdapter:
             return TurnResult("failed", "运行缺少任务或有效的授权工作目录")
         if request.turn_id in self.active:
             raise ValueError("同一轮次已在执行")
-        tool = ToolExecutor(request.workspace_path, self.root)
+        limits = (CommandLimits(**request.command_limits)
+                  if request.command_limits else CommandLimits())
+        tool = ToolExecutor(
+            request.workspace_path, self.root,
+            allowed_remotes=tuple(request.git_allowed_remotes),
+            allowed_branches=tuple(request.git_allowed_branches),
+            limits=limits)
         step = None
         model_error = None
         entered = False

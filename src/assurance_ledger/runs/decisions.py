@@ -196,7 +196,9 @@ def record_intent(writer, store, journal: DecisionJournal,
     gate = evaluate(policy, decision_class=decision_class, tool_name=tool_name,
                     args=dict(args), workspace=workspace.path,
                     delegation_depth=depth + (1 if decision_class == "delegate" else 0),
-                    side_effect=side_effect)
+                    side_effect=side_effect,
+                    allowed_remotes=config.security.git_allowed_remotes,
+                    allowed_branches=config.security.git_allowed_branches)
     latency_ms = max(0, (time.perf_counter_ns() - started) // 1_000_000)
     args_digest = protected_digest(dict(args))
     rewritten_digest = protected_digest(gate.rewritten_args) if gate.rewritten_args else None

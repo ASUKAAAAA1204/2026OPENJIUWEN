@@ -148,6 +148,14 @@ def claim_turn(writer, config: PlatformConfig, *, worker: sqlite3.Row,
             "whitelist_version": run.whitelist_version,
             "debt_threshold": run.debt_threshold,
             "task_excerpt": turn["task_excerpt"],
+            "git_allowed_remotes": list(config.security.git_allowed_remotes),
+            "git_allowed_branches": list(config.security.git_allowed_branches),
+            "command_limits": {
+                "cpu_seconds": config.security.command_cpu_seconds,
+                "memory_mb": config.security.command_memory_mb,
+                "file_size_mb": config.security.command_file_size_mb,
+                "open_files": config.security.command_open_files,
+            },
         }
 
     return writer.call(job)

@@ -136,7 +136,9 @@ def replay(writer, store, config: PlatformConfig, *, user: Any, run_id: str,
                             outcome = evaluate(
                                 policy, decision_class=record["class"],
                                 tool_name=record["tool_name"], args=args,
-                                workspace=workspace.path)
+                                workspace=workspace.path,
+                                allowed_remotes=config.security.git_allowed_remotes,
+                                allowed_branches=config.security.git_allowed_branches)
                         except (GateError, ValueError) as error:
                             reason = f"规则重判失败：{error}"
                         else:

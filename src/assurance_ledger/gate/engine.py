@@ -5,6 +5,7 @@ NONE 用于未命中白名单的副作用动作（UNHOOKED），仍须记账但�
 """
 from __future__ import annotations
 
+import fnmatch
 import os
 from dataclasses import dataclass
 from pathlib import Path
@@ -136,12 +137,30 @@ def _validate_network(args: Mapping[str, Any]) -> str | None:
     return None
 
 
-def _validate_vcs(args: Mapping[str, Any]) -> str | None:
+def _match_allowlist(value: str, patterns: tuple[str, ...]) -> bool:
+    # 只支持 fnmatch 的 * 通配；不执行正则
+    return any(fnmatch.fnmatchcase(value, pattern) for pattern in patterns)
+
+
+def _validate_vcs(args: Mapping[str, Any],
+                  allowed_remotes: tuple[str, ...] = (),
+                  allowed_branches: tuple[str, ...] = ()) -> str | None:
     operation = args.get("operation")
     if operation not in ("push", "tag", "release"):
         return "Git 操作必须是 push/tag/release"
     if args.get("force") is True:
         return "禁止强制推送"
+    remote = args.get("remote")
+    if not isinstance(remote, str) or not remote.strip():
+        return "GIT_REMOTE_NOT_ALLOWED"
+    if not _match_allowlist(remote, allowed_remotes):
+        return "GIT_REMOTE_NOT_ALLOWED"
+    branch = args.get("branch")
+    if branch is not None:
+        if not isinstance(branch, str) or not branch.strip():
+            return "GIT_BRANCH_NOT_ALLOWED"
+        if not _match_allowlist(branch, allowed_branches):
+            return "GIT_BRANCH_NOT_ALLOWED"
     return None
 
 
@@ -163,7 +182,9 @@ def _apply_rewrite(args: Mapping[str, Any], rule: Mapping[str, Any]) -> dict[str
 def evaluate(policy: PolicyTable, *, decision_class: str, tool_name: str,
              args: Mapping[str, Any], workspace: Path,
              delegation_depth: int = 1,
-             side_effect: bool = True) -> GateResult:
+             side_effect: bool = True,
+             allowed_remotes: tuple[str, ...] = (),
+             allowed_branches: tuple[str, ...] = ()) -> GateResult:
     if not isinstance(args, Mapping):
         raise GateError("args 必须是对象")
     if not isinstance(tool_name, str) or not tool_name.strip():
@@ -203,7 +224,7 @@ def evaluate(policy: PolicyTable, *, decision_class: str, tool_name: str,
         if error:
             return _deny(error, risk=risk, match=False, convertible=False)
     elif decision_class == "vcs_publish":
-        error = _validate_vcs(args)
+        error = _validate_vcs(args, allowed_remotes, allowed_branches)
         if error:
             if gate == "REWRITE" and error == "禁止强制推送":
                 pass  # 改写后重新判定
@@ -227,7 +248,7 @@ def evaluate(policy: PolicyTable, *, decision_class: str, tool_name: str,
             if error:
                 return _deny(f"改写后仍不可执行：{error}", risk=risk, match=False)
         if decision_class == "vcs_publish":
-            error = _validate_vcs(rewritten)
+            error = _validate_vcs(rewritten, allowed_remotes, allowed_branches)
             if error:
                 return _deny(f"改写后仍不可发布：{error}", risk=risk, match=False)
         return GateResult("REWRITE", "改写后重新判定通过", risk, exec_policy,

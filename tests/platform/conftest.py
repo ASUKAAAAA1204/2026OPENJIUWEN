@@ -163,7 +163,9 @@ class Platform:
 def make_config(base: Path, **security_overrides) -> PlatformConfig:
     security = dict(
         allowed_root=base / "workspaces", session_secret="s" * 32,
-        worker_bootstrap_token="boot-token", approval_timeout_seconds=30)
+        worker_bootstrap_token="boot-token", approval_timeout_seconds=30,
+        git_allowed_remotes=("origin",),
+        git_allowed_branches=("main", "release/*"))
     security.update(security_overrides)
     return PlatformConfig(
         root=base,
@@ -214,3 +216,22 @@ def platform(tmp_path: Path) -> Platform:
     app = create_app(config)
     with TestClient(app, client=("127.0.0.1", 50000)) as client:
         yield login_platform(client, app, config)
+
+
+@pytest.fixture
+def platform_factory(tmp_path: Path):
+    """按测试覆盖安全配置创建独立平台，退出时统一关闭 lifespan"""
+    clients = []
+
+    def build(**security_overrides) -> Platform:
+        base = tmp_path / f"platform-{len(clients)}"
+        config = make_config(base, **security_overrides)
+        app = create_app(config)
+        client = TestClient(app, client=("127.0.0.1", 50000))
+        client.__enter__()
+        clients.append(client)
+        return login_platform(client, app, config)
+
+    yield build
+    for client in reversed(clients):
+        client.__exit__(None, None, None)

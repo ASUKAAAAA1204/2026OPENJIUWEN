@@ -32,6 +32,7 @@ from ..runs import execution
 from ..workers.registry import healthy_workers
 from ..workers.supervisor import WorkerSupervisor, central_url
 from .errors import ApiError, error_body, error_response, map_exception, request_id
+from .limits import InternalLimitsMiddleware
 from .routers import (
     approvals,
     claims,
@@ -220,6 +221,11 @@ def create_app(config: PlatformConfig | None = None, *,
         return JSONResponse(status_code=422,
                             content=error_body(request, "VALIDATION_FAILED",
                                                "请求字段校验失败", detail))
+
+    # 最后添加，确保它包住请求 ID 中间件，超限能返回 413/429 而不是 500
+    app.add_middleware(
+        InternalLimitsMiddleware,
+        state_provider=lambda: getattr(app.state, "platform", None))
 
     for module in (health, session, runs, events, execution_router, claims,
                    approvals, debts, evaluations, replay, policies,

@@ -1,5 +1,19 @@
 # TemisGuard v2.7 接口变更记录
 
+## 2026-11-27 安全边界与内部限流（backend 分支）
+
+- `/internal/v1/*` 增加 1 MiB body 上限（413 `INTERNAL_BODY_TOO_LARGE`）、
+  令牌桶限流（429 `INTERNAL_RATE_LIMITED` 并带 `Retry-After`）与请求超时
+  （504 `INTERNAL_TIMEOUT`）；公共路由不受影响。
+- Gate 的 `vcs_publish` 校验 `security.git_allowed_remotes` 与
+  `git_allowed_branches`，只支持 `fnmatch` 的 `*`；空清单 fail closed，返回
+  `GIT_REMOTE_NOT_ALLOWED` / `GIT_BRANCH_NOT_ALLOWED`。`ToolExecutor.git_publish`
+  在 dry-run 前二次校验，防止绕过 Gate。
+- 受控命令按配置设置 CPU、内存、写文件与句柄上限；POSIX 用 rlimit，Windows 用
+  Job Object，未生效时结果标记 `command_limits=partial`。超限统一为执行失败。
+- worker claim 下发 Git 允许清单与命令资源上限，worker 不得自行放宽。
+- 新增平台测试 `test_internal_limits.py`、`test_command_limits.py`。
+
 ## 2026-11-27 导出签名检查点（backend 分支）
 
 - 新增 `GET /api/v27/runs/{run_id}/exports/{export_id}/checkpoint`：返回单次导出的
