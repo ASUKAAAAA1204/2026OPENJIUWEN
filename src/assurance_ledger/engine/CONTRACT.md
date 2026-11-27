@@ -1,7 +1,7 @@
 # 板块②（B）对外契约：编译与评分
 
 > v2.7 新入口见 [B v2.7 计算接口](../../../docs/api/B_V27_CONTRACT.md)。本页保留旧 ARS v1.2 协议；现有调用兼容保留，新运行读数不从旧 ARS 总分推导。
-
+>
 > 版本：v1.2 · 2026-11-01 复核修订 · 负责人：后端 B
 > 依据：主 PRD v2.2 / ARS 子 PRD v1.2 / 整改计划 v2.2
 
@@ -13,7 +13,7 @@
 ## 0. B 的边界
 
 | 本轮归属 | 文件 | 状态 |
-|---|---|---|
+| --- | --- | --- |
 | B 修复 | `engine/*.py` | 直接加固与测试 |
 | 冻结共享模型 | `core/`、`schemas/` | 本轮只读；保留 DSH 既有变更 |
 | 其他模块生产代码 | `rail/`、`ledger/`、`ui/`、`fixtures/` | 本轮未改 |
@@ -35,7 +35,7 @@ DSH 已有的 `core/ars.py` / `core/rule.py` 变更被保留，本轮复核未�
 B 不自己去读 claim 和证据包 —— 否则 L/R 的分子又会变成"被测方自证"（C7 要防的就是这个）。
 
 | 字段 | 取值 | 谁填 | 说明 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `claim_id` | `c-001` | ① | 与 packer 一致 |
 | `locator` | `RESOLVED` / `NOT_FOUND` / `VALUE_MISMATCH` / `NO_LOCATOR` / `NOT_RUN` | ① LocatorResolver | **只有 RESOLVED 计入 L** |
 | `locator_source` | `resolver` / `declared` / 缺失或未知 | ① | 仅 resolver 可使 RESOLVED 计入 L；其他来源剔除并记 C7 违规 |
@@ -47,7 +47,7 @@ B 不自己去读 claim 和证据包 —— 否则 L/R 的分子又会变成"被
 ### reason_code 词表（B 照这个词表做归因）
 
 | 码 | 含义 | B 会派什么动作 |
-|---|---|---|
+| --- | --- | --- |
 | `MISSING_FIELD` | 缺字段映射 | `add_field` |
 | `NO_EXPR` / `TIMEOUT` | 编不出表达式 / 检查超时 | `rerun_check` |
 | `STALE_INPUT` | 输入已过期 | `rerun_stale` |
@@ -57,7 +57,7 @@ B 不自己去读 claim 和证据包 —— 否则 L/R 的分子又会变成"被
 ## 2. 端口二：`CheckSignal`（③ S4 填）
 
 | 字段 | 取值 | 说明 |
-|---|---|---|
+| --- | --- | --- |
 | `check_id` | `chk-01` | |
 | `double_run_consistent` | `true` / `false` / `null` | 同输入两次运行结果一致 → 计入 D；`null` 按"不确定"计 |
 
@@ -96,7 +96,7 @@ B 不自己去读 claim 和证据包 —— 否则 L/R 的分子又会变成"被
 ### 复现 47 → 79 的最小数据集（我已用这组数跑通，可直接拿去建 fixture）
 
 | 项 | 取值 | 结果 |
-|---|---|---|
+| --- | --- | --- |
 | rules | 10 条：3 条可编译且 3 fixture 全绿；4 条含"合理/适当"；2 条 `declared_fields: []`；1 条 `uses_llm: true` | C 3/10，失败码 4/2/1 |
 | claims | 20 条：`locator` 前 9 条 RESOLVED，10–18 NOT_FOUND，19–20 NO_LOCATOR | L 9/20 |
 | | `recompute`：1–8 CONSISTENT，9–11 INCONSISTENT(+`REFUTED`)，12–15 INDETERMINATE(+`MISSING_FIELD`)，16–19 INDETERMINATE(+`NO_EXPR`)，20 INDETERMINATE(+`INSUFFICIENT_EVIDENCE`) | R 8/20；动作 4/4 |
@@ -161,7 +161,7 @@ B 不自己去读 claim 和证据包 —— 否则 L/R 的分子又会变成"被
 ## 6. 两个需要口径负责人裁决的地方（我按冻结数字实现，但问题真实存在）
 
 | # | 冲突 | 现状 | 影响 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | 1 | ARS PRD §6.3 的算法写"每轮取 gain/CU 最高的动作，**直到达到目标档**"，但冻结方案是"把 5 条动作全做完：34 CU → 79" | 我实现了两个策略：`policy="full"`（34 CU → 79，与冻结数字一致，默认）与 `policy="to_target"`（20 CU → 71，达到 70 就停）。**演示与报告用 full** | 若评委按 §6.3 字面问"为什么不 20 CU 就停"，需要一句话解释："34 CU 是改造到 B 档中段的完整方案，20 CU 是逐条贪心得到的过线方案，并不保证全局最低成本" |
 | 2 | 整改计划 §2.2 说"9 条补定位里 8 条 indeterminate→verified（升 R）"，而 §2.4 把 R 的 +8 归给 `add_field`(4) + `rerun_check`(4) | 我按 §2.4 实现（只有它能加出 32.46 / 0.95）。若按 §2.2 归因，R 会变成 +16 → 24/20，数学不成立 | 演示稿里"涨的 8 条来自 indeterminate→verified"这句话仍然对，但**不能说"是补定位把它们变 verified 的"**，否则与报价归因矛盾 |
 

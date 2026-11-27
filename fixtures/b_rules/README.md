@@ -7,7 +7,7 @@
 ## 文件
 
 | 文件 | 内容 |
-|---|---|
+| --- | --- |
 | `rules-v1.json` | 三条规则定义，字段、开关和声明字段逐一固定 |
 | `fixtures-v1.json` | 每条规则的正例、反例、边界，共 9 条，含期望值与实际执行结果 |
 | `compiled-v1.json` | 由当前 `RuleCompiler` 实际编译并以 `evaluate_cmp` 执行 fixture 后生成的结果，不是手写 IR |
@@ -16,7 +16,7 @@
 ## 规则
 
 | rule_id | 原文 | op |
-|---|---|---|
+| --- | --- | --- |
 | `b-pe-less-than-industry@1` | `pe < industry_pe` | `<` |
 | `b-pe-greater-than-industry@1` | `pe > industry_pe` | `>` |
 | `b-pe-equal-industry@1` | `pe == industry_pe` | `==` |
@@ -39,7 +39,7 @@
 fixture 顺序固定为 positive、negative、boundary
 
 | 规则 | positive | negative | boundary |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `<` | pe=10, industry_pe=20 → true | pe=30, industry_pe=20 → false | pe=20, industry_pe=20 → false |
 | `>` | pe=30, industry_pe=20 → true | pe=10, industry_pe=20 → false | pe=20, industry_pe=20 → false |
 | `==` | pe=20, industry_pe=20 → true | pe=19, industry_pe=20 → false | pe=1, industry_pe=20 → false |
@@ -61,7 +61,7 @@ fixture 顺序固定为 positive、negative、boundary
 运行期 `evaluate_cmp` 对非法操作数返回 `status=INDETERMINATE`、`value=null` 并给出原因码
 
 | 场景 | reason_code |
-|---|---|
+| --- | --- |
 | 操作数字段缺失 | `MISSING_FIELD` |
 | 不能解析为有限数的字符串、布尔、null | `NON_NUMERIC` |
 | `Infinity`、`NaN` 等非有限值 | `NON_NUMERIC` |

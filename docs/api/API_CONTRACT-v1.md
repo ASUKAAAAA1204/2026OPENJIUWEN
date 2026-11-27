@@ -18,7 +18,7 @@
 ## 2. 端点
 
 | 方法 | 路径 | 返回 | 说明 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | GET | `/api/ars` | 信封 + `ars.json` | 分数、维度、坐标、状态 |
 | GET | `/api/plan` | 信封 + `plan.json` | 提升动作、报价 CU、预测分数 |
 | GET | `/api/gate` | 信封 + `gate.json` | 发布闸结论、预算快照、债务 |
@@ -52,7 +52,7 @@
 ```
 
 | HTTP | code | 触发条件 |
-|---|---|---|
+| --- | --- | --- |
 | 400 | `INVALID_RUN_ID` | `run_id` 不符合正则（含路径穿越字符） |
 | 404 | `RUN_NOT_FOUND` | 运行目录或 `LATEST.json` 不存在 |
 | 409 | `ARTIFACT_INCOMPLETE` | 缺少产物或产物不是对象 |
@@ -71,14 +71,14 @@
 ### 3.1 `/api/ars`（`ars.json`）
 
 | 字段 | 类型 | 说明 |
-|---|---|---|
+| --- | --- | --- |
 | `coord.skill_version` / `coord.model` / `coord.data_profile` | string | 分数坐标；缺一不可比 |
 | `doc_status` | `DESIGN_ONLY` / `PARTIAL` / `COMPLETE` | PARTIAL 时 `score`、`band` 必须为 `null` |
 | `score` | int 0–100 / null | 整数，按计数得，不是模型判断 |
 | `band` | `A` / `B` / `C` / `D` / null | A≥85，B 70–84，C 50–69，D<50 |
 | `can_gate` | bool | 只有 COMPLETE 才可能 `true` |
-| `segments.design|runtime` | `{points, max}` | 设计段 25 分，运行段 75 分 |
-| `dims.C|L|R|D|F` | `{weight, status, numerator, denominator, value, points}` | `status` ∈ `VALUE` / `NA` / `MISSING` |
+| `segments.design / runtime` | `{points, max}` | 设计段 25 分，运行段 75 分 |
+| `dims.C / L / R / D / F` | `{weight, status, numerator, denominator, value, points}` | `status` ∈ `VALUE` / `NA` / `MISSING` |
 | `counts` | `{n_claims, n_rules, n_checks}` | 计数分母来源 |
 | `fail_code_counts` / `actionable` / `structural` | object | 归因计数 |
 | `warnings` | string[] | 设计预警等（不阻断） |
@@ -88,7 +88,7 @@
 ### 3.2 `/api/plan`（`plan.json`）
 
 | 字段 | 类型 | 说明 |
-|---|---|---|
+| --- | --- | --- |
 | `available` | bool | `false` 表示 ARS 不可计算（非 COMPLETE）；此时 `actions=[]`、`quoted_cu=null` |
 | `actions[]` | `{action, claim_id, from_state, to_state, gain, cu, reason_code}` | 每条动作可追溯到 claim |
 | `direct_cu` / `buffer_cu` / `total_cu` | number | 直接成本、缓冲、合计 |
@@ -101,7 +101,7 @@
 ### 3.3 `/api/gate`（`gate.json`）
 
 | 字段 | 类型 | 说明 |
-|---|---|---|
+| --- | --- | --- |
 | `action` | `release` / `block` / `accept_with_grade` | 唯一结论 |
 | `reason_code` | string / null | `release` 必须为 `null`，其余必须非空 |
 | `claims_summary` | `{verified, refuted, indeterminate}` | 三态计数 |
@@ -133,7 +133,7 @@
 ## 4. 产物清单（`outputs/<run_id>/`）
 
 | 文件 | 内容 | 前端是否直接读 |
-|---|---|---|
+| --- | --- | --- |
 | `report.json` | 展示摘要 | 是 |
 | `ars.json` / `plan.json` / `gate.json` | 三端点载荷 | 经 API |
 | `claims.json` | 100 条逐条判定与 locator | 明细页 |

@@ -50,7 +50,7 @@ curl http://127.0.0.1:8080/healthz   # 存活
 ## 3 目录与数据
 
 | 容器路径 | 命名卷 | 内容 |
-|---|---|---|
+| --- | --- | --- |
 | `/app/data` | `temis-data` | SQLite、会话密钥、备份 |
 | `/app/outputs` | `temis-outputs` | 导出 JSONL、运行产物 |
 | `/app/workspaces` | `temis-workspaces` | 受控工具允许根 |

@@ -176,7 +176,7 @@ run 读数 7 项与原五维的映射（原五维不消失，只是换成了可�
 
 ### 4.1 两条通道
 
-```
+```text
 决策点（同步）
   ├─ Gate：策略表 + 规则判定（本地、无网络、无模型，P95 <50ms）
   ├─ Exec：执行动作（normal / degrade）
@@ -252,7 +252,7 @@ run 读数 7 项与原五维的映射（原五维不消失，只是换成了可�
 
 ### 6.1 运行中
 
-```
+```text
 task 开始 → 开 run（run\_id 派生自 task\_id）
   每次工具调用：
     before\_tool\_call → 查白名单 → 查策略表 → Gate 判定（<50ms）
@@ -268,7 +268,7 @@ task 结束 → run\_close
 
 ### 6.2 运行后（默认发生，两层输出）
 
-```
+```text
 run\_close → 立即产出 run 读数（7 项）→ 写 ledger\_summary        ← 默认，无需启用
 打开 Skill 页 → 由 run 读数聚合出 Skill 读数（1 项）              ← 默认，按需计算
 ```
@@ -423,6 +423,3 @@ run\_close → 立即产出 run 读数（7 项）→ 写 ledger\_summary        
 |-|-|-|
 |N4|`before\_prompt` 在 resume 场景是否重复触发|3 轮 + 2 resume 实测|
 |N5|MCP 工具内部写是否能被外层钩子观察到|选 2 个 MCP 工具实测|
-
-
-

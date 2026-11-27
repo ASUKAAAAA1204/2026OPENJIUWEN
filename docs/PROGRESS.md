@@ -11,13 +11,13 @@
 |日期|是|YYYY-MM-DD|
 |耗时|是|大致（如 2h）|
 |内容|是|具体做了什么，**不超过 5 行**|
-|产出|是|文件路径 / 命令结果 |
-|阻塞|否|如果有，写清楚是什么 |
-|下一步|是|要做什么 |
+|产出|是|文件路径 / 命令结果|
+|阻塞|否|如果有，写清楚是什么|
+|下一步|是|要做什么|
 
 ## 总览
 
-```
+```text
 PRD 冻结 ✅ → 骨架搭建 ✅ → W0 Rail spike ○ → W1 端到端 Demo ○ → PPT ○ → 提交 ○
 ```
 
@@ -30,11 +30,13 @@ PRD 冻结 ✅ → 骨架搭建 ✅ → W0 Rail spike ○ → W1 端到端 Demo 
 **内容**：根据用户修正重写三份 PRD 的核心理解。原理解的根本偏差：把 ARS 当成链路上游步骤（实际是**两段 ARS 夹链路**）；把 Skill 当审计对象（实际是**审计原子对象=结论，Skill 是评分稳定单位**）。
 
 **产出**：
+
 - [PRD_主_保证账本v2.0_2026-10-29.md](file:///D:/CQUPT/self_file/competition/openjiuwen/docs/archive/PRD_主_保证账本v2.0_2026-10-29.md)（已归档） — §0.1 对象层级 / §0.3 时序图 / §3 用户锁定 / §5 核心概念 全部重写
 - [PRD_审计就绪度ARS_v1.0_2026-10-29.md](file:///D:/CQUPT/self_file/competition/openjiuwen/docs/archive/PRD_审计就绪度ARS_v1.0_2026-10-29.md)（已归档） — §0 加三元组+三段时序 / §4 拆 ARS_d/ARS_r 分段 / 附录 A 计算示例拆段
 - [PRD_可信可审计链路_v1.0_2026-10-29.md](file:///D:/CQUPT/self_file/competition/openjiuwen/docs/archive/PRD_可信可审计链路_v1.0_2026-10-29.md)（已归档） — §0 加交替关系图+每段审计对象表
 
 **关键修正**：
+
 1. ARS 真实坐标是 `f(skill_version, model, data_profile)`，报告必须带三元组
 2. ARS_d（L+C）跑之前就能出 → 设计闸；ARS_r（R+D+F）跑完证据后出 → 发布闸
 3. 主攻用户锁定"发布责任人"（只有他有"卡住"权力）
@@ -49,7 +51,8 @@ PRD 冻结 ✅ → 骨架搭建 ✅ → W0 Rail spike ○ → W1 端到端 Demo 
 **内容**：搭建项目骨架 + 跑通冒烟测试。严格按 PRD 冻结的结构。
 
 **产出**：
-```
+
+```text
 src/assurance_ledger/
   core/         → 9 个 pydantic 模型（types/claim/evidence/check/ars/cost/ledger_entry/rule/event）
   schemas/      → C1-C6 六个接口契约校验器 + 启动自检
@@ -64,6 +67,7 @@ docs/design/design_cheatsheet.md → 一页速查
 ```
 
 **冒烟测试结果**（全部通过）：
+
 - Claim locator 三级精确性判断 ✅
 - RuleCompiler 正确识别"合理地比较 PE 倍数"为 SUBJECTIVE_RULE ✅
 - CostCalculator: 500+300 tokens/1000 + 1200ms/1000 = 2.0 CU ✅
@@ -72,8 +76,9 @@ docs/design/design_cheatsheet.md → 一页速查
 - Ledger.verify() 哈希链校验 ✅
 
 **依赖锁定**（严格对齐 PRD §9）：
+
 | 依赖 | 许可证 | 引入方式 |
-|---|---|---|
+| --- | --- | --- |
 | pydantic ≥2.6 | MIT | 必需，核心模型基类 |
 | semgrep ≥1.80 | LGPL-2.1 | 可选，**CLI 子进程**（避开 LGPL 链接要求） |
 | Vue 3.4 + uPlot 1.6 | MIT | 前端框架 |
@@ -105,12 +110,14 @@ docs/design/design_cheatsheet.md → 一页速查
 **内容**：按《调整方案_目标与功能》把口径修正与抗博弈同步进三份 PRD，并统一人日。
 
 **产出**：
+
 - `prd/PRD_审计就绪度ARS_v1.0_2026-10-29.md` → v1.1：§4.2 五维定义重写、§4.3 新增 PARTIAL、§4.5 三条红线、§15 变更记录（ARS-9 抗博弈、ARS-10 口径版本）
 - `prd/PRD_可信可审计链路_v1.0_2026-10-29.md` → v1.1：§8 指标 +3、§9 人日 13→18、§12 变更记录（LocatorResolver、真 recompute、契约 C7、迁移清单）
 - `prd/PRD_主_保证账本v2.0_2026-10-29.md` → v2.1：目标 +G7/G8、功能 +ARS-9/10 +CH-11/12/13、指标 +M13–M16、人日 31→43、附录 E 变更记录
 - `应用实例清单_2026-10-30.md`：新增"质检口径 v1.1 补充"（Q1 回源解析率、Q2 PARTIAL、Q3 红队）
 
 **关键修正**：
+
 1. L 只认回源解析成功，不认声明精确
 2. R 只认独立 verifier 复算，不认"有证据"
 3. D 去硬编码、F 改 claim 级、样本不足出 PARTIAL
@@ -125,6 +132,7 @@ docs/design/design_cheatsheet.md → 一页速查
 **内容**：按《整改计划 v1.2》打通三条链——数字链（计数→比例→总分）、归因链（每一分钱对哪一维/哪条 claim）、状态链（两层 3+3 与优先级）。三份 PRD 同步 v2.2 / v1.2。
 
 **产出**：
+
 - `docs/prd/PRD_主_保证账本-v2.2.md` → v2.2：设计态只算 C；`n_claims/n_rules/n_checks = 20/10/14`；47→79；34 CU、0.95 分/CU；W0/W4/W5 与附录 E.2
 - `docs/prd/PRD_审计就绪度ARS-v1.2.md` → v1.2：§8 动作库（`rewrite_rule` 原地改写）、§9 报告规格、§11 20 人日、§14 计算示例 47→79、§15.2 抗博弈改绝对条数、§15.6 变更表
 - `docs/prd/PRD_可信可审计链路-v1.2.md` → v1.2：去 PDF、C1–C7 进主表、S1 新增 4 check + 12 fixture、S4 双跑一致供 D
@@ -132,6 +140,7 @@ docs/design/design_cheatsheet.md → 一页速查
 - 旧稿（docs/ 下 5 份）已移入 `docs/archive/`；三份现役 PRD 已按要求重命名
 
 **必须记下的更正（此前条目有不实陈述）**：
+
 1. "`pyproject.toml` 可 pip install -e ."——根目录**没有** `pyproject.toml`，只有 `docs/pyproject.toml` 且 build-backend 写错，当前不可安装；
 2. "冒烟测试全部通过"——`tests/` 为空目录，无测试文件；上面的冒烟结果来自临时脚本，未入库；
 3. "UI 已搭"——`ui/` 只有 `package.json`，`ui/src`、`ui/public` 为空；
@@ -146,6 +155,7 @@ docs/design/design_cheatsheet.md → 一页速查
 **内容**：打通 S1 装配、S4 判定、S5 账本、S6 决策、S7 治理，用 A 的 100 条真实证据跑通 replay、主 checker、独立 verifier、账本、闸门和只读 API，冻结 D 端消费的 JSON 契约。
 
 **产出**：
+
 - C 模块：`ledger/evaluator.py`、`checker.py`、`verifier.py`、`replay.py`、`ledger.py`、`debt_tracker.py`、`observation.py`、`contracts_c7.py`、`report.py`、`claim_map.py`、`canonical.py`、`integrity.py`、`pipeline.py`
 - 脚本：`scripts/assurance.py`（run/replay/check/verify-ledger/gate/export/serve，退出码 0/2/3/4/5）、`serve_api.py`、`verify_ledger.py`
 - 映射：`fixtures/a_100/claim-map-v1.json`，100 条，`<` 48 / `>` 46 / `==` 6，与方案 §4.1 一致
@@ -155,6 +165,7 @@ docs/design/design_cheatsheet.md → 一页速查
 - SBOM：`sbom.json`（CycloneDX 1.6，11 个组件）；`Makefile` 补齐 install/test/mypy/sbom/run/verify/api/curve
 
 **阻塞 / 边界**：
+
 - A 的 `fixtures/a_acceptance` 中 2 failed + 14 error 全部因 `openjiuwen` 需要 Python < 3.14，本机 3.14 无法安装；其余 A 测试 133 项通过
 - `ledger/resolver.py` 与 `ledger/packer.py` 的 mypy 告警属 A 文件，未改；C 模块 mypy 干净
 - core v0.2 与 C7 补丁待接口负责人批准；`schemas/contracts.py` 未改
@@ -170,6 +181,7 @@ docs/design/design_cheatsheet.md → 一页速查
 **内容**：接入 A 的读回值匹配、支持 A 的 `assurance-rule-binding-v1` 封装、把 C 的临时规则模板迁移到 B 的正式规则 ID，并并入 B 的 R2 交付文件。
 
 **产出**：
+
 - CH-L：`evaluator.resolve_all` 先做 C 的结构/公司/字段/主位置检查，再调用 A 的 `resolver.resolve_bytes` 核对读回值；只有两步都过才计 L 成功
 - CH-M4：`rule_from_payload` 和独立 `verifier` 识别 `assurance-rule-binding-v1`，只取已编译的 `b-cmp-v1` IR；最小证据为 source-snapshot、claim-inputs、rule
 - 映射：新增 `fixtures/a_100/claim-map-v2.json`，rule_id 改为 `b-pe-*-industry@1`，保留 `legacy_rule_id` 和 `migrated_from.digest`；v1 只读兼容，不静默改写
@@ -182,6 +194,7 @@ docs/design/design_cheatsheet.md → 一页速查
 **验证**：`tests/` 429 passed 1 skipped；全仓 604 passed 1 skipped；B 的 R2 测试 34 passed；100 条端到端 verified 100，ARS 100 分 A 档，L/R/D/F 全满，M6 100/100，M13 20/20，闸门 release，账本 102 条 PASS；B 用 v1/v2 映射各自复算均 `PASS`；CH-M4 删除测试 100/100 + binding 1/1
 
 **阻塞 / 边界**：
+
 - A 的 `fixtures/a_acceptance` 仍 2 failed + 14 error，全部因本机 Python 3.14 无法安装 `openjiuwen`，需在 3.10–3.13 复跑
 - `core/` v0.2 与 C7 补丁仍待接口负责人批准；`schemas/contracts.py` 未改
 - 独立 verifier 用 `Fraction` 精确比较，与 A 的 `1e-6` 相对容差是两套口径，边界数值不宣称等价

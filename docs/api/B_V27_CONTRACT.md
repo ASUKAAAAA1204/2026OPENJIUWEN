@@ -38,7 +38,7 @@ CLI：`python scripts/b_v27_demo.py --input fixtures/b_v27/demo.json --output ou
 ## 输入事实
 
 | 端口 | 内容 | 缺失的处理 |
-|---|---|---|
+| --- | --- | --- |
 | `RunFacts` | 运行 ID、Skill/版本、完成时间、各事实列表、白名单及策略版本、债务事件、子运行引用、可选复核阈值 | 完成时间与身份不可缺；没有白名单不能默认算已覆盖 |
 | `DecisionFact` | 所属运行、决策 ID、类、Gate、风险、动作时间、关联证据、上游输出依赖、零或多个断言关联 | 未知动作时间不计时效成功；无断言的写操作也可记录 |
 | `EvidenceRecord` | 证据及所属决策 ID；PRD §7.2 的摘要、模型与参数、判定、时间和内容哈希；可选来源、断言及可比较结果 | 预期缺失或空字段使完整率失败并生成缺证据；格式错误的已提供值拒绝 |
@@ -64,7 +64,7 @@ ID 必须为非空字符串。布尔事实仅接受 `true`、`false`、`null`；
 债务以所属运行、决策、标记类型确定身份。high=3、mid=2、low=1；同一决策的不同标记类型分别计条。找不到所属决策的已抽取断言产生 high 缺证据债务，并保留在声明一致率分母与缺证据统计中。
 
 | 类型 | 消解方式 | 要求 |
-|---|---|---|
+| --- | --- | --- |
 | `NO_EVIDENCE` | `supplement_evidence` | 补证引用 |
 | `SOURCE_CONFLICT` | `unify_sources` | 统一来源的证据引用 |
 | `SPEC_MISMATCH` | `correct_params_and_regate` | 修正证据引用及明确的重新过闸成功事实 |
@@ -76,7 +76,7 @@ ID 必须为非空字符串。布尔事实仅接受 `true`、`false`、`null`；
 ## 八项运行读数
 
 | 键 | 分子或数值 | 分母 |
-|---|---|---|
+| --- | --- | --- |
 | `declaration_consistency` | 实际参数与声明一致的决策 | `declaration_available=true` 的决策，加缺决策断言占位；比较结果未知保留 |
 | `evidence_completeness` | 全部必需关联证据字段完整的决策 | 全部决策及缺决策占位 |
 | `reproducibility` | 证据完整、引用绑定正确且独立重放判定一致的决策 | 全部决策及缺决策占位 |

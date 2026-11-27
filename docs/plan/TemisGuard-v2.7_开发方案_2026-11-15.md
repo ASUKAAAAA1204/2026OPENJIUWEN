@@ -1,7 +1,7 @@
 # 天序明衡 TemisGuard v2.7 开发方案
 
 | 项 | 内容 |
-|-|-|
+| - | - |
 | 文档性质 | 开发方案（怎么建），与《TemisGuard-v2.7_代码对齐实施计划_2026-11-15》配套（那份回答"改哪些"） |
 | 需求依据 | `docs/prd/PRD-v2.7.md`、`docs/design/关键决策白名单_2026-11-05.md` |
 | 代码基线 | `2026OPENJIUWEN-main/src/assurance_ledger`（48 py / 8,921 行）、`ui/`（Vue 3） |
@@ -25,7 +25,7 @@
 ### 1.2 完成定义（DoD，每个功能模块都适用）
 
 | 维度 | 判据 |
-|-|-|
+| - | - |
 | 功能 | PRD 对应小节的行为逐条可演示；异常分支有明确输出而非抛栈 |
 | 契约 | 字段名、枚举值、必填性与 PRD §7.2 一致；缺失必填字段报错而非补空 |
 | 测试 | 单元用例覆盖正常/边界/异常三态；集成用例覆盖一次完整 run |
@@ -47,7 +47,7 @@
 
 ### 2.1 架构分层
 
-```
+```text
 ┌───────────────────────────────────────────────────────────┐
 │ 接入层 (rail/)                                             │
 │  openJiuwen AgentRail 钩子 / 统一执行入口 guarded_call()     │
@@ -81,7 +81,7 @@
 ### 2.2 进程与部署形态
 
 | 形态 | 说明 | 用途 |
-|-|-|-|
+| - | - | - |
 | 嵌入式（主） | 与被审计 Agent 同进程，Rail 钩子同步调用 Gate | 演示、评测 |
 | 独立 CLI | `python scripts/assurance.py run` 批量跑数据集 | 评测项、回归 |
 | 只读服务 | `uvicorn serve_api:app`，仅 GET，从 `outputs/` 读产物 | 前端联调、现场演示 |
@@ -90,7 +90,7 @@
 
 ### 2.3 一次调用的主时序
 
-```
+```text
 Agent ──tool_call──▶ Rail.before_tool_call
                           │
                           ├─ 1 redact(args)            → 失败: DENY(REDACTION_FAILED)
@@ -118,7 +118,7 @@ Agent ──result──▶ Rail.after_tool_call
 
 ### 2.4 崩溃恢复时序
 
-```
+```text
 重启 ─▶ runs/recovery.scan_orphans()
           │ 读账本所有 intent 事件
           ├─ 有 evidence 且 evidence.decision_id == intent.decision_id → 正常
@@ -133,7 +133,7 @@ Agent ──result──▶ Rail.after_tool_call
 
 ### 3.1 实体关系
 
-```
+```text
 Run 1 ─── n Decision 1 ─── 0..1 Evidence
                     │
                     ├── 0..1 Approval（仅 ASK 触发）
@@ -149,7 +149,7 @@ Claim（final_claim 决策的载荷）n ─── 1 Decision
 所有记录继承 `ChainFields`：
 
 | 字段 | 说明 |
-|-|-|
+| - | - |
 | `seq` | 全局单调递增，从 1 开始 |
 | `ts` | UTC ISO8601，微秒精度，`Z` 结尾 |
 | `principal` | 责任主体 |
@@ -163,7 +163,7 @@ Claim（final_claim 决策的载荷）n ─── 1 Decision
 
 决策状态不落库字段，由事件序列派生：
 
-```
+```text
 intent(GATE_DECIDED, gate=ALLOW)            → ALLOWED
 intent(GATE_DECIDED, gate=DENY)             → DENIED
 intent(GATE_DECIDED, gate=REWRITE)          → REWRITTEN
@@ -183,7 +183,7 @@ intent + 60s 无 evidence                      → UNKNOWN_OUTCOME
 ### 4.1 `contracts/`（新增）
 
 | 文件 | 内容 | 开发要点 |
-|-|-|-|
+| - | - | - |
 | `enums.py` | §2.1 全部枚举 | 单一来源；禁止在其他模块内重复定义字面量 |
 | `records.py` | Decision / Evidence / Approval / Debt / Run | `extra="forbid"`；必填无默认值 |
 | `events.py` | 六类事件模型 + `derive_state(events)` | 纯函数，无 IO |
@@ -193,7 +193,7 @@ intent + 60s 无 evidence                      → UNKNOWN_OUTCOME
 
 ### 4.2 `policy/`（新增）
 
-**whitelist.py**
+#### whitelist.py
 
 ```python
 def classify(tool_name: str, action_type: str, *, version: str = "v1.0") -> str | None
@@ -204,7 +204,7 @@ def digest(version: str) -> str                            # 写入每条决策
 
 数据以只读 JSON 表存放（`policy/whitelist-v1.0.json`），禁止在代码里写 if-else 大树。查表键必须是 `(tool_name, action_type)` 二元组，未命中返回 `None`。
 
-**table.py**
+#### table.py
 
 ```python
 class PolicyTable:                     # 只读、版本化、可回滚
@@ -218,7 +218,7 @@ class PolicyTable:                     # 只读、版本化、可回滚
 
 规则匹配只用参数摘要与声明阈值的确定性比较（金额、路径前缀、域名白名单、命令首词），不做正则暴力匹配、不做语义判断。
 
-**redact.py**
+#### redact.py
 
 ```python
 def redact_args(args: Mapping[str, Any], *, rule_version: str) -> tuple[dict, str]
@@ -250,7 +250,7 @@ def on_error(ctx, table) -> GateDecision
 ```
 
 | 分支 | 行为 |
-|-|-|
+| - | - |
 | 规则命中 ALLOW | 直接返回，`exec_policy=normal` |
 | 规则命中 ASK | 返回 ASK，由 `ask.py` 发事件并等待 |
 | 规则命中 DENY | 返回 DENY + reason |
@@ -261,14 +261,14 @@ def on_error(ctx, table) -> GateDecision
 
 `latency_ms` 只计规则段：进入 `evaluate` 到返回，不含 ASK 等待、不含账本写入。
 
-**exec_policy.py**
+#### exec_policy.py
 
 ```python
 def apply(gate: GateDecision, ctx: DecisionContext) -> ExecOutcome
 ```
 
 | 能力声明 | ALLOW | degrade |
-|-|-|-|
+| - | - | - |
 | `read_only` | 全量放行 | 无意义（不改） |
 | `mixed` | 只有声明了只读子操作时放行，否则强制 ASK | 仅只读子操作，写部分返回 `DEGRADED_BLOCKED` |
 | `write` | 放行 | 拒绝全部写操作，返回明确原因 |
@@ -276,7 +276,7 @@ def apply(gate: GateDecision, ctx: DecisionContext) -> ExecOutcome
 ### 4.4 `ledger/`（复用 + 改造）
 
 | 文件 | 状态 | 规格 |
-|-|-|-|
+| - | - | - |
 | `ledger.py` | 改造 | 四类记录、`append_*` 方法族、写前脱敏、`segment`/`parent_run_id` |
 | `ledger_verify.py` | 改造 | 只扩字段白名单；新增引用完整性校验（decision↔evidence↔debt） |
 | `canonical.py` | 改造 | `rfc8785` 缺失时纯 Python 回退，输出必须与官方逐字节一致 |
@@ -292,7 +292,7 @@ def apply(gate: GateDecision, ctx: DecisionContext) -> ExecOutcome
 写入契约：
 
 | 场景 | 行为 |
-|-|-|
+| - | - |
 | 写入成功 | 返回 record |
 | 写入失败 | 重试 3 次（指数退避） |
 | 重试仍失败 | 抛 `LedgerWriteFailed(lost_seq=...)` 并向告警队列投递，**不静默丢弃** |
@@ -314,7 +314,7 @@ class DebtBook:                                     # 改造自 DebtTracker
 ```
 
 | 标记 | 生成条件 | 定级 |
-|-|-|-|
+| - | - | - |
 | `NO_EVIDENCE` | 无证据 / 证据为空 / 记录为 MISSING_DECISION | 高危类 high，其余 mid |
 | `SOURCE_CONFLICT` | 同一断言两来源不一致（回源比对） | mid；回源不可达 → 转 `NO_EVIDENCE` |
 | `SPEC_MISMATCH` | 实参与策略表声明不一致 | 可换算 low，否则 mid |
@@ -348,7 +348,7 @@ def aggregate(skill_id, runs, *, window=20, min_n=5, min_classes=3) -> dict
 ```
 
 | 读数 | 分子 | 分母 | 数据来源 |
-|-|-|-|-|
+| - | - | - | - |
 | 声明一致率 | 实参与声明一致的决策 | 有声明可比对的决策 | Decision.args_digest vs table |
 | 证据完整率 | 证据八字段齐全的决策 | 全部决策 | EvidenceRecord 校验 |
 | 复现率 | 重放后判定一致的决策 | 全部决策（缺证据算未复现） | `ledger/replay.py` |
@@ -371,13 +371,14 @@ def replay_run(ledger, run_id: str, table: PolicyTable) -> ReplayResult
 ### 4.9 `rail/jiuwen_adapter.py`（改造，成败关键）
 
 | 钩子 | 规格 |
-|-|-|
+| - | - |
 | `before_tool_call` | 脱敏 → 查表 → 判定 → 写意图 → 按结果放行/改写/挂起/拦截 |
 | `after_tool_call` | 写结果记录（含 `input/output_digest`、`exec_policy`、耗时） |
 | `on_tool_exception` | 写 `EXEC_FAILED`，仍落证据（空证据标记） |
 | `before_model_call` / `after_model_call` | 保留现有采集（模型与参数摘要供证据使用） |
 
 **M0 必须先定的事**：`openjiuwen 0.1.20.post1` 的 `before_tool_call` 是否支持"跳过调用/替换参数"。
+
 - 支持 → 门控写在钩子里。
 - 不支持 → 所有工具统一经 `guarded_call(tool, args)` 执行，钩子只采集。此时"钩子覆盖率"评测项按 `guarded_call` 入口统计，未走入口的由 `UNHOOKED` 兜底。
 
@@ -388,7 +389,7 @@ def replay_run(ledger, run_id: str, table: PolicyTable) -> ReplayResult
 接口清单见对齐计划 §8.1，本方案补充实现约束：
 
 | 约束 | 说明 |
-|-|-|
+| - | - |
 | 只读 | 所有 GET 从 `outputs/` 读文件，不重算、不写账本 |
 | 校验前置 | `gate`/`decisions` 读取前先 `verify_file`，链不通过返回 409 `LEDGER_INVALID` |
 | 错误封套 | 沿用现有 `error_envelope(code, message, detail)` |
@@ -401,7 +402,7 @@ def replay_run(ledger, run_id: str, table: PolicyTable) -> ReplayResult
 
 ## 5 存储与数据布局
 
-```
+```text
 outputs/
 ├─ LATEST.json
 ├─ corpus.jsonl                      # 失败样本语料（保留）
@@ -425,7 +426,7 @@ outputs/
 ## 6 错误码与降级矩阵
 
 | 错误码 | 触发 | Gate | 状态 | 是否执行 | 计入哪项 |
-|-|-|-|-|-|-|
+| - | - | - | - | - | - |
 | `RULE_MISSING` | 策略表无该类规则 | DENY | DENIED | 否 | 处置执行率 |
 | `REDACTION_FAILED` | 参数无法脱敏 | DENY | DENIED | 否 | 处置执行率 |
 | `TIMEOUT` | ASK 超时（高危） | DENY | TIMEOUT | 否 | 处置执行率 |
@@ -447,7 +448,7 @@ outputs/
 ### 7.1 内部 Python 接口（稳定面）
 
 | 接口 | 签名 | 稳定性 |
-|-|-|-|
+| - | - | - |
 | 采集 | `Rail.before_tool_call(ctx) -> GateDecision` | 内部 |
 | 统一入口 | `guarded_call(tool, args, *, run_id) -> ToolResult` | 对外 |
 | 判定 | `gate.evaluate(ctx, table) -> GateDecision` | 对外（评测脚本直接调用） |
@@ -459,7 +460,7 @@ outputs/
 ### 7.2 版本号（写进每条记录）
 
 | 版本 | 值 | 变更即口径变更 |
-|-|-|-|
+| - | - | - |
 | 账本格式 | `assurance-ledger-v2` | 是 |
 | 白名单 | `whitelist-v1.0` | 是 |
 | 策略表 | `policy-v1` | 是 |
@@ -474,7 +475,7 @@ outputs/
 ### 8.1 用例矩阵
 
 | 模块 | 正常 | 边界 | 异常 |
-|-|-|-|-|
+| - | - | - | - |
 | whitelist | 11 类各 1 条 | 只读工具 6 类 | 未命中 + `side_effect=true` → UNHOOKED |
 | redact | 6 类敏感字段 | 空参数 / 超长参数 | 高熵未知字段 → DENY |
 | gate | 四值各 1 条 | REWRITE 第 2 轮通过 | 第 3 轮 → DENY；缺规则；超时（高/低危）；异常降级 |
@@ -489,7 +490,7 @@ outputs/
 ### 8.2 评测项映射（PRD §10.2）
 
 | 评测项 | 脚本 | 通过线 |
-|-|-|-|
+| - | - | - |
 | 账本自包含 | `eval_ledger_selfcontained.py` | 删 OTel 后 100% 可复算 |
 | 钩子覆盖 | `eval_hook_coverage.py` | 受控入口 10/10，未走入口必被识别为 UNHOOKED |
 | 运行边界 | `eval_run_boundary.py` | 3 轮 + 2 resume，run_id 不变、段号递增 |
@@ -501,7 +502,7 @@ outputs/
 
 ### 8.3 CI 门禁
 
-```
+```bash
 pytest -q                                   # 全绿（含既有 539 条）
 python scripts/verify_ledger.py --all        # 每个产出账本 PASS
 python scripts/bench_gate.py --p95 50        # 规则段 P95 < 50ms
@@ -520,7 +521,7 @@ cd ui && npm run test && npm run build       # 前端单测与构建
 ### T0 基线收敛（P0，11-15 ~ 11-17）
 
 | 任务 | 产出 | 依赖 |
-|-|-|-|
+| - | - | - |
 | T0.1 迁移 `src/tests/scripts/fixtures` 到根目录，删旧 `src` | 单一代码基线 | — |
 | T0.2 装 `rfc8785`、升 `openjiuwen 0.1.20.post1` | 依赖清单一致 | T0.1 |
 | T0.3 `canonical.py` 纯 Python 回退 + 逐字节对比测试 | 离线可跑 | T0.2 |
@@ -531,7 +532,7 @@ cd ui && npm run test && npm run build       # 前端单测与构建
 ### T1 契约与账本 v2（P0，11-17 ~ 11-21）
 
 | 任务 | 产出 |
-|-|-|
+| - | - |
 | T1.1 `contracts/enums.py` + `records.py` + `events.py` | 唯一字面源 |
 | T1.2 `ledger.py` 四记录 + `append_*` + segment/parent_run_id | 账本 v2 |
 | T1.3 `policy/redact.py` + 写前强制 | 脱敏前置 |
@@ -543,7 +544,7 @@ cd ui && npm run test && npm run build       # 前端单测与构建
 ### T2 门与执行策略（P0，11-19 ~ 11-23）
 
 | 任务 | 产出 |
-|-|-|
+| - | - |
 | T2.1 `policy/whitelist.py` + 白名单 JSON | 11 类查表 |
 | T2.2 `policy/table.py` + 策略表样例（含 ASK/金额阈值） | 只读策略表 |
 | T2.3 `gate/engine.py` 四值 + REWRITE ≤2 轮 | 判定核心 |
@@ -555,7 +556,7 @@ cd ui && npm run test && npm run build       # 前端单测与构建
 ### T3 标记/债务/读数（P0，11-21 ~ 11-24）
 
 | 任务 | 产出 |
-|-|-|
+| - | - |
 | T3.1 `marks/engine.py` 三类标记 | 标记生成 |
 | T3.2 `marks/propagation.py` | 传播与 UNKNOWN_DEPENDENCY |
 | T3.3 `marks/debt.py`（改造 DebtTracker） | 权重/消解/合并 |
@@ -567,7 +568,7 @@ cd ui && npm run test && npm run build       # 前端单测与构建
 ### T4 演示冻结（P0，11-24 ~ 11-25）
 
 | 任务 | 产出 |
-|-|-|
+| - | - |
 | T4.1 演示脚本（3 分钟：拦截→记账→标记→债务→读数） | `docs/demo/演示脚本.md` |
 | T4.2 mock 夹具升级 v2.7 + 前端读数面板 | 可离线演示 |
 | T4.3 现场兜底（预生成 outputs + 只读服务） | 演示包 |
@@ -575,7 +576,7 @@ cd ui && npm run test && npm run build       # 前端单测与构建
 ### T5 回放与对比（P1，11-26 ~ 12-05）
 
 | 任务 | 产出 |
-|-|-|
+| - | - |
 | T5.1 `replay/engine.py` 决策序列重放 | `eval_replay.py` ≥90% |
 | T5.2 `ledger/compare.py` 版本对比 | 两版本读数差 |
 | T5.3 `report.py` 发布闸改造（读数阈值） | F10 |
@@ -584,7 +585,7 @@ cd ui && npm run test && npm run build       # 前端单测与构建
 ### T6 运行生命周期与委派（P1，12-01 ~ 12-10）
 
 | 任务 | 产出 |
-|-|-|
+| - | - |
 | T6.1 `runs/registry.py` 开/关/恢复/去重 | `eval_run_boundary.py` |
 | T6.2 委派父子 + 深度 3 + 债务汇总 | `eval_delegation.py` |
 | T6.3 `MISSING_DECISION` 关联规则（断言 vs 决策） | 风险未知路径 |
@@ -592,7 +593,7 @@ cd ui && npm run test && npm run build       # 前端单测与构建
 ### T7 评测全绿（P1，12-08 ~ 12-15）
 
 | 任务 | 产出 |
-|-|-|
+| - | - |
 | T7.1 其余评测脚本 + 红队 10 样本 | 8 项达线 |
 | T7.2 shadow 100 次运行与误报统计 | `eval_shadow.py` |
 | T7.3 未覆盖率告警（>5%） | 过程指标 |
@@ -600,7 +601,7 @@ cd ui && npm run test && npm run build       # 前端单测与构建
 ### T8 前端定稿（P1，12-10 ~ 12-18）
 
 | 任务 | 产出 |
-|-|-|
+| - | - |
 | T8.1 决策列表/详情/状态徽章 | 页面 |
 | T8.2 债务面板 + 消解操作 | 页面 |
 | T8.3 回放视图 + 版本对比 | 页面 |
@@ -609,7 +610,7 @@ cd ui && npm run test && npm run build       # 前端单测与构建
 ### T9 材料与提交（P1，12-18 ~ 12-27）
 
 | 任务 | 产出 |
-|-|-|
+| - | - |
 | T9.1 架构图/时序图重绘（v2.7） | `build/` 产物 |
 | T9.2 README + 一键复现脚本 | 可复现 |
 | T9.3 SBOM + 依赖锁定 | 合规 |
@@ -620,7 +621,7 @@ cd ui && npm run test && npm run build       # 前端单测与构建
 ## 10 里程碑与门禁
 
 | 里程碑 | 日期 | 门禁 |
-|-|-|-|
+| - | - | - |
 | M0 | 11-17 | 539 条全绿；spike 结论落盘；`/api/report` 可用 |
 | M1 | 11-21 | 账本 v2 自包含复算 100%；崩溃恢复通过 |
 | M2 | 11-23 | 四值 + 超时 + 降级用例全绿；P95 < 50ms |
@@ -639,7 +640,7 @@ cd ui && npm run test && npm run build       # 前端单测与构建
 ## 11 工程规范
 
 | 项 | 规则 |
-|-|-|
+| - | - |
 | 分支 | `main` 可演示；功能分支 `feat/t<编号>-<简述>`；演示前 3 天冻结 |
 | 提交 | 一任务一提交，信息写"为什么"；不混口径变更与功能变更 |
 | 口径变更 | 改枚举/权重/阈值必须同时改版本号 + 更新 PRD 对照表 + 通知前端 |
@@ -653,7 +654,7 @@ cd ui && npm run test && npm run build       # 前端单测与构建
 ## 12 风险与预案
 
 | 风险 | 概率 | 影响 | 预案 |
-|-|-|-|-|
+| - | - | - | - |
 | 钩子不能阻断 | 中 | F4/F5 落点变更 | 统一入口 `guarded_call`；钩子降级为采集；评测改按入口统计 |
 | 账本重构破坏链 | 中 | 全部产物不可验 | 算法不动，只扩字段；双实现同时改、同一批断言 |
 | 脱敏误杀 | 中 | 演示全 DENY | 分"确定/可疑"两档；可疑档默认放行并记标记，严格模式才 DENY |
@@ -666,7 +667,7 @@ cd ui && npm run test && npm run build       # 前端单测与构建
 ## 13 交付物清单
 
 | 类别 | 交付物 |
-|-|-|
+| - | - |
 | 代码 | 单一 `src/assurance_ledger`、`scripts/*`、`ui/`、`tests/` |
 | 数据 | `fixtures/a_100` 评测集、`outputs/` 预生成演示包 |
 | 文档 | 本方案、对齐计划、演示脚本、字段对照表、评测报告 |

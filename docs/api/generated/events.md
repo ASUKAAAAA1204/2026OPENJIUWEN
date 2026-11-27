@@ -6,7 +6,7 @@
 - 心跳：`: ping` 注释行，不计 seq；终止：`turn_completed` / `turn_failed`
 
 | 类型 | 必填字段 |
-|---|---|
+| --- | --- |
 | `turn_started` | `seq`, `turn_id`, `run_id`, `segment` |
 | `assistant_delta` | `seq`, `turn_id`, `text` |
 | `tool_intent` | `seq`, `turn_id`, `decision_id`, `decision_class`, `tool_name`, `gate`, `summary`, `approval_id` |

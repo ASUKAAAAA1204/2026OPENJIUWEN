@@ -11,7 +11,7 @@
 ## 0. 执行规范
 
 | 项目 | 取值 |
-|---|---|
+| --- | --- |
 | sampler / scheduler | `euler` / `simple` |
 | steps | 8 |
 | cfg | 1.0 |
@@ -29,10 +29,10 @@
 
 提示词中的每个数值都出自此表，前端实现一一对应，不允许自由发挥。
 
-**色值（全站仅此 7 个）**
+### 色值（全站仅此 7 个）
 
 | 令牌 | 色值 | 唯一用途 | 面积预算 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `--bg-base` | `#F5F7FA` → `#FFFFFF` | 页面底色，极缓径向渐变 | 主色域 |
 | `--line` | `rgba(0, 47, 167, 0.06)` | 网格、辅助圆、刻度 | ≤ 8% |
 | `--ink` | `#1A1D21` | 正文与标题 | 按需 |
@@ -43,10 +43,10 @@
 
 > 硬规则：除金、红两色外，所有彩色像素必须可归入 `--klein` 光晕。出现任何第三色实色块，该图判不合格。
 
-**线 / 字 / 距**
+### 线 / 字 / 距
 
 | 项目 | 取值 |
-|---|---|
+| --- | --- |
 | 主描边 | 1px，全图唯一线宽；虚线 `1px dash 4/4` |
 | 次级描边 | 0.5px（仅辅助圆、内层虚线环） |
 | 圆角 | 一律 **0**；胶囊按钮 `999px` |
@@ -65,7 +65,7 @@
 五类背景互相不可替换，每格正文中已按本表写死对应参数。
 
 | 代号 | 名称 | 参数 |
-|---|---|---|
+| --- | --- | --- |
 | **BG-A** | 高调白网格 | `#F5F7FA`→`#FFFFFF` 极缓径向渐变（中心略亮）；24px 间距 1px 钴蓝网格 6% 不透明度；四边内侧 32px 处 2px 刻度短线，每 5 格加长至 4px |
 | **BG-B** | 圣光雾霭 | 全白雾面；右上 35° 斜射丁达尔光束，宽占画面 40%，末端散成细粒；40–60 颗 1–2px 白色微尘，密度向下递减 |
 | **BG-C** | 蓝图辅助圆 | 白底叠三层同心圆，半径比 1 : 1.618 : 2.618，线宽 1px、不透明度 4%，圆心在水平 38.2% / 垂直 61.8%，带 0.5° 刻度 |
@@ -81,7 +81,7 @@
 **彩色预算**＝金/红细线可占面积上限；**留白下限**＝无任何线条与图元覆盖的白色面积。任一项越界即重跑，不修补。
 
 | # | 文件 | 尺寸 | 背景 | 彩色预算 | 留白下限 | 专属禁止项 |
-|---|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- | --- |
 | 01 | `ui_01_dashboard` | 1216×768 | BG-B | 2% | 55% | 可读数字、三栏以上布局、卡片投影 |
 | 02 | `ui_02_decision_stream` | 1024×1024 | BG-D | 1.5% | 50% | 实心卡片、彩色时间条、箭头图标 |
 | 03 | `ui_03_evidence_drawer` | 1024×1024 | BG-A | 1% | 45% | 写实屏幕截屏感、渐变遮罩、滚动条 |
@@ -105,7 +105,7 @@
 
 ### 01 工作台总览 — 1216×768 · BG-B · 运行状态 / Gate P95 / 债务 / 覆盖率
 
-```
+```text
 High-key editorial security console dashboard hero in Arknights "Exusiai the New Covenant" art
 direction, sacred minimalist blueprint aesthetic: one deconstructed halo totem exactly centered at
 46% of frame height, built from a 1px outer ring, a 0.5px dashed middle ring, a twelve-sided polygon
@@ -125,7 +125,7 @@ no watermark
 
 ### 02 决策流水时间轴 — 1024×1024 · BG-D · 时间序 / 四态 / 耗时
 
-```
+```text
 Vertical decision stream timeline in Arknights "Exusiai the New Covenant" art direction, sacred
 minimalist blueprint aesthetic: a single 1px vertical axis line down the exact frame center, one
 hollow 6px circular hash node every 96 pixels, translucent frosted glass cards alternating left and
@@ -144,7 +144,7 @@ watermark
 
 ### 03 证据审查抽屉 — 1024×1024 · BG-A · 双摘要 / 链线 / 印章
 
-```
+```text
 Evidence inspection drawer floating above a wireframe console, Arknights "Exusiai the New Covenant"
 art direction, sacred minimalist blueprint aesthetic: a tall frosted glass drawer occupying the
 right 62% of the frame, its four stacked sections divided by 1px dashed rules, first a key-value
@@ -162,7 +162,7 @@ fills, no scrollbars, no purple gradients, no cartoon, no watermark
 
 ### 04 Gate 四态徽章组 — 1024×1024 · BG-E · ALLOW / ASK / DENY / REWRITE
 
-```
+```text
 Four gate state badges in a strict 2x2 grid, each exactly 320px square with 64px gutters, on pure
 white #FFFFFF, Arknights "Exusiai the New Covenant" art direction, sacred minimalist blueprint
 aesthetic: every badge is an unfilled 1px frame with L-shaped corner registration marks and a
@@ -180,7 +180,7 @@ gradients, no cartoon, no watermark
 
 ### 05 ASK 人工审批弹层 — 1216×768 · BG-B · 30 秒倒计时 / 批准 / 拒绝
 
-```
+```text
 Modal approval card centered in a high-key white fog scene, Arknights "Exusiai the New Covenant"
 art direction, sacred minimalist blueprint aesthetic: a 420x600 frosted glass card at 62% white
 with only a 1px outline and L-shaped corners, at its top a 96px circular countdown ring drawn with
@@ -197,7 +197,7 @@ shadows, no 3D bevels, no neon, no saturated fills, no purple gradients, no cart
 
 ### 06 不确定性标记与债务仪表 — 1024×1024 · BG-C · 三类标记 / 加权债务
 
-```
+```text
 Uncertainty marks and debt instrument panel, Arknights "Exusiai the New Covenant" art direction,
 sacred minimalist blueprint aesthetic: three concentric guide circles at 4% opacity centered on a
 golden ratio point at 38.2% horizontal and 61.8% vertical with radii in the ratio 1 to 1.618 to
@@ -215,7 +215,7 @@ no saturated fills, no purple gradients, no cartoon, no watermark
 
 ### 07 八项读数刻度盘阵列 — 1216×768 · BG-C · 八指标 / 一例不适用
 
-```
+```text
 Array of eight half-circle reading gauges in a strict 4x2 grid, each with 110px radius and a 180
 degree arc, Arknights "Exusiai the New Covenant" art direction, sacred minimalist blueprint
 aesthetic: every gauge drawn with 1px ticks that lengthen every fifth mark, a single 1.5px needle
@@ -233,7 +233,7 @@ cartoon, no watermark
 
 ### 08 运行与委派树 — 1024×768 · BG-A · run → segment → 委派 / 深度 3 拒绝
 
-```
+```text
 Vertical run and delegation tree occupying the left 40% of the frame, Arknights "Exusiai the New
 Covenant" art direction, sacred minimalist blueprint aesthetic: the root node is a 14px hollow ring,
 three levels descend below it each indented 26px, all connectors are 1px right-angle lines that go
@@ -250,7 +250,7 @@ cartoon, no watermark
 
 ### 09 回放对比视图 — 1216×768 · BG-D · 重放 / 一致率 / 不可复现
 
-```
+```text
 Side by side replay comparison view, Arknights "Exusiai the New Covenant" art direction, sacred
 minimalist blueprint aesthetic: two mirrored columns of equal width, each built from a 1px vertical
 line with alternating frosted glass cards hanging off it, three thin horizontal leader lines
@@ -267,7 +267,7 @@ neon, no saturated fills, no purple gradients, no cartoon, no watermark
 
 ### 10 发布闸与版本对比 — 1216×768 · BG-B · 闸门 / 拦截数 / 版本差
 
-```
+```text
 Release gate and version diff panel, Arknights "Exusiai the New Covenant" art direction, sacred
 minimalist blueprint aesthetic: on the left a vertical gate glyph made of two 1px pillars and three
 horizontal breakable hairlines, one of them interrupted by a faint antique gold #EAD2A8 glowing gap;
@@ -284,7 +284,7 @@ bevels, no neon, no saturated fills, no purple gradients, no cartoon, no waterma
 
 ### 11 整改报价单 — 1024×1024 · BG-E · 按条报价 / 权重 / 汇总
 
-```
+```text
 Remediation quotation sheet, one vertical 620x880 card floating on pure white #FFFFFF,
 Arknights "Exusiai the New Covenant" art direction, sacred minimalist blueprint aesthetic: card
 edges marked only by L-shaped registration corners with a 1px outline and 62% white frost, a single
@@ -301,7 +301,7 @@ no saturated fills, no purple gradients, no cartoon, no watermark
 
 ### 12 窄屏审批卡片 — 640×1024 · BG-B · 值班端 ASK / 30 秒 P95
 
-```
+```text
 Vertical mobile approval composition, 640x1024 portrait, Arknights "Exusiai the New Covenant" art
 direction, sacred minimalist blueprint aesthetic: a frosted white 62% card 86% of width and 62% of
 height floating slightly above center, inside it from top to bottom one 10px monospaced state line,
@@ -318,7 +318,7 @@ no neon, no saturated fills, no purple gradients, no cartoon, no watermark
 
 ### 13 空状态与扫描加载 — 1024×1024 · BG-A · 等待写入 / 加载中
 
-```
+```text
 Empty state and loading composition, Arknights "Exusiai the New Covenant" art direction, sacred
 minimalist blueprint aesthetic: at the exact center a thin 1px circle with a 40 degree open gap,
 inside it three stacked horizontal hairlines of decreasing length, and beneath it two centered lines
@@ -334,7 +334,7 @@ no neon, no saturated fills, no purple gradients, no cartoon, no watermark
 
 ### 14 图标族 — 1024×1024 · BG-E · 16 枚线条图标规范
 
-```
+```text
 Icon family sheet, sixteen line icons arranged in a strict 5x4 grid on pure white #FFFFFF,
 Arknights "Exusiai the New Covenant" art direction, sacred minimalist blueprint aesthetic: each
 icon is centered in a 160px cell within a 96px bounding box, every stroke is a uniform 1px with
@@ -363,7 +363,7 @@ no uneven spacing, no purple gradients, no cartoon, no watermark
 ## 6. 出图质检
 
 | 检查项 | 合格标准 |
-|---|---|
+| --- | --- |
 | 线宽 | 目视全图线条等宽，无局部加粗 |
 | 背景 | 与 BG 参数一致：网格 24px、光束 35°、辅助圆三层 |
 | 颜色 | 彩色像素只在金/红细线，其余全灰阶 |

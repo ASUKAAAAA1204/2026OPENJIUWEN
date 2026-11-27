@@ -1,7 +1,7 @@
 # 天序明衡 TemisGuard v2.7 代码对齐实施计划
 
 | 项 | 内容 |
-|-|-|
+| - | - |
 | 文档性质 | 实施计划（工程执行口径），非产品需求文档 |
 | 依据 | `docs/prd/PRD-v2.7.md`；`docs/design/关键决策白名单_2026-11-05.md` |
 | 进度事实源 | 代码。`2026OPENJIUWEN-main/` 内全部文档（README / PROGRESS / Makefile 说明）不作为进度依据 |
@@ -27,7 +27,7 @@
 ### 1.1 两套源码的收敛决策
 
 | 位置 | 事实 | 决策 |
-|-|-|-|
+| - | - | - |
 | `src/assurance_ledger`（根） | 1,449 行；仅 core 9 个 + engine 3 个 + ledger 5 个 + rail 4 个 + schemas 2 个；缺 verifier / resolver / evaluator / replay / claim_map / observation / antigaming / signals / ir_runtime / ledger_verify / explain / acceptance 系列 / jiuwen_adapter | **判定为旧精简快照，删除**（模块集合是嵌套版的真子集） |
 | `2026OPENJIUWEN-main/src/assurance_ledger` | 8,921 行，模块完整，pytest 可收集 539 条 | **唯一后端基线**，迁入根目录 `src/` |
 | `2026OPENJIUWEN-main/tests` | 20 个文件 / 2,431 行 | 迁入根 `tests/`，作为回归基线 |
@@ -42,7 +42,7 @@
 ### 1.2 现状测试真值
 
 | 项 | 结果 | 归因 |
-|-|-|-|
+| - | - | - |
 | pytest 收集 | 539 条 | — |
 | 通过 | 420 | 与 v2.7 无关的既有逻辑 |
 | 失败 54 / 错误 64 | 全部指向 `canonical.py` 的 `import rfc8785` 与 SDK 版本守卫 | 环境依赖缺失，**不是逻辑错误** |
@@ -53,7 +53,7 @@
 ### 1.3 依赖与工程底座缺口
 
 | 缺口 | 影响 | 处置 |
-|-|-|-|
+| - | - | - |
 | `rfc8785` 未安装，`canonical.py:19-27` 直接抛 `RuntimeError` | 账本、摘要、回放全部不可用；118 条用例挂 | 安装 `rfc8785`；同时在 `canonical.py` 内加**纯 Python 回退实现**（`json.dumps(sort_keys=True, separators=(",",":"), ensure_ascii=False)` + 数字格式化），保证离线环境可运行（PRD §8.2 要求不联网也能判定，虽未要求不装包，但评审机不可控） |
 | `openjiuwen==0.1.18` 与 PRD `0.1.20.post1` 不一致 | 钩子签名可能变化；版本守卫直接 `RuntimeError` | 升到 `0.1.20.post1`；`local_spike.py` 的两处 `!= "0.1.18"` 改为 `>= 0.1.20` 的兼容区间；`jiuwen_adapter.py` docstring 同步 |
 | 根 `pyproject.toml` 无 `assurance_ledger` 包声明 | 迁入后 `pip install -e .` 失效 | 合并嵌套版 `pyproject.toml` 的 `[project]`/`[tool.pytest]` 段 |
@@ -64,7 +64,7 @@
 图例：● 已具备可直接用；◐ 有基础但字段/口径不符需改造；○ 无，需新增。
 
 | 功能 | 现状对应代码 | 覆盖 | 结论 |
-|-|-|-|-|
+| - | - | - | - |
 | F1 决策采集 | `rail/collector.py`、`rail/jiuwen_adapter.py`、`rail/claim_context.py` | ◐ | 有 before/after/exception 四个钩子，但拍平为"事件"且按 claim 归属；缺 `decision_class` 查表、缺 `UNHOOKED`、缺执行前阻断返回 |
 | F2 证据记录 | `rail/evidence_capture.py`、`rail/evidence_io.py`、`ledger/packer.py` | ◐ | 有证据包与 digest，但字段是 claim 级而非 decision 级；缺 `model_params`、`verdict`、`input/output_digest` 三件套 |
 | F3 不确定性标记 | 无 | ○ | 现有 `debt_tracker` 是"未验证义务"（unverified/stale/structural），不是 v2.7 的三类标记三等级 |
@@ -113,7 +113,7 @@ DebtStatus    = Literal["open", "resolved"]
 ### 2.2 字段落地映射（§7.2 → 代码）
 
 | PRD 记录 | 代码结构体 | 复用 | 新增字段 |
-|-|-|-|-|
+| - | - | - | - |
 | 决策记录（意图事件） | `ledger/records.py::DecisionRecord` | 由 `LedgerRecord` 改造 | `decision_id` `run_id` `segment` `decision_class` `tool_name` `args_digest` `args_after` `whitelist_version` `policy_version` `rule_snapshot_ref` `gate` `gate_reason` `gate_latency_ms` `exec_policy` `evidence_ref` `status` |
 | 证据记录（结果事件） | `EvidenceRecord` | 由 `LedgerRecord.verifier/payload_digest` 扩展 | `evidence_id` `input_digest` `output_digest` `model_id` `model_params` `verdict` `ts` `content_hash` |
 | 审批记录 | `ApprovalRecord` | 无 | `approval_id` `decision_id` `approver_id` `approve_ts` `approved_args_digest` `approve_result` `content_hash` |
@@ -124,7 +124,7 @@ DebtStatus    = Literal["open", "resolved"]
 ### 2.3 关键判定口径（落地即代码常量）
 
 | 口径 | 取值 | 落点 |
-|-|-|-|
+| - | - | - |
 | 门四值与状态映射 | 见 PRD §6.12 表 | `gate/engine.py::derive_state` |
 | ASK 默认等待 | 30 秒 | `policy/table.py::ASK_TIMEOUT_S = 30` |
 | ASK 超时处置 | 高危 `DENY + TIMEOUT`；低危按 `ask_timeout_policy` | `gate/engine.py::on_timeout` |
@@ -146,7 +146,7 @@ DebtStatus    = Literal["open", "resolved"]
 ### 2.4 与现有台账的口径差异（必须一次性改掉，不允许并存）
 
 | 项 | 现有代码 | v2.7 | 处置 |
-|-|-|-|-|
+| - | - | - | - |
 | 账本阶段 | `RECORD_PHASES = ("pre_execution","post_execution","decision")` | 六类事件按决策追加 | 删除 `record_phase`，改 `event_type` |
 | 决策动作 | `DECISION_ACTIONS = ("release","block","accept_with_grade")` | 门四值；发布闸另立 | `report.py::decide_gate` 改名 `decide_release_gate`，动作枚举 `pass/block` |
 | 债务类型 | `DebtType = (unverified, stale, structural)` | 三类标记 + 权重 | 新枚举，旧枚举仅留在归档模块 |
@@ -157,7 +157,7 @@ DebtStatus    = Literal["open", "resolved"]
 
 ## 3 目标架构
 
-```
+```text
 src/assurance_ledger/
 ├─ contracts/            # 新增：C1–C13 的枚举与 pydantic 模型（唯一字面来源）
 │   ├─ enums.py          # 2.1 节全部枚举
@@ -209,7 +209,7 @@ src/assurance_ledger/
 ## 4 复用清单（不改逻辑，只接新接口）
 
 | # | 模块 | 复用能力 | 需要做的唯一改动 |
-|-|-|-|-|
+| - | - | - | - |
 | R1 | `ledger/canonical.py` | RFC8785 规范化、`digest_json`、严格 JSON 读写、UTC ISO | 加 `rfc8785` 缺失时的纯 Python 回退 |
 | R2 | `ledger/ledger_verify.py` | 独立第二实现的链校验、`first_bad_seq`、尾部截断检测 | 字段白名单加新字段（不重写算法） |
 | R3 | `ledger/integrity.py` | 证据包完整性/篡改检测 | 无 |
@@ -236,7 +236,7 @@ src/assurance_ledger/
 ### 5.1 `ledger/ledger.py` —— 数据模型重构（最高风险）
 
 | 现状 | 改为 | 理由 |
-|-|-|-|
+| - | - | - |
 | `LedgerRecord` 单一结构，`record_phase` 三段 | `DecisionRecord` / `EvidenceRecord` / `ApprovalRecord` / `DebtRecord` 四个模型 + 公共 `ChainFields` | PRD §7.2 四张表约束不同（决策必须有判定，断言必须有来源），合表会大面积留空 |
 | `DECISION_ACTIONS = release/block/accept_with_grade` | 删除；门用 `Gate`，发布闸在 `report.py` 另立 | §4.2 四值与发布闸是两件事 |
 | `append(...)` 一次性参数列表 | `append_decision()` / `append_evidence()` / `append_approval()` / `append_debt()` / `append_debt_resolution()` | 语义清晰，且债务消解是"再追加"而非改写 |
@@ -247,7 +247,7 @@ src/assurance_ledger/
 ### 5.2 `ledger/report.py` —— 拆成"发布闸"和"报告"
 
 | 现状 | 改为 |
-|-|-|
+| - | - |
 | `decide_gate()` 5 步矩阵基于 `doc_status/score/claims_summary` | `decide_release_gate()`：基于 8 项读数阈值 + 未覆盖率，输出 `pass/block`，保留 `reason_code` |
 | `build_gate_data()` 输出 action/reason/policy | `build_readings_data()` 输出 8 项读数 + 聚合；`build_release_gate_data()` 输出闸结论 |
 | `build_report()` 含 `coord/dims/segments/score/band` | 改为 `headline(readings + gate) / decisions_summary / marks / debts / runs / artifacts`；**删掉 score/band/label** |
@@ -259,7 +259,7 @@ src/assurance_ledger/
 
 改为两段式主流程：
 
-```
+```text
 run_begin(task_id, principal)                 # F7 开run，segment=1
   ↳ on_tool_call(decision)                    # F1 采集 → policy/redact → whitelist
       ↳ gate.evaluate()                       # F4 四值（同步、纯规则）
@@ -279,7 +279,7 @@ run_close() → readings.compute() → aggregate  # F8
 改为：
 
 | 钩子 | 现状 | 改为 |
-|-|-|-|
+| - | - | - |
 | `before_tool_call` | 记开始时间 | ① 脱敏参数 → ② 白名单查表（确定性）→ ③ 命中则同步 `gate.evaluate()` → ④ 写意图记录 → ⑤ 按 Gate 返回：`ALLOW` 放行、`DENY` 抛/返回跳过、`REWRITE` 返回改写参数、`ASK` 挂起等待（默认 30s） |
 | `after_tool_call` | 写事件 | 写结果记录（含 `input/output_digest`、`exec_policy`、耗时） |
 | `on_tool_exception` | 写失败事件 | 写 `EXEC_FAILED`；仍要落证据（空证据也记） |
@@ -298,7 +298,7 @@ run_close() → readings.compute() → aggregate  # F8
 ### 5.7 `ledger/debt_tracker.py` → `marks/debt.py`
 
 | 现状 | 改为 |
-|-|-|
+| - | - |
 | 键 `(claim_id, reason_code)` | `(decision_id, mark_type)`，一条标记一条债务 |
 | 无权重 | `weight` 由 `mark_type` + `level` 推出（3/2/1） |
 | `type` 取 `DebtType`（unverified/stale/structural） | 取 `MarkType` + `reason_code` |
@@ -518,7 +518,7 @@ def compare(runs_a: list[str], runs_b: list[str]) -> dict   # 两个版本的 8 
 ### 8.1 API（`scripts/serve_api.py`）
 
 | 端点 | 方法 | 说明 | 现状 |
-|-|-|-|-|
+| - | - | - | - |
 | `/api/runs` | GET | 运行列表（状态/段号/委派关系） | 新增 |
 | `/api/report` | GET | 报告（与 `ui/src/api/client.ts:21` 对齐） | **新增（当前 404）** |
 | `/api/decisions?run_id=&class=&status=` | GET | 决策列表（分页） | 新增 |
@@ -536,7 +536,7 @@ def compare(runs_a: list[str], runs_b: list[str]) -> dict   # 两个版本的 8 
 ### 8.2 UI（`ui/`）
 
 | 页面/组件 | 复用 | 改动 |
-|-|-|-|
+| - | - | - |
 | 报告主视图 `App.vue` | 现有布局与动效 | 顶部区从"分数 + 分档"改为"8 项读数 + 发布闸状态" |
 | `ScoreCard` → `ReadingsPanel` | 卡片样式、数字滚动 `useTween` | 8 项读数 + N/A + 样本不足提示 |
 | `DimensionBars` | 条形图组件 | 五维 → 8 项 |
@@ -559,7 +559,7 @@ def compare(runs_a: list[str], runs_b: list[str]) -> dict   # 两个版本的 8 
 ### 9.1 分层测试
 
 | 层 | 内容 | 目标 |
-|-|-|-|
+| - | - | - |
 | 单元 | 契约枚举、字段必填、脱敏、白名单查表、权重、比例分母 0 | 新增 ~120 条 |
 | 集成 | 一次 run 全链路（钩子→门→账本→标记→读数） | 新增 ~40 条 |
 | 回归 | 现有 539 条 | 全绿 |
@@ -582,7 +582,7 @@ def compare(runs_a: list[str], runs_b: list[str]) -> dict   # 两个版本的 8 
 ## 10 里程碑
 
 | 里程碑 | 时间 | 交付物 | 完成判据 |
-|-|-|-|-|
+| - | - | - | - |
 | M0 基线收敛 | 11-15 ~ 11-17 | 单一 `src/`；依赖修复；`pytest` 全绿；SDK 钩子能力结论 | 539 全绿；spike 报告写明 `before_tool_call` 能否阻断/改写 |
 | M1 契约与账本 v2 | 11-17 ~ 11-21 | `contracts/`、`ledger.py` 四记录 + 事件模型 + 脱敏 + segment | 账本自包含复算 100%；两段写崩溃恢复；契约测试 C1/C2/C11/C13 绿 |
 | M2 门与执行策略 | 11-20 ~ 11-23 | `policy/`、`gate/`；adapter 门控化 | 四值用例全绿；ASK 超时按类处置；REWRITE 两轮；P95 < 50ms |
@@ -601,7 +601,7 @@ def compare(runs_a: list[str], runs_b: list[str]) -> dict   # 两个版本的 8 
 ## 11 风险与回退
 
 | 风险 | 触发信号 | 影响 | 回退/缓解 |
-|-|-|-|-|
+| - | - | - | - |
 | SDK 钩子不能阻断 | M0 spike 返回 `None` 无效 | F4/F5 无处落地 | 改走 `guarded_call()` 统一执行入口（PRD §8.1 已允许）；Rail 降级为纯采集 |
 | 账本模型重构破坏链校验 | `ledger_verify` 与新 `ledger.py` 不一致 | 全部账本不可验 | 先写"新字段 + 新算法"的对照测试，算法字节级不变；`ledger_verify.py` 与 `ledger.py` 双实现同时改、同断言 |
 | 脱敏误杀导致全 DENY | demo 中大量 `RedactionFailed` | 演示失败 | 脱敏规则分"确定敏感/可疑"两档；可疑档默认放行但记 `SPEC_MISMATCH`，仅在策略表开启严格模式时 DENY |
@@ -614,7 +614,7 @@ def compare(runs_a: list[str], runs_b: list[str]) -> dict   # 两个版本的 8 
 ## 12 验收对照
 
 | 验收项 | 对应实现 | 验证方式 |
-|-|-|-|
+| - | - | - |
 | A1 白名单覆盖 11 类 | `policy/whitelist.py` + F1 | 11 类各 1 条正例，覆盖率 100% |
 | A2 `UNHOOKED` | F1 未命中路径 | `side_effect=true` 未命中 → 记录 + 未覆盖率 |
 | A3 判定可控 | `gate/engine.py` | ASK 应答/超时；DENY 不执行 |
