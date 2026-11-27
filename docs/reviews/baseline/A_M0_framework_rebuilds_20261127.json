@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-27",
+  "status": "A_ENVIRONMENT_PASS_TEAM_PARTIAL",
+  "packages_per_environment": 61,
+  "rebuild_count": 2,
+  "lock_version_differences": 0,
+  "rebuild_version_differences": 0,
+  "preflight_initial": 27,
+  "preflight_rebuilds": 36,
+  "online_calls_in_A_preflight": 0,
+  "evidence": [
+    {
+      "path": "outputs/baseline/frameworks-rebuild1-install.json",
+      "sha256": "a4a8672d20c81fdc948961b1de1b491f4bacc54e06d1d3dc93b6c77d2e4d088e"
+    },
+    {
+      "path": "outputs/baseline/frameworks-rebuild2-install.json",
+      "sha256": "a4a8672d20c81fdc948961b1de1b491f4bacc54e06d1d3dc93b6c77d2e4d088e"
+    },
+    {
+      "path": "outputs/baseline/frameworks-rebuild1-freeze.txt",
+      "sha256": "55f591889b224991b5e113f8e3d8fadd09168dcbd60f1245641ee5954e7a81ae"
+    },
+    {
+      "path": "outputs/baseline/frameworks-rebuild2-freeze.txt",
+      "sha256": "55f591889b224991b5e113f8e3d8fadd09168dcbd60f1245641ee5954e7a81ae"
+    },
+    {
+      "path": "outputs/b-m0-current/control-faoo11ig/report.json",
+      "sha256": "f2d00db8472257ece5854a89f1d2301e04aecd9375eb120986aaa2462e369645"
+    },
+    {
+      "path": "outputs/b-m0-current/control-fxvqz4x2/report.json",
+      "sha256": "37222c869be1efaa267c9bf21aed27f69a8323e472fe3dfdaf031e58aabea0e5"
+    },
+    {
+      "path": "outputs/b-m0-current/control-bwgifort/report.json",
+      "sha256": "82f53c96989220377f0d098d4b3ed0789403bb44981ea2d0e8c1bf73ed8483ee"
+    },
+    {
+      "path": "outputs/b-m0-current/control-e53b9p2y/report.json",
+      "sha256": "0d0f58e94ec0433650f27f48833b649facfcb5afcccbbe1a06e6c0e96836f6eb"
+    },
+    {
+      "path": "outputs/b-m0-current/control-8boefap4/report.json",
+      "sha256": "740a3c4e5c89b26cc12ef43c83dc029ec1e3a7cc6a3e3a7a07c38a2e87969b35"
+    }
+  ]
+}
