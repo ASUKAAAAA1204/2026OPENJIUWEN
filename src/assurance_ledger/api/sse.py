@@ -7,6 +7,8 @@ import threading
 from contextlib import asynccontextmanager
 from typing import Any, AsyncIterator
 
+from ..observability.metrics import METRICS
+
 MAX_FRAME_BYTES = 65536
 HEARTBEAT_SECONDS = 15
 
@@ -67,9 +69,11 @@ class EventBroker:
         queue: asyncio.Queue = asyncio.Queue(maxsize=self._queue_size)
         with self._lock:
             self._subscribers.setdefault(turn_id, set()).add(queue)
+        METRICS.sse_connections.inc()
         try:
             yield queue
         finally:
+            METRICS.sse_connections.dec()
             with self._lock:
                 subscribers = self._subscribers.get(turn_id)
                 if subscribers is not None:

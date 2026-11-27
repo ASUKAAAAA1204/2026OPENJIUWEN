@@ -9,6 +9,7 @@ from typing import Any
 from ..contracts.transitions import TransitionError, project
 from ..ledger.canonical import utc_iso
 from ..ledger.chain import verify_database
+from ..observability.metrics import METRICS
 from .lifecycle import RunRecord, child_run_ids
 
 DECISION_EVENT_TYPES = (
@@ -106,6 +107,9 @@ def audit_snapshot(db: sqlite3.Connection, run: RunRecord | sqlite3.Row) -> dict
             item["evidence_ref"] = payload["evidence_id"]
         decisions.append(item)
     decisions.sort(key=lambda item: order.get(item["decision_id"], 0))
+    chain = verify_database(db)
+    if chain.get("status") != "verified":
+        METRICS.chain_verify_failures.inc({"source": "audit"})
     return {
         "source": "ledger",
         "run_id": run["run_id"],
@@ -114,7 +118,7 @@ def audit_snapshot(db: sqlite3.Connection, run: RunRecord | sqlite3.Row) -> dict
         "parent_run_id": run["parent_run_id"],
         "child_run_ids": child_run_ids(db, run["run_id"]),
         "decisions": decisions,
-        "chain": verify_database(db),
+        "chain": chain,
     }
 
 

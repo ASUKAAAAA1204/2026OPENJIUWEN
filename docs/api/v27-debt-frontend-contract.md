@@ -1,6 +1,6 @@
 # v2.7 债务前端接口草案
 
-状态：前端适配已实现，后端HTTP接口尚未实现或确认；没有真实联调通过的证据。条目字段和消解方法对齐src/assurance_ledger/engine/v27/models.py、debt.py，HTTP封装为本草案新增。
+状态（2026-11-26 更新）：后端已实现 `GET /api/v27/debts`，返回字段以 `reference.md` 为准。条目字段和消解方法对齐 v2.7 读数与债务实现；三框架在线证据仍以平台验收记录为准。
 
 GET /api/v27/debts建议返回{source:'ledger',can_resolve:boolean,items:DebtItem[]}。DebtItem字段为debt_id/run_id/decision_id/mark_type/original_severity/display_severity/weight/status/cause/provenance/opened_seq/resolved，见ui/src/components/workbench/debts.ts。服务端继续负责确定性debt_id、账本哈希及权限范围验证。前端按(owner run_id,decision_id,mark_type)去重：完全相同的重复引用保留一份，同键冲突或同ID不同所有权拒绝汇总；同决策多类型分别计条，按所属运行分列。
 

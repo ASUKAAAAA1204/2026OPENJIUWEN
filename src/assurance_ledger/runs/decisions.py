@@ -22,6 +22,7 @@ from ..ledger.record_store import RecordStore
 from ..ledger.redaction import Redactor, RedactionError
 from ..ledger.snapshots import SnapshotStore
 from ..ledger.writer import read_connection
+from ..observability.metrics import METRICS
 from ..policy.whitelist import DECISION_CLASSES
 from . import approvals, lifecycle, turns
 
@@ -196,8 +197,13 @@ def record_intent(writer, store, journal: DecisionJournal,
     gate = evaluate(policy, decision_class=decision_class, tool_name=tool_name,
                     args=dict(args), workspace=workspace.path,
                     delegation_depth=depth + (1 if decision_class == "delegate" else 0),
-                    side_effect=side_effect)
+                    side_effect=side_effect,
+                    allowed_remotes=config.security.git_allowed_remotes,
+                    allowed_branches=config.security.git_allowed_branches)
     latency_ms = max(0, (time.perf_counter_ns() - started) // 1_000_000)
+    if decision_class in DECISION_CLASSES:
+        METRICS.gate_ms.observe(latency_ms, {"decision_class": decision_class,
+                                             "gate": gate.gate})
     args_digest = protected_digest(dict(args))
     rewritten_digest = protected_digest(gate.rewritten_args) if gate.rewritten_args else None
     attempt_id = approvals.new_attempt_id()
@@ -220,7 +226,9 @@ def record_intent(writer, store, journal: DecisionJournal,
         if db.execute("SELECT 1 FROM approvals WHERE turn_id=? AND status='pending' LIMIT 1",
                       (turn_id,)).fetchone():
             raise DecisionConflict("turn 已有待处理审批")
-        snapshots = SnapshotStore(store)
+        snapshots = SnapshotStore(
+            store, directory=config.storage.snapshots,
+            inline_max_bytes=config.storage.snapshot_inline_max_bytes)
         rule_ref = snapshots.capture_on(db, {
             "kind": "rule_snapshot",
             "policy_version": policy.version,
@@ -243,7 +251,9 @@ def record_intent(writer, store, journal: DecisionJournal,
             "decision_class": decision_class,
             "args": effective_args,
         }, redactor)
-        redacted_args = SnapshotStore.unwrap(SnapshotStore.read_ref(db, args_ref))
+        redacted_args = SnapshotStore.unwrap(
+            SnapshotStore.read_ref(db, args_ref,
+                                   directory=config.storage.snapshots))
         summary = _summary(tool_name, decision_class, redacted_args.get("args"))
         intent = IntentRecord(
             decision_id=decision_id, run_id=run_row.run_id,
@@ -332,20 +342,26 @@ def record_intent(writer, store, journal: DecisionJournal,
         response["_events"] = emitted
         return response
 
-    return writer.call(job, intent=True)
+    begin = time.perf_counter()
+    response = writer.call(job, intent=True)
+    METRICS.intent_persist_ms.observe(
+        (time.perf_counter() - begin) * 1000, {"framework": run.framework})
+    return response
 
 
 def _result_evidence(db: sqlite3.Connection, store, redactor: Redactor,
                      *, decision_id: str, payload: Mapping[str, Any],
                      intent: Mapping[str, Any], attempt_id: str,
-                     moment: datetime) -> dict[str, Any] | None:
+                     moment: datetime, snapshots_root: Any = None,
+                     inline_max_bytes: int = 65536) -> dict[str, Any] | None:
     evidence = payload.get("evidence")
     output = payload.get("output")
     if evidence is not None and not isinstance(evidence, Mapping):
         raise DecisionError("evidence 必须是对象")
     evidence = dict(evidence or {})
     evidence_id = evidence.get("evidence_id") or "EVD-" + secrets.token_hex(8).upper()
-    snapshots = SnapshotStore(store)
+    snapshots = SnapshotStore(store, directory=snapshots_root,
+                              inline_max_bytes=inline_max_bytes)
     if output is not None:
         output_ref = snapshots.capture_on(db, {"kind": "tool_output", "output": output}, redactor)
     elif isinstance(evidence.get("output_digest"), str) and evidence["output_digest"].strip():
@@ -444,7 +460,9 @@ def record_result(writer, store, journal: DecisionJournal,
             else:
                 evidence = _result_evidence(
                     db, store, redactor, decision_id=decision_id, payload=payload,
-                    intent=intent, attempt_id=attempt_id, moment=moment)
+                    intent=intent, attempt_id=attempt_id, moment=moment,
+                    snapshots_root=config.storage.snapshots,
+                    inline_max_bytes=config.storage.snapshot_inline_max_bytes)
                 record = record_store.append_on(
                     db, event_id, "evidence",
                     {key: value for key, value in evidence.items()
@@ -460,7 +478,9 @@ def record_result(writer, store, journal: DecisionJournal,
                 raise DecisionConflict("结果提交前缺少 EXEC_STARTED")
             evidence = _result_evidence(
                 db, store, redactor, decision_id=decision_id, payload=payload,
-                intent=intent, attempt_id=attempt_id, moment=moment)
+                intent=intent, attempt_id=attempt_id, moment=moment,
+                snapshots_root=config.storage.snapshots,
+                inline_max_bytes=config.storage.snapshot_inline_max_bytes)
             journal.append_in(db, f"result:{decision_id}:{attempt_id}:finished",
                               decision_id, {
                                   "type": "EXEC_FINISHED", "attempt_id": attempt_id,
@@ -484,7 +504,13 @@ def record_result(writer, store, journal: DecisionJournal,
         return {"decision_id": decision_id, "status": status,
                 "evidence_ref": evidence_ref, "_events": [emitted]}
 
-    return writer.call(job)
+    begin = time.perf_counter()
+    response = writer.call(job)
+    metric_status = {"EXEC_FINISHED": "completed", "EXEC_FAILED": "failed",
+                     "UNKNOWN_OUTCOME": "unknown"}[status]
+    METRICS.result_persist_ms.observe((time.perf_counter() - begin) * 1000,
+                                      {"status": metric_status})
+    return response
 
 
 __all__ = [

@@ -133,7 +133,7 @@ $jiuwenPython = '.\.venv-m0-jiuwen\Scripts\python.exe'
 |外层 MCP 工具可见，内部 SQL 和文件写入回执仅从存储读出|可用作覆盖边界反例|S12 另需可观测的已声明副作用工具，在未分类时生成一次 UNHOOKED|
 |旧版采集入口的 SDK 版本检查与 Rail 说明|作为兼容性资料，正式依赖由 A 统一锁定|S07 异常、S08 等待时取消、S09 十任务并发、S11 父子委派仍需新场景|
 
-## 环境与复跑
+## 环境与复跑（汇总）
 
 Windows，Python 3.12.14。openJiuwen 使用已有 PR8 环境，MCP 1.30.0。LangGraph 与 OpenAI Agents SDK 装在新 B 的同一独立环境，MCP 2.3.0。两套环境的 `pip check` 均通过。这个组合给 A 提供候选版本，三框架共存情况和全队环境连续两次从零重建仍待 A/B 联合验证。每个框架的 `installed-versions.json` 记录本次完整已装包版本，文件的 SHA-256 记录在同目录 `result.json`。
 

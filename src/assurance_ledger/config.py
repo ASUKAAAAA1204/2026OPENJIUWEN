@@ -24,6 +24,13 @@ class ServerConfig:
     bind: str = "127.0.0.1:8000"
     internal_bind: str = "127.0.0.1:8000"
     public_origin: str = "http://127.0.0.1:8000"
+    # 启动门控：拉起 worker 后最多等待多少秒出现一次健康注册；0 表示不等待
+    startup_wait_seconds: int = 30
+    # 停机时等待活动 turn 自行收尾的秒数，超时标记 unknown
+    shutdown_grace_seconds: int = 5
+    # /metrics 默认关闭；空 token 时只接受回环来源
+    metrics_enabled: bool = False
+    metrics_token: str = ""
 
 
 @dataclass(frozen=True)
@@ -32,6 +39,20 @@ class StorageConfig:
     outputs: Path = Path("outputs")
     keys: Path = Path("data/keys")
     backups: Path = Path("data/backups")
+    snapshots: Path = Path("data/snapshots")
+    # 超过该字节数的快照落盘；以下留在 SQLite inline
+    snapshot_inline_max_bytes: int = 65536
+    # 显式配置优先；为空时回落到 keys 目录下的默认文件名
+    checkpoint_private_key: Path | None = None
+    checkpoint_public_key: Path | None = None
+
+    @property
+    def checkpoint_private_key_path(self) -> Path:
+        return self.checkpoint_private_key or self.keys / "checkpoint-private.pem"
+
+    @property
+    def checkpoint_public_key_path(self) -> Path:
+        return self.checkpoint_public_key or self.keys / "checkpoint-public.pem"
 
 
 @dataclass(frozen=True)
@@ -46,6 +67,20 @@ class SecurityConfig:
     login_window_seconds: int = 300
     worker_bootstrap_token: str = ""
     operator_skills: tuple[str, ...] = ("code-assistant",)
+    # 内部 API 边界：只作用于 /internal/v1/*
+    internal_max_body_bytes: int = 1048576
+    internal_rate_limit_per_second: int = 200
+    internal_burst: int = 400
+    internal_request_timeout_seconds: int = 30
+    # Git 发布允许清单；空表示全部拒绝（fail closed）
+    git_allowed_remotes: tuple[str, ...] = ()
+    git_allowed_branches: tuple[str, ...] = ()
+    # 受控命令资源上限
+    command_cpu_seconds: int = 10
+    command_memory_mb: int = 512
+    command_file_size_mb: int = 16
+    command_open_files: int = 128
+    cancel_grace_seconds: int = 5
 
 
 @dataclass(frozen=True)
@@ -124,11 +159,20 @@ class PlatformConfig:
         security = document.get("security", {})
         if not isinstance(server, Mapping) or not isinstance(storage, Mapping) or not isinstance(security, Mapping):
             raise ConfigError("server/storage/security 必须是表")
+        keys_path = _path(storage.get("keys", "data/keys"), base)
         storage_cfg = StorageConfig(
             database=_path(storage.get("database", "data/platform.db"), base),
             outputs=_path(storage.get("outputs", "outputs"), base),
-            keys=_path(storage.get("keys", "data/keys"), base),
+            keys=keys_path,
             backups=_path(storage.get("backups", "data/backups"), base),
+            snapshots=_path(storage.get("snapshots", "data/snapshots"), base),
+            snapshot_inline_max_bytes=_positive_int(
+                storage.get("snapshot_inline_max_bytes", 65536),
+                "snapshot_inline_max_bytes"),
+            checkpoint_private_key=_optional_path(
+                storage.get("checkpoint_private_key"), base),
+            checkpoint_public_key=_optional_path(
+                storage.get("checkpoint_public_key"), base),
         )
         security_cfg = SecurityConfig(
             allowed_root=_path(security.get("allowed_root", "workspaces"), base),
@@ -141,6 +185,31 @@ class PlatformConfig:
             login_window_seconds=_positive_int(security.get("login_window_seconds", 300), "login_window_seconds"),
             worker_bootstrap_token=str(security.get("worker_bootstrap_token", "")),
             operator_skills=_string_tuple(security.get("operator_skills", ("code-assistant",)), "operator_skills"),
+            internal_max_body_bytes=_positive_int(
+                security.get("internal_max_body_bytes", 1048576),
+                "internal_max_body_bytes"),
+            internal_rate_limit_per_second=_positive_int(
+                security.get("internal_rate_limit_per_second", 200),
+                "internal_rate_limit_per_second"),
+            internal_burst=_positive_int(
+                security.get("internal_burst", 400), "internal_burst"),
+            internal_request_timeout_seconds=_positive_int(
+                security.get("internal_request_timeout_seconds", 30),
+                "internal_request_timeout_seconds"),
+            git_allowed_remotes=_pattern_tuple(
+                security.get("git_allowed_remotes", ()), "git_allowed_remotes"),
+            git_allowed_branches=_pattern_tuple(
+                security.get("git_allowed_branches", ()), "git_allowed_branches"),
+            command_cpu_seconds=_positive_int(
+                security.get("command_cpu_seconds", 10), "command_cpu_seconds"),
+            command_memory_mb=_positive_int(
+                security.get("command_memory_mb", 512), "command_memory_mb"),
+            command_file_size_mb=_positive_int(
+                security.get("command_file_size_mb", 16), "command_file_size_mb"),
+            command_open_files=_positive_int(
+                security.get("command_open_files", 128), "command_open_files"),
+            cancel_grace_seconds=_positive_int(
+                security.get("cancel_grace_seconds", 5), "cancel_grace_seconds"),
         )
         workers = []
         raw_workers = document.get("workers", {})
@@ -197,6 +266,13 @@ class PlatformConfig:
                 bind=str(server.get("bind", "127.0.0.1:8000")),
                 internal_bind=str(server.get("internal_bind", server.get("bind", "127.0.0.1:8000"))),
                 public_origin=str(server.get("public_origin", "http://127.0.0.1:8000")).rstrip("/"),
+                startup_wait_seconds=_non_negative_int(
+                    server.get("startup_wait_seconds", 30), "startup_wait_seconds"),
+                shutdown_grace_seconds=_positive_int(
+                    server.get("shutdown_grace_seconds", 5),
+                    "shutdown_grace_seconds"),
+                metrics_enabled=bool(server.get("metrics_enabled", False)),
+                metrics_token=str(server.get("metrics_token", "")),
             ),
             storage=storage_cfg,
             security=security_cfg,
@@ -218,10 +294,32 @@ class PlatformConfig:
             storage = replace(storage, database=_path(env["TEMIS_DB_PATH"], self.root))
         if env.get("TEMIS_OUTPUTS"):
             storage = replace(storage, outputs=_path(env["TEMIS_OUTPUTS"], self.root))
+        if env.get("TEMIS_CHECKPOINT_PRIVATE_KEY"):
+            storage = replace(
+                storage, checkpoint_private_key=_path(
+                    env["TEMIS_CHECKPOINT_PRIVATE_KEY"], self.root))
+        if env.get("TEMIS_CHECKPOINT_PUBLIC_KEY"):
+            storage = replace(
+                storage, checkpoint_public_key=_path(
+                    env["TEMIS_CHECKPOINT_PUBLIC_KEY"], self.root))
+        if env.get("TEMIS_METRICS_ENABLED"):
+            server = replace(
+                server, metrics_enabled=env["TEMIS_METRICS_ENABLED"].lower()
+                in ("1", "true", "yes"))
+        if env.get("TEMIS_METRICS_TOKEN"):
+            server = replace(server, metrics_token=env["TEMIS_METRICS_TOKEN"])
         if env.get("TEMIS_ALLOWED_ROOT"):
             security = replace(security, allowed_root=_path(env["TEMIS_ALLOWED_ROOT"], self.root))
         if env.get("TEMIS_PUBLIC_ORIGIN"):
             server = replace(server, public_origin=env["TEMIS_PUBLIC_ORIGIN"].rstrip("/"))
+        if env.get("TEMIS_STARTUP_WAIT_SECONDS"):
+            try:
+                seconds = int(env["TEMIS_STARTUP_WAIT_SECONDS"])
+            except ValueError:
+                raise ConfigError("TEMIS_STARTUP_WAIT_SECONDS 必须是非负整数") from None
+            if seconds < 0:
+                raise ConfigError("TEMIS_STARTUP_WAIT_SECONDS 必须是非负整数")
+            server = replace(server, startup_wait_seconds=seconds)
         if env.get("TEMIS_SESSION_SECRET"):
             security = replace(security, session_secret=env["TEMIS_SESSION_SECRET"])
         if env.get("TEMIS_WORKER_BOOTSTRAP_TOKEN"):
@@ -236,7 +334,8 @@ class PlatformConfig:
 
     def prepare_directories(self) -> None:
         for path in (self.storage.database.parent, self.storage.outputs,
-                     self.storage.keys, self.storage.backups, self.allowed_root):
+                     self.storage.keys, self.storage.backups,
+                     self.storage.snapshots, self.allowed_root):
             path.mkdir(parents=True, exist_ok=True)
         for workspace in self.workspaces:
             workspace.path.mkdir(parents=True, exist_ok=True)
@@ -249,9 +348,21 @@ def _path(value: Any, base: Path) -> Path:
     return path if path.is_absolute() else (base / path).resolve()
 
 
+def _optional_path(value: Any, base: Path) -> Path | None:
+    if value is None or (isinstance(value, str) and not value.strip()):
+        return None
+    return _path(value, base)
+
+
 def _positive_int(value: Any, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
         raise ConfigError(f"{name} 必须是正整数：{value!r}")
+    return value
+
+
+def _non_negative_int(value: Any, name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise ConfigError(f"{name} 必须是非负整数：{value!r}")
     return value
 
 
@@ -261,6 +372,17 @@ def _string_tuple(value: Any, name: str) -> tuple[str, ...]:
     if not isinstance(value, (list, tuple)) or not all(isinstance(v, str) and v.strip() for v in value):
         raise ConfigError(f"{name} 必须是非空字符串数组")
     return tuple(value)
+
+
+def _pattern_tuple(value: Any, name: str) -> tuple[str, ...]:
+    if value is None:
+        return ()
+    if isinstance(value, str):
+        value = (value,)
+    if not isinstance(value, (list, tuple)) or not all(
+            isinstance(v, str) and v.strip() for v in value):
+        raise ConfigError(f"{name} 必须是字符串数组")
+    return tuple(v.strip() for v in value)
 
 
 __all__ = [

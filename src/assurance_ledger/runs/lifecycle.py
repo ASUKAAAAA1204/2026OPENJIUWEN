@@ -31,7 +31,8 @@ from . import idempotency
 
 TASK_ID_MAX = 160
 TITLE_MAX = 2000
-ACTIVE_TURN_STATUSES = ("starting", "active", "awaiting_approval")
+ACTIVE_TURN_STATUSES = ("starting", "active", "awaiting_approval",
+                        "cancelling")
 RUN_STATES = ("open", "closed", "degraded")
 RUN_ID_PATTERN = re.compile(r"^RUN-[A-Z0-9]{16,32}$")
 
@@ -281,7 +282,7 @@ def _can_resume(db: sqlite3.Connection, run: RunRecord, user: Any,
     turn = latest_turn(db, run.run_id, run.segment)
     if turn is None:
         return False, "当前段没有中断记录"
-    if turn["status"] not in ("failed", "unknown", "review"):
+    if turn["status"] not in ("failed", "unknown", "review", "cancelled"):
         return False, "当前段没有需要恢复的中断"
     return True, "上次轮次中断且无在途副作用，可恢复"
 
@@ -305,8 +306,27 @@ def lifecycle_snapshot(db: sqlite3.Connection, config: PlatformConfig,
     }
 
 
+def _delegation_depth(db: sqlite3.Connection, run_id: str) -> int:
+    """从根到该运行的运行数；根为 1，父运行达到 4 层（3 条委派边）时拒绝新建子运行"""
+    depth = 1
+    seen: set[str] = set()
+    current: str | None = run_id
+    while current:
+        if current in seen:
+            raise ConditionFailed("委派关系存在循环")
+        seen.add(current)
+        row = db.execute("SELECT parent_run_id FROM runs WHERE run_id=?",
+                         (current,)).fetchone()
+        if row is None:
+            raise ConditionFailed("委派链中的运行不存在")
+        current = row["parent_run_id"]
+        if current:
+            depth += 1
+    return depth
+
+
 def _validate_create(payload: Mapping[str, Any], config: PlatformConfig,
-                     user: Any) -> tuple[str, str, str, str, str, str]:
+                     user: Any) -> tuple[str, str, str, str, str, str, str | None]:
     if not rbac.can_create_run(user):
         raise RunPermissionError("当前账号不能创建运行")
     task_id = payload.get("task_id")
@@ -328,7 +348,15 @@ def _validate_create(payload: Mapping[str, Any], config: PlatformConfig,
     if not any(skill.id == skill_id and skill.version == skill_version
                for skill in config.skills):
         raise ConditionFailed("skill_id/skill_version 未授权")
-    return task_id.strip(), title.strip(), str(workspace_id), str(framework), str(skill_id), str(skill_version)
+    parent_run_id = payload.get("parent_run_id")
+    if parent_run_id is not None:
+        if not isinstance(parent_run_id, str) or not parent_run_id.strip():
+            raise ConditionFailed("parent_run_id 必须是非空字符串或 null")
+        if len(parent_run_id) > 160:
+            raise ConditionFailed("parent_run_id 过长")
+        parent_run_id = parent_run_id.strip()
+    return (task_id.strip(), title.strip(), str(workspace_id), str(framework),
+            str(skill_id), str(skill_version), parent_run_id)
 
 
 def create_run(writer, store, config: PlatformConfig, *, user: Any,
@@ -336,15 +364,15 @@ def create_run(writer, store, config: PlatformConfig, *, user: Any,
                now: datetime | None = None) -> dict[str, Any]:
     moment = now or datetime.now(timezone.utc)
     request_id = idempotency.validate_request_id(request_id)
-    task_id, title, workspace_id, framework, skill_id, skill_version = _validate_create(
-        payload, config, user)
+    (task_id, title, workspace_id, framework, skill_id, skill_version,
+     parent_run_id) = _validate_create(payload, config, user)
     expected_context = payload.get("expected_context_revision")
     if not isinstance(expected_context, str) or not expected_context.strip():
         raise ConditionFailed("expected_context_revision 必填")
     request_hash = idempotency.fingerprint({
         "task_id": task_id, "title": title, "workspace_id": workspace_id,
         "framework": framework, "skill_id": skill_id,
-        "skill_version": skill_version,
+        "skill_version": skill_version, "parent_run_id": parent_run_id,
         "expected_context_revision": expected_context,
     })
     owner = rbac._value(user, "user_id")
@@ -363,14 +391,26 @@ def create_run(writer, store, config: PlatformConfig, *, user: Any,
             raise ContextMismatch("运行上下文已变化，请刷新后重新创建")
         if not any(f["name"] == framework and f["available"] for f in frameworks):
             raise ConditionFailed(f"框架 {framework} 当前不可用")
+        if parent_run_id is not None:
+            parent = get_run(db, parent_run_id)
+            if parent is None:
+                raise ConditionFailed("父运行不存在")
+            if not rbac.can_view_run(user, parent.__dict__, config.security):
+                raise RunPermissionError("当前账号无权向此父运行委派")
+            if parent.state == "closed":
+                raise ConditionFailed("父运行已关闭，不能委派")
+            if _delegation_depth(db, parent_run_id) > 3:
+                raise ConditionFailed("委派深度超过 3")
         existing = db.execute(
             "SELECT * FROM runs WHERE owner_user_id=? AND task_id=?",
             (owner, task_id)).fetchone()
         if existing is not None:
             record = _record(existing)
-            bound = (record.workspace_id, record.framework, record.skill_id, record.skill_version)
-            if bound != (workspace_id, framework, skill_id, skill_version):
-                raise RunConflict("同一任务已绑定不同工作目录/框架/Skill")
+            bound = (record.workspace_id, record.framework, record.skill_id,
+                     record.skill_version, record.parent_run_id)
+            if bound != (workspace_id, framework, skill_id, skill_version,
+                         parent_run_id):
+                raise RunConflict("同一任务已绑定不同工作目录/框架/Skill/委派关系")
             audit_id = append_audit(
                 db, actor_id=owner, action="run.create.replay", target_type="run",
                 target_id=record.run_id, request_id=request_id, reason="任务去重",
@@ -390,13 +430,13 @@ def create_run(writer, store, config: PlatformConfig, *, user: Any,
             "INSERT INTO runs(run_id,task_id,title,owner_user_id,parent_run_id,"
             "workspace_id,skill_id,skill_version,segment,state,framework,"
             "whitelist_version,policy_version,debt_threshold,revision,created_at,"
-            "updated_at,closed_at) VALUES(?,?,?,?,NULL,?,?,?,?,?,?,?,?,?,1,?,?,NULL)",
-            (run_id, task_id, title, owner, workspace_id, skill_id, skill_version,
-             1, "open", framework, whitelist_version, policy_version,
-             debt_threshold, utc_iso(moment), utc_iso(moment)))
+            "updated_at,closed_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?,?,NULL)",
+            (run_id, task_id, title, owner, parent_run_id, workspace_id,
+             skill_id, skill_version, 1, "open", framework, whitelist_version,
+             policy_version, debt_threshold, utc_iso(moment), utc_iso(moment)))
         registry = {
             "registry_event": "RUN_CREATED", "task_id": task_id, "run_id": run_id,
-            "parent_run_id": None, "segment": 1, "owner_user_id": owner,
+            "parent_run_id": parent_run_id, "segment": 1, "owner_user_id": owner,
             "workspace_id": workspace_id, "skill_id": skill_id,
             "skill_version": skill_version, "framework": framework,
             "whitelist_version": whitelist_version,
@@ -408,7 +448,8 @@ def create_run(writer, store, config: PlatformConfig, *, user: Any,
             target_id=run_id, request_id=request_id, reason="创建运行",
             detail={"task_id": task_id, "workspace_id": workspace_id,
                     "framework": framework, "skill_id": skill_id,
-                    "skill_version": skill_version}, now=moment)
+                    "skill_version": skill_version,
+                    "parent_run_id": parent_run_id}, now=moment)
         record = require_run(db, run_id)
         response = {
             "source": "ledger", "action": "create", "request_id": request_id,

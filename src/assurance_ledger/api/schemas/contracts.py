@@ -28,6 +28,8 @@ class RunCreateRequest(StrictModel):
     skill_version: str = Field(min_length=1, max_length=160)
     expected_context_revision: str = Field(min_length=1, max_length=160)
     request_id: str = Field(min_length=1, max_length=160)
+    # 委派产生的子运行指向父运行；深度上限 3，父运行关闭后不再接受委派
+    parent_run_id: str | None = Field(default=None, max_length=160)
 
 
 class LifecycleAction(StrictModel):
@@ -141,8 +143,15 @@ class InternalEventRequest(StrictModel):
     payload: dict[str, Any]
 
 
+class CancelRequest(StrictModel):
+    request_id: str = Field(min_length=1, max_length=160)
+    expected_segment: int = Field(ge=1)
+    expected_execution_revision: str = Field(min_length=1, max_length=160)
+    reason: str = Field(min_length=1, max_length=2000)
+
+
 class InternalFinishRequest(StrictModel):
-    outcome: Literal["completed", "failed", "unknown"]
+    outcome: Literal["completed", "failed", "unknown", "cancelled"]
     run_state: Literal["open", "degraded", "closed"] | None = None
     message: str = Field(default="", max_length=1000)
 
@@ -178,6 +187,7 @@ class ClaimIngest(StrictModel):
 
 __all__ = [
     "ApprovalAnswer",
+    "CancelRequest",
     "Capability",
     "ClaimIngest",
     "ClaimRequest",

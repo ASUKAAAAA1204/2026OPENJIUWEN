@@ -6,6 +6,7 @@ import logging
 import secrets
 import shutil
 import sqlite3
+import time
 from contextlib import asynccontextmanager
 from dataclasses import replace
 from datetime import datetime, timezone
@@ -24,12 +25,16 @@ from ..ledger.record_store import RecordStore
 from ..ledger.redaction import Redactor
 from ..ledger.sqlite_events import SQLiteEventStore
 from ..ledger.writer import WriterQueue, read_connection
-from ..runs import lifecycle
+from ..observability import otel
+from ..observability.logging import configure_logging, log_event
+from ..runs import control, lifecycle
 from ..runs.decisions import REDACTION_PATTERNS
 from ..runs import approvals as approval_service
 from ..runs import execution
+from ..workers.registry import healthy_workers
 from ..workers.supervisor import WorkerSupervisor, central_url
 from .errors import ApiError, error_body, error_response, map_exception, request_id
+from .limits import InternalLimitsMiddleware, ShutdownGuardMiddleware
 from .routers import (
     approvals,
     claims,
@@ -42,6 +47,7 @@ from .routers import (
     internal,
     legacy,
     management as management_router,
+    metrics as metrics_router,
     policies,
     replay,
     runs,
@@ -70,6 +76,39 @@ def _backup_before_migration(config: PlatformConfig) -> None:
     shutil.copy2(path, config.storage.backups / f"platform-{stamp}.db")
 
 
+def _healthy_worker_count(config: PlatformConfig) -> int:
+    with read_connection(config.database) as db:
+        return len(healthy_workers(db))
+
+
+async def _await_first_worker(state: PlatformState, seconds: int) -> dict:
+    """启动门控：等待至少一个健康 worker 注册；超时降级为只读就绪"""
+    started = time.monotonic()
+    observed = 0
+    while True:
+        observed = await run_in_threadpool(_healthy_worker_count, state.config)
+        if observed:
+            break
+        if time.monotonic() - started >= seconds:
+            break
+        await asyncio.sleep(0.25)
+    waited = round(time.monotonic() - started, 3)
+    if observed:
+        return {"gate": "ok", "waited_seconds": waited,
+                "workers_observed": observed, "reason": "至少一个 worker 已注册"}
+    reasons = []
+    if state.supervisor is not None:
+        reasons = [f"{item['name']}：{item['reason']}"
+                   for item in state.supervisor.status()
+                   if item["state"] not in ("running", "starting")]
+    logger.warning("启动门控超时（%.1fs），没有健康 worker；降级为只读就绪。%s",
+                   waited, "；".join(reasons) or "无 worker 状态")
+    return {"gate": "degraded", "waited_seconds": waited,
+            "workers_observed": 0,
+            "reason": "等待 worker 注册超时，仅接受只读请求" +
+                      ("；" + "；".join(reasons) if reasons else "")}
+
+
 async def _recovery_loop(state: PlatformState) -> None:
     while True:
         try:
@@ -81,13 +120,15 @@ async def _recovery_loop(state: PlatformState) -> None:
                 state.config)
         except Exception:
             logger.exception("turn/审批恢复扫描失败")
-        await asyncio.sleep(10)
+        await asyncio.sleep(5)
 
 
 def create_app(config: PlatformConfig | None = None, *,
                config_path: str | Path | None = None) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app: FastAPI):
+        configure_logging()
+        otel.init_otel()
         resolved = config or PlatformConfig.load(config_path)
         if resolved.start_workers and not resolved.security.worker_bootstrap_token:
             resolved = replace(
@@ -110,7 +151,8 @@ def create_app(config: PlatformConfig | None = None, *,
             policy.configuration.get("redaction_version", "redaction-v1")
             if policy is not None else "redaction-v1")
         redactor = Redactor(redaction_version, REDACTION_PATTERNS)
-        journal = DecisionJournal(store, redactor)
+        journal = DecisionJournal(store, redactor,
+                                  snapshots_root=resolved.storage.snapshots)
         record_store = RecordStore(store, redactor)
         broker = EventBroker()
         broker.bind_loop(asyncio.get_running_loop())
@@ -128,6 +170,16 @@ def create_app(config: PlatformConfig | None = None, *,
                 central_url=central_url(resolved))
             supervisor.start()
             state.supervisor = supervisor
+            wait_seconds = resolved.server.startup_wait_seconds
+            if wait_seconds > 0:
+                state.startup = await _await_first_worker(state, wait_seconds)
+            else:
+                state.startup = {
+                    "gate": "skipped", "waited_seconds": 0.0,
+                    "workers_observed": await run_in_threadpool(
+                        _healthy_worker_count, resolved),
+                    "reason": "startup_wait_seconds=0，不等待 worker",
+                }
         recovery_task = asyncio.create_task(_recovery_loop(state))
         state.recovery_task = recovery_task
         try:
@@ -138,6 +190,17 @@ def create_app(config: PlatformConfig | None = None, *,
                 await recovery_task
             except asyncio.CancelledError:
                 pass
+            state.shutting_down = True
+            try:
+                cancelled = await run_in_threadpool(
+                    control.initiate_shutdown_cancels, writer, resolved)
+                grace = resolved.server.shutdown_grace_seconds
+                if cancelled and grace > 0:
+                    await asyncio.sleep(grace)
+                await run_in_threadpool(
+                    control.finalize_shutdown, writer, journal, resolved)
+            except Exception:
+                logger.exception("停机收尾失败")
             if state.supervisor is not None:
                 state.supervisor.stop()
             writer.stop()
@@ -149,6 +212,7 @@ def create_app(config: PlatformConfig | None = None, *,
     @app.middleware("http")
     async def attach_request_id(request: Request, call_next):
         value = request_id(request)
+        started = time.perf_counter()
         try:
             response = await call_next(request)
         except Exception as exc:  # 领域异常统一映射，不向客户端泄露堆栈
@@ -158,6 +222,11 @@ def create_app(config: PlatformConfig | None = None, *,
                 detail = None
             response = error_response(request, status, code, message, detail)
         response.headers["X-Request-ID"] = value
+        log_event(
+            logger, "http_request", component="api", request_id=value,
+            method=request.method, path=request.url.path,
+            http_status=response.status_code,
+            latency_ms=round((time.perf_counter() - started) * 1000, 3))
         return response
 
     @app.exception_handler(ApiError)
@@ -176,9 +245,18 @@ def create_app(config: PlatformConfig | None = None, *,
                             content=error_body(request, "VALIDATION_FAILED",
                                                "请求字段校验失败", detail))
 
+    # 最后添加，确保它包住请求 ID 中间件，超限能返回 413/429 而不是 500
+    app.add_middleware(
+        InternalLimitsMiddleware,
+        state_provider=lambda: getattr(app.state, "platform", None))
+    app.add_middleware(
+        ShutdownGuardMiddleware,
+        state_provider=lambda: getattr(app.state, "platform", None))
+
     for module in (health, session, runs, events, execution_router, claims,
                    approvals, debts, evaluations, replay, policies,
-                   management_router, settings, export, internal, legacy):
+                   management_router, settings, export, internal, metrics_router,
+                   legacy):
         app.include_router(module.router)
     return app
 

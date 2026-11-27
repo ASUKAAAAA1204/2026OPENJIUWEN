@@ -1,6 +1,6 @@
 # 决策事件读取接口草案
 
-本接口为前端对接草案，当前浏览器验收使用合成响应，不代表服务端已实现。
+状态（2026-11-26 更新）：后端已实现 `GET /api/v27/runs/{run_id}/decisions/{decision_id}/events`；本文保留前端字段约束，合成响应不代表真实联调。
 
 `GET /api/v27/runs/{run_id}/decisions/{decision_id}/events`
 

@@ -91,7 +91,10 @@ async def run(framework: str) -> int:
                 skill_id=turn.get("skill_id", ""),
                 skill_version=turn.get("skill_version", ""),
                 policy_version=turn.get("policy_version"),
-                whitelist_version=turn.get("whitelist_version"))
+                whitelist_version=turn.get("whitelist_version"),
+                git_allowed_remotes=tuple(turn.get("git_allowed_remotes") or ()),
+                git_allowed_branches=tuple(turn.get("git_allowed_branches") or ()),
+                command_limits=turn.get("command_limits"))
             try:
                 await hooks.turn_started()
                 result = await adapter.run_turn(request, hooks)

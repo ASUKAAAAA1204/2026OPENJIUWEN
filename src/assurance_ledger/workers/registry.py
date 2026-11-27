@@ -17,7 +17,8 @@ from ..config import FRAMEWORKS, PlatformConfig
 from ..ledger.canonical import utc_iso
 
 HEARTBEAT_UNHEALTHY_SECONDS = 15
-HEARTBEAT_LOST_SECONDS = 60
+# 恢复扫描 5 秒一次；55 秒判丢心跳，最坏标记时间落在 55–60 秒
+HEARTBEAT_LOST_SECONDS = 55
 OPENJIUWEN_LOCK = "0.1.20.post1"
 WORKER_ID_PREFIX = "W"
 _TOKEN_BYTES = 32

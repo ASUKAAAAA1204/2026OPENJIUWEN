@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import asyncio
+import time
 from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, Query, Request
@@ -12,7 +13,8 @@ from fastapi.responses import JSONResponse
 from starlette.concurrency import run_in_threadpool
 
 from ...ledger.writer import read_connection
-from ...runs import approvals, claims, decisions, execution, lifecycle, turns
+from ...observability.metrics import METRICS
+from ...runs import approvals, claims, control, decisions, execution, lifecycle, turns
 from ...workers.registry import WorkerError, bootstrap_ok, heartbeat, register_worker
 from ..deps import client_ip, platform_state, worker_auth
 from ..errors import ApiError
@@ -108,6 +110,24 @@ def push_turn_event(request: Request, turn_id: str, body: InternalEventRequest,
     return {"seq": wire["seq"], "event": wire}
 
 
+@router.get("/turns/{turn_id}/control")
+async def turn_control(request: Request, turn_id: str,
+                       timeout: int = Query(default=1, ge=0, le=5),
+                       worker=Depends(worker_auth)):
+    state = platform_state(request)
+    _require_turn_worker(state.config.database, turn_id, worker["worker_id"])
+    loop = asyncio.get_running_loop()
+    deadline = loop.time() + timeout
+    while True:
+        with read_connection(state.config.database) as db:
+            info = control.control_state(db, turn_id, state.config)
+        if info is None:
+            raise ApiError(404, "TURN_NOT_FOUND", "turn 不存在")
+        if info["cancel_requested"] or timeout == 0 or loop.time() >= deadline:
+            return info
+        await asyncio.sleep(0.25)
+
+
 @router.post("/turns/{turn_id}/finish")
 def finish_turn(request: Request, turn_id: str, body: InternalFinishRequest,
                 worker=Depends(worker_auth)):
@@ -151,6 +171,7 @@ async def wait_approval(request: Request, approval_id: str,
                         timeout: int = Query(default=25, ge=1, le=30),
                         worker=Depends(worker_auth)):
     state = platform_state(request)
+    started = time.perf_counter()
     deadline = datetime.now(timezone.utc) + timedelta(seconds=timeout)
     while True:
         with read_connection(state.config.database) as db:
@@ -174,6 +195,9 @@ async def wait_approval(request: Request, approval_id: str,
             raise ApiError(404, "APPROVAL_NOT_FOUND", "审批不存在")
         item = approvals.approval_payload(db, row, user=worker)
     item["can_respond"] = False
+    METRICS.approval_wait_ms.observe(
+        (time.perf_counter() - started) * 1000,
+        {"result": row["status"] if row["status"] != "pending" else "pending"})
     response = JSONResponse({
         "approval": item,
         "decision_id": row["decision_id"],

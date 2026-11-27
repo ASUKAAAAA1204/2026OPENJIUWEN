@@ -34,6 +34,7 @@ from ..runs.approvals import (
     ApprovalPermission,
 )
 from ..runs.claims import ClaimConflict, ClaimError
+from ..runs.control import CancelNotAllowed, ControlError
 from ..runs.decisions import DecisionConflict, DecisionError, DecisionNotFound
 from ..runs.execution import (
     ExecutionConflict,
@@ -107,6 +108,10 @@ def map_exception(error: BaseException) -> tuple[int, str, str, Any]:
         return 422, "ARGS_MISMATCH", str(error), None
     if isinstance(error, (RunPermissionError, ApprovalPermission)):
         return 403, "FORBIDDEN", str(error), None
+    if isinstance(error, CancelNotAllowed):
+        return 403, "CANCEL_NOT_ALLOWED", str(error), None
+    if isinstance(error, ControlError):
+        return 409, "TURN_NOT_CANCELLABLE", str(error), None
     if isinstance(error, WorkerUnauthorized):
         return 401, "INTERNAL_UNAUTHORIZED", str(error), None
     if isinstance(error, (IdempotencyConflict, TurnEventConflict,

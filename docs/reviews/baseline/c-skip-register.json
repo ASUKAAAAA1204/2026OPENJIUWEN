@@ -5,6 +5,11 @@
       "nodeid": "tests/test_c_v27_m1.py::test_bundle_rejects_symlink_snapshot",
       "kind": "skip",
       "reason": "Only when the operating system denies creating a real symlink (Windows privilege/developer-mode restriction). Hash tampering/path traversal checks are separate passing tests."
+    },
+    {
+      "nodeid": "tests/platform/test_command_limits.py::test_command_resource_limit_posix",
+      "kind": "skip",
+      "reason": "POSIX RLIMIT_AS only; skipped on Windows, where command_limits is reported as partial."
     }
   ]
 }

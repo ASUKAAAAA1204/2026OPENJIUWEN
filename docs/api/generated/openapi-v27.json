@@ -613,6 +613,56 @@
         }
       }
     },
+    "/api/v27/runs/{run_id}/cancel": {
+      "post": {
+        "tags": [
+          "execution"
+        ],
+        "summary": "Cancel Run",
+        "operationId": "cancel_run_api_v27_runs__run_id__cancel_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v27/runs/{run_id}/claims": {
       "get": {
         "tags": [
@@ -1123,6 +1173,55 @@
         }
       }
     },
+    "/api/v27/runs/{run_id}/exports/{export_id}/checkpoint": {
+      "get": {
+        "tags": [
+          "export"
+        ],
+        "summary": "Read Export Checkpoint",
+        "operationId": "read_export_checkpoint_api_v27_runs__run_id__exports__export_id__checkpoint_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "export_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Export Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/ars": {
       "get": {
         "tags": [
@@ -1358,6 +1457,42 @@
           "request_id"
         ],
         "title": "ApprovalAnswer"
+      },
+      "CancelRequest": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Request Id"
+          },
+          "expected_segment": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Segment"
+          },
+          "expected_execution_revision": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Expected Execution Revision"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id",
+          "expected_segment",
+          "expected_execution_revision",
+          "reason"
+        ],
+        "title": "CancelRequest"
       },
       "ClaimIngest": {
         "properties": {
@@ -1692,7 +1827,8 @@
             "enum": [
               "completed",
               "failed",
-              "unknown"
+              "unknown",
+              "cancelled"
             ],
             "title": "Outcome"
           },
@@ -2131,6 +2267,18 @@
             "maxLength": 160,
             "minLength": 1,
             "title": "Request Id"
+          },
+          "parent_run_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Run Id"
           }
         },
         "additionalProperties": false,

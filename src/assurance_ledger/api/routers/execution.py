@@ -10,7 +10,7 @@ from starlette.concurrency import run_in_threadpool
 
 from ...contracts.events import TERMINAL_EVENTS
 from ...ledger.writer import read_connection
-from ...runs import execution, lifecycle, turns
+from ...runs import control, execution, lifecycle, turns
 from ..deps import (
     platform_state,
     read_db,
@@ -20,7 +20,7 @@ from ..deps import (
     require_view,
 )
 from ..errors import ApiError
-from ..schemas.contracts import ExecuteRequest
+from ..schemas.contracts import CancelRequest, ExecuteRequest
 from ..sse import (
     HEARTBEAT_SECONDS,
     OVERFLOW,
@@ -102,7 +102,8 @@ async def execute(request: Request, run_id: str, body: ExecuteRequest,
                             terminal_seen = True
                             return
                 status = await run_in_threadpool(_current_status, database, turn_id)
-                if status in ("completed", "failed", "unknown", "review"):
+                if status in ("completed", "failed", "unknown", "review",
+                              "cancelled"):
                     if terminal_seen:
                         return
                     # 终态但事件尚未读到：再取一次后结束
@@ -148,6 +149,23 @@ async def execute(request: Request, run_id: str, body: ExecuteRequest,
     }
     return StreamingResponse(stream(), media_type="text/event-stream",
                              headers=headers)
+
+
+@router.post("/runs/{run_id}/cancel")
+async def cancel_run(request: Request, run_id: str, body: CancelRequest,
+                     context=Depends(require_csrf),
+                     header_key=Depends(require_idempotency)):
+    if header_key != body.request_id:
+        raise ApiError(422, "IDEMPOTENCY_REQUIRED", "Idempotency-Key 必须等于 request_id")
+    state = platform_state(request)
+    response = await run_in_threadpool(
+        control.request_cancel, state.writer, state.config,
+        user=context.user, run_id=run_id, payload=body.model_dump(),
+        request_id=body.request_id)
+    events = response.pop("_events", [])
+    for event in events:
+        state.broker.publish_threadsafe(response["turn_id"], event)
+    return response
 
 
 __all__ = ["router"]

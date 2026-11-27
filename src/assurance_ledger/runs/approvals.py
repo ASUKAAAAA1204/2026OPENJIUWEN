@@ -23,6 +23,7 @@ STATUS_TO_UI = {
     "approved": "approved",
     "rejected": "rejected",
     "timed_out": "timeout",
+    "cancelled": "cancelled",
 }
 RESULT_TO_UI = {"approve": "approve", "reject": "reject", "timeout": "timeout"}
 
@@ -282,8 +283,9 @@ def respond(writer, journal: DecisionJournal, record_store: RecordStore,
         turn = db.execute("SELECT status FROM turns WHERE turn_id=?",
                           (row["turn_id"],)).fetchone()
         if turn is None or turn["status"] in (
-                "completed", "failed", "unknown", "review"):
-            raise ApprovalConflict("轮次已结束，审批只能进入人工复核")
+                "completed", "failed", "unknown", "review", "cancelling",
+                "cancelled"):
+            raise ApprovalConflict("轮次已结束或已取消，审批只能进入人工复核")
         if row["status"] == "timed_out":
             raise ApprovalExpired("审批已过期")
         if row["status"] != "pending":

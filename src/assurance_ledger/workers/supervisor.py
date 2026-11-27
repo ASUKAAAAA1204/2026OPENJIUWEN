@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from ..config import PlatformConfig, WorkerConfig
+from ..observability.metrics import METRICS
 
 MAX_RESTARTS = 5
 RESTART_BACKOFF = (1, 2, 4, 8, 16)
@@ -122,6 +123,7 @@ class WorkerSupervisor:
                         status.permanent = True
                         continue
                     status.restarts += 1
+                    METRICS.worker_restarts.inc({"framework": status.framework})
                     if status.restarts > MAX_RESTARTS:
                         status.state = "unavailable"
                         status.reason = f"连续退出 {status.restarts} 次，停止重启"

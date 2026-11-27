@@ -18,6 +18,7 @@ from ..runs import idempotency, lifecycle
 from ..runs.lifecycle import append_audit
 from .canonical import digest_json, utc_iso
 from .chain import verify_database
+from .snapshots import SnapshotError, SnapshotStore
 
 EXPORT_SCHEMA = "temisguard-run-export-v1"
 
@@ -81,7 +82,9 @@ def _snapshot_refs(body: dict[str, Any]) -> set[str]:
     return refs
 
 
-def build_run_export(db: sqlite3.Connection, run: Any) -> tuple[bytes, dict[str, Any]]:
+def build_run_export(db: sqlite3.Connection, run: Any, *,
+                     snapshots_root: str | Path | None = None
+                     ) -> tuple[bytes, dict[str, Any]]:
     rows = _rows(db, run["run_id"])
     if not rows:
         raise ExportError("运行没有可导出事件")
@@ -91,13 +94,11 @@ def build_run_export(db: sqlite3.Connection, run: Any) -> tuple[bytes, dict[str,
         body = json.loads(row["body"])
         refs.update(_snapshot_refs(body))
     for ref in sorted(refs):
-        found = db.execute("SELECT body FROM snapshots WHERE ref=?", (ref,)).fetchone()
-        if found is None:
-            raise ExportError(f"引用快照缺失：{ref}")
-        value = json.loads(found["body"])
-        if digest_json(value) != ref:
-            raise ExportError(f"引用快照内容指纹不一致：{ref}")
-        snapshots[ref] = value
+        try:
+            snapshots[ref] = SnapshotStore.read_on(
+                db, ref, directory=snapshots_root)
+        except SnapshotError as error:
+            raise ExportError(f"引用快照不可读：{ref}：{error}") from error
     chain = verify_database(db)
     header = {
         "record_type": "run",
@@ -150,6 +151,7 @@ def existing_export(db: sqlite3.Connection, run_id: str,
 def record_export(writer, config: PlatformConfig, *, user: Any, run_id: str,
                   request_id: str, meta: dict[str, Any], path: str,
                   format: str = "jsonl",
+                  checkpoint_sha256: str | None = None,
                   now: datetime | None = None) -> dict[str, Any]:
     moment = now or datetime.now(timezone.utc)
     request_id = idempotency.validate_request_id(request_id)
@@ -164,17 +166,20 @@ def record_export(writer, config: PlatformConfig, *, user: Any, run_id: str,
             target_type="run", target_id=run_id, request_id=request_id,
             reason="授权导出", detail={"format": format,
                                       "sha256": meta["sha256"],
-                                      "byte_size": meta["byte_size"]},
+                                      "byte_size": meta["byte_size"],
+                                      "checkpoint_sha256": checkpoint_sha256},
             now=moment)
         db.execute(
             "INSERT INTO exports(audit_id,run_id,requested_by,format,sha256,"
-            "byte_size,path,request_id,created_at) VALUES(?,?,?,?,?,?,?,?,?)",
+            "byte_size,path,request_id,created_at,checkpoint_sha256) "
+            "VALUES(?,?,?,?,?,?,?,?,?,?)",
             (audit_id, run_id, rbac._value(user, "user_id"), format,
              meta["sha256"], meta["byte_size"], path, request_id,
-             utc_iso(moment)))
+             utc_iso(moment), checkpoint_sha256))
         return {"audit_id": audit_id, "run_id": run_id,
                 "sha256": meta["sha256"], "byte_size": meta["byte_size"],
-                "path": path, "created_at": utc_iso(moment)}
+                "path": path, "created_at": utc_iso(moment),
+                "checkpoint_sha256": checkpoint_sha256}
 
     return writer.call(job)
 

@@ -1,6 +1,6 @@
 # v2.7 运行列表前端契约草案
 
-`GET /api/v27/runs?q=&framework=&state=&cursor=`，同源凭据。现有HTTP服务尚未实现；测试采用合成响应。`?runs=api`或列表来源选择器启用真实服务适配，默认会话演示保持独立。
+状态（2026-11-26 更新）：后端已实现 `GET /api/v27/runs?q=&framework=&state=&cursor=` 与运行详情。`?runs=api` 或列表来源选择器启用真实服务适配，默认会话演示保持独立。
 
 返回 `{source:'ledger',items:RunSummary[],next_cursor:string|null}`。精确字段见 `ui/src/components/workbench/runs.ts`：id/title/framework/source、空tools数组、state、segment、started_at/completed_at、parent_run_id/child_run_ids、decision_count。列表不得伪造工具预览，详情通过运行标识访问audit接口。
 
@@ -8,10 +8,9 @@ state为open/closed/degraded；段号至少1；closed必须有不早于开始的
 
 分页游标不透明，固定同一查询条件与授权范围。加载更多沿用已经提交的条件，不使用尚未提交的输入。重复运行或重复游标拒绝追加；下一页错误保留已加载项目并要求重新查询。权限失败不得回退演示，401/403/404均给出明确原因；12秒超时，重查/卸载取消旧请求。
 
-服务端负责只返回账号可见运行并稳定分页。委派入口仅传递运行ID，关联详情必须再次授权；真实运行无法切换成本地预览或返回演示任务。前端现已提供运行创建、生命周期状态、关闭及中断恢复操作入口，对应接口与原子约束见 `docs/api/v27-lifecycle-frontend-contract.md`。这些服务接口、真实运行创建/resume/关闭、全图关系和服务联调仍未实现验证。
+服务端负责只返回账号可见运行并稳定分页。委派入口仅传递运行ID，关联详情必须再次授权；真实运行无法切换成本地预览或返回演示任务。前端现已提供运行创建、生命周期状态、关闭及中断恢复操作入口，对应接口与原子约束见 `docs/api/v27-lifecycle-frontend-contract.md`。运行创建/resume/关闭与父子关系已由平台测试覆盖，前端联调仍需另行验证。
 
 已验：生命周期与重复/关系校验、分页追加、父子入口渲染、真实详情403不回退、四档截图与严重/关键axe检查；这些合成验证不代表真实授权隔离通过。
-
 
 ## 关联详情与深链接补充
 

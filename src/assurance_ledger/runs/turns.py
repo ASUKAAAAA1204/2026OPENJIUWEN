@@ -75,12 +75,15 @@ def append_turn_event(db: sqlite3.Connection, *, turn_id: str,
             "WHERE turn_id=? AND status='starting'", (utc_iso(moment), turn_id))
     if event_type in TERMINAL_EVENTS:
         terminal_status = "completed" if event_type == "turn_completed" else "failed"
-        if event_type == "turn_failed" and body.get("outcome") == "unknown":
-            terminal_status = "unknown"
+        if event_type == "turn_failed":
+            if body.get("outcome") == "unknown":
+                terminal_status = "unknown"
+            elif body.get("outcome") == "cancelled":
+                terminal_status = "cancelled"
         db.execute(
             "UPDATE turns SET status=?, finished_at=?, terminal_event=?, "
             "revision=revision+1 WHERE turn_id=? AND status NOT IN "
-            "('completed','failed','unknown','review')",
+            "('completed','failed','unknown','review','cancelled')",
             (terminal_status, utc_iso(moment), event_type, turn_id))
     return wire
 

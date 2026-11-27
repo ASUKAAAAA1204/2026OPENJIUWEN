@@ -1,6 +1,6 @@
 # v2.7 本机会话前端契约草案
 
-现有服务尚未实现本接口。前端通过 `?settings=api` 或配置来源选择器进入会话面板，测试响应均为合成数据。
+状态（2026-11-26 更新）：后端已实现匿名会话、登录、退出与 CSRF；平台测试覆盖 Cookie、Origin、限流与角色。前端通过 `?settings=api` 或配置来源选择器接入，合成数据不替代联调。
 
 `GET /api/v27/session` 返回 `{ authenticated, csrf_token, identity }`。匿名会话也需服务端下发CSRF令牌；identity在匿名时必须null，在已认证时包含user_id/display_name/role/scope。角色为PRD五种角色之一。GET使用同源凭据、no-store；服务端响应也应Cache-Control: no-store。
 

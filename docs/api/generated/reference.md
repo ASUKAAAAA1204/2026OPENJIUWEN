@@ -32,7 +32,7 @@
 ```
 
 | 错误码 | 含义 | HTTP |
-|---|---|---|
+| --- | --- | --- |
 | `AUTH_REQUIRED` | 未登录或会话失效 | 401 |
 | `FORBIDDEN` | 角色或对象越权 | 403 |
 | `CSRF_INVALID` | CSRF/同源校验失败 | 403 |
@@ -50,6 +50,12 @@
 | `WRITER_BACKPRESSURE` | 写队列已满 | 503 |
 | `SSE_CURSOR_INVALID` | 重放游标非法 | 422 |
 | `INTERNAL_UNAUTHORIZED` | 内部 token 无效 | 401 |
+| `CHECKPOINT_MISSING` | 导出缺少签名检查点 | 404 |
+| `CHECKPOINT_INVALID` | 检查点签名或摘要不符 | 409 |
+| `CHECKPOINT_KEY_UNAVAILABLE` | 检查点私钥不可用 | 503 |
+| `TURN_NOT_CANCELLABLE` | 没有可取消的活动 turn | 409 |
+| `CANCEL_NOT_ALLOWED` | 当前角色无权取消 | 403 |
+| `SHUTTING_DOWN` | 服务停机中拒绝新写入 | 503 |
 
 `request_id` 同时写入响应头 `X-Request-ID`。服务端不回显堆栈、密钥或原始实参。
 
@@ -89,7 +95,7 @@ data: {"seq":7,"type":"tool_result","turn_id":"TURN-...","decision_id":"DEC-..."
 ## 7 权限矩阵
 
 | 能力 | 平台管理员 | 值班人员 | 开发者 | 合规审计 | 平台运营 |
-|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- |
 | 查看账本 | 全部 | 全部 | 本人运行 | 全部只读 | 所属 Skill |
 | 配置策略表 | 可 | 不可 | 不可 | 不可 | 不可 |
 | 审批 | 可 | 可 | 不可 | 不可 | 不可 |
@@ -101,7 +107,7 @@ data: {"seq":7,"type":"tool_result","turn_id":"TURN-...","decision_id":"DEC-..."
 ## 8 端点
 
 | 方法 | 路径 | 说明 | 角色 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | GET | `/api/v27/session` | 读取会话与 CSRF 令牌 | 匿名可读；已登录返回身份 |
 | POST | `/api/v27/session/login` | 本地账号登录 | 匿名 |
 | POST | `/api/v27/session/logout` | 登出并撤销服务端会话 | 已登录 |
@@ -114,6 +120,7 @@ data: {"seq":7,"type":"tool_result","turn_id":"TURN-...","decision_id":"DEC-..."
 | GET | `/api/v27/runs/{run_id}/audit` | 运行审计快照与哈希链校验 | 可见该运行的角色 |
 | GET | `/api/v27/runs/{run_id}/execution-state` | 执行状态与修订 | 可见该运行的角色 |
 | POST | `/api/v27/runs/{run_id}/execute` | 启动或续读执行流（SSE） | 平台管理员/开发者（对象授权） |
+| POST | `/api/v27/runs/{run_id}/cancel` | 幂等取消活动 turn | 平台管理员/值班人员/运行 owner 开发者 |
 | GET | `/api/v27/runs/{run_id}/decisions/{decision_id}/events` | 单个决策的事件时间线 | 可见该运行的角色 |
 | GET | `/api/v27/runs/{run_id}/claims` | 断言追溯与缺决策风险记录 | 可见该运行的角色 |
 | GET | `/api/v27/approvals` | 审批队列 | 平台管理员/值班人员 |
@@ -128,7 +135,8 @@ data: {"seq":7,"type":"tool_result","turn_id":"TURN-...","decision_id":"DEC-..."
 | POST | `/api/v27/management/configure` | 开启/关闭管理能力 | 平台管理员；发布闸另授权平台运营 |
 | POST | `/api/v27/management/assess-release` | 发布评估（不执行发布） | 平台管理员/平台运营（能力开启） |
 | POST | `/api/v27/management/quote` | 整改报价（不创建订单） | 平台管理员/平台运营（能力开启） |
-| POST | `/api/v27/runs/{run_id}/export` | 授权导出 JSONL | 按角色与对象范围授权 |
+| POST | `/api/v27/runs/{run_id}/export` | 授权导出 JSONL（配置私钥时附签名检查点） | 按角色与对象范围授权 |
+| GET | `/api/v27/runs/{run_id}/exports/{export_id}/checkpoint` | 读取导出签名检查点（不含私钥） | 与导出相同的对象级权限 |
 | GET | `/api/v27/settings` | 只读配置快照 | 已登录只读 |
 | GET | `/api/ars` | 旧 ARS 信封（兼容） | 已登录 |
 | GET | `/api/plan` | 旧提升计划（兼容） | 已登录 |
@@ -237,6 +245,15 @@ data: {"seq":7,"type":"tool_result","turn_id":"TURN-...","decision_id":"DEC-..."
 - 认证：同源 Cookie；写请求需 `X-CSRF-Token` 与 `Idempotency-Key`
 - 响应要点：text/event-stream；id=seq，从 1 严格递增
 - 请求 Schema：`ExecuteRequest`
+
+### POST /api/v27/runs/{run_id}/cancel
+
+幂等取消活动 turn
+
+- 权限：平台管理员/值班人员/运行 owner 开发者
+- 认证：同源 Cookie；写请求需 `X-CSRF-Token` 与 `Idempotency-Key`
+- 响应要点：CancelReceipt：turn_id、status、cancelled、duplicate；无活动 turn 返回 409 TURN_NOT_CANCELLABLE
+- 请求 Schema：`CancelRequest`
 
 ### GET /api/v27/runs/{run_id}/decisions/{decision_id}/events
 
@@ -359,12 +376,20 @@ data: {"seq":7,"type":"tool_result","turn_id":"TURN-...","decision_id":"DEC-..."
 
 ### POST /api/v27/runs/{run_id}/export
 
-授权导出 JSONL
+授权导出 JSONL（配置私钥时附签名检查点）
 
 - 权限：按角色与对象范围授权
 - 认证：同源 Cookie；写请求需 `X-CSRF-Token` 与 `Idempotency-Key`
-- 响应要点：application/x-ndjson；X-Run-Id、X-Export-Audit-Id、X-Content-SHA256
+- 响应要点：application/x-ndjson；X-Run-Id、X-Export-Audit-Id、X-Content-SHA256、X-Export-Checkpoint-SHA256/Id/Status
 - 请求 Schema：`ExportRequest`
+
+### GET /api/v27/runs/{run_id}/exports/{export_id}/checkpoint
+
+读取导出签名检查点（不含私钥）
+
+- 权限：与导出相同的对象级权限
+- 认证：同源 Cookie
+- 响应要点：签名清单：domain、run_id、sha256、byte_size、event_count、created_at、signature
 
 ### GET /api/v27/settings
 

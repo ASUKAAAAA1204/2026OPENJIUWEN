@@ -1,11 +1,13 @@
 # TemisGuard v2.7 容器内配置
 # 通过环境变量覆盖：TEMIS_PUBLIC_ORIGIN / TEMIS_SESSION_SECRET /
-# TEMIS_WORKER_BOOTSTRAP_TOKEN / TEMIS_START_WORKERS / TEMIS_DB_PATH
+# TEMIS_WORKER_BOOTSTRAP_TOKEN / TEMIS_START_WORKERS / TEMIS_DB_PATH /
+# TEMIS_STARTUP_WAIT_SECONDS
 
 [server]
 bind = "0.0.0.0:8000"
 public_origin = "http://127.0.0.1:8080"
 start_workers = false
+startup_wait_seconds = 30
 
 [storage]
 database = "/app/data/platform.db"

@@ -273,13 +273,15 @@ def _require_tables(db: sqlite3.Connection) -> None:
             f"database events table has wrong schema: {sorted(event_columns)}"
         )
     snapshot_columns = {row[1] for row in db.execute("PRAGMA table_info(snapshots)")}
-    if snapshot_columns != {"ref", "body"}:
+    if snapshot_columns not in ({"ref", "body"}, {"ref", "body", "storage"}):
         raise EvaluationError(
             f"database snapshots table has wrong schema: {sorted(snapshot_columns)}"
         )
 
 
-def _read_database(path: str | Path) -> tuple[list[dict], dict[str, dict]]:
+def _read_database(path: str | Path, *,
+                   snapshots_root: str | Path | None = None
+                   ) -> tuple[list[dict], dict[str, dict]]:
     """只读打开 A 账本，不实例化任何写入器（构造器会 WRITE schema/WAL）。"""
     source = Path(path)
     try:
@@ -309,9 +311,16 @@ def _read_database(path: str | Path) -> tuple[list[dict], dict[str, dict]]:
                     "FROM events ORDER BY seq"
                 )
             )
-            raw_snapshots = list(
-                db.execute("SELECT ref, body FROM snapshots ORDER BY ref")
-            )
+            has_storage = "storage" in {
+                row[1] for row in db.execute("PRAGMA table_info(snapshots)")}
+            if has_storage:
+                raw_snapshots = list(db.execute(
+                    "SELECT ref, body, storage FROM snapshots ORDER BY ref"))
+            else:
+                raw_snapshots = [
+                    (row[0], row[1], "inline")
+                    for row in db.execute(
+                        "SELECT ref, body FROM snapshots ORDER BY ref")]
             db.execute("COMMIT")
         except sqlite3.Error as exc:
             raise EvaluationError(f"cannot read database snapshot: {exc}") from exc
@@ -334,11 +343,19 @@ def _read_database(path: str | Path) -> tuple[list[dict], dict[str, dict]]:
             }
         )
     snapshots: dict[str, dict] = {}
-    for ref, body_text in raw_snapshots:
+    root = (Path(snapshots_root) if snapshots_root is not None
+            else source.parent / "snapshots")
+    for ref, body_text, storage in raw_snapshots:
         where = "database snapshots"
         _require_snapshot_address(ref, where)
         if ref in snapshots:
             raise EvaluationError(f"{where}: duplicate snapshot ref {ref!r}")
+        if storage == "file":
+            try:
+                body_text = (root / body_text).read_text(encoding="utf-8")
+            except OSError as exc:
+                raise EvaluationError(
+                    f"{where} {ref}: snapshot file unavailable") from exc
         body = _strict_json_loads(body_text, f"{where} {ref}")
         snapshots[ref] = _validate_snapshot_envelope(body, ref, f"{where} {ref}")
     return rows, snapshots
@@ -1280,6 +1297,7 @@ def _evaluate_m1(
     database_path: str | Path | None,
     bundle_path: str | Path | None,
     public_key_path: str | Path | None,
+    snapshots_root: str | Path | None = None,
 ) -> dict:
     if (database_path is None) == (bundle_path is None):
         raise EvaluationError(
@@ -1298,7 +1316,8 @@ def _evaluate_m1(
     key_fingerprint: str | None = None
     if database_path is not None:
         source_kind = "database"
-        rows, snapshots = _read_database(database_path)
+        rows, snapshots = _read_database(database_path,
+                                     snapshots_root=snapshots_root)
         snapshot_reader = lambda ref: snapshots.get(ref)  # noqa: E731
     else:
         source_kind = "bundle"
@@ -1517,6 +1536,7 @@ def evaluate_m1(
     database_path: str | Path | None = None,
     bundle_path: str | Path | None = None,
     public_key_path: str | Path | None = None,
+    snapshots_root: str | Path | None = None,
 ) -> dict:
     """Read an A ledger (database or bundle) + sidecar context and return a
     deterministic C M1 report.
@@ -1531,6 +1551,7 @@ def evaluate_m1(
             database_path=database_path,
             bundle_path=bundle_path,
             public_key_path=public_key_path,
+            snapshots_root=snapshots_root,
         )
     except EvaluationError:
         raise

@@ -160,17 +160,25 @@ class Platform:
         return response.json()
 
 
-def make_config(base: Path, **security_overrides) -> PlatformConfig:
+def make_config(base: Path, *, server_overrides: dict | None = None,
+                storage_overrides: dict | None = None,
+                **security_overrides) -> PlatformConfig:
     security = dict(
         allowed_root=base / "workspaces", session_secret="s" * 32,
-        worker_bootstrap_token="boot-token", approval_timeout_seconds=30)
+        worker_bootstrap_token="boot-token", approval_timeout_seconds=30,
+        git_allowed_remotes=("origin",),
+        git_allowed_branches=("main", "release/*"))
     security.update(security_overrides)
     return PlatformConfig(
         root=base,
-        server=ServerConfig(public_origin="http://testserver"),
+        server=ServerConfig(public_origin="http://testserver",
+                            shutdown_grace_seconds=0,
+                            **(server_overrides or {})),
         storage=StorageConfig(
             database=base / "data/platform.db", outputs=base / "outputs",
-            keys=base / "data/keys", backups=base / "data/backups"),
+            keys=base / "data/keys", backups=base / "data/backups",
+            snapshots=base / "data/snapshots",
+            **(storage_overrides or {})),
         security=SecurityConfig(**security),
         workspaces=(WorkspaceConfig("workspace",
                                     base / "workspaces/workspace"),),
@@ -214,3 +222,51 @@ def platform(tmp_path: Path) -> Platform:
     app = create_app(config)
     with TestClient(app, client=("127.0.0.1", 50000)) as client:
         yield login_platform(client, app, config)
+
+
+@pytest.fixture
+def platform_factory(tmp_path: Path):
+    """按测试覆盖安全配置创建独立平台，退出时统一关闭 lifespan"""
+    clients = []
+
+    def build(server_overrides: dict | None = None,
+              storage_overrides: dict | None = None,
+              **security_overrides) -> Platform:
+        base = tmp_path / f"platform-{len(clients)}"
+        config = make_config(base, server_overrides=server_overrides,
+                             storage_overrides=storage_overrides,
+                             **security_overrides)
+        app = create_app(config)
+        client = TestClient(app, client=("127.0.0.1", 50000))
+        client.__enter__()
+        clients.append(client)
+        return login_platform(client, app, config)
+
+    yield build
+    for client in reversed(clients):
+        client.__exit__(None, None, None)
+
+
+@pytest.fixture
+def platform_session(tmp_path: Path):
+    """返回可显式关闭的平台，用于驱动 lifespan 停机收尾"""
+    opened = []
+
+    def build():
+        config = make_config(tmp_path / f"session-{len(opened)}")
+        app = create_app(config)
+        client = TestClient(app, client=("127.0.0.1", 50000))
+        client.__enter__()
+        opened.append(client)
+        platform = login_platform(client, app, config)
+
+        def close() -> None:
+            if client in opened:
+                opened.remove(client)
+                client.__exit__(None, None, None)
+
+        return platform, close
+
+    yield build
+    for client in reversed(opened):
+        client.__exit__(None, None, None)

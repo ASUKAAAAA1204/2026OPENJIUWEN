@@ -11,7 +11,7 @@ from typing import Iterable
 
 from .canonical import utc_iso
 
-LATEST_VERSION = 2
+LATEST_VERSION = 3
 
 _V1: tuple[str, ...] = (
     """CREATE TABLE IF NOT EXISTS events(
@@ -312,7 +312,46 @@ _V2: tuple[str, ...] = (
         BEGIN SELECT RAISE(ABORT,'run facts are frozen'); END""",
 )
 
-MIGRATIONS: tuple[tuple[int, tuple[str, ...]], ...] = ((1, _V1), (2, _V2))
+_V3: tuple[str, ...] = (
+    # turns.status 需要 cancelling/cancelled；SQLite 不能改 CHECK，只能重建
+    """CREATE TABLE turns_v3(
+        turn_id TEXT PRIMARY KEY,
+        run_id TEXT NOT NULL REFERENCES runs(run_id),
+        segment INTEGER NOT NULL,
+        request_id TEXT NOT NULL,
+        request_hash TEXT NOT NULL,
+        expected_revision TEXT,
+        status TEXT NOT NULL CHECK(status IN
+            ('starting','active','awaiting_approval','cancelling','cancelled',
+             'completed','failed','unknown','review')),
+        revision INTEGER NOT NULL DEFAULT 1 CHECK(revision >= 1),
+        worker_id TEXT,
+        task_excerpt TEXT NOT NULL DEFAULT '',
+        started_at TEXT,
+        claimed_at TEXT,
+        finished_at TEXT,
+        terminal_event TEXT,
+        created_at TEXT NOT NULL,
+        UNIQUE(run_id, segment, request_id))""",
+    """INSERT INTO turns_v3(turn_id,run_id,segment,request_id,request_hash,
+        expected_revision,status,revision,worker_id,task_excerpt,started_at,
+        claimed_at,finished_at,terminal_event,created_at)
+        SELECT turn_id,run_id,segment,request_id,request_hash,
+        expected_revision,status,revision,worker_id,task_excerpt,started_at,
+        claimed_at,finished_at,terminal_event,created_at FROM turns""",
+    "DROP TABLE turns",
+    "ALTER TABLE turns_v3 RENAME TO turns",
+    "CREATE INDEX IF NOT EXISTS turns_claim ON turns(status, created_at)",
+    "CREATE INDEX IF NOT EXISTS turns_run ON turns(run_id, segment, created_at)",
+    # 导出签名清单指纹；空表示未签名
+    "ALTER TABLE exports ADD COLUMN checkpoint_sha256 TEXT",
+    # 大快照落盘标记；inline 保持原语义
+    "ALTER TABLE snapshots ADD COLUMN storage TEXT NOT NULL DEFAULT 'inline'",
+)
+
+MIGRATIONS: tuple[tuple[int, tuple[str, ...]], ...] = ((1, _V1), (2, _V2), (3, _V3))
+# 重建表期间必须关闭外键，否则 DROP TABLE turns 会触发子表外键错误
+FOREIGN_KEYS_OFF = frozenset({3})
 
 
 def current_version(db: sqlite3.Connection) -> int:
@@ -330,16 +369,23 @@ def apply_migrations(db: sqlite3.Connection, *,
     for number, script in (MIGRATIONS if statements is None else statements):
         if number <= version:
             continue
-        db.execute("BEGIN IMMEDIATE")
+        fk_off = number in FOREIGN_KEYS_OFF
+        if fk_off:
+            db.execute("PRAGMA foreign_keys=OFF")
         try:
-            for statement in script:
-                db.execute(statement)
-            db.execute("INSERT INTO schema_version VALUES(?,?)",
-                       (number, utc_iso()))
-            db.commit()
-        except BaseException:
-            db.rollback()
-            raise
+            db.execute("BEGIN IMMEDIATE")
+            try:
+                for statement in script:
+                    db.execute(statement)
+                db.execute("INSERT INTO schema_version VALUES(?,?)",
+                           (number, utc_iso()))
+                db.commit()
+            except BaseException:
+                db.rollback()
+                raise
+        finally:
+            if fk_off:
+                db.execute("PRAGMA foreign_keys=ON")
         version = number
     return version
 

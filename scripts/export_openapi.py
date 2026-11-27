@@ -73,6 +73,11 @@ ENDPOINTS: list[dict[str, Any]] = [
      "summary": "启动或续读执行流（SSE）",
      "roles": "平台管理员/开发者（对象授权）", "write": True,
      "response": "text/event-stream；id=seq，从 1 严格递增"},
+    {"method": "POST", "path": "/api/v27/runs/{run_id}/cancel",
+     "summary": "幂等取消活动 turn",
+     "roles": "平台管理员/值班人员/运行 owner 开发者", "write": True,
+     "response": "CancelReceipt：turn_id、status、cancelled、duplicate；"
+                 "无活动 turn 返回 409 TURN_NOT_CANCELLABLE"},
     {"method": "GET",
      "path": "/api/v27/runs/{run_id}/decisions/{decision_id}/events",
      "summary": "单个决策的事件时间线",
@@ -131,9 +136,16 @@ ENDPOINTS: list[dict[str, Any]] = [
      "roles": "平台管理员/平台运营（能力开启）", "write": True,
      "response": "QuoteResult：CNY、total_minor、逐条 items"},
     {"method": "POST", "path": "/api/v27/runs/{run_id}/export",
-     "summary": "授权导出 JSONL",
+     "summary": "授权导出 JSONL（配置私钥时附签名检查点）",
      "roles": "按角色与对象范围授权", "write": True,
-     "response": "application/x-ndjson；X-Run-Id、X-Export-Audit-Id、X-Content-SHA256"},
+     "response": "application/x-ndjson；X-Run-Id、X-Export-Audit-Id、X-Content-SHA256、"
+                 "X-Export-Checkpoint-SHA256/Id/Status"},
+    {"method": "GET",
+     "path": "/api/v27/runs/{run_id}/exports/{export_id}/checkpoint",
+     "summary": "读取导出签名检查点（不含私钥）",
+     "roles": "与导出相同的对象级权限", "write": False,
+     "response": "签名清单：domain、run_id、sha256、byte_size、event_count、"
+                 "created_at、signature"},
     {"method": "GET", "path": "/api/v27/settings",
      "summary": "只读配置快照",
      "roles": "已登录只读", "write": False,
@@ -170,6 +182,12 @@ ERROR_CODES = [
     ("WRITER_BACKPRESSURE", "写队列已满", "503"),
     ("SSE_CURSOR_INVALID", "重放游标非法", "422"),
     ("INTERNAL_UNAUTHORIZED", "内部 token 无效", "401"),
+    ("CHECKPOINT_MISSING", "导出缺少签名检查点", "404"),
+    ("CHECKPOINT_INVALID", "检查点签名或摘要不符", "409"),
+    ("CHECKPOINT_KEY_UNAVAILABLE", "检查点私钥不可用", "503"),
+    ("TURN_NOT_CANCELLABLE", "没有可取消的活动 turn", "409"),
+    ("CANCEL_NOT_ALLOWED", "当前角色无权取消", "403"),
+    ("SHUTTING_DOWN", "服务停机中拒绝新写入", "503"),
 ]
 
 
@@ -195,7 +213,7 @@ def _event_markdown() -> str:
              "- 传输：`text/event-stream`；`id` 必须等于 JSON `seq`",
              "- 同一 turn 内从 1 严格递增、无空洞；内容不可变",
              "- 心跳：`: ping` 注释行，不计 seq；终止：`turn_completed` / `turn_failed`",
-             "", "| 类型 | 必填字段 |", "|---|---|"]
+             "", "| 类型 | 必填字段 |", "| --- | --- |"]
     for name, model in EVENT_MODELS.items():
         fields = []
         for field_name, field in model.model_fields.items():
@@ -207,6 +225,8 @@ def _event_markdown() -> str:
               "- `tool_intent.gate=ASK` 必须携带 `approval_id`；其它 gate 不得携带。",
               "- `tool_result.status` 仅 `EXEC_FINISHED`/`EXEC_FAILED`/`UNKNOWN_OUTCOME`；",
               "  只有结果持久化后服务端才发出。",
+              "- `turn_cancel_requested` 只表示服务端已受理取消；终态是",
+              "  `turn_failed.outcome=cancelled`，取消后副作用最多一次。",
               "- `turn_failed.outcome=unknown` 表示结果未知，客户端只能同 request_id 续读，",
               "  不得据此重新调度模型或工具。",
               "- 断线不等于取消；重连使用 `Last-Event-ID`，相同序号内容不可变。",
@@ -250,7 +270,7 @@ def _reference_markdown(schema: dict[str, Any]) -> str:
         "```",
         "",
         "| 错误码 | 含义 | HTTP |",
-        "|---|---|---|",
+        "| --- | --- | --- |",
     ]
     for code, meaning, status in ERROR_CODES:
         lines.append(f"| `{code}` | {meaning} | {status} |")
@@ -294,7 +314,7 @@ def _reference_markdown(schema: dict[str, Any]) -> str:
         "## 7 权限矩阵",
         "",
         "| 能力 | 平台管理员 | 值班人员 | 开发者 | 合规审计 | 平台运营 |",
-        "|---|---|---|---|---|---|",
+        "| --- | --- | --- | --- | --- | --- |",
         "| 查看账本 | 全部 | 全部 | 本人运行 | 全部只读 | 所属 Skill |",
         "| 配置策略表 | 可 | 不可 | 不可 | 不可 | 不可 |",
         "| 审批 | 可 | 可 | 不可 | 不可 | 不可 |",
@@ -306,7 +326,7 @@ def _reference_markdown(schema: dict[str, Any]) -> str:
         "## 8 端点",
         "",
         "| 方法 | 路径 | 说明 | 角色 |",
-        "|---|---|---|---|",
+        "| --- | --- | --- | --- |",
     ]
     for endpoint in ENDPOINTS:
         lines.append(f"| {endpoint['method']} | `{endpoint['path']}` | "

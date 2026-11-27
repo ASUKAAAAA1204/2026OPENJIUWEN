@@ -1,0 +1,20 @@
+{
+  "note": "v2.7 前端契约到测试文件的映射；测试保留在 tests/platform 以复用同一套平台夹具",
+  "contracts": {
+    "v27-approval-frontend-contract.md": ["tests/platform/test_security_approval_contract.py"],
+    "v27-audit-frontend-contract.md": ["tests/platform/test_runs_contract.py", "tests/platform/test_execution_contract.py"],
+    "v27-claims-frontend-contract.md": ["tests/platform/test_claims_contract.py"],
+    "v27-debt-frontend-contract.md": ["tests/platform/test_management_debt_contract.py"],
+    "v27-evaluation-frontend-contract.md": ["tests/platform/test_management_debt_contract.py"],
+    "v27-events-frontend-contract.md": ["tests/platform/test_execution_contract.py"],
+    "v27-execution-stream-frontend-contract.md": ["tests/platform/test_execution_contract.py", "tests/platform/test_api_walkthrough.py"],
+    "v27-export-frontend-contract.md": ["tests/platform/test_export_replay_contract.py"],
+    "v27-lifecycle-frontend-contract.md": ["tests/platform/test_runs_contract.py", "tests/platform/test_recovery_contract.py"],
+    "v27-management-frontend-contract.md": ["tests/platform/test_management_debt_contract.py"],
+    "v27-policy-activation-frontend-contract.md": ["tests/platform/test_gate_policy_contract.py"],
+    "v27-replay-frontend-contract.md": ["tests/platform/test_export_replay_contract.py"],
+    "v27-runs-frontend-contract.md": ["tests/platform/test_runs_contract.py"],
+    "v27-session-frontend-contract.md": ["tests/platform/test_session_contract.py"],
+    "v27-settings-frontend-contract.md": ["tests/platform/test_api_docs_contract.py"]
+  }
+}

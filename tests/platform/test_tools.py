@@ -20,7 +20,8 @@ def executor(tmp_path: Path) -> ToolExecutor:
     root = tmp_path / "workspaces"
     workspace = root / "workspace"
     workspace.mkdir(parents=True)
-    return ToolExecutor(workspace, root)
+    return ToolExecutor(workspace, root, allowed_remotes=("origin",),
+                        allowed_branches=("*",))
 
 
 def test_file_tools_stay_inside_workspace(executor: ToolExecutor):

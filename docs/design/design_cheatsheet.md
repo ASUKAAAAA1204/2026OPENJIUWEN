@@ -4,7 +4,7 @@
 
 ## 一条线
 
-```
+```text
 规则集 ──[ARS_d：L、C]──► 设计闸（C ≥ 0.5 才许装配）
                               │ 通过
                               ▼
@@ -32,20 +32,21 @@
 
 ## ARS 五维（三段分离）
 
-```
+```text
 ARS 总分 = (L×25 + C×25)     ← ARS_d 设计态，跑之前就能出
          + (R×20 + D×15 + F×15)  ← ARS_r 运行态，跑完证据后出
 ```
 
 |维|权重|归属|定义|
 |---|---|---|---|
-| L 可定位率|25|d|有精确 locator（file:row:field）的 claim / 总 claim|
-| C 可编译率|25|d|compilable 且过 fixture 的规则 / 总规则|
-| R 可复算率|20|r|VERIFIED 的 claim / 总 claim|
-| D 确定性率|15|r|is_deterministic=True 的检查 / 总检查|
-| F 新鲜度|15|r|fresh 证据 / 总证据|
+|L 可定位率|25|d|有精确 locator（file:row:field）的 claim / 总 claim|
+|C 可编译率|25|d|compilable 且过 fixture 的规则 / 总规则|
+|R 可复算率|20|r|VERIFIED 的 claim / 总 claim|
+|D 确定性率|15|r|is_deterministic=True 的检查 / 总检查|
+|F 新鲜度|15|r|fresh 证据 / 总证据|
 
 **红线**：
+
 1. 不得称 ARS 为"置信度/正确率"
 2. 报告必须带三元组坐标：`ARS = f(skill_version, model, data_profile)`
 3. ARS_d 不得偷偷调链路运行数据
@@ -74,7 +75,7 @@ ARS 总分 = (L×25 + C×25)     ← ARS_d 设计态，跑之前就能出
 
 ## 评分三元组坐标
 
-```
+```text
 ARS = f(skill_version, model, data_profile)
 ```
 
@@ -83,11 +84,12 @@ ARS = f(skill_version, model, data_profile)
 
 ## CU 成本公式
 
-```
+```text
 CU = tokens/1000 + latency_ms/1000 + human_min×60
 ```
 
 1 人工分钟 = 60 CU ≈ 6 万 token。改造动作示例：
+
 - add_locator: 0.5–1 CU/条
 - split_rule: 3–5 CU/条
 - add_field: 2–4 CU/条
@@ -103,7 +105,7 @@ CU = tokens/1000 + latency_ms/1000 + human_min×60
 
 ## 目录结构
 
-```
+```text
 src/assurance_ledger/
   core/       # 数据模型（pydantic）—— 所有人共享
   schemas/    # C1-C7 契约校验器

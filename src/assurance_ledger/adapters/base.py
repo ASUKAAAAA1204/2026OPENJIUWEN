@@ -29,6 +29,10 @@ class TurnRequest:
     skill_version: str
     policy_version: str | None = None
     whitelist_version: str | None = None
+    # 中央下发的安全边界；worker 不得自行放宽
+    git_allowed_remotes: tuple[str, ...] = ()
+    git_allowed_branches: tuple[str, ...] = ()
+    command_limits: dict[str, int] | None = None
 
 
 @dataclass(frozen=True)

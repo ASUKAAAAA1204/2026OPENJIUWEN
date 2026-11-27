@@ -32,7 +32,7 @@
 
 **评分三元组**：同一个 Skill 换模型、换数据，分数会变——ARS 的真实坐标不是 `f(skill)`，而是：
 
-```
+```text
 ARS = f(skill\_version, model, data\_profile)
 ```
 
@@ -63,7 +63,7 @@ ARS = f(skill\_version, model, data\_profile)
 
 ### 0.3 时序：两段 ARS 夹着链路，不是串行
 
-```
+```text
 规则集 ──\[ARS\_d：只算 C]──► 设计预警（C < 0.5 标低分，不阻断）
                                    │ 确认继续
                                    ▼
@@ -92,7 +92,7 @@ ARS 不是链路的前置步骤，而是**在链的两端各算一次**：
 
 ### 0.4 三层结构（修正）
 
-```
+```text
 应用层（被测 Skill @ version / model / data\_profile）
    ↓ claim + evidence
 平台层（openJiuwen：Rail 采集 · Studio 呈现 · 自演进回流）
@@ -212,7 +212,7 @@ ARS 不是链路的前置步骤，而是**在链的两端各算一次**：
 
 ## 4\. 产品结构（模块视图）
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │ 主线 ARS                                             │
 │  打分器（五维）· 扣分解释器 · 改造方案器 · 闸门 · 曲线 │
@@ -308,7 +308,7 @@ ARS 不是链路的前置步骤，而是**在链的两端各算一次**：
 
 ### 7.1 CU 定价
 
-```
+```text
 CU = tokens/1000 + latency\\\\\\\_ms/1000 + human\\\\\\\_min\\\\\\\*60
 ```
 
@@ -474,7 +474,7 @@ ARS（审计就绪度）、ARS\_d 设计态（C，跑之前出）、ARS\_r 运�
 
 **起因**：产品核对发现三项指标失真 + 一处自证——D 恒为 1（`is\_deterministic=True` 硬编码）、F 按证据条数而非 claim、R"有证据即通过"、L 只看声明不回源。
 
-**改了什么**
+#### 改了什么
 
 |类|变更|
 |-|-|
@@ -501,6 +501,3 @@ ARS（审计就绪度）、ARS\_d 设计态（C，跑之前出）、ARS\_r 运�
 |边界|PARTIAL 分维度级 `VALUE/NA/MISSING` 与文档级 `DESIGN\_ONLY/PARTIAL/COMPLETE` 两层|
 |抗博弈|H3/H4 改用 `claims / declared\_locators / resolved\_locators` 绝对量|
 |治理|主 PRD v2.2；子 PRD v1.2；创意 11-10（10-30 应急）；DEMO 11-25 → 12-27|
-
-
-
