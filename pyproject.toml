@@ -38,6 +38,10 @@ dev = [
 semgrep_cli = [
     "semgrep>=1.80",   # LGPL-2.1, used as subprocess only
 ]
+otel = [
+    "opentelemetry-sdk>=1.24",
+    "opentelemetry-exporter-otlp>=1.24",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]

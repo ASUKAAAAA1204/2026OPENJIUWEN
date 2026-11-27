@@ -37,8 +37,9 @@ def main() -> int:
                                             bind=f"{host}:{port}"),
                      start_workers=not args.no_workers)
     app = create_app(config)
+    # 访问日志由 JsonFormatter 中间件输出，关闭 uvicorn 默认 access log 避免重复
     uvicorn.run(app, host=host, port=int(port), workers=1,
-                log_level="info")
+                log_level="info", access_log=False)
     return 0
 
 

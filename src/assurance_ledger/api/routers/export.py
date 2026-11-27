@@ -11,6 +11,7 @@ from fastapi.responses import JSONResponse
 from ...auth import rbac
 from ...ledger import export as ledger_export
 from ...ledger.canonical import utc_iso
+from ...observability.metrics import METRICS
 from ...ledger.export_checkpoint import (
     ExportCheckpointError,
     build_manifest,
@@ -90,7 +91,11 @@ def export_run(request: Request, run_id: str, body: ExportRequest,
                                       _existing_manifest(existing))
         raise ApiError(409, "EXPORT_CONFLICT",
                        "导出文件缺失或指纹不符，无法确认原导出内容")
-    data, meta = ledger_export.build_run_export(db, run)
+    try:
+        data, meta = ledger_export.build_run_export(db, run)
+    except ledger_export.ExportError:
+        METRICS.chain_verify_failures.inc({"source": "export"})
+        raise
     if meta["byte_size"] > state.config.outputs_max_export_bytes:
         raise ApiError(413, "EXPORT_TOO_LARGE", "导出超过配置大小上限")
     directory = state.config.storage.outputs / run_id

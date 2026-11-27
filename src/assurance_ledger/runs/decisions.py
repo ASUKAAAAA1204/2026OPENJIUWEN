@@ -22,6 +22,7 @@ from ..ledger.record_store import RecordStore
 from ..ledger.redaction import Redactor, RedactionError
 from ..ledger.snapshots import SnapshotStore
 from ..ledger.writer import read_connection
+from ..observability.metrics import METRICS
 from ..policy.whitelist import DECISION_CLASSES
 from . import approvals, lifecycle, turns
 
@@ -200,6 +201,9 @@ def record_intent(writer, store, journal: DecisionJournal,
                     allowed_remotes=config.security.git_allowed_remotes,
                     allowed_branches=config.security.git_allowed_branches)
     latency_ms = max(0, (time.perf_counter_ns() - started) // 1_000_000)
+    if decision_class in DECISION_CLASSES:
+        METRICS.gate_ms.observe(latency_ms, {"decision_class": decision_class,
+                                             "gate": gate.gate})
     args_digest = protected_digest(dict(args))
     rewritten_digest = protected_digest(gate.rewritten_args) if gate.rewritten_args else None
     attempt_id = approvals.new_attempt_id()
@@ -334,7 +338,11 @@ def record_intent(writer, store, journal: DecisionJournal,
         response["_events"] = emitted
         return response
 
-    return writer.call(job, intent=True)
+    begin = time.perf_counter()
+    response = writer.call(job, intent=True)
+    METRICS.intent_persist_ms.observe(
+        (time.perf_counter() - begin) * 1000, {"framework": run.framework})
+    return response
 
 
 def _result_evidence(db: sqlite3.Connection, store, redactor: Redactor,
@@ -486,7 +494,13 @@ def record_result(writer, store, journal: DecisionJournal,
         return {"decision_id": decision_id, "status": status,
                 "evidence_ref": evidence_ref, "_events": [emitted]}
 
-    return writer.call(job)
+    begin = time.perf_counter()
+    response = writer.call(job)
+    metric_status = {"EXEC_FINISHED": "completed", "EXEC_FAILED": "failed",
+                     "UNKNOWN_OUTCOME": "unknown"}[status]
+    METRICS.result_persist_ms.observe((time.perf_counter() - begin) * 1000,
+                                      {"status": metric_status})
+    return response
 
 
 __all__ = [

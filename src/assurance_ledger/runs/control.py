@@ -205,7 +205,8 @@ def finalize_shutdown(writer, journal, config: PlatformConfig, *,
         for turn in rows:
             mark_turn_unknown(db, turn, journal,
                               reason="服务停机，执行结果未知",
-                              review_reason="服务停机", moment=moment)
+                              review_reason="服务停机",
+                              metric_reason="shutdown", moment=moment)
             unknown.append(turn["turn_id"])
         append_audit(
             db, actor_id="SYSTEM", action="system.shutdown",

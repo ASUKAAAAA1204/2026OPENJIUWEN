@@ -25,6 +25,8 @@ from ..ledger.record_store import RecordStore
 from ..ledger.redaction import Redactor
 from ..ledger.sqlite_events import SQLiteEventStore
 from ..ledger.writer import WriterQueue, read_connection
+from ..observability import otel
+from ..observability.logging import configure_logging, log_event
 from ..runs import control, lifecycle
 from ..runs.decisions import REDACTION_PATTERNS
 from ..runs import approvals as approval_service
@@ -45,6 +47,7 @@ from .routers import (
     internal,
     legacy,
     management as management_router,
+    metrics as metrics_router,
     policies,
     replay,
     runs,
@@ -124,6 +127,8 @@ def create_app(config: PlatformConfig | None = None, *,
                config_path: str | Path | None = None) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app: FastAPI):
+        configure_logging()
+        otel.init_otel()
         resolved = config or PlatformConfig.load(config_path)
         if resolved.start_workers and not resolved.security.worker_bootstrap_token:
             resolved = replace(
@@ -206,6 +211,7 @@ def create_app(config: PlatformConfig | None = None, *,
     @app.middleware("http")
     async def attach_request_id(request: Request, call_next):
         value = request_id(request)
+        started = time.perf_counter()
         try:
             response = await call_next(request)
         except Exception as exc:  # 领域异常统一映射，不向客户端泄露堆栈
@@ -215,6 +221,11 @@ def create_app(config: PlatformConfig | None = None, *,
                 detail = None
             response = error_response(request, status, code, message, detail)
         response.headers["X-Request-ID"] = value
+        log_event(
+            logger, "http_request", component="api", request_id=value,
+            method=request.method, path=request.url.path,
+            http_status=response.status_code,
+            latency_ms=round((time.perf_counter() - started) * 1000, 3))
         return response
 
     @app.exception_handler(ApiError)
@@ -243,7 +254,8 @@ def create_app(config: PlatformConfig | None = None, *,
 
     for module in (health, session, runs, events, execution_router, claims,
                    approvals, debts, evaluations, replay, policies,
-                   management_router, settings, export, internal, legacy):
+                   management_router, settings, export, internal, metrics_router,
+                   legacy):
         app.include_router(module.router)
     return app
 

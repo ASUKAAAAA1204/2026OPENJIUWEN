@@ -1,5 +1,19 @@
 # TemisGuard v2.7 接口变更记录
 
+## 2026-11-27 可观测性：JSON 日志、指标与 OTel（backend 分支）
+
+- 新增单行 JSON 日志：`ts`、`level`、`component`、`event`、`request_id`、
+  `run_id`、`turn_id`、`decision_id`、`status`、`latency_ms`、`session_prefix`；
+  密码、CSRF、token、密钥、原始参数与完整输出一律脱敏或丢弃。
+- 新增 `GET /metrics`（Prometheus 文本）：默认关闭（404），仅回环或
+  `Authorization: Bearer $TEMIS_METRICS_TOKEN` 可读（否则 401）；标签只取有限枚举。
+- 九项指标：意图/结果落账、Gate 耗时、SSE 连接数、worker 重启、未知结果、
+  审批等待、写队列深度、链校验失败。
+- 可选 OTel（`TEMIS_OTEL_ENABLED=1` + `[otel]` 依赖）；关闭或缺依赖时跳过，
+  不改变导出与审计输出。
+- `scripts/run_platform.py` 关闭 uvicorn access log，避免与 JSON 日志重复。
+- 新增平台测试 `test_observability.py`。
+
 ## 2026-11-27 取消、停机与恢复时延（backend 分支）
 
 - 新增 `POST /api/v27/runs/{run_id}/cancel`：按 `(run_id, request_id)` 幂等，

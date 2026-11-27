@@ -14,6 +14,7 @@ from typing import Any
 from ..auth import rbac
 from ..config import PlatformConfig
 from ..ledger.canonical import utc_iso
+from ..observability.metrics import METRICS
 from ..workers.registry import HEARTBEAT_LOST_SECONDS, framework_available
 from . import idempotency, lifecycle, turns
 from .lifecycle import RunRecord, active_turn
@@ -215,8 +216,10 @@ def finish_turn(writer, config: PlatformConfig, *, worker: sqlite3.Row,
 
 def mark_turn_unknown(db: sqlite3.Connection, turn: sqlite3.Row, journal, *,
                       reason: str, moment: datetime,
-                      review_reason: str | None = None) -> None:
+                      review_reason: str | None = None,
+                      metric_reason: str = "worker_stopped") -> None:
     """把活动 turn 定为结果未知，并把未终结决策标记 UNKNOWN_OUTCOME"""
+    METRICS.unknown_outcomes.inc({"reason": metric_reason})
     turns.append_turn_event(
         db, turn_id=turn["turn_id"],
         client_event_id=f"unknown:{turn['turn_id']}",
@@ -286,7 +289,8 @@ def recover_stale_turns(writer, journal, config: PlatformConfig, *,
                 continue
             mark_turn_unknown(db, turn, journal,
                               reason="worker 心跳丢失，执行结果未知",
-                              review_reason="worker 心跳丢失", moment=moment)
+                              review_reason="worker 心跳丢失",
+                              metric_reason="heartbeat_lost", moment=moment)
             recovered.append(turn["turn_id"])
         return recovered
 
