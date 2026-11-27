@@ -9,6 +9,11 @@ public_origin = "http://127.0.0.1:8000"
 start_workers = false
 # 拉起 worker 后等待首个健康注册的秒数；超时降级为只读就绪（/readyz 返回 mode=readonly）
 startup_wait_seconds = 30
+# 停机时等待活动 turn 收尾的秒数，超时标记 unknown
+shutdown_grace_seconds = 5
+# /metrics 默认关闭；开启后仅回环或无 token 时拒绝，可配 Bearer token
+metrics_enabled = false
+metrics_token = ""
 
 [storage]
 database = "data/platform.db"
@@ -16,6 +21,12 @@ outputs = "outputs"
 keys = "data/keys"
 backups = "data/backups"
 max_export_bytes = 134217728
+# 留空时回落到 keys/checkpoint-private.pem 与 keys/checkpoint-public.pem
+checkpoint_private_key = "data/keys/checkpoint-private.pem"
+checkpoint_public_key = "data/keys/checkpoint-public.pem"
+# 大快照落盘目录与阈值；超过阈值的快照写到 snapshots/<aa>/<ref>.json
+snapshots = "data/snapshots"
+snapshot_inline_max_bytes = 65536
 
 [security]
 allowed_root = "workspaces"
@@ -30,6 +41,20 @@ login_window_seconds = 300
 # 留空且启用 worker 时由中央生成，注入子进程；外部 worker 需显式配置
 worker_bootstrap_token = ""
 operator_skills = ["code-assistant"]
+# 内部 API 边界（仅 /internal/v1/*）
+internal_max_body_bytes = 1048576
+internal_rate_limit_per_second = 200
+internal_burst = 400
+internal_request_timeout_seconds = 30
+# Git 发布允许清单；空表示全部拒绝（fail closed）
+git_allowed_remotes = ["origin"]
+git_allowed_branches = ["main", "release/*"]
+# 受控命令资源上限
+command_cpu_seconds = 10
+command_memory_mb = 512
+command_file_size_mb = 16
+command_open_files = 128
+cancel_grace_seconds = 5
 
 [[workspaces]]
 id = "workspace"

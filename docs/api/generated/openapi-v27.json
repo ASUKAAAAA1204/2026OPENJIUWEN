@@ -1123,6 +1123,55 @@
         }
       }
     },
+    "/api/v27/runs/{run_id}/exports/{export_id}/checkpoint": {
+      "get": {
+        "tags": [
+          "export"
+        ],
+        "summary": "Read Export Checkpoint",
+        "operationId": "read_export_checkpoint_api_v27_runs__run_id__exports__export_id__checkpoint_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "export_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Export Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/ars": {
       "get": {
         "tags": [

@@ -1,5 +1,23 @@
 # TemisGuard v2.7 接口变更记录
 
+## 2026-11-27 导出签名检查点（backend 分支）
+
+- 新增 `GET /api/v27/runs/{run_id}/exports/{export_id}/checkpoint`：返回单次导出的
+  Ed25519 签名清单，权限与导出相同，绝不返回私钥；缺少检查点返回 404
+  `CHECKPOINT_MISSING`，指纹不符返回 409 `CHECKPOINT_INVALID`。
+- `POST /api/v27/runs/{run_id}/export` 在配置私钥时生成侧车
+  `export-<sha16>.jsonl.checkpoint.json`，并新增响应头
+  `X-Export-Checkpoint-SHA256`、`X-Export-Checkpoint-Id`、
+  `X-Export-Checkpoint-Status`；无密钥时状态为 `unavailable`，不伪造签名。
+- 新增 `scripts/init_checkpoint_key.py`（生成密钥对，拒绝覆盖）、
+  `scripts/verify_export.py`（0 PASS / 3 FAIL / 4 缺检查点）。
+- `scripts/backup_db.py` 默认用配置私钥签名，新增 `--no-checkpoint`；
+  `scripts/verify_ledger.py --database` 新增 `--checkpoint` 与 `--public-key`。
+- 数据库迁移 v3：`exports.checkpoint_sha256`、`snapshots.storage`，并扩展
+  `turns.status` 以容纳取消状态。
+- 新增部署文档 `docs/deploy/BACKUP.md`（cron、systemd、Windows 任务计划）。
+- 兼容：未配置私钥时导出行为不变，响应头仅新增。
+
 ## 2026-11-26 后端完善批次 1（backend 分支）
 
 - 新增 `POST /api/v27/runs/create` 可选字段 `parent_run_id`：委派子运行记录父运行，

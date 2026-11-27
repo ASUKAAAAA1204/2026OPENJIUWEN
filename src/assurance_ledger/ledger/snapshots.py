@@ -24,7 +24,7 @@ CREATE TRIGGER IF NOT EXISTS snapshots_no_delete BEFORE DELETE ON snapshots BEGI
         """Capture inside a caller-owned transaction; no commit or rollback."""
         sanitized=redactor.redact(value)
         body=canonical_bytes(sanitized).decode('utf-8');ref=digest_json(sanitized)
-        db.execute('INSERT OR IGNORE INTO snapshots VALUES(?,?)',(ref,body))
+        db.execute('INSERT OR IGNORE INTO snapshots(ref,body) VALUES(?,?)',(ref,body))
         row=db.execute('SELECT body FROM snapshots WHERE ref=?',(ref,)).fetchone()
         if row is None or digest_json(json.loads(row[0]))!=ref:raise SnapshotError('snapshot digest mismatch')
         return ref

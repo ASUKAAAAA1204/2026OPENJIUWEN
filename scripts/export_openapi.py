@@ -131,9 +131,16 @@ ENDPOINTS: list[dict[str, Any]] = [
      "roles": "平台管理员/平台运营（能力开启）", "write": True,
      "response": "QuoteResult：CNY、total_minor、逐条 items"},
     {"method": "POST", "path": "/api/v27/runs/{run_id}/export",
-     "summary": "授权导出 JSONL",
+     "summary": "授权导出 JSONL（配置私钥时附签名检查点）",
      "roles": "按角色与对象范围授权", "write": True,
-     "response": "application/x-ndjson；X-Run-Id、X-Export-Audit-Id、X-Content-SHA256"},
+     "response": "application/x-ndjson；X-Run-Id、X-Export-Audit-Id、X-Content-SHA256、"
+                 "X-Export-Checkpoint-SHA256/Id/Status"},
+    {"method": "GET",
+     "path": "/api/v27/runs/{run_id}/exports/{export_id}/checkpoint",
+     "summary": "读取导出签名检查点（不含私钥）",
+     "roles": "与导出相同的对象级权限", "write": False,
+     "response": "签名清单：domain、run_id、sha256、byte_size、event_count、"
+                 "created_at、signature"},
     {"method": "GET", "path": "/api/v27/settings",
      "summary": "只读配置快照",
      "roles": "已登录只读", "write": False,
@@ -170,6 +177,9 @@ ERROR_CODES = [
     ("WRITER_BACKPRESSURE", "写队列已满", "503"),
     ("SSE_CURSOR_INVALID", "重放游标非法", "422"),
     ("INTERNAL_UNAUTHORIZED", "内部 token 无效", "401"),
+    ("CHECKPOINT_MISSING", "导出缺少签名检查点", "404"),
+    ("CHECKPOINT_INVALID", "检查点签名或摘要不符", "409"),
+    ("CHECKPOINT_KEY_UNAVAILABLE", "检查点私钥不可用", "503"),
 ]
 
 

@@ -50,6 +50,9 @@
 | `WRITER_BACKPRESSURE` | 写队列已满 | 503 |
 | `SSE_CURSOR_INVALID` | 重放游标非法 | 422 |
 | `INTERNAL_UNAUTHORIZED` | 内部 token 无效 | 401 |
+| `CHECKPOINT_MISSING` | 导出缺少签名检查点 | 404 |
+| `CHECKPOINT_INVALID` | 检查点签名或摘要不符 | 409 |
+| `CHECKPOINT_KEY_UNAVAILABLE` | 检查点私钥不可用 | 503 |
 
 `request_id` 同时写入响应头 `X-Request-ID`。服务端不回显堆栈、密钥或原始实参。
 
@@ -128,7 +131,8 @@ data: {"seq":7,"type":"tool_result","turn_id":"TURN-...","decision_id":"DEC-..."
 | POST | `/api/v27/management/configure` | 开启/关闭管理能力 | 平台管理员；发布闸另授权平台运营 |
 | POST | `/api/v27/management/assess-release` | 发布评估（不执行发布） | 平台管理员/平台运营（能力开启） |
 | POST | `/api/v27/management/quote` | 整改报价（不创建订单） | 平台管理员/平台运营（能力开启） |
-| POST | `/api/v27/runs/{run_id}/export` | 授权导出 JSONL | 按角色与对象范围授权 |
+| POST | `/api/v27/runs/{run_id}/export` | 授权导出 JSONL（配置私钥时附签名检查点） | 按角色与对象范围授权 |
+| GET | `/api/v27/runs/{run_id}/exports/{export_id}/checkpoint` | 读取导出签名检查点（不含私钥） | 与导出相同的对象级权限 |
 | GET | `/api/v27/settings` | 只读配置快照 | 已登录只读 |
 | GET | `/api/ars` | 旧 ARS 信封（兼容） | 已登录 |
 | GET | `/api/plan` | 旧提升计划（兼容） | 已登录 |
@@ -359,12 +363,20 @@ data: {"seq":7,"type":"tool_result","turn_id":"TURN-...","decision_id":"DEC-..."
 
 ### POST /api/v27/runs/{run_id}/export
 
-授权导出 JSONL
+授权导出 JSONL（配置私钥时附签名检查点）
 
 - 权限：按角色与对象范围授权
 - 认证：同源 Cookie；写请求需 `X-CSRF-Token` 与 `Idempotency-Key`
-- 响应要点：application/x-ndjson；X-Run-Id、X-Export-Audit-Id、X-Content-SHA256
+- 响应要点：application/x-ndjson；X-Run-Id、X-Export-Audit-Id、X-Content-SHA256、X-Export-Checkpoint-SHA256/Id/Status
 - 请求 Schema：`ExportRequest`
+
+### GET /api/v27/runs/{run_id}/exports/{export_id}/checkpoint
+
+读取导出签名检查点（不含私钥）
+
+- 权限：与导出相同的对象级权限
+- 认证：同源 Cookie
+- 响应要点：签名清单：domain、run_id、sha256、byte_size、event_count、created_at、signature
 
 ### GET /api/v27/settings
 

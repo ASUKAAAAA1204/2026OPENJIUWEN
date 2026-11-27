@@ -150,6 +150,7 @@ def existing_export(db: sqlite3.Connection, run_id: str,
 def record_export(writer, config: PlatformConfig, *, user: Any, run_id: str,
                   request_id: str, meta: dict[str, Any], path: str,
                   format: str = "jsonl",
+                  checkpoint_sha256: str | None = None,
                   now: datetime | None = None) -> dict[str, Any]:
     moment = now or datetime.now(timezone.utc)
     request_id = idempotency.validate_request_id(request_id)
@@ -164,17 +165,20 @@ def record_export(writer, config: PlatformConfig, *, user: Any, run_id: str,
             target_type="run", target_id=run_id, request_id=request_id,
             reason="授权导出", detail={"format": format,
                                       "sha256": meta["sha256"],
-                                      "byte_size": meta["byte_size"]},
+                                      "byte_size": meta["byte_size"],
+                                      "checkpoint_sha256": checkpoint_sha256},
             now=moment)
         db.execute(
             "INSERT INTO exports(audit_id,run_id,requested_by,format,sha256,"
-            "byte_size,path,request_id,created_at) VALUES(?,?,?,?,?,?,?,?,?)",
+            "byte_size,path,request_id,created_at,checkpoint_sha256) "
+            "VALUES(?,?,?,?,?,?,?,?,?,?)",
             (audit_id, run_id, rbac._value(user, "user_id"), format,
              meta["sha256"], meta["byte_size"], path, request_id,
-             utc_iso(moment)))
+             utc_iso(moment), checkpoint_sha256))
         return {"audit_id": audit_id, "run_id": run_id,
                 "sha256": meta["sha256"], "byte_size": meta["byte_size"],
-                "path": path, "created_at": utc_iso(moment)}
+                "path": path, "created_at": utc_iso(moment),
+                "checkpoint_sha256": checkpoint_sha256}
 
     return writer.call(job)
 

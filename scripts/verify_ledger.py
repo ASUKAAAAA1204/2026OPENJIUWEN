@@ -80,15 +80,45 @@ def _json_result(path: str) -> dict:
     }
 
 
+def _apply_checkpoint(result: dict, checkpoint_path: Path,
+                      public_key_path: Path) -> dict:
+    """整库备份：校验签名并把清单计数/链头与库内链比对"""
+    from cryptography.hazmat.primitives import serialization
+    from assurance_ledger.ledger.checkpoint import verify_checkpoint
+    from assurance_ledger.ledger.independent_verify import VerificationError
+    try:
+        checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+        public_key = serialization.load_pem_public_key(
+            public_key_path.read_bytes())
+        payload = verify_checkpoint(checkpoint, public_key)
+    except (OSError, ValueError, VerificationError) as error:
+        return dict(result, status="FAIL", reason=f"CHECKPOINT_INVALID: {error}")
+    if result["count"] != payload["count"] or result["head"] != payload["head"]:
+        return dict(result, status="FAIL", reason="CHECKPOINT_MISMATCH",
+                    checkpoint_count=payload["count"],
+                    checkpoint_head=payload["head"])
+    return dict(result, checkpoint="verified")
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="verify_ledger")
     target = parser.add_mutually_exclusive_group(required=True)
     target.add_argument("ledger", nargs="?", help="旧版 ledger.json 路径")
     target.add_argument("--database", type=Path,
                         help="v2.7 SQLite 数据库（只读打开）")
+    parser.add_argument("--checkpoint", type=Path,
+                        help="整库备份签名检查点；须与 --public-key 同时使用")
+    parser.add_argument("--public-key", type=Path,
+                        help="Ed25519 公钥 PEM")
     args = parser.parse_args(argv)
+    if (args.checkpoint is None) != (args.public_key is None):
+        parser.error("--checkpoint 与 --public-key 必须同时提供")
+    if args.checkpoint is not None and args.database is None:
+        parser.error("--checkpoint 只用于 --database 模式")
     result = (_json_result(args.ledger) if args.ledger is not None
               else verify_database_file(args.database))
+    if args.checkpoint is not None:
+        result = _apply_checkpoint(result, args.checkpoint, args.public_key)
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
     sys.stdout.write(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
