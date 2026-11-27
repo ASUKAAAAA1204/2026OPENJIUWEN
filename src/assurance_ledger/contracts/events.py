@@ -70,13 +70,18 @@ class TurnCompleted(_Event):
 
 class TurnFailed(_Event):
     type: Literal["turn_failed"]
-    outcome: Literal["known_failure", "unknown"]
+    outcome: Literal["known_failure", "unknown", "cancelled"]
     message: str = Field(min_length=1, max_length=1000)
+
+
+class TurnCancelRequested(_Event):
+    type: Literal["turn_cancel_requested"]
+    reason: str = Field(min_length=1, max_length=1000)
 
 
 RunEvent = Annotated[
     Union[TurnStarted, AssistantDelta, ToolIntent, ApprovalRequested,
-          ToolResult, TurnCompleted, TurnFailed],
+          ToolResult, TurnCancelRequested, TurnCompleted, TurnFailed],
     Field(discriminator="type"),
 ]
 
@@ -86,6 +91,7 @@ EVENT_MODELS = {
     "tool_intent": ToolIntent,
     "approval_requested": ApprovalRequested,
     "tool_result": ToolResult,
+    "turn_cancel_requested": TurnCancelRequested,
     "turn_completed": TurnCompleted,
     "turn_failed": TurnFailed,
 }

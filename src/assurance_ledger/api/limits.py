@@ -140,4 +140,28 @@ class InternalLimitsMiddleware:
                               "内部请求超时")
 
 
-__all__ = ["InternalLimitsMiddleware", "TokenBucket"]
+class ShutdownGuardMiddleware:
+    """停机时拒绝新的写请求；读请求仍可完成"""
+
+    WRITE_METHODS = frozenset({"POST", "PUT", "PATCH", "DELETE"})
+
+    def __init__(self, app: ASGIApp, state_provider: Callable[[], Any]) -> None:
+        self.app = app
+        self.state_provider = state_provider
+
+    async def __call__(self, scope: dict, receive: Callable,
+                       send: Callable) -> None:
+        if (scope["type"] == "http"
+                and scope.get("method") in self.WRITE_METHODS):
+            state = self.state_provider()
+            path = scope.get("path", "")
+            if (state is not None and getattr(state, "shutting_down", False)
+                    and (path.startswith("/api/v27/")
+                         or path.startswith("/internal/v1/"))):
+                await _reject(scope, receive, send, 503, "SHUTTING_DOWN",
+                              "服务停机中，请稍后重试")
+                return
+        await self.app(scope, receive, send)
+
+
+__all__ = ["InternalLimitsMiddleware", "ShutdownGuardMiddleware", "TokenBucket"]

@@ -169,7 +169,8 @@ def make_config(base: Path, **security_overrides) -> PlatformConfig:
     security.update(security_overrides)
     return PlatformConfig(
         root=base,
-        server=ServerConfig(public_origin="http://testserver"),
+        server=ServerConfig(public_origin="http://testserver",
+                            shutdown_grace_seconds=0),
         storage=StorageConfig(
             database=base / "data/platform.db", outputs=base / "outputs",
             keys=base / "data/keys", backups=base / "data/backups"),
@@ -234,4 +235,29 @@ def platform_factory(tmp_path: Path):
 
     yield build
     for client in reversed(clients):
+        client.__exit__(None, None, None)
+
+
+@pytest.fixture
+def platform_session(tmp_path: Path):
+    """返回可显式关闭的平台，用于驱动 lifespan 停机收尾"""
+    opened = []
+
+    def build():
+        config = make_config(tmp_path / f"session-{len(opened)}")
+        app = create_app(config)
+        client = TestClient(app, client=("127.0.0.1", 50000))
+        client.__enter__()
+        opened.append(client)
+        platform = login_platform(client, app, config)
+
+        def close() -> None:
+            if client in opened:
+                opened.remove(client)
+                client.__exit__(None, None, None)
+
+        return platform, close
+
+    yield build
+    for client in reversed(opened):
         client.__exit__(None, None, None)

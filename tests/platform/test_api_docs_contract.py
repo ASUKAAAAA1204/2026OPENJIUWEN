@@ -59,10 +59,11 @@ def test_committed_openapi_matches_runtime(tmp_path):
 
 def test_events_schema_and_reference_cover_contracts():
     schema = event_schema()
-    assert len(schema["oneOf"]) == len(EVENT_MODELS) == 7
+    assert len(schema["oneOf"]) == len(EVENT_MODELS) == 8
+    assert "turn_cancel_requested" in EVENT_MODELS
     events = json.loads(
         (ROOT / "docs/api/generated/events.schema.json").read_text(encoding="utf-8"))
-    assert len(events["oneOf"]) == 7
+    assert len(events["oneOf"]) == 8
     reference = (ROOT / "docs/api/generated/reference.md").read_text(encoding="utf-8")
     for endpoint in ENDPOINTS:
         assert endpoint["path"] in reference

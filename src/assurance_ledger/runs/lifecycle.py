@@ -31,7 +31,8 @@ from . import idempotency
 
 TASK_ID_MAX = 160
 TITLE_MAX = 2000
-ACTIVE_TURN_STATUSES = ("starting", "active", "awaiting_approval")
+ACTIVE_TURN_STATUSES = ("starting", "active", "awaiting_approval",
+                        "cancelling")
 RUN_STATES = ("open", "closed", "degraded")
 RUN_ID_PATTERN = re.compile(r"^RUN-[A-Z0-9]{16,32}$")
 
@@ -281,7 +282,7 @@ def _can_resume(db: sqlite3.Connection, run: RunRecord, user: Any,
     turn = latest_turn(db, run.run_id, run.segment)
     if turn is None:
         return False, "当前段没有中断记录"
-    if turn["status"] not in ("failed", "unknown", "review"):
+    if turn["status"] not in ("failed", "unknown", "review", "cancelled"):
         return False, "当前段没有需要恢复的中断"
     return True, "上次轮次中断且无在途副作用，可恢复"
 

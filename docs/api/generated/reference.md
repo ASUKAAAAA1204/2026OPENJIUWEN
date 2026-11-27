@@ -53,6 +53,9 @@
 | `CHECKPOINT_MISSING` | 导出缺少签名检查点 | 404 |
 | `CHECKPOINT_INVALID` | 检查点签名或摘要不符 | 409 |
 | `CHECKPOINT_KEY_UNAVAILABLE` | 检查点私钥不可用 | 503 |
+| `TURN_NOT_CANCELLABLE` | 没有可取消的活动 turn | 409 |
+| `CANCEL_NOT_ALLOWED` | 当前角色无权取消 | 403 |
+| `SHUTTING_DOWN` | 服务停机中拒绝新写入 | 503 |
 
 `request_id` 同时写入响应头 `X-Request-ID`。服务端不回显堆栈、密钥或原始实参。
 
@@ -117,6 +120,7 @@ data: {"seq":7,"type":"tool_result","turn_id":"TURN-...","decision_id":"DEC-..."
 | GET | `/api/v27/runs/{run_id}/audit` | 运行审计快照与哈希链校验 | 可见该运行的角色 |
 | GET | `/api/v27/runs/{run_id}/execution-state` | 执行状态与修订 | 可见该运行的角色 |
 | POST | `/api/v27/runs/{run_id}/execute` | 启动或续读执行流（SSE） | 平台管理员/开发者（对象授权） |
+| POST | `/api/v27/runs/{run_id}/cancel` | 幂等取消活动 turn | 平台管理员/值班人员/运行 owner 开发者 |
 | GET | `/api/v27/runs/{run_id}/decisions/{decision_id}/events` | 单个决策的事件时间线 | 可见该运行的角色 |
 | GET | `/api/v27/runs/{run_id}/claims` | 断言追溯与缺决策风险记录 | 可见该运行的角色 |
 | GET | `/api/v27/approvals` | 审批队列 | 平台管理员/值班人员 |
@@ -241,6 +245,15 @@ data: {"seq":7,"type":"tool_result","turn_id":"TURN-...","decision_id":"DEC-..."
 - 认证：同源 Cookie；写请求需 `X-CSRF-Token` 与 `Idempotency-Key`
 - 响应要点：text/event-stream；id=seq，从 1 严格递增
 - 请求 Schema：`ExecuteRequest`
+
+### POST /api/v27/runs/{run_id}/cancel
+
+幂等取消活动 turn
+
+- 权限：平台管理员/值班人员/运行 owner 开发者
+- 认证：同源 Cookie；写请求需 `X-CSRF-Token` 与 `Idempotency-Key`
+- 响应要点：CancelReceipt：turn_id、status、cancelled、duplicate；无活动 turn 返回 409 TURN_NOT_CANCELLABLE
+- 请求 Schema：`CancelRequest`
 
 ### GET /api/v27/runs/{run_id}/decisions/{decision_id}/events
 

@@ -85,6 +85,12 @@ def can_approve(user: Any) -> bool:
     return role_of(user) in ("platform_admin", "on_call")
 
 
+def can_cancel_run(user: Any, run: Any, security: SecurityConfig) -> bool:
+    if not can_view_run(user, run, security):
+        return False
+    return role_of(user) in ("platform_admin", "on_call", "developer")
+
+
 def can_export_run(user: Any, run: Any, security: SecurityConfig) -> bool:
     if not can_view_run(user, run, security):
         return False
@@ -127,6 +133,7 @@ __all__ = [
     "ROLES",
     "ROLE_LABELS",
     "can_approve",
+    "can_cancel_run",
     "can_configure_management",
     "can_create_run",
     "can_execute_management",

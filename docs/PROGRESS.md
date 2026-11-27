@@ -315,3 +315,17 @@ docs/design/design_cheatsheet.md → 一页速查
 **边界**：三框架生产适配器仍只注册文件写入；REWRITE、异常、取消、并发、恢复、委派在线记录未取得，协议层测试不计三框架验收。服务端仍无取消端点。openJiuwen `0.1.20.post1` 制品获取方式未记录，干净环境不可复现。M5 硬门禁未开始。
 
 **下一步**：批次 2 把删除/命令/网络/Git/委派工具接入三个生产适配器并补在线矩阵；记录 openJiuwen 制品来源；批次 3 执行 shadow、红队、回放与导出独立复核。
+
+---
+
+### 2026-11-27 后端架构完善批次（backend 分支）
+
+**内容**：按[后端架构完善方案](../draft/开发文档/TemisGuard-v2.7_后端架构完善方案_2026-11-27.md)推进工作流 A、C、D：导出签名检查点、取消/停机/恢复时延、内部限流与 Git/命令资源边界。
+
+**产出**：`ledger/export_checkpoint.py`（清单签名与独立校验）、`GET /runs/{run_id}/exports/{export_id}/checkpoint`、导出响应头 `X-Export-Checkpoint-*`、`init_checkpoint_key.py`、`verify_export.py`、`backup_db.py` 默认签名、`verify_ledger.py --checkpoint`、`docs/deploy/BACKUP.md`；`POST /runs/{run_id}/cancel`、`GET /internal/v1/turns/{id}/control`、`turn_cancel_requested` 与 `turn_failed.outcome=cancelled`、停机收尾与 503 写保护；`api/limits.py`（1 MiB body、令牌桶、超时）、Gate Git 允许清单与命令 rlimit；迁移 v3（`exports.checkpoint_sha256`、`snapshots.storage`、取消状态）。
+
+**验证**：`tests/platform tests/contracts` 225 passed / 1 skipped；全量 1096 passed / 3 failed / 14 errors，失败与错误均为既有基线（缺 `openjiuwen` 与 pytest nodeid 差异）。新增测试覆盖检查点篡改/截断、无密钥显式不可用、越权、413/429、Git 允许清单、命令超时与 POSIX 资源限制、四类取消路径、停机标记与 55 秒恢复边界。
+
+**边界**：检查点只证明导出字节与签名时刻一致，私钥保管与离线留存由运维负责；Windows Job Object 不可用时标记 `command_limits=partial`，不宣称完整资源隔离。取消只保证“最多一次副作用”，未知结果进复核队列不重试。
+
+**下一步**：批次 2 可观测性（JSON 日志、指标、OTel）与投影重建/大快照落盘；批次 3 多工具适配器与三框架在线矩阵；随后 M5 验收运行器。

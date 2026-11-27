@@ -73,6 +73,11 @@ ENDPOINTS: list[dict[str, Any]] = [
      "summary": "启动或续读执行流（SSE）",
      "roles": "平台管理员/开发者（对象授权）", "write": True,
      "response": "text/event-stream；id=seq，从 1 严格递增"},
+    {"method": "POST", "path": "/api/v27/runs/{run_id}/cancel",
+     "summary": "幂等取消活动 turn",
+     "roles": "平台管理员/值班人员/运行 owner 开发者", "write": True,
+     "response": "CancelReceipt：turn_id、status、cancelled、duplicate；"
+                 "无活动 turn 返回 409 TURN_NOT_CANCELLABLE"},
     {"method": "GET",
      "path": "/api/v27/runs/{run_id}/decisions/{decision_id}/events",
      "summary": "单个决策的事件时间线",
@@ -180,6 +185,9 @@ ERROR_CODES = [
     ("CHECKPOINT_MISSING", "导出缺少签名检查点", "404"),
     ("CHECKPOINT_INVALID", "检查点签名或摘要不符", "409"),
     ("CHECKPOINT_KEY_UNAVAILABLE", "检查点私钥不可用", "503"),
+    ("TURN_NOT_CANCELLABLE", "没有可取消的活动 turn", "409"),
+    ("CANCEL_NOT_ALLOWED", "当前角色无权取消", "403"),
+    ("SHUTTING_DOWN", "服务停机中拒绝新写入", "503"),
 ]
 
 
@@ -217,6 +225,8 @@ def _event_markdown() -> str:
               "- `tool_intent.gate=ASK` 必须携带 `approval_id`；其它 gate 不得携带。",
               "- `tool_result.status` 仅 `EXEC_FINISHED`/`EXEC_FAILED`/`UNKNOWN_OUTCOME`；",
               "  只有结果持久化后服务端才发出。",
+              "- `turn_cancel_requested` 只表示服务端已受理取消；终态是",
+              "  `turn_failed.outcome=cancelled`，取消后副作用最多一次。",
               "- `turn_failed.outcome=unknown` 表示结果未知，客户端只能同 request_id 续读，",
               "  不得据此重新调度模型或工具。",
               "- 断线不等于取消；重连使用 `Last-Event-ID`，相同序号内容不可变。",

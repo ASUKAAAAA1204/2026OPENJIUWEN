@@ -12,7 +12,7 @@ from fastapi.responses import JSONResponse
 from starlette.concurrency import run_in_threadpool
 
 from ...ledger.writer import read_connection
-from ...runs import approvals, claims, decisions, execution, lifecycle, turns
+from ...runs import approvals, claims, control, decisions, execution, lifecycle, turns
 from ...workers.registry import WorkerError, bootstrap_ok, heartbeat, register_worker
 from ..deps import client_ip, platform_state, worker_auth
 from ..errors import ApiError
@@ -106,6 +106,24 @@ def push_turn_event(request: Request, turn_id: str, body: InternalEventRequest,
         event_type=body.type, payload=body.payload))
     state.broker.publish_threadsafe(turn_id, wire)
     return {"seq": wire["seq"], "event": wire}
+
+
+@router.get("/turns/{turn_id}/control")
+async def turn_control(request: Request, turn_id: str,
+                       timeout: int = Query(default=1, ge=0, le=5),
+                       worker=Depends(worker_auth)):
+    state = platform_state(request)
+    _require_turn_worker(state.config.database, turn_id, worker["worker_id"])
+    loop = asyncio.get_running_loop()
+    deadline = loop.time() + timeout
+    while True:
+        with read_connection(state.config.database) as db:
+            info = control.control_state(db, turn_id, state.config)
+        if info is None:
+            raise ApiError(404, "TURN_NOT_FOUND", "turn 不存在")
+        if info["cancel_requested"] or timeout == 0 or loop.time() >= deadline:
+            return info
+        await asyncio.sleep(0.25)
 
 
 @router.post("/turns/{turn_id}/finish")

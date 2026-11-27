@@ -143,8 +143,15 @@ class InternalEventRequest(StrictModel):
     payload: dict[str, Any]
 
 
+class CancelRequest(StrictModel):
+    request_id: str = Field(min_length=1, max_length=160)
+    expected_segment: int = Field(ge=1)
+    expected_execution_revision: str = Field(min_length=1, max_length=160)
+    reason: str = Field(min_length=1, max_length=2000)
+
+
 class InternalFinishRequest(StrictModel):
-    outcome: Literal["completed", "failed", "unknown"]
+    outcome: Literal["completed", "failed", "unknown", "cancelled"]
     run_state: Literal["open", "degraded", "closed"] | None = None
     message: str = Field(default="", max_length=1000)
 
@@ -180,6 +187,7 @@ class ClaimIngest(StrictModel):
 
 __all__ = [
     "ApprovalAnswer",
+    "CancelRequest",
     "Capability",
     "ClaimIngest",
     "ClaimRequest",

@@ -282,6 +282,41 @@
           "type": "integer"
         },
         "type": {
+          "const": "turn_cancel_requested",
+          "title": "Type",
+          "type": "string"
+        },
+        "turn_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "seq",
+        "type",
+        "turn_id",
+        "reason"
+      ],
+      "title": "TurnCancelRequested",
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "type": {
           "const": "turn_completed",
           "title": "Type",
           "type": "string"
@@ -333,7 +368,8 @@
         "outcome": {
           "enum": [
             "known_failure",
-            "unknown"
+            "unknown",
+            "cancelled"
           ],
           "title": "Outcome",
           "type": "string"

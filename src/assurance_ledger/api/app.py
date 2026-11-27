@@ -25,14 +25,14 @@ from ..ledger.record_store import RecordStore
 from ..ledger.redaction import Redactor
 from ..ledger.sqlite_events import SQLiteEventStore
 from ..ledger.writer import WriterQueue, read_connection
-from ..runs import lifecycle
+from ..runs import control, lifecycle
 from ..runs.decisions import REDACTION_PATTERNS
 from ..runs import approvals as approval_service
 from ..runs import execution
 from ..workers.registry import healthy_workers
 from ..workers.supervisor import WorkerSupervisor, central_url
 from .errors import ApiError, error_body, error_response, map_exception, request_id
-from .limits import InternalLimitsMiddleware
+from .limits import InternalLimitsMiddleware, ShutdownGuardMiddleware
 from .routers import (
     approvals,
     claims,
@@ -117,7 +117,7 @@ async def _recovery_loop(state: PlatformState) -> None:
                 state.config)
         except Exception:
             logger.exception("turn/审批恢复扫描失败")
-        await asyncio.sleep(10)
+        await asyncio.sleep(5)
 
 
 def create_app(config: PlatformConfig | None = None, *,
@@ -184,6 +184,17 @@ def create_app(config: PlatformConfig | None = None, *,
                 await recovery_task
             except asyncio.CancelledError:
                 pass
+            state.shutting_down = True
+            try:
+                cancelled = await run_in_threadpool(
+                    control.initiate_shutdown_cancels, writer, resolved)
+                grace = resolved.server.shutdown_grace_seconds
+                if cancelled and grace > 0:
+                    await asyncio.sleep(grace)
+                await run_in_threadpool(
+                    control.finalize_shutdown, writer, journal, resolved)
+            except Exception:
+                logger.exception("停机收尾失败")
             if state.supervisor is not None:
                 state.supervisor.stop()
             writer.stop()
@@ -225,6 +236,9 @@ def create_app(config: PlatformConfig | None = None, *,
     # 最后添加，确保它包住请求 ID 中间件，超限能返回 413/429 而不是 500
     app.add_middleware(
         InternalLimitsMiddleware,
+        state_provider=lambda: getattr(app.state, "platform", None))
+    app.add_middleware(
+        ShutdownGuardMiddleware,
         state_provider=lambda: getattr(app.state, "platform", None))
 
     for module in (health, session, runs, events, execution_router, claims,

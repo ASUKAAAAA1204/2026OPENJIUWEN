@@ -165,14 +165,15 @@ def finish_turn(writer, config: PlatformConfig, *, worker: sqlite3.Row,
                 turn_id: str, outcome: str, run_state: str | None,
                 message: str = "", now: datetime | None = None) -> dict[str, Any]:
     moment = now or datetime.now(timezone.utc)
-    if outcome not in ("completed", "failed", "unknown"):
+    if outcome not in ("completed", "failed", "unknown", "cancelled"):
         raise ExecutionConflict("outcome 非法")
 
     def job(db: sqlite3.Connection) -> dict[str, Any]:
         turn = turns.require_turn(db, turn_id)
         if turn["worker_id"] and turn["worker_id"] != worker["worker_id"]:
             raise ExecutionConflict("turn 已分配给其他 worker")
-        if turn["status"] in ("completed", "failed", "unknown", "review"):
+        if turn["status"] in ("completed", "failed", "unknown", "review",
+                              "cancelled"):
             return {"turn_id": turn_id, "status": turn["status"], "duplicate": True}
         if outcome == "completed":
             event_type = "turn_completed"
@@ -180,9 +181,12 @@ def finish_turn(writer, config: PlatformConfig, *, worker: sqlite3.Row,
                        "run_state": run_state or "open"}
         else:
             event_type = "turn_failed"
-            payload = {"turn_id": turn_id,
-                       "outcome": "unknown" if outcome == "unknown" else "known_failure",
-                       "message": message or "执行失败"}
+            failure = ("unknown" if outcome == "unknown"
+                       else "cancelled" if outcome == "cancelled"
+                       else "known_failure")
+            payload = {"turn_id": turn_id, "outcome": failure,
+                       "message": message or ("执行已取消" if outcome == "cancelled"
+                                              else "执行失败")}
         emitted = turns.append_turn_event(
             db, turn_id=turn_id, client_event_id=f"finish:{outcome}",
             event_type=event_type, payload=payload, now=moment)
@@ -209,6 +213,59 @@ def finish_turn(writer, config: PlatformConfig, *, worker: sqlite3.Row,
     return writer.call(job)
 
 
+def mark_turn_unknown(db: sqlite3.Connection, turn: sqlite3.Row, journal, *,
+                      reason: str, moment: datetime,
+                      review_reason: str | None = None) -> None:
+    """把活动 turn 定为结果未知，并把未终结决策标记 UNKNOWN_OUTCOME"""
+    turns.append_turn_event(
+        db, turn_id=turn["turn_id"],
+        client_event_id=f"unknown:{turn['turn_id']}",
+        event_type="turn_failed",
+        payload={"turn_id": turn["turn_id"], "outcome": "unknown",
+                 "message": reason},
+        now=moment)
+    db.execute(
+        "INSERT OR IGNORE INTO review_queue(review_id,run_id,kind,decision_id,"
+        "claim_id,reason,status,created_at,reviewed_at) "
+        "VALUES(?,?,?,NULL,NULL,?,'queued',?,NULL)",
+        ("REV-" + secrets.token_hex(8).upper(), turn["run_id"],
+         "UNKNOWN_OUTCOME", review_reason or reason, utc_iso(moment)))
+    db.execute(
+        "UPDATE runs SET revision=revision+1, updated_at=? WHERE run_id=?",
+        (utc_iso(moment), turn["run_id"]))
+    intents = db.execute(
+        "SELECT json_extract(body,'$.decision_id') AS decision_id, "
+        "json_extract(body,'$.event.intent.run_id') AS run_id, "
+        "json_extract(body,'$.event.gate') AS gate "
+        "FROM events WHERE json_extract(body,'$.event.turn_id')=?",
+        (turn["turn_id"],)).fetchall()
+    from ..contracts.transitions import TransitionError, project
+    for intent in intents:
+        decision_id = intent["decision_id"]
+        if not isinstance(decision_id, str) or intent["gate"] == "DENY":
+            continue
+        history = []
+        for (encoded,) in db.execute(
+                "SELECT body FROM events WHERE json_extract(body,'$.decision_id')=? "
+                "ORDER BY seq", (decision_id,)):
+            item = json.loads(encoded)
+            if isinstance(item.get("event"), dict):
+                history.append(item["event"])
+        try:
+            terminal = project(history).terminal
+        except (TransitionError, ValueError):
+            terminal = False
+        if terminal:
+            continue
+        try:
+            journal.append_in(db, f"recovery:{decision_id}", decision_id, {
+                "type": "UNKNOWN_OUTCOME", "reason": "worker_stopped",
+                "recorded_at": utc_iso(moment),
+            })
+        except ValueError:
+            continue
+
+
 def recover_stale_turns(writer, journal, config: PlatformConfig, *,
                         now: datetime | None = None) -> list[str]:
     moment = now or datetime.now(timezone.utc)
@@ -218,61 +275,18 @@ def recover_stale_turns(writer, journal, config: PlatformConfig, *,
         rows = db.execute(
             "SELECT t.*, w.last_seen_at FROM turns t "
             "LEFT JOIN workers w ON w.worker_id=t.worker_id "
-            "WHERE t.status IN ('starting','active','awaiting_approval')"
+            "WHERE t.status IN ('starting','active','awaiting_approval',"
+            "'cancelling')"
         ).fetchall()
         recovered = []
         for turn in rows:
             last = turn["last_seen_at"]
-            stale = last is None or datetime.fromisoformat(last) < cutoff
+            stale = last is None or datetime.fromisoformat(last) <= cutoff
             if not stale:
                 continue
-            turns.append_turn_event(
-                db, turn_id=turn["turn_id"],
-                client_event_id=f"recovery:{turn['turn_id']}",
-                event_type="turn_failed",
-                payload={"turn_id": turn["turn_id"], "outcome": "unknown",
-                         "message": "worker 心跳丢失，执行结果未知"},
-                now=moment)
-            db.execute(
-                "INSERT OR IGNORE INTO review_queue(review_id,run_id,kind,decision_id,"
-                "claim_id,reason,status,created_at,reviewed_at) "
-                "VALUES(?,?,?,NULL,NULL,?,'queued',?,NULL)",
-                ("REV-" + secrets.token_hex(8).upper(), turn["run_id"],
-                 "UNKNOWN_OUTCOME", "worker 心跳丢失", utc_iso(moment)))
-            db.execute(
-                "UPDATE runs SET revision=revision+1, updated_at=? WHERE run_id=?",
-                (utc_iso(moment), turn["run_id"]))
-            intents = db.execute(
-                "SELECT json_extract(body,'$.decision_id') AS decision_id, "
-                "json_extract(body,'$.event.intent.run_id') AS run_id, "
-                "json_extract(body,'$.event.gate') AS gate "
-                "FROM events WHERE json_extract(body,'$.event.turn_id')=?",
-                (turn["turn_id"],)).fetchall()
-            from ..contracts.transitions import TransitionError, project
-            for intent in intents:
-                decision_id = intent["decision_id"]
-                if not isinstance(decision_id, str) or intent["gate"] == "DENY":
-                    continue
-                history = []
-                for (encoded,) in db.execute(
-                        "SELECT body FROM events WHERE json_extract(body,'$.decision_id')=? "
-                        "ORDER BY seq", (decision_id,)):
-                    item = json.loads(encoded)
-                    if isinstance(item.get("event"), dict):
-                        history.append(item["event"])
-                try:
-                    terminal = project(history).terminal
-                except (TransitionError, ValueError):
-                    terminal = False
-                if terminal:
-                    continue
-                try:
-                    journal.append_in(db, f"recovery:{decision_id}", decision_id, {
-                        "type": "UNKNOWN_OUTCOME", "reason": "worker_stopped",
-                        "recorded_at": utc_iso(moment),
-                    })
-                except ValueError:
-                    continue
+            mark_turn_unknown(db, turn, journal,
+                              reason="worker 心跳丢失，执行结果未知",
+                              review_reason="worker 心跳丢失", moment=moment)
             recovered.append(turn["turn_id"])
         return recovered
 
@@ -286,6 +300,7 @@ __all__ = [
     "claim_turn",
     "execution_state",
     "finish_turn",
+    "mark_turn_unknown",
     "recover_stale_turns",
     "start_turn",
 ]

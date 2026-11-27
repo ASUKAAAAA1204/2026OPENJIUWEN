@@ -1,5 +1,19 @@
 # TemisGuard v2.7 接口变更记录
 
+## 2026-11-27 取消、停机与恢复时延（backend 分支）
+
+- 新增 `POST /api/v27/runs/{run_id}/cancel`：按 `(run_id, request_id)` 幂等，
+  无活动 turn 返回 409 `TURN_NOT_CANCELLABLE`，越权返回 403 `CANCEL_NOT_ALLOWED`；
+  未领取的 turn 直接置 `cancelled`，执行中的 turn 进入 `cancelling` 等 worker ack。
+- 新增内部端点 `GET /internal/v1/turns/{turn_id}/control`：worker 轮询取消标志与截止时间。
+- SSE 新增事件 `turn_cancel_requested`；`turn_failed.outcome` 扩展 `cancelled`
+  （向后兼容枚举扩展）。取消时待审批置 `cancelled`，审批不可再消费。
+- 停机顺序：拒绝新写入（503 `SHUTTING_DOWN`）→ 发起取消 → 等 `shutdown_grace_seconds`
+  → 未终态 turn 记 `unknown` 并进复核队列 → 停 worker → 刷新写队列。
+- 心跳丢失阈值 60→55 秒、恢复扫描 10→5 秒，最坏标记落在 55–60 秒。
+- 数据库迁移 v3 的 `turns.status` 已容纳 `cancelling` / `cancelled`。
+- 新增平台测试 `test_control_contract.py`、`test_shutdown_contract.py`。
+
 ## 2026-11-27 安全边界与内部限流（backend 分支）
 
 - `/internal/v1/*` 增加 1 MiB body 上限（413 `INTERNAL_BODY_TOO_LARGE`）、
