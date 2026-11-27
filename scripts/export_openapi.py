@@ -195,7 +195,7 @@ def _event_markdown() -> str:
              "- 传输：`text/event-stream`；`id` 必须等于 JSON `seq`",
              "- 同一 turn 内从 1 严格递增、无空洞；内容不可变",
              "- 心跳：`: ping` 注释行，不计 seq；终止：`turn_completed` / `turn_failed`",
-             "", "| 类型 | 必填字段 |", "|---|---|"]
+             "", "| 类型 | 必填字段 |", "| --- | --- |"]
     for name, model in EVENT_MODELS.items():
         fields = []
         for field_name, field in model.model_fields.items():
@@ -250,7 +250,7 @@ def _reference_markdown(schema: dict[str, Any]) -> str:
         "```",
         "",
         "| 错误码 | 含义 | HTTP |",
-        "|---|---|---|",
+        "| --- | --- | --- |",
     ]
     for code, meaning, status in ERROR_CODES:
         lines.append(f"| `{code}` | {meaning} | {status} |")
@@ -294,7 +294,7 @@ def _reference_markdown(schema: dict[str, Any]) -> str:
         "## 7 权限矩阵",
         "",
         "| 能力 | 平台管理员 | 值班人员 | 开发者 | 合规审计 | 平台运营 |",
-        "|---|---|---|---|---|---|",
+        "| --- | --- | --- | --- | --- | --- |",
         "| 查看账本 | 全部 | 全部 | 本人运行 | 全部只读 | 所属 Skill |",
         "| 配置策略表 | 可 | 不可 | 不可 | 不可 | 不可 |",
         "| 审批 | 可 | 可 | 不可 | 不可 | 不可 |",
@@ -306,7 +306,7 @@ def _reference_markdown(schema: dict[str, Any]) -> str:
         "## 8 端点",
         "",
         "| 方法 | 路径 | 说明 | 角色 |",
-        "|---|---|---|---|",
+        "| --- | --- | --- | --- |",
     ]
     for endpoint in ENDPOINTS:
         lines.append(f"| {endpoint['method']} | `{endpoint['path']}` | "
