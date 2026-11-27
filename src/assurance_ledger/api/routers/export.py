@@ -92,7 +92,8 @@ def export_run(request: Request, run_id: str, body: ExportRequest,
         raise ApiError(409, "EXPORT_CONFLICT",
                        "导出文件缺失或指纹不符，无法确认原导出内容")
     try:
-        data, meta = ledger_export.build_run_export(db, run)
+        data, meta = ledger_export.build_run_export(
+            db, run, snapshots_root=state.config.storage.snapshots)
     except ledger_export.ExportError:
         METRICS.chain_verify_failures.inc({"source": "export"})
         raise

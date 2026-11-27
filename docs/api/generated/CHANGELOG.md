@@ -1,5 +1,15 @@
 # TemisGuard v2.7 接口变更记录
 
+## 2026-11-27 大快照落盘（backend 分支）
+
+- `snapshots` 增加 `storage`（`inline` / `file`）；超过
+  `storage.snapshot_inline_max_bytes` 的快照写到
+  `storage.snapshots/<aa>/<sha256>.json`，`body` 存相对路径。
+- 读取时校验内容摘要；文件缺失或摘要不符抛错，不回退空值。
+- 导出、决策意图/结果、回放、决策日志校验都通过同一存储根读取。
+- 兼容：既有 inline 快照行为不变；迁移 v3 为旧表补 `storage` 列。
+- 新增平台测试 `test_snapshot_storage.py`。
+
 ## 2026-11-27 可观测性：JSON 日志、指标与 OTel（backend 分支）
 
 - 新增单行 JSON 日志：`ts`、`level`、`component`、`event`、`request_id`、

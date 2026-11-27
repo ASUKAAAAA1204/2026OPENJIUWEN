@@ -125,7 +125,8 @@ def replay(writer, store, config: PlatformConfig, *, user: Any, run_id: str,
                     args_ref = event.get("args_snapshot_ref") if event else None
                     workspace = config.workspace(run.workspace_id)
                     try:
-                        args = (SnapshotStore.unwrap(SnapshotStore.read_on(db, args_ref)).get("args")
+                        args = (SnapshotStore.unwrap(SnapshotStore.read_on(
+                            db, args_ref, directory=config.storage.snapshots)).get("args")
                                 if args_ref else None)
                     except Exception:
                         args = None

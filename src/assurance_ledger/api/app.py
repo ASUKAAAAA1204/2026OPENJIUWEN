@@ -151,7 +151,8 @@ def create_app(config: PlatformConfig | None = None, *,
             policy.configuration.get("redaction_version", "redaction-v1")
             if policy is not None else "redaction-v1")
         redactor = Redactor(redaction_version, REDACTION_PATTERNS)
-        journal = DecisionJournal(store, redactor)
+        journal = DecisionJournal(store, redactor,
+                                  snapshots_root=resolved.storage.snapshots)
         record_store = RecordStore(store, redactor)
         broker = EventBroker()
         broker.bind_loop(asyncio.get_running_loop())

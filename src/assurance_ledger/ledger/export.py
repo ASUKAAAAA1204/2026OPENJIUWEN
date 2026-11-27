@@ -18,6 +18,7 @@ from ..runs import idempotency, lifecycle
 from ..runs.lifecycle import append_audit
 from .canonical import digest_json, utc_iso
 from .chain import verify_database
+from .snapshots import SnapshotError, SnapshotStore
 
 EXPORT_SCHEMA = "temisguard-run-export-v1"
 
@@ -81,7 +82,9 @@ def _snapshot_refs(body: dict[str, Any]) -> set[str]:
     return refs
 
 
-def build_run_export(db: sqlite3.Connection, run: Any) -> tuple[bytes, dict[str, Any]]:
+def build_run_export(db: sqlite3.Connection, run: Any, *,
+                     snapshots_root: str | Path | None = None
+                     ) -> tuple[bytes, dict[str, Any]]:
     rows = _rows(db, run["run_id"])
     if not rows:
         raise ExportError("运行没有可导出事件")
@@ -91,13 +94,11 @@ def build_run_export(db: sqlite3.Connection, run: Any) -> tuple[bytes, dict[str,
         body = json.loads(row["body"])
         refs.update(_snapshot_refs(body))
     for ref in sorted(refs):
-        found = db.execute("SELECT body FROM snapshots WHERE ref=?", (ref,)).fetchone()
-        if found is None:
-            raise ExportError(f"引用快照缺失：{ref}")
-        value = json.loads(found["body"])
-        if digest_json(value) != ref:
-            raise ExportError(f"引用快照内容指纹不一致：{ref}")
-        snapshots[ref] = value
+        try:
+            snapshots[ref] = SnapshotStore.read_on(
+                db, ref, directory=snapshots_root)
+        except SnapshotError as error:
+            raise ExportError(f"引用快照不可读：{ref}：{error}") from error
     chain = verify_database(db)
     header = {
         "record_type": "run",

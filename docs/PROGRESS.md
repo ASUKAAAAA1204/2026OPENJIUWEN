@@ -329,3 +329,15 @@ docs/design/design_cheatsheet.md → 一页速查
 **边界**：检查点只证明导出字节与签名时刻一致，私钥保管与离线留存由运维负责；Windows Job Object 不可用时标记 `command_limits=partial`，不宣称完整资源隔离。取消只保证“最多一次副作用”，未知结果进复核队列不重试。
 
 **下一步**：批次 2 可观测性（JSON 日志、指标、OTel）与投影重建/大快照落盘；批次 3 多工具适配器与三框架在线矩阵；随后 M5 验收运行器。
+
+### 2026-11-27 可观测性与快照落盘（backend 分支）
+
+**内容**：完成工作流 B（JSON 日志、Prometheus 指标、可选 OTel）与工作流 E.2（大快照落盘）。
+
+**产出**：`observability/{logging,metrics,otel}.py`、`GET /metrics`、九项指标与调用点埋点、`SnapshotStore(storage=inline|file)` 与相对路径落盘、导出/回放/决策日志统一按存储根读取；新增 `test_observability.py`、`test_snapshot_storage.py`。
+
+**验证**：`tests/platform tests/contracts` 235 passed / 1 skipped；指标标签只取有限枚举，OTel 关闭时导出字节不变；大快照缺失或摘要不符报错而非回退空值。
+
+**边界**：工作流 E.1 投影重建 CLI 未实现（`turns` 的 `request_id`/`request_hash` 无法只从事件还原，需要专门设计重放口径）；`worker_restarts_total` 仅在 supervisor 进程退出重启时累加。
+
+**下一步**：设计投影重建的重放口径后补 `scripts/rebuild_projections.py`；进入批次 3 多工具适配器与三框架在线矩阵。

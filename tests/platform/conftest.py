@@ -161,6 +161,7 @@ class Platform:
 
 
 def make_config(base: Path, *, server_overrides: dict | None = None,
+                storage_overrides: dict | None = None,
                 **security_overrides) -> PlatformConfig:
     security = dict(
         allowed_root=base / "workspaces", session_secret="s" * 32,
@@ -175,7 +176,9 @@ def make_config(base: Path, *, server_overrides: dict | None = None,
                             **(server_overrides or {})),
         storage=StorageConfig(
             database=base / "data/platform.db", outputs=base / "outputs",
-            keys=base / "data/keys", backups=base / "data/backups"),
+            keys=base / "data/keys", backups=base / "data/backups",
+            snapshots=base / "data/snapshots",
+            **(storage_overrides or {})),
         security=SecurityConfig(**security),
         workspaces=(WorkspaceConfig("workspace",
                                     base / "workspaces/workspace"),),
@@ -227,9 +230,11 @@ def platform_factory(tmp_path: Path):
     clients = []
 
     def build(server_overrides: dict | None = None,
+              storage_overrides: dict | None = None,
               **security_overrides) -> Platform:
         base = tmp_path / f"platform-{len(clients)}"
         config = make_config(base, server_overrides=server_overrides,
+                             storage_overrides=storage_overrides,
                              **security_overrides)
         app = create_app(config)
         client = TestClient(app, client=("127.0.0.1", 50000))

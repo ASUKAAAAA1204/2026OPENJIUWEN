@@ -226,7 +226,9 @@ def record_intent(writer, store, journal: DecisionJournal,
         if db.execute("SELECT 1 FROM approvals WHERE turn_id=? AND status='pending' LIMIT 1",
                       (turn_id,)).fetchone():
             raise DecisionConflict("turn 已有待处理审批")
-        snapshots = SnapshotStore(store)
+        snapshots = SnapshotStore(
+            store, directory=config.storage.snapshots,
+            inline_max_bytes=config.storage.snapshot_inline_max_bytes)
         rule_ref = snapshots.capture_on(db, {
             "kind": "rule_snapshot",
             "policy_version": policy.version,
@@ -249,7 +251,9 @@ def record_intent(writer, store, journal: DecisionJournal,
             "decision_class": decision_class,
             "args": effective_args,
         }, redactor)
-        redacted_args = SnapshotStore.unwrap(SnapshotStore.read_ref(db, args_ref))
+        redacted_args = SnapshotStore.unwrap(
+            SnapshotStore.read_ref(db, args_ref,
+                                   directory=config.storage.snapshots))
         summary = _summary(tool_name, decision_class, redacted_args.get("args"))
         intent = IntentRecord(
             decision_id=decision_id, run_id=run_row.run_id,
@@ -348,14 +352,16 @@ def record_intent(writer, store, journal: DecisionJournal,
 def _result_evidence(db: sqlite3.Connection, store, redactor: Redactor,
                      *, decision_id: str, payload: Mapping[str, Any],
                      intent: Mapping[str, Any], attempt_id: str,
-                     moment: datetime) -> dict[str, Any] | None:
+                     moment: datetime, snapshots_root: Any = None,
+                     inline_max_bytes: int = 65536) -> dict[str, Any] | None:
     evidence = payload.get("evidence")
     output = payload.get("output")
     if evidence is not None and not isinstance(evidence, Mapping):
         raise DecisionError("evidence 必须是对象")
     evidence = dict(evidence or {})
     evidence_id = evidence.get("evidence_id") or "EVD-" + secrets.token_hex(8).upper()
-    snapshots = SnapshotStore(store)
+    snapshots = SnapshotStore(store, directory=snapshots_root,
+                              inline_max_bytes=inline_max_bytes)
     if output is not None:
         output_ref = snapshots.capture_on(db, {"kind": "tool_output", "output": output}, redactor)
     elif isinstance(evidence.get("output_digest"), str) and evidence["output_digest"].strip():
@@ -454,7 +460,9 @@ def record_result(writer, store, journal: DecisionJournal,
             else:
                 evidence = _result_evidence(
                     db, store, redactor, decision_id=decision_id, payload=payload,
-                    intent=intent, attempt_id=attempt_id, moment=moment)
+                    intent=intent, attempt_id=attempt_id, moment=moment,
+                    snapshots_root=config.storage.snapshots,
+                    inline_max_bytes=config.storage.snapshot_inline_max_bytes)
                 record = record_store.append_on(
                     db, event_id, "evidence",
                     {key: value for key, value in evidence.items()
@@ -470,7 +478,9 @@ def record_result(writer, store, journal: DecisionJournal,
                 raise DecisionConflict("结果提交前缺少 EXEC_STARTED")
             evidence = _result_evidence(
                 db, store, redactor, decision_id=decision_id, payload=payload,
-                intent=intent, attempt_id=attempt_id, moment=moment)
+                intent=intent, attempt_id=attempt_id, moment=moment,
+                snapshots_root=config.storage.snapshots,
+                inline_max_bytes=config.storage.snapshot_inline_max_bytes)
             journal.append_in(db, f"result:{decision_id}:{attempt_id}:finished",
                               decision_id, {
                                   "type": "EXEC_FINISHED", "attempt_id": attempt_id,

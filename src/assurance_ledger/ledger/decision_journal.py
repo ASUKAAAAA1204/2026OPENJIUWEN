@@ -15,10 +15,11 @@ from ..contracts.records import EvidenceRecord
 
 
 class DecisionJournal:
-    def __init__(self, store, redactor):
+    def __init__(self, store, redactor, *, snapshots_root=None):
         self.store = store
         self.redactor = redactor
-        SnapshotStore(store)
+        self.snapshots_root = snapshots_root
+        SnapshotStore(store, directory=snapshots_root)
 
     def append(self, event_id, decision_id, event):
         body, validate = self._prepare(decision_id, event)
@@ -53,9 +54,10 @@ class DecisionJournal:
 
         def validate(db, candidate):
             for ref in candidate.get('snapshot_refs', []):
-                row = db.execute('SELECT body FROM snapshots WHERE ref=?', (ref,)).fetchone()
-                if row is None or digest_json(json.loads(row[0])) != ref:
-                    raise SnapshotError('snapshot missing or corrupted')
+                try:
+                    SnapshotStore.read_on(db, ref, directory=self.snapshots_root)
+                except SnapshotError as error:
+                    raise SnapshotError('snapshot missing or corrupted') from error
             if candidate['event'].get('type') == 'GATE_DECIDED':
                 intent = candidate['event']['intent']
                 run = TaskRegistry._runs(db).get(intent['run_id'])
