@@ -165,8 +165,8 @@ def build_run_facts(db: sqlite3.Connection, run: Any, *,
                     assertion=evidence.get("verdict") if isinstance(evidence.get("verdict"), str) else None,
                     input_digest=_text(evidence.get("input_digest")),
                     output_digest=_text(evidence.get("output_digest")),
-                    model_id=_text(evidence.get("model_id")),
-                    model_params=_text(evidence.get("model_params")),
+                    model_id=_model_metadata(evidence.get("model_id")),
+                    model_params=_model_metadata(evidence.get("model_params")),
                     verdict=_text(evidence.get("verdict")),
                     ts=_aware(evidence.get("ts")),
                     source="ledger",
@@ -237,6 +237,13 @@ def _text(value: Any) -> str | None:
     if isinstance(value, str) and value.strip():
         return value
     return None
+
+
+def _model_metadata(value: Any) -> str | None:
+    # A's default placeholder is not a known model identity/parameter set.
+    if isinstance(value, str) and value.strip().casefold() == "unknown":
+        return None
+    return _text(value)
 
 
 def _outcome(verdict: Any) -> bool | None:
@@ -340,10 +347,13 @@ def _replays(db: sqlite3.Connection, run_id: str) -> list[ReplayOutcome]:
     outcomes = []
     for item in json.loads(row["items"]):
         matched = item.get("result") == "MATCH"
+        # 平台规则回放只重判 Gate/核对结构，并不重放事实或 verdict；即使
+        # result=MATCH 也不能声称输出已被复现。reproduced 保持 None（未知），
+        # 避免可复现性读数误得分子；规则一致性仍按 MATCH 单独计分。
         outcomes.append(ReplayOutcome(
             decision_id=item["decision_id"],
             evidence_id=item.get("evidence_ref"),
-            reproduced=matched,
+            reproduced=None,
             rule_matched=matched,
         ))
     return outcomes

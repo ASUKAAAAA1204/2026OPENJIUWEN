@@ -41,6 +41,11 @@ from assurance_ledger.contracts.records import (
     EvidenceRecord as AEvidenceRecord,
 )
 from assurance_ledger.contracts.transitions import TransitionError, project
+from assurance_ledger.ledger.snapshot_paths import (
+    SnapshotPathError,
+    read_snapshot_file,
+    validate_storage,
+)
 from assurance_ledger.engine.v27 import (
     GATES,
     RISKS,
@@ -350,12 +355,25 @@ def _read_database(path: str | Path, *,
         _require_snapshot_address(ref, where)
         if ref in snapshots:
             raise EvaluationError(f"{where}: duplicate snapshot ref {ref!r}")
-        if storage == "file":
+        try:
+            storage_kind = validate_storage(storage)
+        except SnapshotPathError as exc:
+            raise EvaluationError(
+                f"{where} {ref}: unsupported snapshot storage") from exc
+        if storage_kind == "file":
             try:
-                body_text = (root / body_text).read_text(encoding="utf-8")
+                raw = read_snapshot_file(root, body_text, ref=ref)
+            except SnapshotPathError as exc:
+                raise EvaluationError(
+                    f"{where} {ref}: snapshot file rejected: {exc}") from exc
             except OSError as exc:
                 raise EvaluationError(
                     f"{where} {ref}: snapshot file unavailable") from exc
+            try:
+                body_text = raw.decode("utf-8")
+            except UnicodeDecodeError as exc:
+                raise EvaluationError(
+                    f"{where} {ref}: snapshot file is not valid UTF-8") from exc
         body = _strict_json_loads(body_text, f"{where} {ref}")
         snapshots[ref] = _validate_snapshot_envelope(body, ref, f"{where} {ref}")
     return rows, snapshots

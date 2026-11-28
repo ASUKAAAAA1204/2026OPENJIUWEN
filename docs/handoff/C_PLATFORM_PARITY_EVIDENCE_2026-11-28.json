@@ -1,0 +1,100 @@
+{
+  "status": "PASS",
+  "profile": "core",
+  "python": "3.14.5 (tags/v3.14.5:5607950, May 10 2026, 10:43:50) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "collected": 990,
+  "nodeids_sha256": "2bb78fb021544e6b07732133c4cd7d8dc455da6a3e5fa80a3fb68fed65abf5c1",
+  "source_sha256": "267bc7b9bf6f29f80c9b538cd3223d4e9f929a384652b12e9fb62eaa8a258c63",
+  "installed_versions": {
+    "pytest": "9.2.0",
+    "pydantic": "2.14.2",
+    "rfc8785": "0.1.4",
+    "fastapi": "0.162.0",
+    "httpx": "0.28.1",
+    "cryptography": "50.0.2"
+  },
+  "lock_required": false,
+  "lock_mismatches": {
+    "annotated-doc": {
+      "expected": "0.0.7",
+      "installed": "0.0.5"
+    },
+    "fastapi": {
+      "expected": "0.164.0",
+      "installed": "0.162.0"
+    },
+    "pydantic": {
+      "expected": "2.14.3",
+      "installed": "2.14.2"
+    },
+    "pydantic_core": {
+      "expected": "2.50.4",
+      "installed": "2.50.2"
+    },
+    "typing-inspection": {
+      "expected": "0.4.5",
+      "installed": "0.4.4"
+    }
+  },
+  "pip_check_exit": 0,
+  "skip_register_sha256": "e94ace6a9e4f5bff7a28bbcd9440fbfe48218bb0a13a061497271076c7c34a19",
+  "rounds": [
+    {
+      "round": 1,
+      "returncode": 0,
+      "tests": 990,
+      "passed": 987,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 3,
+      "identities_match": true,
+      "unexpected_skips": [],
+      "outcomes_match_first": true,
+      "source_matches": true,
+      "valid": true,
+      "junit_sha256": "490abf274b39bdc3d9e15786a36fe0a6c7b710c4b8a58e20914ed9690751d335",
+      "seconds": 124.5
+    },
+    {
+      "round": 2,
+      "returncode": 0,
+      "tests": 990,
+      "passed": 987,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 3,
+      "identities_match": true,
+      "unexpected_skips": [],
+      "outcomes_match_first": true,
+      "source_matches": true,
+      "valid": true,
+      "junit_sha256": "83c1d4cc196854adcb172afd353943711d6a5f70159a3c7a1fba3d56643bcfc3",
+      "seconds": 122.269
+    },
+    {
+      "round": 3,
+      "returncode": 0,
+      "tests": 990,
+      "passed": 987,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 3,
+      "identities_match": true,
+      "unexpected_skips": [],
+      "outcomes_match_first": true,
+      "source_matches": true,
+      "valid": true,
+      "junit_sha256": "ac34038a14b9d919fed853d94b1704b8d09be87c6182c49f223246f9d9c7a40a",
+      "seconds": 117.584
+    }
+  ],
+  "network_guard": "pytest process blocks external sockets/DNS; loopback permitted; subprocesses/OS are not isolated",
+  "schema_version": "temisguard-c-parity-evidence-v1",
+  "date": "2026-11-28",
+  "base_main": "361cf29102db68ded6988fafe2cf91811ab1e906",
+  "test_scope": "tests/; includes 20 new interop, 6 metric, 32 snapshot tests",
+  "raw_evidence": "outputs/c_platform_parity_core_20261128_verified",
+  "contract_generation": "export_openapi.py regenerated public docs; git diff --exit-code -- docs/api/generated passed",
+  "ci_boundary": "Local Python 3.14 is not the locked 3.12 environment. See latest PR checks for strict core/sdk/platform/UI CI."
+}

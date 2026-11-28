@@ -85,6 +85,27 @@ def _snapshot_refs(body: dict[str, Any]) -> set[str]:
 def build_run_export(db: sqlite3.Connection, run: Any, *,
                      snapshots_root: str | Path | None = None
                      ) -> tuple[bytes, dict[str, Any]]:
+    # Multiple SELECTs must describe one read snapshot, including the optional
+    # evaluation context. Do not roll back a transaction owned by the caller.
+    owns_transaction = not db.in_transaction
+    if owns_transaction:
+        db.execute("BEGIN")
+    try:
+        cursor = db.execute("SELECT * FROM runs WHERE run_id=?", (run["run_id"],))
+        current = cursor.fetchone()
+        if current is None:
+            raise ExportError("运行不存在")
+        if not isinstance(current, sqlite3.Row):
+            current = dict(zip((column[0] for column in cursor.description), current))
+        return _build_run_export(db, current, snapshots_root=snapshots_root)
+    finally:
+        if owns_transaction:
+            db.rollback()
+
+
+def _build_run_export(db: sqlite3.Connection, run: Any, *,
+                      snapshots_root: str | Path | None = None
+                      ) -> tuple[bytes, dict[str, Any]]:
     rows = _rows(db, run["run_id"])
     if not rows:
         raise ExportError("运行没有可导出事件")
@@ -100,6 +121,7 @@ def build_run_export(db: sqlite3.Connection, run: Any, *,
         except SnapshotError as error:
             raise ExportError(f"引用快照不可读：{ref}：{error}") from error
     chain = verify_database(db)
+    from ..evaluation.platform import evaluation_context
     header = {
         "record_type": "run",
         "schema": EXPORT_SCHEMA,
@@ -117,6 +139,9 @@ def build_run_export(db: sqlite3.Connection, run: Any, *,
         "chain": chain,
         "event_count": len(rows),
         "snapshot_count": len(snapshots),
+        # Optional additive context. Existing v1 readers may ignore it; the
+        # existing checkpoint signs the entire JSONL, including these bytes.
+        "evaluation_context": evaluation_context(db, run),
     }
     lines = [header]
     for ref in sorted(snapshots):

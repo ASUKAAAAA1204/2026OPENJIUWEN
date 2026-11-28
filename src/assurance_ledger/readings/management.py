@@ -4,24 +4,33 @@ from __future__ import annotations
 import hashlib
 import json
 import sqlite3
+from dataclasses import replace
 from datetime import datetime, timezone
 from typing import Any, Mapping
 
 from ..auth import rbac
 from ..config import PlatformConfig
-from ..engine.v27 import RATE_NAMES
 from ..evaluation.management import assess_release, quote_debts
 from ..ledger.canonical import canonical_bytes, utc_iso
 from ..runs import idempotency, lifecycle
 from ..runs.lifecycle import append_audit
-from .service import build_run_facts, evaluation_groups
+from .service import build_run_facts, evaluation_groups, _model_metadata
 
 RELEASE_RULES = {
-    "rules_version": "release-rules-v1",
+    "rules_version": "release-rules-v2",
     "enabled": True,
     "min_samples": 5,
     "min_classes": 3,
-    "thresholds": {name: {"operator": "ge", "value": 0.9} for name in RATE_NAMES},
+    # PRD 明确 mark_density 与 uncertainty_debt 只记录、无默认通过线；
+    # 其余六项使用显式阈值，避免把无默认门线的读数误判为发布阻断项。
+    "thresholds": {
+        "declaration_consistency": {"operator": "ge", "value": 0.90},
+        "evidence_completeness": {"operator": "ge", "value": 0.90},
+        "reproducibility": {"operator": "ge", "value": 0.90},
+        "replay_consistency": {"operator": "ge", "value": 0.90},
+        "freshness": {"operator": "ge", "value": 0.90},
+        "disposition_execution": {"operator": "ge", "value": 0.95},
+    },
 }
 RATE_CARD = {
     "version": "rate-card-demo-v1",
@@ -50,6 +59,19 @@ class ManagementConflict(ManagementError):
 
 class ManagementCondition(ManagementError):
     code = "CONDITION_FAILED"
+
+
+def _release_facts(facts):
+    """Current platform replay records have no fact-reproduction provenance.
+
+    Keep historical frozen rows intact, but do not grant a NEW release decision
+    credit from the old rule-MATCH -> reproduced=True mapping. A future actual
+    fact reproducer needs a versioned producer/provenance contract first.
+    """
+    return [replace(run, replays=tuple(replace(item, reproduced=None) for item in run.replays),
+                    evidence=tuple(replace(item, model_id=_model_metadata(item.model_id),
+                                           model_params=_model_metadata(item.model_params)) for item in run.evidence))
+            for run in facts]
 
 
 def _snapshot_revision(rows: list[sqlite3.Row], last_id: int | None) -> str:
@@ -194,7 +216,7 @@ def assess(writer, config: PlatformConfig, *, user: Any,
         runs = _target_runs(db, config, user, target)
         if not runs:
             raise ManagementCondition("目标版本没有可评估的有效运行")
-        facts = [build_run_facts(db, run) for run in runs]
+        facts = _release_facts([build_run_facts(db, run) for run in runs])
         result = assess_release(facts, {**RELEASE_RULES, "enabled": True})
         assessment = {
             "target": dict(target),
