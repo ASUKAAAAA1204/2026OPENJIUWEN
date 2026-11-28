@@ -2,11 +2,11 @@ import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { createApprovalDemo } from '../src/components/workbench/approvals'
-import { authenticatedSession } from './helpers/authenticatedSession'
+import { workbenchApi } from './helpers/workbenchApi'
 
 test('审批可提交、提交中、结果未知、只读与到期状态四档可访问', async ({ page }) => {
   test.setTimeout(120000)
-  await authenticatedSession(page)
+  await workbenchApi(page)
   const item = createApprovalDemo(Date.now() + 600000)[0]!
   let release = () => {}, posts = 0
   const waiting = new Promise<void>(resolve => { release = resolve })

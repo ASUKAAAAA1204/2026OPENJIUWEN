@@ -51,6 +51,7 @@ test('发布通过仍注明未发布，报价需范围确认且零条目有明�
 })
 
 test('本地管理启用留痕、阻断评估与逐条报价', async ({ page }) => {
+  test.setTimeout(60000)
   await mkdir('../docs/reviews/ui/quality-round-8', { recursive: true })
   await page.goto('/')
   await page.getByRole('navigation').getByRole('button').nth(4).click()

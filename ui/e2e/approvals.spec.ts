@@ -2,9 +2,9 @@ import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { mkdir } from 'node:fs/promises'
 import { createApprovalDemo, type ApprovalAnswer } from '../src/components/workbench/approvals'
-import { authenticatedSession } from './helpers/authenticatedSession'
+import { workbenchApi } from './helpers/workbenchApi'
 import { inspectState } from './helpers/stateA11y'
-test.beforeEach(async ({ page }) => authenticatedSession(page))
+test.beforeEach(async ({ page }) => workbenchApi(page))
 
 test('拒绝回执保留参数和责任主体，不提供再次批准入口', async ({ page }) => {
   const item = createApprovalDemo(Date.now() + 600000)[0]
