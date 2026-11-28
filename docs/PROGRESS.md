@@ -341,3 +341,15 @@ docs/design/design_cheatsheet.md → 一页速查
 **边界**：工作流 E.1 投影重建 CLI 未实现（`turns` 的 `request_id`/`request_hash` 无法只从事件还原，需要专门设计重放口径）；`worker_restarts_total` 仅在 supervisor 进程退出重启时累加。
 
 **下一步**：设计投影重建的重放口径后补 `scripts/rebuild_projections.py`；进入批次 3 多工具适配器与三框架在线矩阵。
+
+---
+
+### 2026-11-28 C 平台联调与口径修复
+
+**内容**：修正规则 MATCH 冒充事实复算与默认发布阈值；新发布评估不采信旧成功位/unknown 元数据。新增平台库/JSONL 离线评测，导出可选版本化事实上下文并纳入全字节签名；A/C 共用内容寻址路径保护，原 M1 CLI 增加自定义快照根目录与输入别名保护。
+
+**产出**：[联调与 A 配合边界](handoff/C_PLATFORM_PARITY_2026-11-28.md)、[实测证据](handoff/C_PLATFORM_PARITY_EVIDENCE_2026-11-28.json)，新增 58 项用例。
+
+**验证**：冻结核心 990 项，连续三轮均 987 passed / 3 登记 skipped / 0 failed / 0 errors；源码、用例和依赖一致。pip check、既有导出/签名兼容、公共契约生成一致性通过；本机 Python 3.14 结果与严格 3.12 CI 分开记录。
+
+**边界与下一步**：A 需确认导出可选字段契约、旧导出重导出、冻结历史的审计式修订、事件/投影重建来源和存储/密钥运维。C/D 孤儿分母展示契约仍需接线；本轮不计真实模型/三框架/M5 验收。

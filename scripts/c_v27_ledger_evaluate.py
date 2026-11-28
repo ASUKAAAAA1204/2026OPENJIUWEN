@@ -2,18 +2,20 @@
 
 用法：
     python scripts/c_v27_ledger_evaluate.py --context context.json \
-        --database ledger.db [--output report.json]
+        --database ledger.db [--snapshots-root DIR] [--output report.json]
     python scripts/c_v27_ledger_evaluate.py --context context.json \
         --bundle export_dir [--public-key key.pem] [--output report.json]
 
 - 无默认合成输入：--context 必填，--database/--bundle 二选一；
 - --public-key 仅允许与 --bundle 组合（database 输入没有外部 checkpoint 协议）；
+- --snapshots-root 仅允许与 --database 组合（bundle 自带 snapshots 目录）；
 - 无 --output 时向 stdout 输出唯一 JSON；有 --output 时写文件并只打印一行
   人类摘要（不在 stdout 混入 JSON）；
 - 输入非法/IO 错误退出码 2（简短错误，无 traceback）；报告写出后若
   mapping_complete=false 退出码 3；mapping 完整即使质量指标失败也退出码 0；
-- --output 不允许覆盖任何输入文件（含数据库 -wal/-shm 副文件），也不允许
-  落在 bundle 目录内（含解析后的 symlink/hardlink 别名）。
+- --output 不允许覆盖任何输入文件（含数据库 -wal/-shm 副文件、数据库快照
+  根目录内的全部常规文件硬链接别名），也不允许落在 bundle 目录内（含解析后
+  的 symlink/hardlink 别名）。
 """
 
 from __future__ import annotations
@@ -50,12 +52,44 @@ def _same_path(left: Path, right: Path) -> bool:
     )
 
 
+def _is_redirect(path: Path) -> bool:
+    try:
+        if path.is_symlink():
+            return True
+    except OSError:
+        return True
+    checker = getattr(path, "is_junction", None)
+    if checker is not None:
+        try:
+            return bool(checker())
+        except OSError:
+            return True
+    return False
+
+
+def _walk_regular_files(root: Path):
+    for directory, subdirs, files in os.walk(root, followlinks=False):
+        parent = Path(directory)
+        subdirs[:] = [name for name in subdirs
+                      if not _is_redirect(parent / name)]
+        for name in files:
+            candidate = parent / name
+            if _is_redirect(candidate):
+                continue
+            try:
+                if candidate.is_file():
+                    yield candidate
+            except OSError:
+                continue
+
+
 def _protect_output(
     output: Path,
     context: Path | None,
     database: Path | None,
     bundle: Path | None,
     public_key: Path | None,
+    snapshots_root: Path | None = None,
 ) -> None:
     candidates: list[Path | None] = [context, public_key]
     if database is not None:
@@ -73,6 +107,20 @@ def _protect_output(
                 f"output path {str(output)!r} must not overwrite input "
                 f"{str(candidate)!r}"
             )
+    if database is not None:
+        root = (Path(snapshots_root) if snapshots_root is not None
+                else Path(str(database)).parent / "snapshots")
+        try:
+            walkable = root.is_dir()
+        except OSError:
+            walkable = False
+        if walkable:
+            # A path outside the root can still alias a source snapshot through
+            # a hardlink.  Regular snapshot sources are exactly these files.
+            for candidate in _walk_regular_files(root):
+                if _same_path(output, candidate):
+                    raise EvaluationError(
+                        "output must not overwrite a snapshot input alias")
     if bundle is not None:
         bundle_root = Path(bundle).resolve(strict=False)
         try:
@@ -125,6 +173,10 @@ def main(argv: list[str] | None = None) -> int:
     group.add_argument("--database", type=Path, default=None, help="A SQLite ledger")
     group.add_argument("--bundle", type=Path, default=None, help="A export bundle directory")
     parser.add_argument(
+        "--snapshots-root", type=Path, default=None,
+        help="snapshot files root for --database (default: database.parent/snapshots)",
+    )
+    parser.add_argument(
         "--public-key", type=Path, default=None,
         help="optional Ed25519 public key PEM (bundle signed checkpoint only)",
     )
@@ -137,17 +189,26 @@ def main(argv: list[str] | None = None) -> int:
             file=sys.stderr,
         )
         return EXIT_INVALID
+    if args.snapshots_root is not None and args.database is None:
+        print(
+            "invalid input: --snapshots-root is only supported together with "
+            "--database",
+            file=sys.stderr,
+        )
+        return EXIT_INVALID
 
     try:
         if args.output is not None:
             _protect_output(
-                args.output, args.context, args.database, args.bundle, args.public_key
+                args.output, args.context, args.database, args.bundle,
+                args.public_key, args.snapshots_root,
             )
         report = evaluate_m1(
             args.context,
             database_path=args.database,
             bundle_path=args.bundle,
             public_key_path=args.public_key,
+            snapshots_root=args.snapshots_root,
         )
     except (EvaluationError, ValueError, KeyError, TypeError, OSError) as exc:
         print(f"invalid input: {exc}", file=sys.stderr)

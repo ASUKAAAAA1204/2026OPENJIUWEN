@@ -2,6 +2,11 @@
   "schema_version": "temisguard-c-skips-v1",
   "items": [
     {
+      "nodeid": "tests/test_c_snapshot_paths.py::test_database_rejects_symlinked_snapshot_file",
+      "kind": "skip",
+      "reason": "Only when the OS denies creating a real file symlink. Directory junction/root redirect tests remain mandatory on Windows."
+    },
+    {
       "nodeid": "tests/test_c_v27_m1.py::test_bundle_rejects_symlink_snapshot",
       "kind": "skip",
       "reason": "Only when the operating system denies creating a real symlink (Windows privilege/developer-mode restriction). Hash tampering/path traversal checks are separate passing tests."

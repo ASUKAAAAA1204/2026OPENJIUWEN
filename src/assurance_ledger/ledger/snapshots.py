@@ -10,6 +10,12 @@ import os
 from pathlib import Path
 
 from .canonical import canonical_bytes, digest_json
+from .snapshot_paths import (
+    SnapshotPathError,
+    prepare_snapshot_write,
+    read_snapshot_file,
+    validate_storage,
+)
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS snapshots(
@@ -77,22 +83,33 @@ class SnapshotStore:
 
     def _write_file(self, ref: str, data: bytes) -> str:
         assert self.directory is not None
-        digest = ref.removeprefix("sha256:")
-        target = self.directory / digest[:2] / f"{digest}.json"
-        target.parent.mkdir(parents=True, exist_ok=True)
         try:
-            handle = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
+            target, relative = prepare_snapshot_write(self.directory, ref)
+        except SnapshotPathError as exc:
+            raise SnapshotError("snapshot file path rejected") from exc
+        try:
+            handle = os.open(
+                target,
+                os.O_WRONLY | os.O_CREAT | os.O_EXCL
+                | getattr(os, "O_BINARY", 0),
+                0o644,
+            )
         except FileExistsError:
-            if target.read_bytes() != data:
+            try:
+                existing = read_snapshot_file(
+                    self.directory, relative, ref=ref)
+            except SnapshotPathError as exc:
+                raise SnapshotError("snapshot file conflict") from exc
+            if existing != data:
                 raise SnapshotError("snapshot file conflict") from None
-            return target.relative_to(self.directory).as_posix()
+            return relative
         try:
             with os.fdopen(handle, "wb") as stream:
                 stream.write(data)
         except BaseException:
             target.unlink(missing_ok=True)
             raise
-        return target.relative_to(self.directory).as_posix()
+        return relative
 
     def read(self, ref):
         db = self.events._connect()
@@ -107,14 +124,23 @@ class SnapshotStore:
                          (ref,)).fetchone()
         if row is None:
             raise SnapshotError("snapshot missing")
-        storage = row[1] or "inline"
+        try:
+            storage = validate_storage(row[1])
+        except SnapshotPathError as exc:
+            raise SnapshotError("invalid snapshot storage") from exc
         if storage == "file":
             if directory is None:
                 raise SnapshotError("snapshot directory required")
             try:
-                text = (Path(directory) / row[0]).read_text(encoding="utf-8")
-            except OSError as error:
-                raise SnapshotError(f"snapshot file missing: {error}") from error
+                raw = read_snapshot_file(directory, row[0], ref=ref)
+            except SnapshotPathError as exc:
+                raise SnapshotError("snapshot file unavailable") from exc
+            except OSError as exc:
+                raise SnapshotError("snapshot file unavailable") from exc
+            try:
+                text = raw.decode("utf-8")
+            except UnicodeDecodeError as exc:
+                raise SnapshotError("invalid snapshot") from exc
         else:
             text = row[0]
         try:

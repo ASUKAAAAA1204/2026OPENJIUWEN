@@ -76,6 +76,7 @@ flowchart LR
 | 后端代码 | 现有流水线沿用 ARS；B 已新增 `engine/v27/` 离线计算入口，输出标记、债务、8 项读数与 Skill 聚合 |
 | 运行文件评测 | 按新版分工由 C 提供 `scripts/c_v27_evaluate.py`，读取运行信息、事件流和证据内容，复用 v2.7 引擎输出标记、债务与八项读数 |
 | M1 账本评测 | C 新增 `scripts/c_v27_ledger_evaluate.py`，只读消费 A 的 SQLite/签名导出包；sidecar 提供分析上下文；不完整债务映射明确报告 |
+| 平台联调评测 | `scripts/c_v27_platform_evaluate.py` 消费平台库/JSONL，复算八项读数并核对导出绑定；规则 MATCH 不计事实复算成功；详见 [C 平台联调与 A 边界](docs/handoff/C_PLATFORM_PARITY_2026-11-28.md) |
 | 管理计算 | C 新增 `evaluation/management.py`，提供版本快照/比较、显式规则的发布评估、显式费率卡的债务估价；真实服务授权与发布另需接线 |
 | 债务模块 | B 的 v2.7 投影按 high/mid/low 加权、消解只追加；C 的 `ledger/debt_tracker.py` 仍为旧 CU 模型，持久化接线待联调 |
 | 后端平台 | `backend` 分支新增 FastAPI 中央服务、SQLite 主账本、单写者队列、本地账号/CSRF、审批、SSE、导出与接口文档；三框架真实 SDK 阻断适配仍待实现 |
