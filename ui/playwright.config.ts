@@ -4,6 +4,8 @@ export default defineConfig({
   testDir: './e2e',
   timeout: 30000,
   fullyParallel: false,
+  /** CI 上吸收 ERR_NO_BUFFER_SPACE 这类瞬时资源错误，本地不重试 */
+  retries: process.env.CI ? 1 : 0,
   testIgnore: '**/performance.spec.ts',
   use: {
     baseURL: 'http://127.0.0.1:5273',
